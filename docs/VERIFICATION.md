@@ -139,7 +139,7 @@
 | Lint | `python -m ruff check .` | Passed: `All checks passed!` |
 | Typecheck | `python -m mypy src tests scripts` | Passed: `Success: no issues found in 31 source files`. |
 | Determinism scan | `python scripts/check_determinism.py` | Passed: `{"matches": [], "valid": true}`. |
-| Test | `python -m pytest -q` | Passed: `279 passed`. |
+| Test | `python -m pytest -q` | Passed: `288 passed`. |
 | Build | `python -m build` | Passed. Built `dsg_spatialqa_lab-0.1.0.tar.gz` and `dsg_spatialqa_lab-0.1.0-py3-none-any.whl`; build artifacts were removed after verification because they are reproducible. |
 | Evaluation suite | `python -c "from dsg_spatialqa_lab import run_evaluation_suite; suite = run_evaluation_suite(); print(suite['summary']); print(suite['digest'])"` | Passed: `35` selected cases, `35` passed, `0` failed; digest `717a61fd8757270fedb454f99c41b6a801e0ee237428bb839d5d8452bc4421ee`. |
 
