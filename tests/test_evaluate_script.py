@@ -13,6 +13,8 @@ from _pytest.capture import CaptureFixture
 from dsg_spatialqa_lab import (
     evaluation_bundle,
     evaluation_bundle_json,
+    evaluation_case_listing,
+    evaluation_case_listing_json,
     evaluation_manifest,
     evaluation_manifest_json,
     evaluation_report,
@@ -172,24 +174,117 @@ def test_evaluate_cli_lists_case_metadata_without_suite_execution(
     assert main(["--list-cases", "--tag", "qa", "--question-type", "object_room"]) == 0
 
     listing = json.loads(capsys.readouterr().out)
-    assert listing == {
-        "filters": {
-            "names": [],
-            "tags": ["qa"],
-            "kinds": [],
-            "question_types": ["object_room"],
-        },
-        "case_count": 1,
-        "evaluation_cases": list(
-            list_evaluation_case_metadata(
-                tags=("qa",),
-                question_types=("object_room",),
-            )
-        ),
-    }
+    assert listing == evaluation_case_listing(
+        tags=("qa",),
+        question_types=("object_room",),
+    )
+    assert listing["case_count"] == 1
+    assert listing["evaluation_cases"] == list(
+        list_evaluation_case_metadata(
+            tags=("qa",),
+            question_types=("object_room",),
+        )
+    )
     assert "suite" not in listing
     assert "report" not in listing
-    assert "digest" not in listing
+    assert len(listing["digest"]) == 64
+
+
+def test_evaluate_cli_validates_explicit_case_listing_file(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_evaluate_script()
+    main = cast(MainFn, getattr(module, "main"))
+    listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+    listing_path = tmp_path / "listing.json"
+    listing_path.write_text(evaluation_case_listing_json(listing), encoding="utf-8")
+
+    assert main(["--validate-listing", str(listing_path)]) == 0
+
+    validation = json.loads(capsys.readouterr().out)
+    assert validation["valid"] is True
+    assert validation["digest"] == listing["digest"]
+    assert validation["checks"][0]["name"] == "listing_digest"
+
+
+def test_evaluate_cli_rejects_tampered_case_listing_count(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_evaluate_script()
+    main = cast(MainFn, getattr(module, "main"))
+    listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+    tampered_listing = json.loads(evaluation_case_listing_json(listing))
+    tampered_listing["case_count"] = 999
+    listing_path = tmp_path / "listing.json"
+    listing_path.write_text(json.dumps(tampered_listing), encoding="utf-8")
+
+    assert main(["--validate-listing", str(listing_path)]) == 1
+
+    validation = json.loads(capsys.readouterr().out)
+    assert validation["valid"] is False
+    assert validation["checks"][1]["name"] == "case_count_matches_listing"
+
+
+def test_evaluate_cli_compares_case_listing_with_current_metadata(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_evaluate_script()
+    main = cast(MainFn, getattr(module, "main"))
+    listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+    listing_path = tmp_path / "listing.json"
+    listing_path.write_text(evaluation_case_listing_json(listing), encoding="utf-8")
+
+    assert main(["--compare-listing", str(listing_path)]) == 0
+
+    comparison = json.loads(capsys.readouterr().out)
+    assert comparison["matches"] is True
+    assert comparison["saved_digest"] == listing["digest"]
+    assert comparison["current_digest"] == listing["digest"]
+
+
+def test_evaluate_cli_reports_case_listing_current_metadata_drift(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_evaluate_script()
+    main = cast(MainFn, getattr(module, "main"))
+    listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+    drifted_listing = json.loads(evaluation_case_listing_json(listing))
+    drifted_listing["filters"]["question_types"] = ["scene_delta"]
+    listing_path = tmp_path / "listing.json"
+    listing_path.write_text(json.dumps(drifted_listing), encoding="utf-8")
+
+    assert main(["--compare-listing", str(listing_path)]) == 1
+
+    comparison = json.loads(capsys.readouterr().out)
+    assert comparison["matches"] is False
+    assert comparison["checks"][0]["name"] == "saved_listing_valid"
+    assert comparison["checks"][1]["name"] == "listing_digest_matches_current"
+
+
+def test_evaluate_cli_reports_invalid_explicit_case_listing_file_for_validation(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_evaluate_script()
+    main = cast(MainFn, getattr(module, "main"))
+    listing_path = tmp_path / "listing.json"
+    listing_path.write_text("[]\n", encoding="utf-8")
+
+    assert_invalid_artifact_report(
+        main,
+        capsys,
+        ["--validate-listing", str(listing_path)],
+        {
+            "action": "validate_listing",
+            "path": str(listing_path),
+            "valid": False,
+            "error": "Evaluation case listing JSON must be an object",
+        },
+    )
 
 
 def test_evaluate_cli_filters_vla_error_cases(capsys: CaptureFixture[str]) -> None:
@@ -241,6 +336,24 @@ def test_evaluate_cli_compares_report_with_current_run(
     assert comparison["current_digest"] == report["digest"]
 
 
+def test_evaluate_cli_validates_explicit_report_file(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_evaluate_script()
+    main = cast(MainFn, getattr(module, "main"))
+    report = evaluation_report(run_evaluation_suite(names=("tabletop_object_location",)))
+    report_path = tmp_path / "report.json"
+    report_path.write_text(evaluation_report_json(report), encoding="utf-8")
+
+    assert main(["--validate-report", str(report_path)]) == 0
+
+    validation = json.loads(capsys.readouterr().out)
+    assert validation["valid"] is True
+    assert validation["digest"] == report["digest"]
+    assert validation["report_digest"] == report["report_digest"]
+
+
 def test_evaluate_cli_reports_report_current_run_drift(
     tmp_path: Path,
     capsys: CaptureFixture[str],
@@ -258,8 +371,10 @@ def test_evaluate_cli_reports_report_current_run_drift(
     comparison = json.loads(capsys.readouterr().out)
     assert comparison["matches"] is False
     assert comparison["filters"] == {"names": ["tabletop_mug_pick"]}
-    assert comparison["checks"][0]["name"] == "report_digest_matches_current"
+    assert comparison["checks"][0]["name"] == "saved_report_valid"
     assert comparison["checks"][0]["passed"] is False
+    assert comparison["checks"][1]["name"] == "report_digest_matches_current"
+    assert comparison["checks"][1]["passed"] is False
 
 
 def test_evaluate_cli_reports_invalid_explicit_report_file(
@@ -562,6 +677,30 @@ def test_evaluate_cli_rejects_tampered_bundle_digest(
     assert validation["checks"][1]["passed"] is False
 
 
+def test_evaluate_cli_rejects_tampered_bundle_filters_with_bundle_digest(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_evaluate_script()
+    main = cast(MainFn, getattr(module, "main"))
+    bundle = evaluation_bundle(tags=("qa", "reobserve"))
+    tampered_bundle = json.loads(evaluation_bundle_json(bundle))
+    tampered_bundle["filters"]["tags"] = ["qa", "dynamic"]
+    bundle_path = tmp_path / "bundle.json"
+    bundle_path.write_text(json.dumps(tampered_bundle), encoding="utf-8")
+
+    assert main(["--validate-bundle", str(bundle_path)]) == 1
+
+    validation = json.loads(capsys.readouterr().out)
+    bundle_digest_check = next(
+        check
+        for check in validation["checks"]
+        if check["name"] == "bundle_digest"
+    )
+    assert validation["valid"] is False
+    assert bundle_digest_check["passed"] is False
+
+
 def test_evaluate_cli_rejects_tampered_bundle_report_with_differences(
     tmp_path: Path,
     capsys: CaptureFixture[str],
@@ -627,6 +766,8 @@ def test_evaluate_cli_compares_bundle_with_current_run(
     assert comparison["matches"] is True
     assert comparison["saved_digest"] == bundle["suite"]["digest"]
     assert comparison["current_digest"] == bundle["suite"]["digest"]
+    assert comparison["saved_bundle_digest"] == bundle["bundle_digest"]
+    assert comparison["current_bundle_digest"] == bundle["bundle_digest"]
 
 
 def test_evaluate_cli_reports_bundle_current_run_drift(
@@ -647,6 +788,8 @@ def test_evaluate_cli_reports_bundle_current_run_drift(
     assert comparison["matches"] is False
     assert comparison["checks"][1]["name"] == "suite_digest_matches_current"
     assert comparison["checks"][1]["passed"] is False
+    assert comparison["checks"][2]["name"] == "bundle_digest_matches_current"
+    assert comparison["checks"][2]["passed"] is False
 
 
 def test_evaluate_cli_reports_invalid_explicit_bundle_file_for_compare(

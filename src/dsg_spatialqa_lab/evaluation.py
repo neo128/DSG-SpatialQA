@@ -1029,6 +1029,164 @@ def list_evaluation_case_metadata(
     )
 
 
+def evaluation_case_listing(
+    *,
+    tags: Sequence[str] | None = None,
+    kinds: Sequence[EvaluationKind] | None = None,
+    question_types: Sequence[str] | None = None,
+    names: Sequence[str] | None = None,
+) -> dict[str, Any]:
+    cases = list_evaluation_case_metadata(
+        tags=tags,
+        kinds=kinds,
+        question_types=question_types,
+        names=names,
+    )
+    listing = {
+        "filters": {
+            "names": list(names or ()),
+            "tags": list(tags or ()),
+            "kinds": list(kinds or ()),
+            "question_types": list(question_types or ()),
+        },
+        "case_count": len(cases),
+        "evaluation_cases": list(cases),
+    }
+    listing["digest"] = evaluation_case_listing_digest(listing)
+    return listing
+
+
+def evaluation_case_listing_digest(listing: Mapping[str, Any]) -> str:
+    payload = {
+        "filters": listing.get("filters"),
+        "case_count": listing.get("case_count"),
+        "evaluation_cases": listing.get("evaluation_cases"),
+    }
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def evaluation_case_listing_json(listing: Mapping[str, Any]) -> str:
+    return json.dumps(listing, indent=2, sort_keys=True) + "\n"
+
+
+def save_evaluation_case_listing(
+    path: str | Path,
+    *,
+    names: Sequence[str] | None = None,
+    tags: Sequence[str] | None = None,
+    kinds: Sequence[EvaluationKind] | None = None,
+    question_types: Sequence[str] | None = None,
+) -> Path:
+    target = Path(path)
+    listing = evaluation_case_listing(
+        names=names,
+        tags=tags,
+        kinds=kinds,
+        question_types=question_types,
+    )
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(evaluation_case_listing_json(listing), encoding="utf-8")
+    return target
+
+
+def load_evaluation_case_listing(path: str | Path) -> dict[str, Any]:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise SpatialQAError("Evaluation case listing JSON must be an object")
+    return cast(dict[str, Any], payload)
+
+
+def validate_evaluation_case_listing(listing: Mapping[str, Any]) -> dict[str, Any]:
+    checks: list[dict[str, Any]] = []
+
+    expected_digest = evaluation_case_listing_digest(listing)
+    listing_digest = _string_or_none(listing.get("digest"))
+    _append_validation_check(
+        checks,
+        name="listing_digest",
+        passed=listing_digest == expected_digest,
+        expected=expected_digest,
+        actual=listing_digest,
+    )
+
+    expected_case_count = len(_case_manifest_from_bundle(listing))
+    actual_case_count = listing.get("case_count")
+    _append_validation_check(
+        checks,
+        name="case_count_matches_listing",
+        passed=actual_case_count == expected_case_count,
+        expected=expected_case_count,
+        actual=actual_case_count,
+    )
+
+    return {
+        "valid": all(check["passed"] is True for check in checks),
+        "digest": listing_digest,
+        "checks": checks,
+    }
+
+
+def compare_evaluation_case_listing(listing: Mapping[str, Any]) -> dict[str, Any]:
+    filters = _filters_from_bundle(listing)
+    current_listing = evaluation_case_listing(
+        names=_optional_filter_values(filters, "names"),
+        tags=_optional_filter_values(filters, "tags"),
+        kinds=cast(Sequence[EvaluationKind] | None, _optional_filter_values(filters, "kinds")),
+        question_types=_optional_filter_values(filters, "question_types"),
+    )
+    saved_digest = _string_or_none(listing.get("digest"))
+    current_digest = _string_or_none(current_listing.get("digest"))
+    checks: list[dict[str, Any]] = []
+
+    validation = validate_evaluation_case_listing(listing)
+    _append_validation_check(
+        checks,
+        name="saved_listing_valid",
+        passed=validation["valid"] is True,
+    )
+    _append_validation_check(
+        checks,
+        name="listing_digest_matches_current",
+        passed=saved_digest == current_digest,
+        expected=saved_digest,
+        actual=current_digest,
+    )
+    _append_validation_check(
+        checks,
+        name="case_count_matches_current",
+        passed=listing.get("case_count") == current_listing["case_count"],
+        expected=listing.get("case_count"),
+        actual=current_listing["case_count"],
+    )
+    case_metadata_differences = _manifest_entry_differences(
+        _case_manifest_from_bundle(listing),
+        _case_manifest_from_bundle(current_listing),
+    )
+    _append_validation_check(
+        checks,
+        name="case_metadata_matches_current",
+        passed=case_metadata_differences == [],
+        expected=_case_names_from_bundle(listing),
+        actual=_case_names_from_bundle(current_listing),
+    )
+    if case_metadata_differences:
+        checks[-1]["differences"] = case_metadata_differences
+
+    return {
+        "matches": all(check["passed"] is True for check in checks),
+        "filters": {
+            "names": list(_optional_filter_values(filters, "names") or ()),
+            "tags": list(_optional_filter_values(filters, "tags") or ()),
+            "kinds": list(_optional_filter_values(filters, "kinds") or ()),
+            "question_types": list(_optional_filter_values(filters, "question_types") or ()),
+        },
+        "saved_digest": saved_digest,
+        "current_digest": current_digest,
+        "checks": checks,
+    }
+
+
 def evaluation_cases_metadata(
     cases: Sequence[EvaluationCase],
     *,
@@ -1249,7 +1407,7 @@ def evaluation_report(suite: Mapping[str, Any]) -> dict[str, Any]:
         }
         for path, entry in sorted(failure_path_index.items())
     ]
-    return {
+    report = {
         "digest": str(suite["digest"]),
         "summary": dict(summary),
         "metrics": _evaluation_report_metrics(
@@ -1266,6 +1424,8 @@ def evaluation_report(suite: Mapping[str, Any]) -> dict[str, Any]:
         "failure_paths": failure_paths,
         "breakdown": dict(breakdown),
     }
+    report["report_digest"] = evaluation_report_digest(report)
+    return report
 
 
 def _evaluation_report_metrics(
@@ -1338,6 +1498,14 @@ def _evaluation_case_digests(results: Sequence[Mapping[str, Any]]) -> list[dict[
 def _stable_digest(payload: Mapping[str, Any]) -> str:
     encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()
+
+
+def _is_sha256_hexdigest(value: object) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
+    )
 
 
 def _evaluation_evidence_summary_metrics(
@@ -1476,7 +1644,7 @@ def evaluation_bundle(
         scene_loaders=scene_loaders,
     )
     scene_fixture_manifest = _scene_fixture_manifest_for_cases(case_manifest)
-    return {
+    bundle = {
         "schema_version": EVALUATION_BUNDLE_SCHEMA_VERSION,
         "filters": {
             "names": list(names or ()),
@@ -1490,6 +1658,8 @@ def evaluation_bundle(
         "suite": suite,
         "report": evaluation_report(suite),
     }
+    bundle["bundle_digest"] = evaluation_bundle_digest(bundle)
+    return bundle
 
 
 def evaluation_manifest(
@@ -1518,8 +1688,12 @@ def evaluation_manifest(
         "evaluation_cases": list(case_manifest),
         "coverage": _evaluation_bundle_coverage(case_manifest, scene_fixture_manifest),
     }
-    manifest["digest"] = _manifest_digest(manifest)
+    manifest["digest"] = evaluation_manifest_digest(manifest)
     return manifest
+
+
+def evaluation_manifest_digest(manifest: Mapping[str, Any]) -> str:
+    return _manifest_digest(manifest)
 
 
 def evaluation_manifest_json(manifest: Mapping[str, Any]) -> str:
@@ -1541,6 +1715,7 @@ def save_evaluation_manifest(
         kinds=kinds,
         question_types=question_types,
     )
+    target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(evaluation_manifest_json(manifest), encoding="utf-8")
     return target
 
@@ -1564,7 +1739,7 @@ def validate_evaluation_manifest(manifest: Mapping[str, Any]) -> dict[str, Any]:
         actual=schema_version,
     )
 
-    expected_digest = _manifest_digest(manifest)
+    expected_digest = evaluation_manifest_digest(manifest)
     manifest_digest = _string_or_none(manifest.get("digest"))
     _append_validation_check(
         checks,
@@ -1689,6 +1864,13 @@ def evaluation_bundle_json(bundle: Mapping[str, Any]) -> str:
     return json.dumps(bundle, indent=2, sort_keys=True) + "\n"
 
 
+def evaluation_bundle_digest(bundle: Mapping[str, Any]) -> str:
+    payload = {key: value for key, value in bundle.items() if key != "bundle_digest"}
+    return hashlib.sha256(
+        json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    ).hexdigest()
+
+
 def save_evaluation_bundle(
     path: str | Path,
     *,
@@ -1706,6 +1888,7 @@ def save_evaluation_bundle(
         question_types=question_types,
         scene_loaders=scene_loaders,
     )
+    target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(evaluation_bundle_json(bundle), encoding="utf-8")
     return target
 
@@ -1768,6 +1951,16 @@ def validate_evaluation_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
         selected_cases = []
         expected_case_manifest = []
 
+    bundle_digest = _string_or_none(bundle.get("bundle_digest"))
+    expected_bundle_digest = evaluation_bundle_digest(bundle)
+    _append_validation_check(
+        checks,
+        name="bundle_digest",
+        passed=bundle_digest == expected_bundle_digest,
+        expected=expected_bundle_digest,
+        actual=bundle_digest,
+    )
+
     case_names = _case_names_from_bundle(bundle)
     case_manifest_differences = _manifest_entry_differences(
         expected_case_manifest,
@@ -1821,6 +2014,7 @@ def validate_evaluation_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
         "valid": all(check["passed"] is True for check in checks),
         "schema_version": _string_or_none(schema_version),
         "digest": suite_digest,
+        "bundle_digest": bundle_digest,
         "checks": checks,
     }
 
@@ -1835,6 +2029,8 @@ def compare_evaluation_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
     )
     saved_digest = _bundle_suite_digest(bundle)
     current_digest = _bundle_suite_digest(current_bundle)
+    saved_bundle_digest = _string_or_none(bundle.get("bundle_digest"))
+    current_bundle_digest = _string_or_none(current_bundle.get("bundle_digest"))
     checks: list[dict[str, Any]] = []
     validation = validate_evaluation_bundle(bundle)
     _append_validation_check(
@@ -1848,6 +2044,13 @@ def compare_evaluation_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
         passed=saved_digest == current_digest,
         expected=saved_digest,
         actual=current_digest,
+    )
+    _append_validation_check(
+        checks,
+        name="bundle_digest_matches_current",
+        passed=saved_bundle_digest == current_bundle_digest,
+        expected=saved_bundle_digest,
+        actual=current_bundle_digest,
     )
     report_differences = _evaluation_report_differences(
         bundle.get("report"),
@@ -1911,6 +2114,8 @@ def compare_evaluation_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
         },
         "saved_digest": saved_digest,
         "current_digest": current_digest,
+        "saved_bundle_digest": saved_bundle_digest,
+        "current_bundle_digest": current_bundle_digest,
         "checks": checks,
     }
 
@@ -2194,8 +2399,16 @@ def evaluation_report_json(report: Mapping[str, Any]) -> str:
     return json.dumps(report, indent=2, sort_keys=True) + "\n"
 
 
+def evaluation_report_digest(report: Mapping[str, Any]) -> str:
+    payload = {key: value for key, value in report.items() if key != "report_digest"}
+    return hashlib.sha256(
+        json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    ).hexdigest()
+
+
 def save_evaluation_report(path: str | Path, suite: Mapping[str, Any]) -> Path:
     target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(evaluation_report_json(evaluation_report(suite)), encoding="utf-8")
     return target
 
@@ -2207,12 +2420,45 @@ def load_evaluation_report(path: str | Path) -> dict[str, Any]:
     return cast(dict[str, Any], payload)
 
 
+def validate_evaluation_report(report: Mapping[str, Any]) -> dict[str, Any]:
+    checks: list[dict[str, Any]] = []
+    suite_digest = _string_or_none(report.get("digest"))
+    _append_validation_check(
+        checks,
+        name="suite_digest_format",
+        passed=_is_sha256_hexdigest(suite_digest),
+        expected="64 lowercase sha256 hex characters",
+        actual=suite_digest,
+    )
+    report_digest = _string_or_none(report.get("report_digest"))
+    expected_report_digest = evaluation_report_digest(report)
+    _append_validation_check(
+        checks,
+        name="report_digest",
+        passed=report_digest == expected_report_digest,
+        expected=expected_report_digest,
+        actual=report_digest,
+    )
+    return {
+        "valid": all(check["passed"] is True for check in checks),
+        "digest": suite_digest,
+        "report_digest": report_digest,
+        "checks": checks,
+    }
+
+
 def compare_evaluation_report(report: Mapping[str, Any]) -> dict[str, Any]:
     selected_cases = _selected_cases_from_suite(report)
     current_report = evaluation_report(run_evaluation_suite(names=selected_cases))
     saved_digest = _string_or_none(report.get("digest"))
     current_digest = _string_or_none(current_report.get("digest"))
     checks: list[dict[str, Any]] = []
+    validation = validate_evaluation_report(report)
+    _append_validation_check(
+        checks,
+        name="saved_report_valid",
+        passed=validation["valid"] is True,
+    )
     _append_validation_check(
         checks,
         name="report_digest_matches_current",
@@ -2398,6 +2644,7 @@ def _evaluation_report_differences(
 
     fields = (
         "digest",
+        "report_digest",
         "summary",
         "metrics",
         "evidence_metrics",

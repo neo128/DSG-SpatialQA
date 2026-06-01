@@ -24,9 +24,17 @@
 - For experiment handoff, generate deterministic suite reports through
   `python scripts/evaluate.py`, `evaluation_report()`,
   `evaluation_report_json()`, `evaluation_bundle()`,
-  `evaluation_bundle_json()`, `evaluation_manifest()`,
+  `evaluation_bundle_digest(bundle)`, `evaluation_bundle_json()`,
+  `evaluation_case_listing()`, `evaluation_case_listing_digest(listing)`,
+  `evaluation_case_listing_json(listing)`, `evaluation_manifest()`,
+  `evaluation_manifest_digest(manifest)`,
   `evaluation_manifest_json()`, `save_evaluation_report(path, suite)`,
-  `load_evaluation_report(path)`, `compare_evaluation_report(report)`,
+  `load_evaluation_report(path)`, `evaluation_report_digest(report)`,
+  `validate_evaluation_report(report)`, `compare_evaluation_report(report)`,
+  `save_evaluation_case_listing(path, ...)`,
+  `load_evaluation_case_listing(path)`,
+  `validate_evaluation_case_listing(listing)`,
+  `compare_evaluation_case_listing(listing)`,
   `save_evaluation_manifest(path, ...)`, `load_evaluation_manifest(path)`,
   `validate_evaluation_manifest(manifest)`, `compare_evaluation_manifest(manifest)`,
   or `save_evaluation_bundle(path, ...)`
@@ -40,15 +48,65 @@
   and `--question-type` only when a focused deterministic slice is needed.
 - Use `python scripts/evaluate.py --list-cases --tag qa --question-type object_room`
   when a handoff only needs filtered case metadata for discovery; this emits
-  case names, tags, question copies, expected keys, and scene fixture metadata
-  without running evaluation cases.
+  case names, tags, question copies, expected keys, scene fixture metadata, and
+  a stable listing digest without running evaluation cases.
+- Use `python scripts/evaluate.py --validate-listing case-listing.json` before
+  accepting a saved case listing; validation reads only that explicit local file
+  and checks the listing digest plus case count. Use
+  `python scripts/evaluate.py --compare-listing case-listing.json` to detect
+  current-code metadata drift without running evaluation cases.
+- Use `scene_observation_to_json()`, `scene_observation_from_json()`,
+  `save_scene_observation(path)`, or `load_scene_observation(path)` when a
+  mock perception handoff needs stable offline `SceneObservation` input files.
+  Use the `scene_observation_sequence_*` helpers for ordered multi-frame
+  observation streams. Observation files must use explicit caller-supplied local
+  paths and explicit `SceneObservation.step` values.
+- Use `python scripts/observations.py --input mock-observation-sequence.json --output-graph mock-observation-graph.json --report mock-observation-ingest-report.json`
+  when a handoff needs to turn an explicit local observation sequence into
+  graph JSON plus a stable ingest report with sequence digest, graph digest,
+  summary, and per-step ingest results. Use
+  `python scripts/observations.py --validate-report mock-observation-ingest-report.json`
+  before sharing the report, and
+  `python scripts/observations.py --compare-report mock-observation-ingest-report.json`
+  to detect input, exported-graph-file, or output drift by re-ingesting the
+  explicit sequence path and reading the explicit graph path recorded in the
+  report. Invalid or drifted artifacts return non-zero structured JSON with
+  `valid: false` or `matches: false` instead of tracebacks.
+  Use `save_observation_ingest_report(report, path)` and
+  `load_observation_ingest_report(path)` for Python handoffs that need the same
+  explicit local report artifact model. Use
+  `observation_ingest_report_digest(report)` when a handoff needs to recompute
+  the report fingerprint. Report validation also checks that the report digest,
+  saved input path, graph path, and nested graph report path are present and
+  consistent before handoff.
+- Use `scene_fixture_manifest_json()` or `save_scene_fixture_manifest(path, ...)`
+  when a Python handoff needs the same stable fixture manifest JSON produced by
+  `python scripts/scene.py --list-fixtures`; saving always uses an explicit
+  caller-supplied local path.
+- Use `graph_report()`, `graph_report_digest()`, `graph_report_json()`,
+  `save_graph_report(path, ...)`,
+  or `python scripts/scene.py --fixture tabletop --output tabletop-scene.json --report tabletop-report.json`
+  when a scene graph handoff needs a stable graph digest, report digest, and
+  summary report alongside the exported graph JSON. Report saving always uses an
+  explicit local path.
+  Validate and compare saved graph reports with `load_graph_report()`,
+  `validate_graph_report()`, `compare_graph_report()`,
+  `python scripts/scene.py --validate-report tabletop-report.json`, or
+  `python scripts/scene.py --compare-report tabletop-report.json`.
+  Use `compare_graph_report_to_file(report, path)` or
+  `python scripts/scene.py --compare-report-graph tabletop-report.json --input tabletop-scene.json`
+  when the handoff should verify a saved report against a caller-supplied graph
+  JSON artifact rather than the current built-in fixture baseline.
 - Use `python scripts/evaluate.py --compare-report evaluation-report.json` to
   detect compact-report drift against the current code; comparison reads only
   the saved report's selected case names, reruns that deterministic local slice,
-  and checks digest, per-case digests, summary, metrics, evidence metrics,
-  failure diagnostics, and breakdown. Summary, failed-case, case-digest, metric,
-  evidence-metric, and breakdown drift include stable nested `differences` paths
-  such as `failed`, `tabletop_object_location`,
+  and checks the saved report digest, suite digest, per-case digests, summary,
+  metrics, evidence metrics, failure diagnostics, and breakdown. Use
+  `python scripts/evaluate.py --validate-report evaluation-report.json` when a
+  handoff only needs to validate the explicit local report artifact fingerprint.
+  Summary, failed-case, case-digest, metric, evidence-metric, and breakdown
+  drift include stable nested `differences` paths such as `failed`,
+  `tabletop_object_location`,
   `tabletop_object_location.digest`,
   `by_question_type.object_location.pass_rate`,
   `by_question_type.object_location.evidence_edge_count`, and `by_tag.qa.failed`;
@@ -109,13 +167,13 @@
   when the handoff needs case manifests, fixture manifests, full suite results,
   compact report metrics (`case_count`, passed/failed counts, pass rate, and
   failure rate), grouped report metrics by kind, question type, scene fixture,
-  and tag, deterministic coverage counts, and digest in one reproducible local
-  artifact.
+  and tag, deterministic coverage counts, suite digest, and bundle digest in
+  one reproducible local artifact.
 - Use `python scripts/evaluate.py --validate-bundle qa-bundle.json` before
   accepting a saved bundle; validation reads only that explicit local file and
-  checks schema version, suite digest, report consistency, case manifest names
-  and suite-backed metadata, fixture manifest coverage and case-backed
-  metadata, and coverage summary consistency. Coverage summary, case manifest
+  checks schema version, suite digest, bundle digest, report consistency, case
+  manifest names and suite-backed metadata, fixture manifest coverage and
+  case-backed metadata, and coverage summary consistency. Coverage summary, case manifest
   metadata, fixture manifest metadata, and compact report drift include stable
   nested `differences` paths, including report paths such as
   `failed_cases.tabletop_object_location`, case manifest paths such as
@@ -124,7 +182,8 @@
 - Use `python scripts/evaluate.py --compare-bundle qa-bundle.json` to detect
   benchmark drift against the current code; comparison reads only the saved
   bundle filters, reruns the deterministic local suite, and checks digest,
-  compact report, coverage, case manifest, and fixture manifest equality.
+  bundle artifact digest, compact report, coverage, case manifest, and fixture
+  manifest equality.
   Compact report drift includes stable nested `differences` paths such as
   `metrics.by_tag.qa.pass_rate`; coverage and manifest metadata drift include
   stable nested `differences` paths for handoff triage.
@@ -138,6 +197,15 @@
   scene names/descriptions/tags without loading graph objects or computing graph
   JSON digests. With `--output`, it writes the same stable JSON to that explicit
   local path and stdout.
+- Use `python scripts/scene.py --validate-fixture-manifest multi-room-fixtures.json`
+  before accepting a saved fixture-only handoff. Validation reads only that
+  explicit local file and checks schema version, digest, and fixture count
+  consistency without loading scene graphs.
+- Use `python scripts/scene.py --compare-fixture-manifest multi-room-fixtures.json`
+  to detect current-code drift in a saved fixture-only handoff. Comparison reads
+  only the saved manifest filters, regenerates current fixture metadata without
+  loading graph objects, and reports stable metadata `differences` paths such as
+  `multi_room_rearrangement.tags`.
 - Use `python scripts/scene.py --fixture tabletop --output tabletop-scene.json`
   to export a built-in deterministic scene graph, and
   `python scripts/scene.py --validate tabletop-scene.json` to load an explicit

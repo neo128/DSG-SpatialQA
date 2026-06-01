@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import hashlib
 import json
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 from dsg_spatialqa_lab.memory import DynamicSceneGraph
@@ -389,11 +390,159 @@ def scene_fixture_manifest(tags: Sequence[str] | None = None) -> dict[str, Any]:
     return manifest
 
 
-def _scene_fixture_manifest_digest(manifest: dict[str, Any]) -> str:
+def scene_fixture_manifest_json(manifest: Mapping[str, Any]) -> str:
+    return json.dumps(manifest, indent=2, sort_keys=True) + "\n"
+
+
+def save_scene_fixture_manifest(path: str | Path, tags: Sequence[str] | None = None) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(
+        scene_fixture_manifest_json(scene_fixture_manifest(tags=tags)),
+        encoding="utf-8",
+    )
+    return output_path
+
+
+def load_scene_fixture_manifest(path: str | Path) -> dict[str, Any]:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError("Scene fixture manifest JSON must be an object")
+    return payload
+
+
+def validate_scene_fixture_manifest(manifest: Mapping[str, Any]) -> dict[str, Any]:
+    schema_version = manifest.get("schema_version")
+    manifest_digest = manifest.get("digest")
+    expected_digest = _scene_fixture_manifest_digest(manifest)
+    scene_fixtures = manifest.get("scene_fixtures")
+    fixture_count = manifest.get("fixture_count")
+    actual_fixture_count = len(scene_fixtures) if isinstance(scene_fixtures, Sequence) else None
+    checks = [
+        {
+            "name": "schema_version",
+            "passed": schema_version == SCENE_FIXTURE_MANIFEST_SCHEMA_VERSION,
+            "expected": SCENE_FIXTURE_MANIFEST_SCHEMA_VERSION,
+            "actual": schema_version,
+        },
+        {
+            "name": "manifest_digest",
+            "passed": manifest_digest == expected_digest,
+            "expected": expected_digest,
+            "actual": manifest_digest,
+        },
+        {
+            "name": "fixture_count_matches_manifest",
+            "passed": fixture_count == actual_fixture_count,
+            "expected": actual_fixture_count,
+            "actual": fixture_count,
+        },
+    ]
+    return {
+        "valid": all(check["passed"] is True for check in checks),
+        "schema_version": schema_version,
+        "digest": manifest_digest,
+        "checks": checks,
+    }
+
+
+def compare_scene_fixture_manifest(manifest: Mapping[str, Any]) -> dict[str, Any]:
+    filters = _scene_fixture_manifest_filters(manifest)
+    current_manifest = scene_fixture_manifest(tags=filters)
+    saved_digest = manifest.get("digest")
+    current_digest = current_manifest["digest"]
+    saved_fixtures = _scene_fixture_manifest_entries(manifest)
+    current_fixtures = _scene_fixture_manifest_entries(current_manifest)
+    fixture_differences = _scene_fixture_manifest_entry_differences(
+        saved_fixtures,
+        current_fixtures,
+    )
+    checks: list[dict[str, Any]] = [
+        {
+            "name": "saved_manifest_valid",
+            "passed": validate_scene_fixture_manifest(manifest)["valid"] is True,
+        },
+        {
+            "name": "manifest_digest_matches_current",
+            "passed": saved_digest == current_digest,
+            "expected": saved_digest,
+            "actual": current_digest,
+        },
+        {
+            "name": "fixture_manifest_matches_current",
+            "passed": fixture_differences == [],
+            "expected": _scene_fixture_manifest_names(saved_fixtures),
+            "actual": _scene_fixture_manifest_names(current_fixtures),
+        },
+    ]
+    if fixture_differences:
+        checks[-1]["differences"] = fixture_differences
+    return {
+        "matches": all(check["passed"] is True for check in checks),
+        "filters": {
+            "tags": list(filters),
+        },
+        "saved_digest": saved_digest,
+        "current_digest": current_digest,
+        "checks": checks,
+    }
+
+
+def _scene_fixture_manifest_digest(manifest: Mapping[str, Any]) -> str:
     payload = {key: value for key, value in manifest.items() if key != "digest"}
     return hashlib.sha256(
         json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
     ).hexdigest()
+
+
+def _scene_fixture_manifest_filters(manifest: Mapping[str, Any]) -> tuple[str, ...]:
+    filters = manifest.get("filters", {})
+    if not isinstance(filters, Mapping):
+        return ()
+    tags = filters.get("tags", ())
+    if not isinstance(tags, Sequence) or isinstance(tags, str):
+        return ()
+    return tuple(str(tag) for tag in tags)
+
+
+def _scene_fixture_manifest_entries(manifest: Mapping[str, Any]) -> list[Mapping[str, Any]]:
+    scene_fixtures = manifest.get("scene_fixtures", ())
+    if not isinstance(scene_fixtures, Sequence) or isinstance(scene_fixtures, str):
+        return []
+    return [fixture for fixture in scene_fixtures if isinstance(fixture, Mapping)]
+
+
+def _scene_fixture_manifest_names(scene_fixtures: Sequence[Mapping[str, Any]]) -> list[str]:
+    return [str(fixture.get("name")) for fixture in scene_fixtures]
+
+
+def _scene_fixture_manifest_entry_differences(
+    expected: Sequence[Mapping[str, Any]],
+    actual: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    expected_by_name = {str(fixture.get("name")): fixture for fixture in expected}
+    actual_by_name = {str(fixture.get("name")): fixture for fixture in actual}
+    differences: list[dict[str, Any]] = []
+    for name in sorted(set(expected_by_name) | set(actual_by_name)):
+        expected_fixture = expected_by_name.get(name)
+        actual_fixture = actual_by_name.get(name)
+        if expected_fixture is None or actual_fixture is None:
+            differences.append(
+                {"path": name, "expected": expected_fixture, "actual": actual_fixture}
+            )
+            continue
+        for key in ("description", "tags"):
+            expected_value = expected_fixture.get(key)
+            actual_value = actual_fixture.get(key)
+            if expected_value != actual_value:
+                differences.append(
+                    {
+                        "path": f"{name}.{key}",
+                        "expected": expected_value,
+                        "actual": actual_value,
+                    }
+                )
+    return differences
 
 
 def get_scene_fixture(name: str) -> SceneFixture:

@@ -4,6 +4,7 @@ from pathlib import Path
 
 import pytest
 
+import dsg_spatialqa_lab as lab
 from dsg_spatialqa_lab import (
     BBox3D,
     DynamicSceneGraph,
@@ -11,10 +12,13 @@ from dsg_spatialqa_lab import (
     Pose3D,
     SpatialQAError,
     compare_evaluation_bundle,
+    compare_evaluation_case_listing,
     compare_evaluation_manifest,
     compare_evaluation_report,
     evaluation_bundle,
     evaluation_bundle_json,
+    evaluation_case_listing,
+    evaluation_case_listing_json,
     evaluation_case_metadata,
     evaluation_manifest,
     evaluation_manifest_json,
@@ -25,6 +29,7 @@ from dsg_spatialqa_lab import (
     list_evaluation_case_metadata,
     list_evaluation_cases,
     load_evaluation_bundle,
+    load_evaluation_case_listing,
     load_evaluation_manifest,
     load_evaluation_report,
     run_evaluation_case_definition,
@@ -32,9 +37,11 @@ from dsg_spatialqa_lab import (
     run_evaluation_case,
     run_evaluation_suite,
     save_evaluation_bundle,
+    save_evaluation_case_listing,
     save_evaluation_manifest,
     save_evaluation_report,
     validate_evaluation_bundle,
+    validate_evaluation_case_listing,
     validate_evaluation_manifest,
 )
 
@@ -1055,6 +1062,170 @@ def test_evaluation_case_metadata_filters_by_explicit_names_in_call_order() -> N
         "tabletop_object_location",
     ]
     assert [item["kind"] for item in manifest] == ["vla_pick", "qa"]
+
+
+def test_evaluation_case_listing_includes_stable_digest_without_running_suite() -> None:
+    assert hasattr(lab, "evaluation_case_listing")
+    assert hasattr(lab, "evaluation_case_listing_digest")
+
+    listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+    expected_payload = {
+        "filters": {
+            "names": [],
+            "tags": ["qa"],
+            "kinds": [],
+            "question_types": ["object_room"],
+        },
+        "case_count": 1,
+        "evaluation_cases": list(
+            list_evaluation_case_metadata(
+                tags=("qa",),
+                question_types=("object_room",),
+            )
+        ),
+    }
+    expected_digest = hashlib.sha256(
+        json.dumps(expected_payload, separators=(",", ":"), sort_keys=True).encode(
+            "utf-8"
+        )
+    ).hexdigest()
+
+    assert listing == {**expected_payload, "digest": expected_digest}
+    assert lab.evaluation_case_listing_digest(listing) == expected_digest
+    assert "suite" not in listing
+    assert "report" not in listing
+
+    tampered_listing = json.loads(json.dumps(listing))
+    tampered_listing["filters"]["question_types"] = ["scene_delta"]
+    assert lab.evaluation_case_listing_digest(tampered_listing) != expected_digest
+
+
+def test_evaluation_case_listing_loads_from_explicit_file_and_validates(
+    tmp_path: Path,
+) -> None:
+    listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+    payload = evaluation_case_listing_json(listing)
+    repeated = evaluation_case_listing_json(listing)
+    listing_path = tmp_path / "listings" / "object-room.json"
+    saved_path = save_evaluation_case_listing(
+        listing_path,
+        tags=("qa",),
+        question_types=("object_room",),
+    )
+
+    loaded_listing = load_evaluation_case_listing(saved_path)
+    validation = validate_evaluation_case_listing(loaded_listing)
+
+    assert payload == repeated
+    assert payload.endswith("\n")
+    assert json.loads(payload) == listing
+    assert saved_path == listing_path
+    assert loaded_listing == listing
+    assert validation == {
+        "valid": True,
+        "digest": listing["digest"],
+        "checks": [
+            {
+                "name": "listing_digest",
+                "passed": True,
+                "expected": listing["digest"],
+                "actual": listing["digest"],
+            },
+            {
+                "name": "case_count_matches_listing",
+                "passed": True,
+                "expected": 1,
+                "actual": 1,
+            },
+        ],
+    }
+
+
+def test_evaluation_case_listing_validation_reports_tampered_digest_and_count() -> None:
+    listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+    tampered_listing = json.loads(evaluation_case_listing_json(listing))
+    tampered_listing["digest"] = "0" * 64
+    tampered_listing["case_count"] = 999
+
+    validation = validate_evaluation_case_listing(tampered_listing)
+
+    assert validation["valid"] is False
+    assert validation["digest"] == "0" * 64
+    assert validation["checks"] == [
+        {
+            "name": "listing_digest",
+            "passed": False,
+            "expected": lab.evaluation_case_listing_digest(tampered_listing),
+            "actual": "0" * 64,
+        },
+        {
+            "name": "case_count_matches_listing",
+            "passed": False,
+            "expected": 1,
+            "actual": 999,
+        },
+    ]
+
+
+def test_evaluation_case_listing_compare_matches_current_metadata() -> None:
+    listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+
+    comparison = compare_evaluation_case_listing(listing)
+
+    assert comparison == {
+        "matches": True,
+        "filters": listing["filters"],
+        "saved_digest": listing["digest"],
+        "current_digest": listing["digest"],
+        "checks": [
+            {"name": "saved_listing_valid", "passed": True},
+            {
+                "name": "listing_digest_matches_current",
+                "passed": True,
+                "expected": listing["digest"],
+                "actual": listing["digest"],
+            },
+            {
+                "name": "case_count_matches_current",
+                "passed": True,
+                "expected": 1,
+                "actual": 1,
+            },
+            {
+                "name": "case_metadata_matches_current",
+                "passed": True,
+                "expected": ["multi_room_rearrangement_object_room_cereal_box"],
+                "actual": ["multi_room_rearrangement_object_room_cereal_box"],
+            },
+        ],
+    }
+
+
+def test_evaluation_case_listing_compare_reports_current_metadata_drift() -> None:
+    listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+    drifted_listing = json.loads(evaluation_case_listing_json(listing))
+    drifted_listing["filters"]["question_types"] = ["scene_delta"]
+    current_listing = evaluation_case_listing(tags=("qa",), question_types=("scene_delta",))
+
+    comparison = compare_evaluation_case_listing(drifted_listing)
+
+    assert comparison["matches"] is False
+    assert comparison["saved_digest"] == listing["digest"]
+    assert comparison["current_digest"] == current_listing["digest"]
+    assert comparison["checks"][0] == {"name": "saved_listing_valid", "passed": False}
+    assert comparison["checks"][1] == {
+        "name": "listing_digest_matches_current",
+        "passed": False,
+        "expected": listing["digest"],
+        "actual": current_listing["digest"],
+    }
+    metadata_check = next(
+        check
+        for check in comparison["checks"]
+        if check["name"] == "case_metadata_matches_current"
+    )
+    assert metadata_check["passed"] is False
+    assert metadata_check["differences"][0]["path"] == "moved_mug_scene_delta"
 
 
 def test_run_qa_evaluation_case_returns_comparable_result_dict() -> None:
@@ -2654,7 +2825,7 @@ def test_evaluation_report_summarizes_metrics_and_failure_reasons() -> None:
 
     report = evaluation_report(suite)
 
-    assert report == {
+    expected_report = {
         "digest": suite["digest"],
         "summary": suite["summary"],
         "metrics": {
@@ -2830,6 +3001,10 @@ def test_evaluation_report_summarizes_metrics_and_failure_reasons() -> None:
         ],
         "breakdown": suite["breakdown"],
     }
+    assert report == {
+        **expected_report,
+        "report_digest": lab.evaluation_report_digest(expected_report),
+    }
 
 
 def test_evaluation_report_groups_failure_categories_for_structural_mismatches() -> None:
@@ -2910,6 +3085,47 @@ def test_evaluation_report_json_is_stable_and_savable(tmp_path: Path) -> None:
     assert json.loads(report_path.read_text(encoding="utf-8")) == report
 
 
+def test_evaluation_report_includes_stable_report_digest_and_validates_tampering() -> None:
+    assert hasattr(lab, "evaluation_report_digest")
+    assert hasattr(lab, "validate_evaluation_report")
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    report_without_digest = {
+        key: value for key, value in report.items() if key != "report_digest"
+    }
+    expected_report_digest = hashlib.sha256(
+        json.dumps(report_without_digest, separators=(",", ":"), sort_keys=True).encode(
+            "utf-8"
+        )
+    ).hexdigest()
+
+    assert report["report_digest"] == expected_report_digest
+    assert lab.evaluation_report_digest(report) == expected_report_digest
+    validation = lab.validate_evaluation_report(report)
+    checks = {check["name"]: check for check in validation["checks"]}
+    assert validation["digest"] == report["digest"]
+    assert validation["report_digest"] == expected_report_digest
+    assert checks["report_digest"] == {
+        "name": "report_digest",
+        "passed": True,
+        "expected": expected_report_digest,
+        "actual": expected_report_digest,
+    }
+
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["metrics"]["pass_rate"] = 0.5
+
+    tampered_validation = lab.validate_evaluation_report(tampered_report)
+    tampered_checks = {check["name"]: check for check in tampered_validation["checks"]}
+    assert tampered_validation["valid"] is False
+    assert tampered_checks["report_digest"] == {
+        "name": "report_digest",
+        "passed": False,
+        "expected": lab.evaluation_report_digest(tampered_report),
+        "actual": expected_report_digest,
+    }
+
+
 def test_evaluation_report_loads_from_explicit_file_and_compares_current_run(
     tmp_path: Path,
 ) -> None:
@@ -2928,6 +3144,10 @@ def test_evaluation_report_loads_from_explicit_file_and_compares_current_run(
         "saved_digest": report["digest"],
         "current_digest": report["digest"],
         "checks": [
+            {
+                "name": "saved_report_valid",
+                "passed": True,
+            },
             {
                 "name": "report_digest_matches_current",
                 "passed": True,
@@ -3011,6 +3231,10 @@ def test_evaluation_report_compare_reports_current_run_drift() -> None:
     assert comparison["saved_digest"] == report["digest"]
     assert comparison["current_digest"] == current_report["digest"]
     assert comparison["checks"][0] == {
+        "name": "saved_report_valid",
+        "passed": False,
+    }
+    assert comparison["checks"][1] == {
         "name": "report_digest_matches_current",
         "passed": False,
         "expected": report["digest"],
@@ -3047,7 +3271,7 @@ def test_evaluation_report_compare_reports_summary_path_drift() -> None:
     assert comparison["matches"] is False
     assert [
         check["name"] for check in comparison["checks"] if check["passed"] is False
-    ] == ["summary_matches_current"]
+    ] == ["saved_report_valid", "summary_matches_current"]
     assert summary_check["differences"] == [
         {
             "path": "failed",
@@ -3084,7 +3308,7 @@ def test_evaluation_report_compare_reports_failed_case_drift() -> None:
     assert comparison["matches"] is False
     assert [
         check["name"] for check in comparison["checks"] if check["passed"] is False
-    ] == ["failed_cases_match_current"]
+    ] == ["saved_report_valid", "failed_cases_match_current"]
     assert failed_cases_check["differences"] == [
         {
             "path": "tabletop_object_location",
@@ -3119,7 +3343,7 @@ def test_evaluation_report_compare_reports_metric_path_drift() -> None:
     assert comparison["matches"] is False
     assert [
         check["name"] for check in comparison["checks"] if check["passed"] is False
-    ] == ["metrics_match_current"]
+    ] == ["saved_report_valid", "metrics_match_current"]
     assert metric_check["differences"] == [
         {
             "path": "by_question_type.object_location.failed_case_count",
@@ -3151,7 +3375,7 @@ def test_evaluation_report_compare_reports_evidence_metric_path_drift() -> None:
     assert comparison["matches"] is False
     assert [
         check["name"] for check in comparison["checks"] if check["passed"] is False
-    ] == ["evidence_metrics_match_current"]
+    ] == ["saved_report_valid", "evidence_metrics_match_current"]
     assert evidence_check["differences"] == [
         {
             "path": "by_question_type.object_location.evidence_edge_count",
@@ -3174,7 +3398,7 @@ def test_evaluation_report_compare_reports_case_digest_drift() -> None:
     assert comparison["matches"] is False
     assert [
         check["name"] for check in comparison["checks"] if check["passed"] is False
-    ] == ["case_digests_match_current"]
+    ] == ["saved_report_valid", "case_digests_match_current"]
     assert digest_check["differences"] == [
         {
             "path": "tabletop_object_location.digest",
@@ -3199,7 +3423,7 @@ def test_evaluation_report_compare_reports_breakdown_path_drift() -> None:
     assert comparison["matches"] is False
     assert [
         check["name"] for check in comparison["checks"] if check["passed"] is False
-    ] == ["breakdown_matches_current"]
+    ] == ["saved_report_valid", "breakdown_matches_current"]
     assert breakdown_check["differences"] == [
         {
             "path": "by_tag.qa.failed",
@@ -3224,7 +3448,7 @@ def test_evaluation_report_compare_reports_runtime_error_category_drift() -> Non
     assert comparison["matches"] is False
     assert [
         check["name"] for check in comparison["checks"] if check["passed"] is False
-    ] == ["runtime_error_categories_match_current"]
+    ] == ["saved_report_valid", "runtime_error_categories_match_current"]
     assert category_check["differences"] == [
         {
             "path": "missing_object.count",
@@ -3255,7 +3479,7 @@ def test_evaluation_report_compare_reports_failure_category_drift() -> None:
     assert comparison["matches"] is False
     assert [
         check["name"] for check in comparison["checks"] if check["passed"] is False
-    ] == ["failure_categories_match_current"]
+    ] == ["saved_report_valid", "failure_categories_match_current"]
     assert category_check["differences"] == [
         {
             "path": "value_mismatch",
@@ -3289,7 +3513,7 @@ def test_evaluation_report_compare_reports_failure_reason_drift() -> None:
     assert comparison["matches"] is False
     assert [
         check["name"] for check in comparison["checks"] if check["passed"] is False
-    ] == ["failure_reasons_match_current"]
+    ] == ["saved_report_valid", "failure_reasons_match_current"]
     assert reason_check["differences"] == [
         {
             "path": "value_mismatch",
@@ -3323,7 +3547,7 @@ def test_evaluation_report_compare_reports_failure_path_drift() -> None:
     assert comparison["matches"] is False
     assert [
         check["name"] for check in comparison["checks"] if check["passed"] is False
-    ] == ["failure_paths_match_current"]
+    ] == ["saved_report_valid", "failure_paths_match_current"]
     assert path_check["differences"] == [
         {
             "path": "answer.visible",
@@ -3529,6 +3753,38 @@ def test_evaluation_manifest_loads_from_explicit_file_and_validates(tmp_path: Pa
             },
         ],
     }
+
+
+def test_evaluation_manifest_digest_helper_recomputes_saved_digest_and_saves_nested_paths(
+    tmp_path: Path,
+) -> None:
+    assert hasattr(lab, "evaluation_manifest_digest")
+    manifest = evaluation_manifest(tags=("qa", "relations"))
+    expected_payload = {
+        "schema_version": manifest["schema_version"],
+        "filters": manifest["filters"],
+        "scene_fixtures": manifest["scene_fixtures"],
+        "evaluation_cases": manifest["evaluation_cases"],
+        "coverage": manifest["coverage"],
+    }
+    expected_digest = hashlib.sha256(
+        json.dumps(expected_payload, separators=(",", ":"), sort_keys=True).encode(
+            "utf-8"
+        )
+    ).hexdigest()
+
+    assert manifest["digest"] == expected_digest
+    assert lab.evaluation_manifest_digest(manifest) == expected_digest
+
+    tampered_manifest = json.loads(evaluation_manifest_json(manifest))
+    tampered_manifest["filters"]["tags"] = ["qa", "dynamic"]
+    assert lab.evaluation_manifest_digest(tampered_manifest) != manifest["digest"]
+
+    manifest_path = tmp_path / "manifests" / "relations.json"
+    saved_path = save_evaluation_manifest(manifest_path, tags=("qa", "relations"))
+
+    assert saved_path == manifest_path
+    assert json.loads(manifest_path.read_text(encoding="utf-8")) == manifest
 
 
 def test_evaluation_manifest_validation_reports_tampered_digest() -> None:
@@ -3859,6 +4115,7 @@ def test_evaluation_bundle_loads_from_explicit_file_and_validates(tmp_path: Path
         "valid": True,
         "schema_version": "dsg-spatialqa-lab.evaluation-bundle.v1",
         "digest": bundle["suite"]["digest"],
+        "bundle_digest": bundle["bundle_digest"],
         "checks": [
             {
                 "name": "schema_version",
@@ -3873,6 +4130,12 @@ def test_evaluation_bundle_loads_from_explicit_file_and_validates(tmp_path: Path
                 "actual": bundle["suite"]["digest"],
             },
             {"name": "report_matches_suite", "passed": True},
+            {
+                "name": "bundle_digest",
+                "passed": True,
+                "expected": bundle["bundle_digest"],
+                "actual": bundle["bundle_digest"],
+            },
             {
                 "name": "case_manifest_matches_suite",
                 "passed": True,
@@ -3899,6 +4162,52 @@ def test_evaluation_bundle_loads_from_explicit_file_and_validates(tmp_path: Path
             },
         ],
     }
+
+
+def test_evaluation_bundle_includes_stable_bundle_digest_and_validates_filter_tampering(
+    tmp_path: Path,
+) -> None:
+    assert hasattr(lab, "evaluation_bundle_digest")
+    bundle = evaluation_bundle(tags=("qa", "reobserve"))
+    expected_payload = {
+        key: value for key, value in bundle.items() if key != "bundle_digest"
+    }
+    expected_digest = hashlib.sha256(
+        json.dumps(expected_payload, separators=(",", ":"), sort_keys=True).encode(
+            "utf-8"
+        )
+    ).hexdigest()
+
+    assert bundle["bundle_digest"] == expected_digest
+    assert lab.evaluation_bundle_digest(bundle) == expected_digest
+    validation = validate_evaluation_bundle(bundle)
+    checks = {check["name"]: check for check in validation["checks"]}
+    assert validation["bundle_digest"] == expected_digest
+    assert checks["bundle_digest"] == {
+        "name": "bundle_digest",
+        "passed": True,
+        "expected": expected_digest,
+        "actual": expected_digest,
+    }
+
+    tampered_bundle = json.loads(evaluation_bundle_json(bundle))
+    tampered_bundle["filters"]["tags"] = ["qa", "dynamic"]
+    tampered_validation = validate_evaluation_bundle(tampered_bundle)
+    tampered_checks = {check["name"]: check for check in tampered_validation["checks"]}
+
+    assert tampered_validation["valid"] is False
+    assert tampered_checks["bundle_digest"] == {
+        "name": "bundle_digest",
+        "passed": False,
+        "expected": lab.evaluation_bundle_digest(tampered_bundle),
+        "actual": expected_digest,
+    }
+
+    bundle_path = tmp_path / "bundles" / "reobserve.json"
+    saved_path = save_evaluation_bundle(bundle_path, tags=("qa", "reobserve"))
+
+    assert saved_path == bundle_path
+    assert json.loads(bundle_path.read_text(encoding="utf-8")) == bundle
 
 
 def test_evaluation_bundle_validation_reports_tampered_digest() -> None:
@@ -4104,6 +4413,8 @@ def test_evaluation_bundle_compare_matches_current_run() -> None:
         "filters": bundle["filters"],
         "saved_digest": bundle["suite"]["digest"],
         "current_digest": bundle["suite"]["digest"],
+        "saved_bundle_digest": bundle["bundle_digest"],
+        "current_bundle_digest": bundle["bundle_digest"],
         "checks": [
             {"name": "saved_bundle_valid", "passed": True},
             {
@@ -4111,6 +4422,12 @@ def test_evaluation_bundle_compare_matches_current_run() -> None:
                 "passed": True,
                 "expected": bundle["suite"]["digest"],
                 "actual": bundle["suite"]["digest"],
+            },
+            {
+                "name": "bundle_digest_matches_current",
+                "passed": True,
+                "expected": bundle["bundle_digest"],
+                "actual": bundle["bundle_digest"],
             },
             {
                 "name": "report_matches_current",
@@ -4157,11 +4474,19 @@ def test_evaluation_bundle_compare_reports_current_run_drift() -> None:
     assert comparison["matches"] is False
     assert comparison["saved_digest"] == bundle["suite"]["digest"]
     assert comparison["current_digest"] == current_bundle["suite"]["digest"]
+    assert comparison["saved_bundle_digest"] == bundle["bundle_digest"]
+    assert comparison["current_bundle_digest"] == current_bundle["bundle_digest"]
     assert comparison["checks"][1] == {
         "name": "suite_digest_matches_current",
         "passed": False,
         "expected": bundle["suite"]["digest"],
         "actual": current_bundle["suite"]["digest"],
+    }
+    assert comparison["checks"][2] == {
+        "name": "bundle_digest_matches_current",
+        "passed": False,
+        "expected": bundle["bundle_digest"],
+        "actual": current_bundle["bundle_digest"],
     }
     coverage_check = next(
         check

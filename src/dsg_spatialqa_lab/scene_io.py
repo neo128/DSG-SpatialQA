@@ -21,6 +21,7 @@ from dsg_spatialqa_lab.schema import (
 
 
 SCHEMA_VERSION = 1
+GRAPH_REPORT_SCHEMA_VERSION = "dsg-spatialqa-lab.graph-report.v1"
 SUMMARY_LOW_CONFIDENCE_THRESHOLD = 0.5
 
 
@@ -148,6 +149,216 @@ def graph_summary(graph: DynamicSceneGraph) -> dict[str, Any]:
     }
 
 
+def graph_report(
+    graph: DynamicSceneGraph,
+    *,
+    action: str | None = None,
+    graph_path: str | Path | None = None,
+    fixture: str | None = None,
+) -> dict[str, Any]:
+    report: dict[str, Any] = {
+        "schema_version": GRAPH_REPORT_SCHEMA_VERSION,
+        "digest": graph_json_digest(graph),
+        "summary": graph_summary(graph),
+    }
+    if action is not None:
+        report["action"] = action
+    if graph_path is not None:
+        report["path"] = str(graph_path)
+    if fixture is not None:
+        report["fixture"] = fixture
+    report["report_digest"] = graph_report_digest(report)
+    return report
+
+
+def graph_report_digest(report: Mapping[str, Any]) -> str:
+    payload = {key: value for key, value in report.items() if key != "report_digest"}
+    return hashlib.sha256(
+        json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    ).hexdigest()
+
+
+def graph_report_json(report: Mapping[str, Any]) -> str:
+    return json.dumps(report, indent=2, sort_keys=True) + "\n"
+
+
+def save_graph_report(
+    graph: DynamicSceneGraph,
+    path: str | Path,
+    *,
+    action: str | None = None,
+    graph_path: str | Path | None = None,
+    fixture: str | None = None,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(
+        graph_report_json(
+            graph_report(
+                graph,
+                action=action,
+                graph_path=graph_path,
+                fixture=fixture,
+            )
+        ),
+        encoding="utf-8",
+    )
+    return output_path
+
+
+def load_graph_report(path: str | Path) -> dict[str, Any]:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError("Graph report JSON must be an object")
+    return cast(dict[str, Any], payload)
+
+
+def validate_graph_report(report: Mapping[str, Any]) -> dict[str, Any]:
+    schema_version = report.get("schema_version")
+    digest = report.get("digest")
+    report_digest = report.get("report_digest")
+    expected_report_digest = graph_report_digest(report)
+    summary = report.get("summary")
+    summary_schema_version = (
+        summary.get("schema_version") if isinstance(summary, Mapping) else None
+    )
+    checks = [
+        {
+            "name": "schema_version",
+            "passed": schema_version == GRAPH_REPORT_SCHEMA_VERSION,
+            "expected": GRAPH_REPORT_SCHEMA_VERSION,
+            "actual": schema_version,
+        },
+        {
+            "name": "digest_format",
+            "passed": _is_sha256_hexdigest(digest),
+            "expected": "64 lowercase sha256 hex characters",
+            "actual": digest,
+        },
+        {
+            "name": "report_digest",
+            "passed": report_digest == expected_report_digest,
+            "expected": expected_report_digest,
+            "actual": report_digest,
+        },
+        {
+            "name": "summary_schema_version",
+            "passed": summary_schema_version == SCHEMA_VERSION,
+            "expected": SCHEMA_VERSION,
+            "actual": summary_schema_version,
+        },
+    ]
+    return {
+        "valid": all(check["passed"] is True for check in checks),
+        "schema_version": schema_version,
+        "digest": digest,
+        "report_digest": report_digest,
+        "checks": checks,
+    }
+
+
+def compare_graph_report(
+    report: Mapping[str, Any],
+    fixture: str | None = None,
+) -> dict[str, Any]:
+    from dsg_spatialqa_lab.scenes import load_scene_fixture
+
+    report_fixture = fixture
+    if report_fixture is None and isinstance(report.get("fixture"), str):
+        report_fixture = str(report["fixture"])
+
+    saved_digest = report.get("digest")
+    checks: list[dict[str, Any]] = [
+        {
+            "name": "saved_report_valid",
+            "passed": validate_graph_report(report)["valid"] is True,
+        }
+    ]
+    if report_fixture is None:
+        checks.append(
+            {
+                "name": "fixture_available",
+                "passed": False,
+                "expected": "fixture",
+                "actual": report.get("fixture"),
+            }
+        )
+        return {
+            "matches": False,
+            "fixture": report_fixture,
+            "saved_digest": saved_digest,
+            "current_digest": None,
+            "checks": checks,
+        }
+
+    current_graph = load_scene_fixture(report_fixture)
+    current_digest = graph_json_digest(current_graph)
+    saved_summary = report.get("summary")
+    current_summary = graph_summary(current_graph)
+    summary_differences = _nested_differences(saved_summary, current_summary)
+    checks.extend(
+        [
+            {
+                "name": "graph_digest_matches_current",
+                "passed": saved_digest == current_digest,
+                "expected": saved_digest,
+                "actual": current_digest,
+            },
+            {
+                "name": "summary_matches_current",
+                "passed": saved_summary == current_summary,
+                "expected": saved_summary,
+                "actual": current_summary,
+            },
+        ]
+    )
+    if summary_differences:
+        checks[-1]["differences"] = summary_differences
+    return {
+        "matches": all(check["passed"] is True for check in checks),
+        "fixture": report_fixture,
+        "saved_digest": saved_digest,
+        "current_digest": current_digest,
+        "checks": checks,
+    }
+
+
+def compare_graph_report_to_file(report: Mapping[str, Any], path: str | Path) -> dict[str, Any]:
+    graph = load_graph_json(path)
+    saved_digest = report.get("digest")
+    graph_digest_value = graph_json_digest(graph)
+    saved_summary = report.get("summary")
+    graph_summary_value = graph_summary(graph)
+    summary_differences = _nested_differences(saved_summary, graph_summary_value)
+    checks: list[dict[str, Any]] = [
+        {
+            "name": "saved_report_valid",
+            "passed": validate_graph_report(report)["valid"] is True,
+        },
+        {
+            "name": "graph_digest_matches_report",
+            "passed": saved_digest == graph_digest_value,
+            "expected": saved_digest,
+            "actual": graph_digest_value,
+        },
+        {
+            "name": "summary_matches_report",
+            "passed": saved_summary == graph_summary_value,
+            "expected": saved_summary,
+            "actual": graph_summary_value,
+        },
+    ]
+    if summary_differences:
+        checks[-1]["differences"] = summary_differences
+    return {
+        "matches": all(check["passed"] is True for check in checks),
+        "path": str(path),
+        "saved_digest": saved_digest,
+        "graph_digest": graph_digest_value,
+        "checks": checks,
+    }
+
+
 def compare_graph_to_fixture(graph: DynamicSceneGraph, fixture: str) -> dict[str, Any]:
     from dsg_spatialqa_lab.scenes import load_scene_fixture
 
@@ -199,6 +410,14 @@ def load_graph_json(path: str | Path) -> DynamicSceneGraph:
 def compare_graph_file_to_fixture(path: str | Path, fixture: str) -> dict[str, Any]:
     comparison = compare_graph_to_fixture(load_graph_json(path), fixture)
     return {"path": str(path), **comparison}
+
+
+def _is_sha256_hexdigest(value: object) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) == 64
+        and all(character in "0123456789abcdef" for character in value)
+    )
 
 
 def _sorted_counts(values: Iterable[str]) -> dict[str, int]:

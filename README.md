@@ -37,6 +37,7 @@ Run a deterministic evaluation report or reproducibility bundle from the shell:
 
 ```bash
 python scripts/evaluate.py --tag qa --tag dynamic --report evaluation-report.json
+python scripts/evaluate.py --validate-report evaluation-report.json
 python scripts/evaluate.py --compare-report evaluation-report.json
 python scripts/evaluate.py --list-cases --tag qa --question-type object_room
 python scripts/evaluate.py --manifest --tag qa --tag relations --report relations-manifest.json
@@ -55,7 +56,12 @@ Export and validate a deterministic scene fixture graph from the shell:
 
 ```bash
 python scripts/scene.py --list-fixtures --tag multi_room --output multi-room-fixtures.json
-python scripts/scene.py --fixture tabletop --output tabletop-scene.json
+python scripts/scene.py --validate-fixture-manifest multi-room-fixtures.json
+python scripts/scene.py --compare-fixture-manifest multi-room-fixtures.json
+python scripts/scene.py --fixture tabletop --output tabletop-scene.json --report tabletop-report.json
+python scripts/scene.py --validate-report tabletop-report.json
+python scripts/scene.py --compare-report tabletop-report.json
+python scripts/scene.py --compare-report-graph tabletop-report.json --input tabletop-scene.json
 python scripts/scene.py --validate tabletop-scene.json
 python scripts/scene.py --compare-fixture tabletop --input tabletop-scene.json
 ```
@@ -64,10 +70,44 @@ Fixture listing emits a filtered scene fixture manifest with schema version,
 metadata digest, fixture count, and scene names/descriptions/tags; it does not
 load graph objects or compute graph JSON digests. When `--output` is supplied,
 the same stable JSON is written to that explicit local path and printed to stdout.
+Fixture manifest validation reads only the explicit local file and checks schema
+version, digest, and fixture count consistency. Fixture manifest comparison
+also checks the saved metadata against the current built-in fixture registry and
+reports stable metadata `differences` paths such as
+`multi_room_rearrangement.tags`.
 
-Scene validation and fixture comparison return non-zero structured JSON with
-`valid: false` when an explicit graph file is unreadable or fails schema
-validation.
+Scene validation, fixture manifest validation, fixture manifest comparison, and
+fixture comparison return non-zero structured JSON when an explicit file is
+unreadable, fails schema/digest validation, or drifts from current metadata.
+For graph export and validation workflows, `--report` writes the same structured
+stdout JSON to an explicit local path; graph reports include a report schema
+version, graph digest, report digest, and deterministic graph summary. Graph
+report validation checks the explicit report artifact and report digest, and
+graph report comparison checks that its saved graph digest and summary still
+match the current built-in fixture named in the report. Graph report-to-file
+comparison checks the saved report against an explicit caller-supplied graph JSON
+artifact.
+
+Ingest a deterministic mock perception observation sequence from an explicit
+local file and export the resulting graph/report artifacts:
+
+```bash
+python scripts/observations.py \
+  --input mock-observation-sequence.json \
+  --output-graph mock-observation-graph.json \
+  --report mock-observation-ingest-report.json
+python scripts/observations.py --validate-report mock-observation-ingest-report.json
+python scripts/observations.py --compare-report mock-observation-ingest-report.json
+```
+
+Observation ingestion reads only the explicit sequence JSON file, writes graph
+JSON only to `--output-graph`, and writes the structured ingest report only when
+`--report` is supplied. Observation ingest report validation and comparison read
+only explicit local report, sequence, and graph artifacts, then compare saved
+sequence digest, graph digest, graph-file digest, summaries, and per-step ingest
+results against a current deterministic re-ingest. Invalid or drifted sequence,
+graph, or report files return non-zero structured JSON with `valid: false` or
+`matches: false`.
 
 If the editable development install is already current, skip that first gate:
 
@@ -90,6 +130,8 @@ python scripts/verify.py --skip-install
   failure diagnostics, and SHA-256 digests for experiment records.
 - Offline evaluation report, manifest, and bundle CLI entrypoints with
   structured invalid-file diagnostics for reproducible handoffs.
+- Offline observation sequence ingest CLI that turns explicit mock perception
+  JSON artifacts into graph JSON plus stable digest/summary reports.
 - Dynamic fixture coverage for multi-room relocation, occlusion, re-observation,
   relation shifts, temporal deltas, and step-window event audits.
 - JSON graph import/export helpers, graph digests, graph summaries with
@@ -144,7 +186,9 @@ The built-in evaluation suite can also be run directly:
 python scripts/evaluate.py --name tabletop_object_location
 python scripts/evaluate.py --kind vla_pick --report evaluation-report.json
 python scripts/evaluate.py --tag qa --tag dynamic --question-type scene_delta
-python scripts/evaluate.py --list-cases --tag vla --tag error
+python scripts/evaluate.py --list-cases --tag vla --tag error --report vla-error-listing.json
+python scripts/evaluate.py --validate-listing vla-error-listing.json
+python scripts/evaluate.py --compare-listing vla-error-listing.json
 python scripts/evaluate.py --compare-report evaluation-report.json
 python scripts/evaluate.py --bundle --tag qa --tag reobserve
 python scripts/evaluate.py --validate-bundle reobserve-bundle.json
@@ -154,14 +198,20 @@ python scripts/evaluate.py --compare-manifest relations-manifest.json
 
 The CLI prints stable JSON to stdout and, when `--report` is provided, writes
 the selected report, case listing, manifest, or bundle to an explicit local
-path. `--list-cases` emits only filtered case metadata and a case count without
-running cases, which is useful for discovering focused benchmark slices.
+path. `--list-cases` emits only filtered case metadata, a case count, and a
+stable digest without running cases, which is useful for discovering focused
+benchmark slices.
+Case listing validation checks the explicit listing digest and case count, while
+case listing comparison regenerates current filtered metadata without running
+evaluation cases and reports stable case metadata drift by case name.
 Manifest output includes the filter manifest, selected scene fixtures, selected
 evaluation cases, deterministic coverage counts, and a digest without running
 cases. Manifest validation reads only the explicit local JSON file and checks
 schema version, digest, scene fixture coverage, and coverage summary
-consistency. Coverage summary validation and comparison include stable nested
-`differences` entries with paths such as `by_scene_fixture.tabletop`.
+consistency. `evaluation_manifest_digest()` recomputes the saved metadata
+fingerprint for Python handoffs. Coverage summary validation and comparison
+include stable nested `differences` entries with paths such as
+`by_scene_fixture.tabletop`.
 Manifest comparison reads the saved filters from an explicit local manifest,
 regenerates the current deterministic metadata without running cases, and
 returns a non-zero status when digest, coverage, case manifest, or fixture
@@ -186,12 +236,15 @@ suite results, compact report, coverage counts, and digest. Compact report
 metrics include selected, passed, and failed case counts, pass rate, and failure
 rate. Coverage counts are grouped by case kind, QA question type, case tag, scene
 fixture, and scene tag.
+Each bundle also carries `bundle_digest`, and `evaluation_bundle_digest()` plus
+`validate_evaluation_bundle()` recompute and validate the full bundle artifact
+fingerprint, including outer metadata such as filters.
 Suite and report breakdowns also include QA question-type summaries for direct
 intent-level triage.
 Bundle validation reads only the explicit local JSON file, recomputes
 deterministic consistency checks, and returns a non-zero status when the bundle
-does not validate. Validation checks schema version, suite digest, report
-consistency, case manifest names and suite-backed metadata, scene fixture
+does not validate. Validation checks schema version, suite digest, bundle digest,
+report consistency, case manifest names and suite-backed metadata, scene fixture
 coverage and case-backed metadata, and coverage summary consistency. Report
 consistency, case manifest metadata, scene fixture metadata, and coverage
 summary validation include stable nested `differences` entries for quick
@@ -202,6 +255,9 @@ such as `needs_reobserve.tags` when summaries or metadata drift.
 Bundle comparison reads the saved filters from an explicit local bundle, reruns
 the current deterministic suite, and returns a non-zero status when digest,
 compact report, coverage, case manifest, or fixture manifest drift is detected.
+Comparison reports both saved/current suite digests and saved/current bundle
+artifact digests, with a dedicated `bundle_digest_matches_current` check for
+handoff artifact triage.
 Compact report drift includes stable nested `differences` paths such as
 `metrics.by_tag.qa.pass_rate`. Case and fixture manifest metadata drift is keyed
 by manifest entry name for handoff triage.
@@ -224,39 +280,66 @@ with `valid: true`; invalid explicit graph files return `valid: false`, a stable
 ```python
 from dsg_spatialqa_lab import (
     compare_evaluation_bundle,
+    compare_evaluation_case_listing,
     compare_evaluation_manifest,
     compare_evaluation_report,
     compare_graph_file_to_fixture,
+    compare_graph_report,
+    compare_graph_report_to_file,
     compare_graph_to_fixture,
     evaluation_bundle,
+    evaluation_bundle_digest,
     evaluation_bundle_json,
+    evaluation_case_listing,
+    evaluation_case_listing_digest,
+    evaluation_case_listing_json,
     evaluation_manifest,
+    evaluation_manifest_digest,
     evaluation_manifest_json,
     evaluation_report,
+    evaluation_report_digest,
     evaluation_report_json,
     load_evaluation_bundle,
+    load_evaluation_case_listing,
     load_evaluation_manifest,
     load_evaluation_report,
     run_evaluation_suite,
     save_evaluation_bundle,
+    save_evaluation_case_listing,
     save_evaluation_manifest,
     save_evaluation_report,
     validate_evaluation_bundle,
+    validate_evaluation_case_listing,
     validate_evaluation_manifest,
+    validate_evaluation_report,
 )
 
 suite = run_evaluation_suite()
 print(suite["summary"])
 print(suite["digest"])
 
+case_listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+print(evaluation_case_listing_digest(case_listing))
+save_evaluation_case_listing(
+    "object-room-listing.json",
+    tags=("qa",),
+    question_types=("object_room",),
+)
+loaded_case_listing = load_evaluation_case_listing("object-room-listing.json")
+case_listing_validation = validate_evaluation_case_listing(loaded_case_listing)
+case_listing_comparison = compare_evaluation_case_listing(loaded_case_listing)
+
 report = evaluation_report(suite)
 print(evaluation_report_json(report))
+print(evaluation_report_digest(report))
 save_evaluation_report("evaluation-report.json", suite)
 loaded_report = load_evaluation_report("evaluation-report.json")
+report_validation = validate_evaluation_report(loaded_report)
 report_comparison = compare_evaluation_report(loaded_report)
 
 manifest = evaluation_manifest(tags=("qa", "relations"))
 print(evaluation_manifest_json(manifest))
+print(evaluation_manifest_digest(manifest))
 save_evaluation_manifest("relations-manifest.json", tags=("qa", "relations"))
 loaded_manifest = load_evaluation_manifest("relations-manifest.json")
 manifest_validation = validate_evaluation_manifest(loaded_manifest)
@@ -265,6 +348,7 @@ manifest_comparison = compare_evaluation_manifest(loaded_manifest)
 bundle = evaluation_bundle(tags=("qa", "reobserve"))
 print(evaluation_bundle_json(bundle))
 print(bundle["coverage"])
+print(evaluation_bundle_digest(bundle))
 save_evaluation_bundle("reobserve-bundle.json", tags=("qa", "reobserve"))
 loaded_bundle = load_evaluation_bundle("reobserve-bundle.json")
 bundle_validation = validate_evaluation_bundle(loaded_bundle)
@@ -291,19 +375,30 @@ fixture_comparison = compare_graph_file_to_fixture("tabletop-scene.json", "table
 from dsg_spatialqa_lab import (
     BBox3D,
     compare_evaluation_bundle,
+    compare_evaluation_case_listing,
     compare_evaluation_manifest,
     compare_evaluation_report,
     compare_graph_file_to_fixture,
+    compare_graph_report,
+    compare_graph_report_to_file,
     compare_graph_to_fixture,
+    compare_observation_ingest_report,
     build_relation_shift_scene,
     DynamicSceneGraph,
     EvaluationCase,
+    compare_scene_fixture_manifest,
     evaluation_bundle,
+    evaluation_bundle_digest,
     evaluation_bundle_json,
+    evaluation_case_listing,
+    evaluation_case_listing_digest,
+    evaluation_case_listing_json,
     evaluation_cases_metadata,
     evaluation_manifest,
+    evaluation_manifest_digest,
     evaluation_manifest_json,
     evaluation_report,
+    evaluation_report_digest,
     evaluation_report_json,
     GraphQuery,
     GraphTool,
@@ -315,30 +410,68 @@ from dsg_spatialqa_lab import (
     VLAAnchorPlanner,
     graph_from_json,
     graph_json_digest,
+    graph_report,
+    graph_report_digest,
+    graph_report_json,
     graph_summary,
     graph_to_json,
+    ingest_scene_observation_sequence,
     load_evaluation_bundle,
+    load_evaluation_case_listing,
     load_evaluation_manifest,
     load_evaluation_report,
+    load_graph_report,
     load_graph_json,
+    load_observation_ingest_report,
+    load_scene_observation,
+    load_scene_observation_sequence,
+    load_scene_fixture_manifest,
     list_scene_fixture_metadata,
     list_scene_fixtures,
     load_scene_fixture,
     list_evaluation_case_metadata,
     run_evaluation_cases,
     run_evaluation_suite,
+    observation_ingest_report,
+    observation_ingest_report_digest,
+    observation_ingest_report_json,
+    save_observation_ingest_report,
     save_evaluation_bundle,
+    save_evaluation_case_listing,
     save_evaluation_manifest,
     save_evaluation_report,
+    save_graph_report,
     save_graph_json,
+    save_scene_observation,
+    save_scene_observation_sequence,
+    save_scene_fixture_manifest,
+    scene_observation_from_dict,
+    scene_observation_from_json,
+    scene_observation_sequence_from_dict,
+    scene_observation_sequence_from_json,
+    scene_observation_sequence_digest,
+    scene_observation_sequence_to_dict,
+    scene_observation_sequence_to_json,
+    scene_observation_to_dict,
+    scene_observation_to_json,
     scene_fixture_manifest,
+    scene_fixture_manifest_json,
     validate_evaluation_bundle,
+    validate_evaluation_case_listing,
     validate_evaluation_manifest,
+    validate_evaluation_report,
+    validate_graph_report,
+    validate_observation_ingest_report,
+    validate_scene_fixture_manifest,
 )
 
 available_scenes = list_scene_fixtures()
 scene_manifest = list_scene_fixture_metadata()
 scene_fixture_handoff = scene_fixture_manifest(tags=("reobserve",))
+scene_fixture_payload = scene_fixture_manifest_json(scene_fixture_handoff)
+save_scene_fixture_manifest("reobserve-fixtures.json", tags=("reobserve",))
+scene_fixture_validation = validate_scene_fixture_manifest(scene_fixture_handoff)
+scene_fixture_comparison = compare_scene_fixture_manifest(scene_fixture_handoff)
 ambiguity_scene_manifest = list_scene_fixture_metadata(tags=("ambiguity",))
 reobserve_scene_manifest = list_scene_fixture_metadata(tags=("reobserve",))
 graph = load_scene_fixture("tabletop")
@@ -433,20 +566,120 @@ ingest_result = ObservationIngestor(graph).ingest(
     ),
     infer_relations=("NEAR",),
 )
+scene_observation_payload = scene_observation_to_json(
+    SceneObservation(
+        step=4,
+        agent_pose=Pose3D(0.0, 0.0, 0.0, yaw=0.0),
+        objects=(
+            ObjectObservation(
+                "mug_1",
+                "mug",
+                Pose3D(-0.4, 1.0, 0.78),
+                BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                confidence=0.95,
+                visible=True,
+            ),
+        ),
+    )
+)
+restored_scene_observation = scene_observation_from_json(scene_observation_payload)
+save_scene_observation(restored_scene_observation, "mock-observation-step4.json")
+loaded_scene_observation = load_scene_observation("mock-observation-step4.json")
+scene_observation_sequence_payload = scene_observation_sequence_to_json(
+    (loaded_scene_observation, restored_scene_observation)
+)
+restored_scene_observation_sequence = scene_observation_sequence_from_json(
+    scene_observation_sequence_payload
+)
+save_scene_observation_sequence(
+    restored_scene_observation_sequence,
+    "mock-observation-sequence.json",
+)
+loaded_scene_observation_sequence = load_scene_observation_sequence(
+    "mock-observation-sequence.json"
+)
+observation_sequence_digest = scene_observation_sequence_digest(
+    loaded_scene_observation_sequence
+)
+observation_graph, observation_ingest_results = ingest_scene_observation_sequence(
+    loaded_scene_observation_sequence,
+    source_path="mock-observation-sequence.json",
+)
+observation_ingest_report_payload = observation_ingest_report(
+    input_path="mock-observation-sequence.json",
+    graph_path="mock-observation-graph.json",
+    graph=observation_graph,
+    ingest_results=observation_ingest_results,
+    sequence_digest=observation_sequence_digest,
+)
+observation_ingest_report_payload_json = observation_ingest_report_json(
+    observation_ingest_report_payload
+)
+observation_ingest_report_payload_digest = observation_ingest_report_digest(
+    observation_ingest_report_payload
+)
+save_observation_ingest_report(
+    observation_ingest_report_payload,
+    "mock-observation-ingest-report.json",
+)
+loaded_observation_ingest_report = load_observation_ingest_report(
+    "mock-observation-ingest-report.json"
+)
+observation_ingest_report_validation = validate_observation_ingest_report(
+    loaded_observation_ingest_report
+)
+observation_ingest_report_comparison = compare_observation_ingest_report(
+    loaded_observation_ingest_report
+)
 
 payload = graph_to_json(graph)
 graph_digest = graph_json_digest(graph)
 graph_counts = graph_summary(graph)
+graph_report_payload = graph_report(
+    graph,
+    action="export_fixture",
+    graph_path="tabletop-scene.json",
+    fixture="tabletop",
+)
+graph_report_json_payload = graph_report_json(graph_report_payload)
+graph_report_payload_digest = graph_report_digest(graph_report_payload)
 restored = graph_from_json(payload)
 save_graph_json(graph, "tabletop-scene.json")
+save_graph_report(
+    graph,
+    "tabletop-report.json",
+    action="export_fixture",
+    graph_path="tabletop-scene.json",
+    fixture="tabletop",
+)
+loaded_graph_report = load_graph_report("tabletop-report.json")
+graph_report_validation = validate_graph_report(loaded_graph_report)
+graph_report_comparison = compare_graph_report(loaded_graph_report)
 restored_from_path = load_graph_json("tabletop-scene.json")
+graph_report_file_comparison = compare_graph_report_to_file(
+    loaded_graph_report,
+    "tabletop-scene.json",
+)
 graph_fixture_comparison = compare_graph_to_fixture(restored_from_path, "tabletop")
 graph_file_comparison = compare_graph_file_to_fixture("tabletop-scene.json", "tabletop")
+case_listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+case_listing_digest = evaluation_case_listing_digest(case_listing)
+case_listing_json = evaluation_case_listing_json(case_listing)
+case_listing_path = save_evaluation_case_listing(
+    "object-room-listing.json",
+    tags=("qa",),
+    question_types=("object_room",),
+)
+loaded_case_listing = load_evaluation_case_listing(case_listing_path)
+case_listing_validation = validate_evaluation_case_listing(loaded_case_listing)
+case_listing_comparison = compare_evaluation_case_listing(loaded_case_listing)
 suite = run_evaluation_suite()
 suite_digest = suite["digest"]
 suite_report = evaluation_report(suite)
+suite_report_digest = evaluation_report_digest(suite_report)
 suite_report_json = evaluation_report_json(suite_report)
 suite_manifest = evaluation_manifest(tags=("qa", "relations"))
+suite_manifest_digest = evaluation_manifest_digest(suite_manifest)
 suite_manifest_json = evaluation_manifest_json(suite_manifest)
 manifest_path = save_evaluation_manifest(
     "relations-manifest.json",
@@ -456,6 +689,7 @@ loaded_manifest = load_evaluation_manifest(manifest_path)
 manifest_validation = validate_evaluation_manifest(loaded_manifest)
 manifest_comparison = compare_evaluation_manifest(loaded_manifest)
 suite_bundle = evaluation_bundle(tags=("qa", "reobserve"))
+suite_bundle_digest = evaluation_bundle_digest(suite_bundle)
 suite_bundle_json = evaluation_bundle_json(suite_bundle)
 bundle_validation = validate_evaluation_bundle(suite_bundle)
 named_suite = run_evaluation_suite(
@@ -463,6 +697,7 @@ named_suite = run_evaluation_suite(
 )
 report_path = save_evaluation_report("evaluation-report.json", named_suite)
 loaded_report = load_evaluation_report(report_path)
+report_validation = validate_evaluation_report(loaded_report)
 report_comparison = compare_evaluation_report(loaded_report)
 bundle_path = save_evaluation_bundle("reobserve-bundle.json", tags=("qa", "reobserve"))
 loaded_bundle = load_evaluation_bundle(bundle_path)
@@ -551,7 +786,11 @@ The fixture registry currently includes `"ambiguous_mugs"`, `"ambiguous_plates"`
 with each fixture's name, description, and tags, and supports tag filters without
 loading scene graphs. `scene_fixture_manifest()` wraps that metadata in a
 standalone manifest with schema version, filters, fixture count, and a stable
-SHA-256 digest for fixture-only handoffs.
+SHA-256 digest for fixture-only handoffs. `scene_fixture_manifest_json()` and
+`save_scene_fixture_manifest()` produce the same stable JSON format used by the
+scene CLI. `load_scene_fixture_manifest()`, `validate_scene_fixture_manifest()`,
+and `compare_scene_fixture_manifest()` read, validate, and compare explicit
+local fixture manifest artifacts without loading scene graphs.
 Each call to `load_scene_fixture()` returns a fresh in-memory graph.
 The evaluation suite returns deterministic dictionaries with a top-level
 `digest` for experiment records, pass/fail summary, including stable
@@ -588,7 +827,14 @@ VLA command evidence counts, evidence-covered cases, and average evidence items
 per case, with the same grouped views for offline explainability audits.
 Compact reports also include `case_digests`, a per-case SHA-256 digest summary
 with case name, kind, question type, scene fixture, and pass status so a changed
-suite digest can be narrowed to individual deterministic cases.
+suite digest can be narrowed to individual deterministic cases. Each compact
+report also carries `report_digest`, and `evaluation_report_digest()` plus
+`validate_evaluation_report()` can recompute and validate that artifact
+fingerprint before comparison.
+Evaluation manifests expose `evaluation_manifest_digest()` for recomputing their
+saved metadata digest, while evaluation bundles expose
+`evaluation_bundle_digest()` and `bundle_digest` for validating the complete
+handoff artifact before accepting it.
 Evaluation cases can be filtered by tags, for example
 `run_evaluation_suite(tags=("qa", "dynamic"))` selects dynamic QA regression
 cases including stale next-action validity, explicit object timelines, scene
@@ -655,15 +901,20 @@ Callers can also pass temporary `EvaluationCase` objects to
 built-in registry. Custom cases may use caller-supplied `scene_loaders`, so local
 experiments can provide deterministic in-memory scenes outside the built-in
 fixture registry.
-`list_evaluation_case_metadata()` returns a deterministic manifest with each
-case's name, scene fixture, fixture description/tags when available, kind, tags,
-structured question copy, question type, baseline fixture metadata for
-stale-action cases, action target fields, relation, and expected top-level keys.
-It supports the same tag and kind filters as `list_evaluation_cases()`, and does
-not load scenes or execute QA/VLA logic. Both functions also support
-`question_types` filters for deterministic QA intent discovery. Caller-supplied
-fixture names that are not in the built-in scene registry keep
-`scene_description=None` and `scene_tags=[]`.
+`list_evaluation_case_metadata()` returns deterministic case metadata without
+loading scenes or executing QA/VLA logic. `evaluation_case_listing()` wraps that
+metadata with the applied filters, case count, and digest;
+`evaluation_case_listing_digest()` recomputes the fingerprint for filtered
+discovery handoffs. `save_evaluation_case_listing()`,
+`load_evaluation_case_listing()`, `validate_evaluation_case_listing()`, and
+`compare_evaluation_case_listing()` support explicit-path listing artifacts and
+current-code metadata drift checks. Each entry includes the case name, scene
+fixture, fixture description/tags when available, kind, tags, structured
+question copy, question type, baseline fixture metadata for stale-action cases,
+action target fields, relation, and expected top-level keys. Listing helpers
+support the same tag, kind, exact-name, and `question_types` filters for
+deterministic QA intent discovery. Caller-supplied fixture names that are not in
+the built-in scene registry keep `scene_description=None` and `scene_tags=[]`.
 Use `evaluation_cases_metadata()` for the same deterministic manifest over
 caller-supplied custom `EvaluationCase` sequences.
 For VLA pick and place-relative evaluation cases, callers may provide explicit
@@ -732,7 +983,22 @@ preserving previous relation history.
 callers provide explicit `SceneObservation.step`, optional agent pose, room/region
 nodes, object observations, and optional relation inference settings. It writes
 only in-memory graph state and never calls models, clocks, random sources, or
-network services.
+network services. `scene_observation_to_dict()`, `scene_observation_to_json()`,
+`scene_observation_from_dict()`, `scene_observation_from_json()`,
+`save_scene_observation()`, and `load_scene_observation()` provide stable JSON
+round-trips and explicit-path local files for offline mock perception handoffs.
+The `scene_observation_sequence_*` helpers provide the same stable JSON
+round-trip for ordered multi-frame observation streams, including explicit step
+lists and observation counts. `scripts/observations.py` ingests such a sequence
+into a new in-memory graph, exports graph JSON to an explicit `--output-graph`
+path, and emits a stable ingest report with per-step `IngestResult` data plus
+the input sequence digest, graph digest/summary, and report digest.
+`scene_observation_sequence_digest()`, `observation_ingest_report_digest()`,
+`save_observation_ingest_report()`, `load_observation_ingest_report()`,
+`validate_observation_ingest_report()`, and
+`compare_observation_ingest_report()` support explicit-path report validation,
+path consistency checks, digest tamper checks, and deterministic input,
+graph-file, and output drift checks.
 
 Planner results include deterministic `details` for ambiguity and replan causes,
 including same-label candidate state, expected/current pose, last-seen steps,

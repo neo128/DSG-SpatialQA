@@ -154,6 +154,245 @@ def test_graph_digest_and_summary_are_deterministic() -> None:
     }
 
 
+def test_graph_report_json_and_save_use_explicit_paths(tmp_path: Path) -> None:
+    assert hasattr(lab, "graph_report")
+    assert hasattr(lab, "graph_report_json")
+    assert hasattr(lab, "graph_report_digest")
+    assert hasattr(lab, "save_graph_report")
+    graph = build_tabletop_scene()
+    graph_path = Path("tabletop-scene.json")
+
+    report = lab.graph_report(
+        graph,
+        action="export_fixture",
+        graph_path=graph_path,
+        fixture="tabletop",
+    )
+    payload = lab.graph_report_json(report)
+    repeated_payload = lab.graph_report_json(report)
+    report_path = tmp_path / "reports" / "tabletop-report.json"
+    saved_path = lab.save_graph_report(
+        graph,
+        report_path,
+        action="export_fixture",
+        graph_path=graph_path,
+        fixture="tabletop",
+    )
+
+    expected_report = {
+        "schema_version": "dsg-spatialqa-lab.graph-report.v1",
+        "action": "export_fixture",
+        "path": str(graph_path),
+        "fixture": "tabletop",
+        "digest": graph_json_digest(graph),
+        "summary": graph_summary(graph),
+    }
+    assert report == {
+        **expected_report,
+        "report_digest": lab.graph_report_digest(expected_report),
+    }
+    assert payload == repeated_payload
+    assert payload.endswith("\n")
+    assert json.loads(payload) == report
+    assert saved_path == report_path
+    assert json.loads(report_path.read_text(encoding="utf-8")) == report
+
+
+def test_graph_report_includes_stable_report_digest_and_validates_tampering() -> None:
+    graph = load_scene_fixture("tabletop")
+    report = lab.graph_report(
+        graph,
+        action="export_fixture",
+        graph_path="tabletop-scene.json",
+        fixture="tabletop",
+    )
+    report_without_digest = {
+        key: value for key, value in report.items() if key != "report_digest"
+    }
+    expected_report_digest = hashlib.sha256(
+        json.dumps(report_without_digest, separators=(",", ":"), sort_keys=True).encode(
+            "utf-8"
+        )
+    ).hexdigest()
+
+    assert report["report_digest"] == expected_report_digest
+    assert lab.graph_report_digest(report) == expected_report_digest
+    validation = lab.validate_graph_report(report)
+    checks = {check["name"]: check for check in validation["checks"]}
+    assert validation["report_digest"] == expected_report_digest
+    assert checks["report_digest"] == {
+        "name": "report_digest",
+        "passed": True,
+        "expected": expected_report_digest,
+        "actual": expected_report_digest,
+    }
+
+    tampered_report = json.loads(lab.graph_report_json(report))
+    tampered_report["summary"]["node_count"] = 10
+
+    tampered_validation = lab.validate_graph_report(tampered_report)
+    tampered_checks = {
+        check["name"]: check for check in tampered_validation["checks"]
+    }
+    assert tampered_validation["valid"] is False
+    assert tampered_checks["report_digest"] == {
+        "name": "report_digest",
+        "passed": False,
+        "expected": lab.graph_report_digest(tampered_report),
+        "actual": expected_report_digest,
+    }
+
+
+def test_graph_report_loads_validates_and_compares_current_fixture(
+    tmp_path: Path,
+) -> None:
+    assert hasattr(lab, "load_graph_report")
+    assert hasattr(lab, "validate_graph_report")
+    assert hasattr(lab, "compare_graph_report")
+    graph = load_scene_fixture("tabletop")
+    report = lab.graph_report(graph, graph_path="tabletop-scene.json", fixture="tabletop")
+    report_path = tmp_path / "tabletop-report.json"
+    report_path.write_text(lab.graph_report_json(report), encoding="utf-8")
+
+    loaded_report = lab.load_graph_report(report_path)
+    validation = lab.validate_graph_report(loaded_report)
+    comparison = lab.compare_graph_report(loaded_report)
+
+    assert loaded_report == report
+    assert validation == {
+        "valid": True,
+        "schema_version": "dsg-spatialqa-lab.graph-report.v1",
+        "digest": report["digest"],
+        "report_digest": report["report_digest"],
+        "checks": [
+            {
+                "name": "schema_version",
+                "passed": True,
+                "expected": "dsg-spatialqa-lab.graph-report.v1",
+                "actual": "dsg-spatialqa-lab.graph-report.v1",
+            },
+            {
+                "name": "digest_format",
+                "passed": True,
+                "expected": "64 lowercase sha256 hex characters",
+                "actual": report["digest"],
+            },
+            {
+                "name": "report_digest",
+                "passed": True,
+                "expected": report["report_digest"],
+                "actual": report["report_digest"],
+            },
+            {
+                "name": "summary_schema_version",
+                "passed": True,
+                "expected": 1,
+                "actual": 1,
+            },
+        ],
+    }
+    assert comparison == {
+        "matches": True,
+        "fixture": "tabletop",
+        "saved_digest": report["digest"],
+        "current_digest": report["digest"],
+        "checks": [
+            {"name": "saved_report_valid", "passed": True},
+            {
+                "name": "graph_digest_matches_current",
+                "passed": True,
+                "expected": report["digest"],
+                "actual": report["digest"],
+            },
+            {
+                "name": "summary_matches_current",
+                "passed": True,
+                "expected": graph_summary(graph),
+                "actual": graph_summary(graph),
+            },
+        ],
+    }
+
+
+def test_graph_report_compare_reports_summary_drift() -> None:
+    assert hasattr(lab, "compare_graph_report")
+    graph = load_scene_fixture("tabletop")
+    report = lab.graph_report(graph, graph_path="tabletop-scene.json", fixture="tabletop")
+    drifted_report = json.loads(lab.graph_report_json(report))
+    drifted_report["summary"]["node_count"] = 10
+
+    comparison = lab.compare_graph_report(drifted_report)
+
+    summary_check = next(
+        check for check in comparison["checks"] if check["name"] == "summary_matches_current"
+    )
+    assert comparison["matches"] is False
+    assert comparison["saved_digest"] == report["digest"]
+    assert comparison["current_digest"] == report["digest"]
+    assert summary_check["passed"] is False
+    assert summary_check["differences"] == [
+        {"path": "node_count", "expected": 10, "actual": 9},
+    ]
+
+
+def test_graph_report_compares_against_explicit_graph_file(tmp_path: Path) -> None:
+    assert hasattr(lab, "compare_graph_report_to_file")
+    graph = load_scene_fixture("tabletop")
+    graph_path = tmp_path / "tabletop-scene.json"
+    save_graph_json(graph, graph_path)
+    report = lab.graph_report(graph, graph_path=graph_path, fixture="tabletop")
+
+    comparison = lab.compare_graph_report_to_file(report, graph_path)
+
+    assert comparison == {
+        "matches": True,
+        "path": str(graph_path),
+        "saved_digest": report["digest"],
+        "graph_digest": report["digest"],
+        "checks": [
+            {"name": "saved_report_valid", "passed": True},
+            {
+                "name": "graph_digest_matches_report",
+                "passed": True,
+                "expected": report["digest"],
+                "actual": report["digest"],
+            },
+            {
+                "name": "summary_matches_report",
+                "passed": True,
+                "expected": graph_summary(graph),
+                "actual": graph_summary(graph),
+            },
+        ],
+    }
+
+
+def test_graph_report_to_file_compare_reports_graph_json_drift(tmp_path: Path) -> None:
+    assert hasattr(lab, "compare_graph_report_to_file")
+    graph = load_scene_fixture("tabletop")
+    report = lab.graph_report(graph, graph_path="tabletop-scene.json", fixture="tabletop")
+    drifted_graph = load_scene_fixture("tabletop")
+    drifted_graph.add_region("drift_region", "Drift Region", step=9)
+    graph_path = tmp_path / "tabletop-drift.json"
+    save_graph_json(drifted_graph, graph_path)
+
+    comparison = lab.compare_graph_report_to_file(report, graph_path)
+
+    summary_check = next(
+        check for check in comparison["checks"] if check["name"] == "summary_matches_report"
+    )
+    assert comparison["matches"] is False
+    assert comparison["path"] == str(graph_path)
+    assert comparison["saved_digest"] == report["digest"]
+    assert comparison["graph_digest"] == graph_json_digest(drifted_graph)
+    assert comparison["checks"][1]["passed"] is False
+    assert summary_check["passed"] is False
+    assert summary_check["differences"] == [
+        {"path": "by_node_type.region", "expected": None, "actual": 1},
+        {"path": "node_count", "expected": 9, "actual": 10},
+    ]
+
+
 def test_graph_summary_reports_visibility_and_reobserve_counts() -> None:
     summary = graph_summary(load_scene_fixture("needs_reobserve"))
 
@@ -386,6 +625,150 @@ def test_scene_fixture_manifest_includes_schema_filters_and_digest() -> None:
         **payload_without_digest,
         "digest": expected_digest,
     }
+
+
+def test_scene_fixture_manifest_json_is_stable_and_savable(tmp_path: Path) -> None:
+    assert hasattr(lab, "scene_fixture_manifest_json")
+    assert hasattr(lab, "save_scene_fixture_manifest")
+    manifest = lab.scene_fixture_manifest(tags=("multi_room",))
+
+    payload = lab.scene_fixture_manifest_json(manifest)
+    repeated_payload = lab.scene_fixture_manifest_json(manifest)
+    manifest_path = tmp_path / "manifests" / "multi-room-fixtures.json"
+    saved_path = lab.save_scene_fixture_manifest(manifest_path, tags=("multi_room",))
+
+    assert payload == repeated_payload
+    assert payload.endswith("\n")
+    assert json.loads(payload) == manifest
+    assert saved_path == manifest_path
+    assert json.loads(manifest_path.read_text(encoding="utf-8")) == manifest
+
+
+def test_scene_fixture_manifest_loads_from_explicit_file_and_validates(
+    tmp_path: Path,
+) -> None:
+    assert hasattr(lab, "load_scene_fixture_manifest")
+    assert hasattr(lab, "validate_scene_fixture_manifest")
+    manifest = lab.scene_fixture_manifest(tags=("multi_room",))
+    manifest_path = tmp_path / "multi-room-fixtures.json"
+    manifest_path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+    loaded_manifest = lab.load_scene_fixture_manifest(manifest_path)
+    validation = lab.validate_scene_fixture_manifest(loaded_manifest)
+
+    assert loaded_manifest == manifest
+    assert validation == {
+        "valid": True,
+        "schema_version": "dsg-spatialqa-lab.scene-fixture-manifest.v1",
+        "digest": manifest["digest"],
+        "checks": [
+            {
+                "name": "schema_version",
+                "passed": True,
+                "expected": "dsg-spatialqa-lab.scene-fixture-manifest.v1",
+                "actual": "dsg-spatialqa-lab.scene-fixture-manifest.v1",
+            },
+            {
+                "name": "manifest_digest",
+                "passed": True,
+                "expected": manifest["digest"],
+                "actual": manifest["digest"],
+            },
+            {
+                "name": "fixture_count_matches_manifest",
+                "passed": True,
+                "expected": 1,
+                "actual": 1,
+            },
+        ],
+    }
+
+
+def test_scene_fixture_manifest_validation_reports_tampered_digest() -> None:
+    assert hasattr(lab, "validate_scene_fixture_manifest")
+    manifest = lab.scene_fixture_manifest(tags=("multi_room",))
+    tampered_manifest = json.loads(json.dumps(manifest))
+    tampered_manifest["digest"] = "0" * 64
+
+    validation = lab.validate_scene_fixture_manifest(tampered_manifest)
+
+    assert validation["valid"] is False
+    assert validation["digest"] == "0" * 64
+    assert validation["checks"][1] == {
+        "name": "manifest_digest",
+        "passed": False,
+        "expected": manifest["digest"],
+        "actual": "0" * 64,
+    }
+
+
+def test_scene_fixture_manifest_compare_matches_current_metadata() -> None:
+    assert hasattr(lab, "compare_scene_fixture_manifest")
+    manifest = lab.scene_fixture_manifest(tags=("multi_room",))
+
+    comparison = lab.compare_scene_fixture_manifest(manifest)
+
+    assert comparison == {
+        "matches": True,
+        "filters": {
+            "tags": ["multi_room"],
+        },
+        "saved_digest": manifest["digest"],
+        "current_digest": manifest["digest"],
+        "checks": [
+            {"name": "saved_manifest_valid", "passed": True},
+            {
+                "name": "manifest_digest_matches_current",
+                "passed": True,
+                "expected": manifest["digest"],
+                "actual": manifest["digest"],
+            },
+            {
+                "name": "fixture_manifest_matches_current",
+                "passed": True,
+                "expected": ["multi_room_rearrangement"],
+                "actual": ["multi_room_rearrangement"],
+            },
+        ],
+    }
+
+
+def test_scene_fixture_manifest_compare_reports_metadata_drift() -> None:
+    assert hasattr(lab, "compare_scene_fixture_manifest")
+    manifest = lab.scene_fixture_manifest(tags=("multi_room",))
+    drifted_manifest = json.loads(json.dumps(manifest))
+    drifted_manifest["scene_fixtures"][0]["tags"] = [
+        *manifest["scene_fixtures"][0]["tags"],
+        "tampered",
+    ]
+
+    comparison = lab.compare_scene_fixture_manifest(drifted_manifest)
+
+    fixture_check = next(
+        check
+        for check in comparison["checks"]
+        if check["name"] == "fixture_manifest_matches_current"
+    )
+    assert comparison["matches"] is False
+    assert comparison["filters"] == {"tags": ["multi_room"]}
+    assert comparison["saved_digest"] == manifest["digest"]
+    assert comparison["current_digest"] == manifest["digest"]
+    assert comparison["checks"][0] == {"name": "saved_manifest_valid", "passed": False}
+    assert fixture_check["passed"] is False
+    assert fixture_check["differences"] == [
+        {
+            "path": "multi_room_rearrangement.tags",
+            "expected": [
+                "dynamic",
+                "multi_room",
+                "move",
+                "occlusion",
+                "reobserve",
+                "tampered",
+            ],
+            "actual": ["dynamic", "multi_room", "move", "occlusion", "reobserve"],
+        }
+    ]
 
 
 def test_needs_reobserve_fixture_supports_qa_regression() -> None:
