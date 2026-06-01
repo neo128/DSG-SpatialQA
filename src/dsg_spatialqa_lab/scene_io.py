@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from typing import Any, cast
 
-from dsg_spatialqa_lab.memory import DynamicSceneGraph, VALID_NODE_TYPES
+from dsg_spatialqa_lab.memory import CONTAINMENT_RELATIONS, DynamicSceneGraph, VALID_NODE_TYPES
 from dsg_spatialqa_lab.schema import (
     AgentPoseState,
     BBox3D,
@@ -112,6 +112,8 @@ def graph_json_digest(graph: DynamicSceneGraph) -> str:
 
 def graph_summary(graph: DynamicSceneGraph) -> dict[str, Any]:
     object_states = list(graph.object_states.values())
+    current_locations = _current_object_locations(graph)
+    current_rooms = _current_object_rooms(graph)
     return {
         "schema_version": SCHEMA_VERSION,
         "node_count": len(graph.nodes),
@@ -136,9 +138,13 @@ def graph_summary(graph: DynamicSceneGraph) -> dict[str, Any]:
             for state in object_states
             if not state.visible and state.confidence < SUMMARY_LOW_CONFIDENCE_THRESHOLD
         ),
+        "unlocated_object_count": len(graph.object_states) - len(current_locations),
+        "unroomed_object_count": len(graph.object_states) - len(current_rooms),
         "by_node_type": _sorted_counts(node.type for node in graph.nodes.values()),
         "by_edge_relation": _sorted_counts(edge.relation for edge in graph.edges),
         "by_object_label": _sorted_counts(state.label for state in object_states),
+        "by_current_location": _sorted_counts(current_locations.values()),
+        "by_current_room": _sorted_counts(current_rooms.values()),
     }
 
 
@@ -201,6 +207,58 @@ def _sorted_counts(values: Iterable[str]) -> dict[str, int]:
         key = str(value)
         counts[key] = counts.get(key, 0) + 1
     return {key: counts[key] for key in sorted(counts)}
+
+
+def _current_object_locations(graph: DynamicSceneGraph) -> dict[str, str]:
+    locations = {
+        object_id: edge
+        for object_id, edge in _latest_containment_edges(graph).items()
+        if object_id in graph.object_states
+    }
+    return {
+        object_id: locations[object_id].dst
+        for object_id in sorted(locations)
+    }
+
+
+def _current_object_rooms(graph: DynamicSceneGraph) -> dict[str, str]:
+    containment_edges = _latest_containment_edges(graph)
+    rooms: dict[str, str] = {}
+    for object_id in sorted(graph.object_states):
+        room = _current_room_for_node(graph, object_id, containment_edges)
+        if room is not None:
+            rooms[object_id] = room
+    return rooms
+
+
+def _current_room_for_node(
+    graph: DynamicSceneGraph,
+    node_id: str,
+    containment_edges: Mapping[str, Edge],
+) -> str | None:
+    visited: set[str] = set()
+    current_id = node_id
+    while current_id not in visited:
+        visited.add(current_id)
+        edge = containment_edges.get(current_id)
+        if edge is None:
+            return None
+        destination = graph.nodes.get(edge.dst)
+        if destination is not None and destination.type == "room":
+            return edge.dst
+        current_id = edge.dst
+    return None
+
+
+def _latest_containment_edges(graph: DynamicSceneGraph) -> dict[str, Edge]:
+    locations: dict[str, Edge] = {}
+    for edge in graph.edges:
+        if edge.relation not in CONTAINMENT_RELATIONS:
+            continue
+        current = locations.get(edge.src)
+        if current is None or _edge_sort_key(current) < _edge_sort_key(edge):
+            locations[edge.src] = edge
+    return locations
 
 
 def _nested_differences(

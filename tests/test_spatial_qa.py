@@ -5,6 +5,7 @@ from dsg_spatialqa_lab import (
     Pose3D,
     SpatialQAEngine,
     VLAAnchorPlanner,
+    load_scene_fixture,
 )
 
 
@@ -192,6 +193,53 @@ def test_qa_answers_object_status_with_reobserve_signal() -> None:
     assert response.evidence_edges == ["mug_1-STATE_CHANGED-state:mug_1:3-3"]
     assert response.confidence == 0.2
     assert response.needs_reobserve is True
+
+
+def test_qa_answers_object_room_with_containment_evidence() -> None:
+    qa = SpatialQAEngine(GraphTool(load_scene_fixture("multi_room_rearrangement")))
+
+    response = qa.answer({"type": "object_room", "object_id": "cereal_box_1"})
+
+    assert response.error is None
+    assert response.answer == {
+        "object_id": "cereal_box_1",
+        "room_id": "pantry",
+        "room_label": "Pantry",
+        "path": [
+            {
+                "src": "cereal_box_1",
+                "relation": "IN_REGION",
+                "dst": "pantry_shelf",
+                "step": 2,
+            },
+            {
+                "src": "pantry_shelf",
+                "relation": "IN_ROOM",
+                "dst": "pantry",
+                "step": 1,
+            },
+        ],
+    }
+    assert response.evidence_nodes == ["cereal_box_1", "pantry_shelf", "pantry"]
+    assert response.evidence_edges == [
+        "cereal_box_1-IN_REGION-pantry_shelf-2",
+        "pantry_shelf-IN_ROOM-pantry-1",
+    ]
+    assert response.confidence == 0.92
+    assert response.needs_reobserve is False
+
+
+def test_qa_object_room_returns_none_when_room_cannot_be_resolved() -> None:
+    qa = SpatialQAEngine(GraphTool(build_scene_with_history()))
+
+    response = qa.answer({"type": "object_room", "object_id": "mug_1"})
+
+    assert response.error is None
+    assert response.answer == {"object_id": "mug_1", "room": None}
+    assert response.evidence_nodes == ["mug_1"]
+    assert response.evidence_edges == []
+    assert response.confidence == 0.0
+    assert response.needs_reobserve is False
 
 
 def test_qa_nearest_object_rejects_invalid_candidates() -> None:

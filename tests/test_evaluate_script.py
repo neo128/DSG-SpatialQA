@@ -17,6 +17,7 @@ from dsg_spatialqa_lab import (
     evaluation_manifest_json,
     evaluation_report,
     evaluation_report_json,
+    list_evaluation_case_metadata,
     run_evaluation_suite,
 )
 
@@ -160,6 +161,35 @@ def test_evaluate_cli_writes_report_to_explicit_path(
         "tabletop_missing_object_pick_error",
         "tabletop_mug_pick",
     ]
+
+
+def test_evaluate_cli_lists_case_metadata_without_suite_execution(
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_evaluate_script()
+    main = cast(MainFn, getattr(module, "main"))
+
+    assert main(["--list-cases", "--tag", "qa", "--question-type", "object_room"]) == 0
+
+    listing = json.loads(capsys.readouterr().out)
+    assert listing == {
+        "filters": {
+            "names": [],
+            "tags": ["qa"],
+            "kinds": [],
+            "question_types": ["object_room"],
+        },
+        "case_count": 1,
+        "evaluation_cases": list(
+            list_evaluation_case_metadata(
+                tags=("qa",),
+                question_types=("object_room",),
+            )
+        ),
+    }
+    assert "suite" not in listing
+    assert "report" not in listing
+    assert "digest" not in listing
 
 
 def test_evaluate_cli_filters_vla_error_cases(capsys: CaptureFixture[str]) -> None:

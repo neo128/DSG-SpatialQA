@@ -52,6 +52,7 @@ def test_evaluation_case_registry_is_deterministic() -> None:
         "moved_mug_stale_pick",
         "moved_mug_stale_place_plate_right_of_mug",
         "moved_mug_world_state",
+        "multi_room_rearrangement_object_room_cereal_box",
         "multi_room_rearrangement_recent_events",
         "multi_room_rearrangement_reobserve_targets",
         "multi_room_rearrangement_scene_delta",
@@ -87,6 +88,7 @@ def test_evaluation_case_registry_is_deterministic() -> None:
         "moved_mug_scene_delta",
         "moved_mug_scene_delta_reversed_window_error",
         "moved_mug_world_state",
+        "multi_room_rearrangement_object_room_cereal_box",
         "multi_room_rearrangement_recent_events",
         "multi_room_rearrangement_scene_delta",
         "relation_shift_relation_timeline",
@@ -152,6 +154,9 @@ def test_evaluation_case_registry_is_deterministic() -> None:
     assert list_evaluation_cases(question_types=("object_location",)) == (
         "tabletop_missing_object_location_error",
         "tabletop_object_location",
+    )
+    assert list_evaluation_cases(question_types=("object_room",)) == (
+        "multi_room_rearrangement_object_room_cereal_box",
     )
     assert list_evaluation_cases(question_types=("relative_relation",)) == (
         "tabletop_relative_relation_mug_left_of_plate",
@@ -1028,6 +1033,16 @@ def test_evaluation_case_metadata_filters_by_question_type() -> None:
         "moved_mug_next_action_validity"
     ]
     assert action_manifest[0]["question"] == {"type": "next_action_validity"}
+
+    room_manifest = list_evaluation_case_metadata(question_types=("object_room",))
+
+    assert [item["name"] for item in room_manifest] == [
+        "multi_room_rearrangement_object_room_cereal_box"
+    ]
+    assert room_manifest[0]["question"] == {
+        "type": "object_room",
+        "object_id": "cereal_box_1",
+    }
 
 
 def test_evaluation_case_metadata_filters_by_explicit_names_in_call_order() -> None:
@@ -2024,8 +2039,8 @@ def test_run_evaluation_suite_filters_by_tags() -> None:
     suite = run_evaluation_suite(tags=("qa", "dynamic"))
 
     assert suite["summary"] == {
-        "total": 9,
-        "passed": 9,
+        "total": 10,
+        "passed": 10,
         "failed": 0,
         "failed_cases": [],
         "selected_cases": [
@@ -2035,6 +2050,7 @@ def test_run_evaluation_suite_filters_by_tags() -> None:
             "moved_mug_scene_delta",
             "moved_mug_scene_delta_reversed_window_error",
             "moved_mug_world_state",
+            "multi_room_rearrangement_object_room_cereal_box",
             "multi_room_rearrangement_recent_events",
             "multi_room_rearrangement_scene_delta",
             "relation_shift_relation_timeline",
@@ -2047,6 +2063,7 @@ def test_run_evaluation_suite_filters_by_tags() -> None:
         "moved_mug_scene_delta",
         "moved_mug_scene_delta_reversed_window_error",
         "moved_mug_world_state",
+        "multi_room_rearrangement_object_room_cereal_box",
         "multi_room_rearrangement_recent_events",
         "multi_room_rearrangement_scene_delta",
         "relation_shift_relation_timeline",
@@ -2136,6 +2153,17 @@ def test_run_evaluation_suite_filters_by_question_type() -> None:
     assert [result["actual"]["answer"]["nearest_object"] for result in suite["results"]] == [
         "plate_1"
     ]
+
+    room_suite = run_evaluation_suite(question_types=("object_room",))
+
+    assert room_suite["summary"] == {
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "failed_cases": [],
+        "selected_cases": ["multi_room_rearrangement_object_room_cereal_box"],
+    }
+    assert room_suite["results"][0]["actual"]["answer"]["room_id"] == "pantry"
 
 
 def test_run_evaluation_suite_filters_case_names_by_tags_and_kinds() -> None:
@@ -2610,6 +2638,19 @@ def test_evaluation_report_summarizes_metrics_and_failure_reasons() -> None:
         expected={"answer": {"visible": False}, "error": None},
     )
     suite = run_evaluation_cases((passing_case, failing_case), tags=("qa", "report"))
+    expected_case_digests = [
+        {
+            "case": result["case"],
+            "kind": result["kind"],
+            "question_type": result["question_type"],
+            "scene_fixture": result["scene_fixture"],
+            "passed": result["passed"],
+            "digest": hashlib.sha256(
+                json.dumps(result, sort_keys=True, separators=(",", ":")).encode("utf-8")
+            ).hexdigest(),
+        }
+        for result in suite["results"]
+    ]
 
     report = evaluation_report(suite)
 
@@ -2673,6 +2714,85 @@ def test_evaluation_report_summarizes_metrics_and_failure_reasons() -> None:
                 },
             },
         },
+        "evidence_metrics": {
+            "case_count": 2,
+            "cases_with_evidence_count": 2,
+            "cases_without_evidence_count": 0,
+            "evidence_node_count": 3,
+            "evidence_edge_count": 3,
+            "command_evidence_count": 0,
+            "total_evidence_item_count": 6,
+            "average_evidence_item_count": 3.0,
+            "by_kind": {
+                "qa": {
+                    "case_count": 2,
+                    "cases_with_evidence_count": 2,
+                    "cases_without_evidence_count": 0,
+                    "evidence_node_count": 3,
+                    "evidence_edge_count": 3,
+                    "command_evidence_count": 0,
+                    "total_evidence_item_count": 6,
+                    "average_evidence_item_count": 3.0,
+                }
+            },
+            "by_question_type": {
+                "object_location": {
+                    "case_count": 1,
+                    "cases_with_evidence_count": 1,
+                    "cases_without_evidence_count": 0,
+                    "evidence_node_count": 2,
+                    "evidence_edge_count": 2,
+                    "command_evidence_count": 0,
+                    "total_evidence_item_count": 4,
+                    "average_evidence_item_count": 4.0,
+                },
+                "object_status": {
+                    "case_count": 1,
+                    "cases_with_evidence_count": 1,
+                    "cases_without_evidence_count": 0,
+                    "evidence_node_count": 1,
+                    "evidence_edge_count": 1,
+                    "command_evidence_count": 0,
+                    "total_evidence_item_count": 2,
+                    "average_evidence_item_count": 2.0,
+                },
+            },
+            "by_scene_fixture": {
+                "tabletop": {
+                    "case_count": 2,
+                    "cases_with_evidence_count": 2,
+                    "cases_without_evidence_count": 0,
+                    "evidence_node_count": 3,
+                    "evidence_edge_count": 3,
+                    "command_evidence_count": 0,
+                    "total_evidence_item_count": 6,
+                    "average_evidence_item_count": 3.0,
+                }
+            },
+            "by_tag": {
+                "qa": {
+                    "case_count": 2,
+                    "cases_with_evidence_count": 2,
+                    "cases_without_evidence_count": 0,
+                    "evidence_node_count": 3,
+                    "evidence_edge_count": 3,
+                    "command_evidence_count": 0,
+                    "total_evidence_item_count": 6,
+                    "average_evidence_item_count": 3.0,
+                },
+                "report": {
+                    "case_count": 2,
+                    "cases_with_evidence_count": 2,
+                    "cases_without_evidence_count": 0,
+                    "evidence_node_count": 3,
+                    "evidence_edge_count": 3,
+                    "command_evidence_count": 0,
+                    "total_evidence_item_count": 6,
+                    "average_evidence_item_count": 3.0,
+                },
+            },
+        },
+        "case_digests": expected_case_digests,
         "failed_cases": [
             {
                 "case": "custom_bad_expectation",
@@ -2825,6 +2945,18 @@ def test_evaluation_report_loads_from_explicit_file_and_compares_current_run(
                 "passed": True,
                 "expected": report["metrics"],
                 "actual": report["metrics"],
+            },
+            {
+                "name": "evidence_metrics_match_current",
+                "passed": True,
+                "expected": report["evidence_metrics"],
+                "actual": report["evidence_metrics"],
+            },
+            {
+                "name": "case_digests_match_current",
+                "passed": True,
+                "expected": report["case_digests"],
+                "actual": report["case_digests"],
             },
             {
                 "name": "failed_cases_match_current",
@@ -2999,6 +3131,56 @@ def test_evaluation_report_compare_reports_metric_path_drift() -> None:
             "expected": 0.5,
             "actual": 1.0,
         },
+    ]
+
+
+def test_evaluation_report_compare_reports_evidence_metric_path_drift() -> None:
+    report = evaluation_report(run_evaluation_suite(names=("tabletop_object_location",)))
+    drifted_report = json.loads(evaluation_report_json(report))
+    drifted_report["evidence_metrics"]["by_question_type"]["object_location"][
+        "evidence_edge_count"
+    ] = 99
+
+    comparison = compare_evaluation_report(drifted_report)
+
+    evidence_check = next(
+        check
+        for check in comparison["checks"]
+        if check["name"] == "evidence_metrics_match_current"
+    )
+    assert comparison["matches"] is False
+    assert [
+        check["name"] for check in comparison["checks"] if check["passed"] is False
+    ] == ["evidence_metrics_match_current"]
+    assert evidence_check["differences"] == [
+        {
+            "path": "by_question_type.object_location.evidence_edge_count",
+            "expected": 99,
+            "actual": 2,
+        }
+    ]
+
+
+def test_evaluation_report_compare_reports_case_digest_drift() -> None:
+    report = evaluation_report(run_evaluation_suite(names=("tabletop_object_location",)))
+    drifted_report = json.loads(evaluation_report_json(report))
+    drifted_report["case_digests"][0]["digest"] = "0" * 64
+
+    comparison = compare_evaluation_report(drifted_report)
+
+    digest_check = next(
+        check for check in comparison["checks"] if check["name"] == "case_digests_match_current"
+    )
+    assert comparison["matches"] is False
+    assert [
+        check["name"] for check in comparison["checks"] if check["passed"] is False
+    ] == ["case_digests_match_current"]
+    assert digest_check["differences"] == [
+        {
+            "path": "tabletop_object_location.digest",
+            "expected": "0" * 64,
+            "actual": report["case_digests"][0]["digest"],
+        }
     ]
 
 

@@ -13,6 +13,7 @@ from dsg_spatialqa_lab import (
     load_graph_json,
     load_scene_fixture,
     save_graph_json,
+    scene_fixture_manifest,
 )
 
 
@@ -27,7 +28,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        help="Explicit local path where exported scene graph JSON should be written.",
+        help=(
+            "Explicit local path where exported scene graph JSON or fixture metadata JSON "
+            "should be written."
+        ),
     )
     parser.add_argument(
         "--validate",
@@ -43,7 +47,28 @@ def main(argv: list[str] | None = None) -> int:
         "--compare-fixture",
         help="Built-in scene fixture name to compare with --input.",
     )
+    parser.add_argument(
+        "--list-fixtures",
+        action="store_true",
+        help="Emit filtered built-in scene fixture metadata without loading graphs.",
+    )
+    parser.add_argument(
+        "--tag",
+        action="append",
+        dest="tags",
+        help="Require a built-in scene fixture tag. May be repeated.",
+    )
     args = parser.parse_args(argv)
+
+    if args.list_fixtures:
+        tags = tuple(args.tags or ())
+        payload = scene_fixture_manifest(tags=tags)
+        payload_json = json.dumps(payload, indent=2, sort_keys=True) + "\n"
+        if args.output is not None:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(payload_json, encoding="utf-8")
+        print(payload_json, end="")
+        return 0
 
     if args.compare_fixture is not None:
         if args.input is None:

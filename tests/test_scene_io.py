@@ -1,7 +1,10 @@
+import hashlib
+import json
 from pathlib import Path
 
 import pytest
 
+import dsg_spatialqa_lab as lab
 from dsg_spatialqa_lab import (
     GraphTool,
     SpatialQAEngine,
@@ -124,6 +127,8 @@ def test_graph_digest_and_summary_are_deterministic() -> None:
         "hidden_object_count": 0,
         "low_confidence_object_count": 0,
         "reobserve_candidate_count": 0,
+        "unlocated_object_count": 2,
+        "unroomed_object_count": 3,
         "by_node_type": {
             "agent": 1,
             "object": 3,
@@ -142,6 +147,10 @@ def test_graph_digest_and_summary_are_deterministic() -> None:
             "plate": 1,
             "table": 1,
         },
+        "by_current_location": {
+            "table_1": 1,
+        },
+        "by_current_room": {},
     }
 
 
@@ -160,6 +169,26 @@ def test_graph_summary_reports_visibility_and_reobserve_counts() -> None:
         "spoon": 1,
         "table": 1,
     }
+
+
+def test_graph_summary_reports_current_location_counts() -> None:
+    summary = graph_summary(load_scene_fixture("multi_room_rearrangement"))
+
+    assert summary["by_current_location"] == {
+        "pantry_shelf": 1,
+        "prep_counter": 2,
+    }
+    assert summary["unlocated_object_count"] == 0
+
+
+def test_graph_summary_reports_current_room_counts() -> None:
+    summary = graph_summary(load_scene_fixture("multi_room_rearrangement"))
+
+    assert summary["by_current_room"] == {
+        "kitchen": 2,
+        "pantry": 1,
+    }
+    assert summary["unroomed_object_count"] == 0
 
 
 def test_compare_graph_to_fixture_accepts_current_fixture_graph() -> None:
@@ -317,6 +346,46 @@ def test_scene_fixture_metadata_manifest_returns_tag_copies() -> None:
         "tabletop",
         "reobserve",
     ]
+
+
+def test_scene_fixture_manifest_includes_schema_filters_and_digest() -> None:
+    assert hasattr(lab, "scene_fixture_manifest")
+
+    payload_without_digest = {
+        "schema_version": "dsg-spatialqa-lab.scene-fixture-manifest.v1",
+        "filters": {
+            "tags": ["reobserve"],
+        },
+        "fixture_count": 2,
+        "scene_fixtures": [
+            {
+                "name": "multi_room_rearrangement",
+                "description": (
+                    "Dynamic kitchen-to-pantry scene with relocated cereal and an occluded fork."
+                ),
+                "tags": ["dynamic", "multi_room", "move", "occlusion", "reobserve"],
+            },
+            {
+                "name": "needs_reobserve",
+                "description": (
+                    "Tabletop scene with one invisible low-confidence spoon requiring re-observation."
+                ),
+                "tags": ["static", "tabletop", "reobserve"],
+            },
+        ],
+    }
+    expected_digest = hashlib.sha256(
+        json.dumps(
+            payload_without_digest,
+            separators=(",", ":"),
+            sort_keys=True,
+        ).encode("utf-8")
+    ).hexdigest()
+
+    assert lab.scene_fixture_manifest(tags=("reobserve",)) == {
+        **payload_without_digest,
+        "digest": expected_digest,
+    }
 
 
 def test_needs_reobserve_fixture_supports_qa_regression() -> None:

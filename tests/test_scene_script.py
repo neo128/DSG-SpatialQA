@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -36,6 +37,35 @@ def load_scene_script() -> ModuleType:
     return module
 
 
+def expected_multi_room_fixture_manifest() -> dict[str, object]:
+    payload_without_digest: dict[str, object] = {
+        "schema_version": "dsg-spatialqa-lab.scene-fixture-manifest.v1",
+        "filters": {
+            "tags": ["multi_room"],
+        },
+        "fixture_count": 1,
+        "scene_fixtures": [
+            {
+                "name": "multi_room_rearrangement",
+                "description": (
+                    "Dynamic kitchen-to-pantry scene with relocated cereal and an occluded fork."
+                ),
+                "tags": ["dynamic", "multi_room", "move", "occlusion", "reobserve"],
+            },
+        ],
+    }
+    return {
+        **payload_without_digest,
+        "digest": hashlib.sha256(
+            json.dumps(
+                payload_without_digest,
+                separators=(",", ":"),
+                sort_keys=True,
+            ).encode("utf-8")
+        ).hexdigest(),
+    }
+
+
 def test_scene_cli_exports_fixture_to_explicit_graph_json(
     tmp_path: Path,
     capsys: CaptureFixture[str],
@@ -65,6 +95,8 @@ def test_scene_cli_exports_fixture_to_explicit_graph_json(
             "hidden_object_count": 0,
             "low_confidence_object_count": 0,
             "reobserve_candidate_count": 0,
+            "unlocated_object_count": 2,
+            "unroomed_object_count": 3,
             "by_node_type": {
                 "agent": 1,
                 "object": 3,
@@ -83,6 +115,10 @@ def test_scene_cli_exports_fixture_to_explicit_graph_json(
                 "plate": 1,
                 "table": 1,
             },
+            "by_current_location": {
+                "table_1": 1,
+            },
+            "by_current_room": {},
         },
     }
     assert graph_json_digest(exported_graph) == report["digest"]
@@ -130,6 +166,48 @@ def test_scene_cli_reports_invalid_graph_json_for_validation(
         "valid": False,
         "error": "Unsupported scene schema version: 999",
     }
+
+
+def test_scene_cli_lists_filtered_fixture_metadata_without_loading_graphs(
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_scene_script()
+    main = cast(MainFn, getattr(module, "main"))
+
+    def fail_load_scene_fixture(name: str) -> object:
+        raise AssertionError(f"unexpected graph load for {name}")
+
+    setattr(module, "load_scene_fixture", fail_load_scene_fixture)
+
+    assert main(["--list-fixtures", "--tag", "multi_room"]) == 0
+
+    assert json.loads(capsys.readouterr().out) == expected_multi_room_fixture_manifest()
+
+
+def test_scene_cli_writes_filtered_fixture_metadata_to_explicit_output(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_scene_script()
+    main = cast(MainFn, getattr(module, "main"))
+    manifest_path = tmp_path / "manifests" / "multi-room-fixtures.json"
+
+    assert (
+        main(
+            [
+                "--list-fixtures",
+                "--tag",
+                "multi_room",
+                "--output",
+                str(manifest_path),
+            ]
+        )
+        == 0
+    )
+
+    expected = expected_multi_room_fixture_manifest()
+    assert json.loads(manifest_path.read_text(encoding="utf-8")) == expected
+    assert json.loads(capsys.readouterr().out) == expected
 
 
 def test_scene_cli_compares_explicit_graph_json_to_current_fixture(

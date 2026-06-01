@@ -5,6 +5,7 @@ from dsg_spatialqa_lab import (
     DynamicSceneGraph,
     GraphQuery,
     GraphTool,
+    load_scene_fixture,
     Pose3D,
     RelationConfig,
     RelationEngine,
@@ -354,6 +355,61 @@ def test_world_state_reports_current_objects_and_evidence() -> None:
 def test_world_state_reports_missing_agent_pose_error() -> None:
     with pytest.raises(SpatialQAError, match="Agent pose not found: agent"):
         GraphTool(DynamicSceneGraph()).world_state()
+
+
+def test_current_room_reports_containment_path_and_evidence() -> None:
+    tool = GraphTool(load_scene_fixture("multi_room_rearrangement"))
+
+    assert tool.current_room("cereal_box_1") == {
+        "object_id": "cereal_box_1",
+        "room_id": "pantry",
+        "room_label": "Pantry",
+        "path": [
+            {
+                "src": "cereal_box_1",
+                "relation": "IN_REGION",
+                "dst": "pantry_shelf",
+                "step": 2,
+            },
+            {
+                "src": "pantry_shelf",
+                "relation": "IN_ROOM",
+                "dst": "pantry",
+                "step": 1,
+            },
+        ],
+        "evidence_edges": [
+            "cereal_box_1-IN_REGION-pantry_shelf-2",
+            "pantry_shelf-IN_ROOM-pantry-1",
+        ],
+    }
+    assert tool.current_room("milk_1") == {
+        "object_id": "milk_1",
+        "room_id": "kitchen",
+        "room_label": "Kitchen",
+        "path": [
+            {
+                "src": "milk_1",
+                "relation": "IN_REGION",
+                "dst": "prep_counter",
+                "step": 1,
+            },
+            {
+                "src": "prep_counter",
+                "relation": "IN_ROOM",
+                "dst": "kitchen",
+                "step": 1,
+            },
+        ],
+        "evidence_edges": [
+            "milk_1-IN_REGION-prep_counter-1",
+            "prep_counter-IN_ROOM-kitchen-1",
+        ],
+    }
+
+
+def test_current_room_returns_none_when_room_cannot_be_resolved() -> None:
+    assert GraphTool(build_scene()).current_room("mug_1") is None
 
 
 def test_recent_events_reports_action_event_and_step_window_changes() -> None:

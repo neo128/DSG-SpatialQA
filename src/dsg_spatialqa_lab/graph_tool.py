@@ -574,6 +574,37 @@ class GraphTool:
             if (not state.visible) and state.confidence < self.reobserve_confidence_threshold
         ]
 
+    def current_room(self, object_id: str) -> dict[str, Any] | None:
+        self.get_object(object_id)
+        path: list[Edge] = []
+        visited: set[str] = set()
+        current_id = object_id
+        while current_id not in visited:
+            visited.add(current_id)
+            location = self._latest_location(current_id)
+            if location is None:
+                return None
+            path.append(location)
+            destination = self.graph.nodes.get(location.dst)
+            if destination is not None and destination.type == "room":
+                return {
+                    "object_id": object_id,
+                    "room_id": destination.id,
+                    "room_label": destination.label,
+                    "path": [
+                        {
+                            "src": edge.src,
+                            "relation": edge.relation,
+                            "dst": edge.dst,
+                            "step": edge.step,
+                        }
+                        for edge in path
+                    ],
+                    "evidence_edges": [edge.id for edge in path],
+                }
+            current_id = location.dst
+        return None
+
     def validate_next_action(self, action: SkillCommand | Mapping[str, Any]) -> ActionValidation:
         target_object = self._target_object_from_action(action)
         state = self.get_object(target_object)

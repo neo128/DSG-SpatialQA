@@ -38,13 +38,20 @@
 - Use `python scripts/evaluate.py --tag qa --report evaluation-report.json` for
   shell-based offline report handoff, and combine `--name`, `--tag`, `--kind`,
   and `--question-type` only when a focused deterministic slice is needed.
+- Use `python scripts/evaluate.py --list-cases --tag qa --question-type object_room`
+  when a handoff only needs filtered case metadata for discovery; this emits
+  case names, tags, question copies, expected keys, and scene fixture metadata
+  without running evaluation cases.
 - Use `python scripts/evaluate.py --compare-report evaluation-report.json` to
   detect compact-report drift against the current code; comparison reads only
   the saved report's selected case names, reruns that deterministic local slice,
-  and checks digest, summary, metrics, failure diagnostics, and breakdown.
-  Summary, failed-case, metric, and breakdown drift include stable nested
-  `differences` paths such as `failed`, `tabletop_object_location`,
-  `by_question_type.object_location.pass_rate`, and `by_tag.qa.failed`;
+  and checks digest, per-case digests, summary, metrics, evidence metrics,
+  failure diagnostics, and breakdown. Summary, failed-case, case-digest, metric,
+  evidence-metric, and breakdown drift include stable nested `differences` paths
+  such as `failed`, `tabletop_object_location`,
+  `tabletop_object_location.digest`,
+  `by_question_type.object_location.pass_rate`,
+  `by_question_type.object_location.evidence_edge_count`, and `by_tag.qa.failed`;
   runtime error category drift includes paths such as `missing_object.count`;
   failure diagnostic drift includes paths such as `value_mismatch` and
   `answer.visible`.
@@ -69,6 +76,10 @@
   QA contracts for agent location, object location evidence, deterministic
   missing-object errors, object status, object history, and direct
   relative-relation answers.
+- Use `python scripts/evaluate.py --question-type object_room` or
+  `python scripts/evaluate.py --tag qa --tag room` when checking multi-room
+  containment resolution, including room id/label, path nodes, and evidence edge
+  IDs for relocated objects.
 - Use `python scripts/evaluate.py --tag qa --tag error` when checking
   structured QA error-path regressions, including missing objects and invalid
   explicit step windows. These outputs include stable `error_category` values
@@ -90,6 +101,10 @@
   handoff needs category counts and affected case names without reprocessing
   every case result. Compact-report comparison surfaces category-count or case
   drift with stable nested `differences` paths.
+- Check `evidence_metrics` in compact reports and bundles when comparing how
+  much node, edge, or VLA command evidence a deterministic experiment produced;
+  the metrics include grouped summaries by kind, question type, scene fixture,
+  and tag.
 - Use `python scripts/evaluate.py --bundle --tag qa --report qa-bundle.json`
   when the handoff needs case manifests, fixture manifests, full suite results,
   compact report metrics (`case_count`, passed/failed counts, pass rate, and
@@ -117,16 +132,28 @@
   explicit report, manifest, or bundle files with a non-zero status and stable
   JSON containing `valid: false`, `path`, and `error` instead of a traceback;
   compare failures also include `matches: false`.
+- Use `python scripts/scene.py --list-fixtures --tag multi_room --output multi-room-fixtures.json`
+  to discover filtered built-in scene fixture metadata from the shell. The
+  command reports schema version, metadata digest, filters, `fixture_count`, and
+  scene names/descriptions/tags without loading graph objects or computing graph
+  JSON digests. With `--output`, it writes the same stable JSON to that explicit
+  local path and stdout.
 - Use `python scripts/scene.py --fixture tabletop --output tabletop-scene.json`
   to export a built-in deterministic scene graph, and
   `python scripts/scene.py --validate tabletop-scene.json` to load an explicit
   local graph file and report its stable digest, total summary counts, node-type
-  counts, edge-relation counts, object-label counts, and visibility/re-observe
-  candidate counts.
+  counts, edge-relation counts, object-label counts, current-location and
+  current-room counts, and visibility/re-observe candidate counts.
 - Use `python scripts/scene.py --compare-fixture tabletop --input tabletop-scene.json`
   to detect drift between an explicit local graph file and the current
   deterministic built-in fixture digest and summary counts. Summary drift
-  includes stable nested `differences` paths such as `by_node_type.region`.
+  includes stable nested `differences` paths such as
+  `by_current_room.pantry`, `by_current_location.pantry_shelf`, and
+  `by_node_type.region`.
+- Use `GraphTool.current_room(object_id)` in local experiments when an object
+  needs a room-level explanation; it returns the resolved room id/label,
+  containment path, and evidence edge IDs, or `None` when no room can be
+  resolved.
 - Scene graph validation and fixture comparison report `valid: true` for loaded
   explicit graph files. Invalid explicit graph JSON returns a non-zero status
   with stable JSON containing `valid: false`, `path`, and `error` instead of a

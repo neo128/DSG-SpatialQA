@@ -384,6 +384,42 @@ _EVALUATION_CASES: dict[str, EvaluationCase] = {
             "error": None,
         },
     ),
+    "multi_room_rearrangement_object_room_cereal_box": EvaluationCase(
+        name="multi_room_rearrangement_object_room_cereal_box",
+        scene_fixture="multi_room_rearrangement",
+        kind="qa",
+        tags=("qa", "dynamic", "multi_room", "room"),
+        question={"type": "object_room", "object_id": "cereal_box_1"},
+        expected={
+            "answer": {
+                "object_id": "cereal_box_1",
+                "room_id": "pantry",
+                "room_label": "Pantry",
+                "path": [
+                    {
+                        "src": "cereal_box_1",
+                        "relation": "IN_REGION",
+                        "dst": "pantry_shelf",
+                        "step": 2,
+                    },
+                    {
+                        "src": "pantry_shelf",
+                        "relation": "IN_ROOM",
+                        "dst": "pantry",
+                        "step": 1,
+                    },
+                ],
+            },
+            "evidence_nodes": ["cereal_box_1", "pantry_shelf", "pantry"],
+            "evidence_edges": [
+                "cereal_box_1-IN_REGION-pantry_shelf-2",
+                "pantry_shelf-IN_ROOM-pantry-1",
+            ],
+            "confidence": 0.92,
+            "needs_reobserve": False,
+            "error": None,
+        },
+    ),
     "multi_room_rearrangement_recent_events": EvaluationCase(
         name="multi_room_rearrangement_recent_events",
         scene_fixture="multi_room_rearrangement",
@@ -1221,6 +1257,8 @@ def evaluation_report(suite: Mapping[str, Any]) -> dict[str, Any]:
             passed=passed,
             breakdown=breakdown,
         ),
+        "evidence_metrics": _evaluation_evidence_metrics(results),
+        "case_digests": _evaluation_case_digests(results),
         "failed_cases": failed_cases,
         "runtime_error_categories": _runtime_error_category_summary(results),
         "failure_reasons": failure_reasons,
@@ -1267,6 +1305,152 @@ def _evaluation_breakdown_group_metrics(
         )
         for name, summary in sorted(group.items())
         if isinstance(summary, Mapping)
+    }
+
+
+def _evaluation_evidence_metrics(results: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    metrics: dict[str, Any] = _evaluation_evidence_summary_metrics(results)
+    metrics["by_kind"] = _evaluation_evidence_breakdown_by_kind(results)
+    metrics["by_question_type"] = _evaluation_evidence_breakdown_by_question_type(results)
+    metrics["by_scene_fixture"] = _evaluation_evidence_breakdown_by_scene_fixture(results)
+    metrics["by_tag"] = _evaluation_evidence_breakdown_by_tag(results)
+    return metrics
+
+
+def _evaluation_case_digests(results: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    return [
+        {
+            "case": str(result["case"]),
+            "kind": str(result["kind"]),
+            "question_type": (
+                str(result["question_type"])
+                if isinstance(result.get("question_type"), str)
+                else None
+            ),
+            "scene_fixture": str(result["scene_fixture"]),
+            "passed": result["passed"] is True,
+            "digest": _stable_digest(result),
+        }
+        for result in results
+    ]
+
+
+def _stable_digest(payload: Mapping[str, Any]) -> str:
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _evaluation_evidence_summary_metrics(
+    results: Sequence[Mapping[str, Any]],
+) -> dict[str, float | int]:
+    case_count = len(results)
+    evidence_node_count = 0
+    evidence_edge_count = 0
+    command_evidence_count = 0
+    cases_with_evidence_count = 0
+    for result in results:
+        counts = _result_evidence_counts(result)
+        evidence_node_count += counts["evidence_node_count"]
+        evidence_edge_count += counts["evidence_edge_count"]
+        command_evidence_count += counts["command_evidence_count"]
+        if counts["total_evidence_item_count"] > 0:
+            cases_with_evidence_count += 1
+    total_evidence_item_count = (
+        evidence_node_count + evidence_edge_count + command_evidence_count
+    )
+    return {
+        "case_count": case_count,
+        "cases_with_evidence_count": cases_with_evidence_count,
+        "cases_without_evidence_count": case_count - cases_with_evidence_count,
+        "evidence_node_count": evidence_node_count,
+        "evidence_edge_count": evidence_edge_count,
+        "command_evidence_count": command_evidence_count,
+        "total_evidence_item_count": total_evidence_item_count,
+        "average_evidence_item_count": (
+            0.0 if case_count == 0 else total_evidence_item_count / case_count
+        ),
+    }
+
+
+def _result_evidence_counts(result: Mapping[str, Any]) -> dict[str, int]:
+    actual = result.get("actual")
+    evidence_node_count = 0
+    evidence_edge_count = 0
+    command_evidence_count = 0
+    if isinstance(actual, Mapping):
+        evidence_node_count = _sequence_count(actual.get("evidence_nodes"))
+        evidence_edge_count = _sequence_count(actual.get("evidence_edges"))
+        command = actual.get("command")
+        if isinstance(command, Mapping):
+            command_evidence_count = _sequence_count(command.get("evidence"))
+    return {
+        "evidence_node_count": evidence_node_count,
+        "evidence_edge_count": evidence_edge_count,
+        "command_evidence_count": command_evidence_count,
+        "total_evidence_item_count": (
+            evidence_node_count + evidence_edge_count + command_evidence_count
+        ),
+    }
+
+
+def _sequence_count(value: object) -> int:
+    if isinstance(value, Sequence) and not isinstance(value, str):
+        return len(value)
+    return 0
+
+
+def _evaluation_evidence_breakdown_by_kind(
+    results: Sequence[Mapping[str, Any]],
+) -> dict[str, dict[str, float | int]]:
+    by_kind: dict[str, list[Mapping[str, Any]]] = {}
+    for result in results:
+        by_kind.setdefault(str(result["kind"]), []).append(result)
+    return {
+        kind: _evaluation_evidence_summary_metrics(by_kind[kind])
+        for kind in sorted(by_kind)
+    }
+
+
+def _evaluation_evidence_breakdown_by_question_type(
+    results: Sequence[Mapping[str, Any]],
+) -> dict[str, dict[str, float | int]]:
+    by_question_type: dict[str, list[Mapping[str, Any]]] = {}
+    for result in results:
+        question_type = result.get("question_type")
+        if isinstance(question_type, str):
+            by_question_type.setdefault(question_type, []).append(result)
+    return {
+        question_type: _evaluation_evidence_summary_metrics(
+            by_question_type[question_type]
+        )
+        for question_type in sorted(by_question_type)
+    }
+
+
+def _evaluation_evidence_breakdown_by_scene_fixture(
+    results: Sequence[Mapping[str, Any]],
+) -> dict[str, dict[str, float | int]]:
+    by_scene_fixture: dict[str, list[Mapping[str, Any]]] = {}
+    for result in results:
+        by_scene_fixture.setdefault(str(result["scene_fixture"]), []).append(result)
+    return {
+        scene_fixture: _evaluation_evidence_summary_metrics(
+            by_scene_fixture[scene_fixture]
+        )
+        for scene_fixture in sorted(by_scene_fixture)
+    }
+
+
+def _evaluation_evidence_breakdown_by_tag(
+    results: Sequence[Mapping[str, Any]],
+) -> dict[str, dict[str, float | int]]:
+    by_tag: dict[str, list[Mapping[str, Any]]] = {}
+    for result in results:
+        for tag in result["tags"]:
+            by_tag.setdefault(str(tag), []).append(result)
+    return {
+        tag: _evaluation_evidence_summary_metrics(by_tag[tag])
+        for tag in sorted(by_tag)
     }
 
 
@@ -2059,6 +2243,33 @@ def compare_evaluation_report(report: Mapping[str, Any]) -> dict[str, Any]:
     )
     if metric_differences:
         checks[-1]["differences"] = metric_differences
+    evidence_metric_differences = _nested_differences(
+        report.get("evidence_metrics"),
+        current_report["evidence_metrics"],
+    )
+    _append_validation_check(
+        checks,
+        name="evidence_metrics_match_current",
+        passed=report.get("evidence_metrics") == current_report["evidence_metrics"],
+        expected=report.get("evidence_metrics"),
+        actual=current_report["evidence_metrics"],
+    )
+    if evidence_metric_differences:
+        checks[-1]["differences"] = evidence_metric_differences
+    case_digest_differences = _report_summary_entry_differences(
+        report.get("case_digests"),
+        current_report["case_digests"],
+        key_name="case",
+    )
+    _append_validation_check(
+        checks,
+        name="case_digests_match_current",
+        passed=report.get("case_digests") == current_report["case_digests"],
+        expected=report.get("case_digests"),
+        actual=current_report["case_digests"],
+    )
+    if case_digest_differences:
+        checks[-1]["differences"] = case_digest_differences
     failed_case_differences = _report_summary_entry_differences(
         report.get("failed_cases"),
         current_report["failed_cases"],
@@ -2189,6 +2400,8 @@ def _evaluation_report_differences(
         "digest",
         "summary",
         "metrics",
+        "evidence_metrics",
+        "case_digests",
         "failed_cases",
         "runtime_error_categories",
         "failure_reasons",
@@ -2224,6 +2437,8 @@ def _evaluation_report_field_differences(
     actual: object,
 ) -> list[dict[str, Any]]:
     if field == "failed_cases":
+        return _report_summary_entry_differences(expected, actual, key_name="case")
+    if field == "case_digests":
         return _report_summary_entry_differences(expected, actual, key_name="case")
     if field == "runtime_error_categories":
         return _runtime_error_category_differences(expected, actual)

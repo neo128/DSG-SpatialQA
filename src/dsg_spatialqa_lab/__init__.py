@@ -64,6 +64,7 @@ from dsg_spatialqa_lab.scenes import (
     list_scene_fixture_metadata,
     list_scene_fixtures,
     load_scene_fixture,
+    scene_fixture_manifest,
 )
 from dsg_spatialqa_lab.schema import (
     ActionValidation,
@@ -144,6 +145,7 @@ __all__ = [
     "list_evaluation_case_metadata",
     "list_evaluation_cases",
     "load_scene_fixture",
+    "scene_fixture_manifest",
     "load_evaluation_bundle",
     "load_evaluation_manifest",
     "load_evaluation_report",

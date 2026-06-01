@@ -14,6 +14,7 @@ from dsg_spatialqa_lab import (
     evaluation_manifest_json,
     evaluation_report,
     evaluation_report_json,
+    list_evaluation_case_metadata,
     load_evaluation_bundle,
     load_evaluation_manifest,
     load_evaluation_report,
@@ -65,6 +66,11 @@ def main(argv: list[str] | None = None) -> int:
         "--manifest",
         action="store_true",
         help="Emit filtered case and scene metadata without running evaluation cases.",
+    )
+    parser.add_argument(
+        "--list-cases",
+        action="store_true",
+        help="Emit filtered evaluation case metadata without running evaluation cases.",
     )
     parser.add_argument(
         "--validate-bundle",
@@ -170,6 +176,27 @@ def main(argv: list[str] | None = None) -> int:
                 question_types=question_types,
             )
         )
+    elif args.list_cases:
+        cases = list_evaluation_case_metadata(
+            names=names,
+            tags=tags,
+            kinds=kinds,
+            question_types=question_types,
+        )
+        payload = json.dumps(
+            {
+                "filters": {
+                    "names": list(names or ()),
+                    "tags": list(tags or ()),
+                    "kinds": list(kinds or ()),
+                    "question_types": list(question_types or ()),
+                },
+                "case_count": len(cases),
+                "evaluation_cases": list(cases),
+            },
+            indent=2,
+            sort_keys=True,
+        ) + "\n"
     elif args.bundle:
         payload = evaluation_bundle_json(
             evaluation_bundle(

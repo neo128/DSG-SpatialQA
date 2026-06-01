@@ -1,12 +1,16 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from collections.abc import Callable, Sequence
-from typing import Any
 from dataclasses import dataclass
+from typing import Any
 
 from dsg_spatialqa_lab.memory import DynamicSceneGraph
 from dsg_spatialqa_lab.relations import RelationConfig, RelationEngine
 from dsg_spatialqa_lab.schema import BBox3D, Pose3D, SpatialQAError
+
+SCENE_FIXTURE_MANIFEST_SCHEMA_VERSION = "dsg-spatialqa-lab.scene-fixture-manifest.v1"
 
 
 @dataclass(frozen=True)
@@ -368,6 +372,28 @@ def list_scene_fixture_metadata(tags: Sequence[str] | None = None) -> tuple[dict
             }
         )
     return tuple(metadata)
+
+
+def scene_fixture_manifest(tags: Sequence[str] | None = None) -> dict[str, Any]:
+    tag_filter = tuple(tags or ())
+    fixtures = list_scene_fixture_metadata(tags=tag_filter)
+    manifest: dict[str, Any] = {
+        "schema_version": SCENE_FIXTURE_MANIFEST_SCHEMA_VERSION,
+        "filters": {
+            "tags": list(tag_filter),
+        },
+        "fixture_count": len(fixtures),
+        "scene_fixtures": list(fixtures),
+    }
+    manifest["digest"] = _scene_fixture_manifest_digest(manifest)
+    return manifest
+
+
+def _scene_fixture_manifest_digest(manifest: dict[str, Any]) -> str:
+    payload = {key: value for key, value in manifest.items() if key != "digest"}
+    return hashlib.sha256(
+        json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    ).hexdigest()
 
 
 def get_scene_fixture(name: str) -> SceneFixture:

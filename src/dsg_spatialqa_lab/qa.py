@@ -25,6 +25,8 @@ class SpatialQAEngine:
                 return self._answer_agent_timeline(question)
             if question_type == "object_location":
                 return self._answer_object_location(question)
+            if question_type == "object_room":
+                return self._answer_object_room(question)
             if question_type == "object_status":
                 return self._answer_object_status(question)
             if question_type == "relative_relation":
@@ -137,6 +139,39 @@ class SpatialQAEngine:
             evidence_edges=evidence_edges,
             confidence=state.confidence,
             needs_reobserve=self.graph_tool.needs_reobserve(object_id),
+        )
+
+    def _answer_object_room(self, question: Mapping[str, Any]) -> QAResponse:
+        object_id = self._required_str(question, "object_id")
+        state = self.graph_tool.get_object(object_id)
+        room = self.graph_tool.current_room(object_id)
+        needs_reobserve = self.graph_tool.needs_reobserve(object_id)
+        if room is None:
+            return QAResponse(
+                answer={"object_id": object_id, "room": None},
+                evidence_nodes=[object_id],
+                evidence_edges=[],
+                confidence=0.0,
+                needs_reobserve=needs_reobserve,
+            )
+
+        path = cast(list[dict[str, Any]], room["path"])
+        evidence_nodes = [object_id]
+        for edge in path:
+            dst = str(edge["dst"])
+            if dst not in evidence_nodes:
+                evidence_nodes.append(dst)
+        return QAResponse(
+            answer={
+                "object_id": object_id,
+                "room_id": str(room["room_id"]),
+                "room_label": str(room["room_label"]),
+                "path": path,
+            },
+            evidence_nodes=evidence_nodes,
+            evidence_edges=cast(list[str], room["evidence_edges"]),
+            confidence=state.confidence,
+            needs_reobserve=needs_reobserve,
         )
 
     def _answer_object_status(self, question: Mapping[str, Any]) -> QAResponse:
