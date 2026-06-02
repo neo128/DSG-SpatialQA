@@ -8,9 +8,11 @@ from typing import Any, cast
 
 from dsg_spatialqa_lab.benchmark import QACase, load_qa_dataset, qa_dataset_digest
 from dsg_spatialqa_lab.eval.qa_metrics import (
+    QA_RESEARCH_AXIS_NAMES,
     QAPrediction,
     load_qa_predictions,
     qa_predictions_digest,
+    qa_research_axes_for_case,
 )
 from dsg_spatialqa_lab.graph_tool import GraphTool
 from dsg_spatialqa_lab.memory import DynamicSceneGraph
@@ -352,6 +354,12 @@ def _contradictory_relations(relation: str) -> set[str]:
 
 
 def _summary(cases: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    summary = _summary_core(cases)
+    summary["by_research_axis"] = _research_axis_summary(cases)
+    return summary
+
+
+def _summary_core(cases: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     return {
         "answer_correct_count": _bool_count(cases, "answer_correct"),
         "by_error_category": _sorted_counts(str(case["error_category"]) for case in cases),
@@ -367,6 +375,16 @@ def _summary(cases: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
             "predicted_graph_tool_correct",
         ),
     }
+
+
+def _research_axis_summary(cases: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    grouped: dict[str, list[Mapping[str, Any]]] = {
+        axis: [] for axis in QA_RESEARCH_AXIS_NAMES
+    }
+    for case in cases:
+        for axis in qa_research_axes_for_case(case):
+            grouped[axis].append(case)
+    return {axis: _summary_core(grouped[axis]) for axis in QA_RESEARCH_AXIS_NAMES}
 
 
 def _predicted_evidence_sources(

@@ -103,12 +103,27 @@ Status: complete for deterministic offline imports.
 Default runtime must not call external models. The project now imports local
 offline prediction records into standard `QAPrediction` JSONL with source
 metadata, missing/unknown case diagnostics, report validation, and current-file
-comparison. This supports VLM-only or caption-memory style outputs without
-provider calls during default verification.
+comparison. QA delta and experiment summary artifacts retain question-type,
+tag, reference-frame, scene, and episode diagnostic slices so imported-source
+regressions can be localized without reloading full per-case reports.
+Experiment summaries also retain compact graph construction diagnostics from
+graph eval artifacts, so imported-source QA lift can be reviewed beside
+predicted DSG object recall, relation F1, state accuracy, track-fragmentation,
+and prediction-source precision evidence. They also retain compact attribution
+diagnostics from QA attribution reports, including research-axis failure
+summaries, so imported-source regressions can be separated into graph
+construction, evidence missing, benchmark/engine, or reasoning/tool-use failure
+categories. The final summary links attribution reports to graph eval reports
+by graph digest, giving each predicted graph a compact quality-plus-failure
+view. Final experiment records retain a diagnostic ledger of QA, graph,
+attribution, and linkage coverage. Offline import reports also derive stable
+source profiles from explicit metadata, including source key, adapter, model,
+prompt, dataset, metadata keys, and capability axes. This supports VLM-only or
+caption-memory style outputs without provider calls during default
+verification.
 
 Next steps:
 
-- richer source metadata conventions,
 - side-by-side eval manifests for multiple imported sources,
 - optional real adapter boundaries that write offline files only.
 

@@ -100,11 +100,23 @@
   cases. Prediction JSONL records contain only explicit local answer/evidence
   payloads; no model provider is called. Reports include exact match,
   multiple-choice accuracy, numeric MAE, evidence node/edge recall,
-  answer-graph consistency, and breakdowns by question type, tag, and reference
-  frame. Use `python scripts/run_qa_eval.py --validate-report qa-eval-report.json`
+  answer-graph consistency, and breakdowns by scene id, episode id, question
+  type, tag, reference frame, and research axis. Research-axis groups expose
+  spatial QA, dynamic memory, and GraphTool query evidence for RQ1-RQ3. Use
+  `python scripts/run_qa_eval.py --validate-report qa-eval-report.json`
   before accepting a saved report, and
   `python scripts/run_qa_eval.py --compare-report qa-eval-report.json` to reload
   the report's recorded gold/prediction paths and detect current-file drift.
+- Use `python scripts/run_qa_eval.py --candidate-report graph-tool-report.json --baseline-report majority-report.json --candidate-name graph_tool --baseline-name majority --delta-report qa-delta-report.json`
+  when a handoff needs a stable candidate-vs-baseline QA comparison. The delta
+  report stores summary, metric, scene, episode, question-type, tag,
+  reference-frame, and research-axis deltas, plus the source report digests and
+  explicit report paths. Use
+  `python scripts/run_qa_eval.py --validate-delta-report qa-delta-report.json`
+  before accepting it, and
+  `python scripts/run_qa_eval.py --compare-delta-report qa-delta-report.json`
+  to reload the recorded candidate/baseline reports and detect current-file
+  drift.
 - Use `python scripts/run_baselines.py --list-baselines` to discover local
   baseline names and enabled states without running QA cases. Use
   `python scripts/run_baselines.py --baseline graph_tool --graph oracle-graph.json --qa qa.jsonl --pred predictions.jsonl`
@@ -117,9 +129,10 @@
 - Use `python scripts/import_predictions.py --qa qa.jsonl --input offline-predictions.jsonl --source-name vlm_fixture --source-kind vlm --metadata prompt_id=spatial-qa-v1 --pred vlm-predictions.jsonl --report vlm-import-report.json`
   when a handoff has local external prediction records and needs standard
   `QAPrediction` JSONL for QA eval, attribution, or dashboard review. The
-  importer reads only explicit local files, records source metadata, skips
-  unknown case IDs with diagnostics, records missing gold cases, and writes a
-  stable import report. Use
+  importer reads only explicit local files, records source metadata, derives a
+  stable `source_profile` for side-by-side source review, skips unknown case IDs
+  with diagnostics, records missing gold cases, and writes a stable import
+  report. Use
   `python scripts/import_predictions.py --validate-report vlm-import-report.json`
   before accepting the report, and
   `python scripts/import_predictions.py --compare-report vlm-import-report.json`
@@ -149,34 +162,104 @@
   missing required predicted-graph evidence as `evidence_missing`, predicted
   graph answer drift as `graph_construction`, and model/baseline failures after
   a correct predicted graph answer as `reasoning_or_tool_use`. Case rows record
-  predicted evidence sources, and the summary groups errors by those sources
-  for source-level graph QA diagnostics. Use
+  predicted evidence sources, and the summary groups errors by research axis
+  and by those sources for RQ-level and source-level graph QA diagnostics. Use
   `python scripts/attribute_errors.py --validate-report error-attribution.json`
   before accepting a saved attribution report, and
   `python scripts/attribute_errors.py --compare-report error-attribution.json`
   to reload the report's recorded QA, prediction, oracle graph, and predicted
   graph files and detect current-file drift.
-- Use `python scripts/build_benchmark.py --episodes mock-ai2thor.jsonl --episodes mock-habitat.jsonl --dataset-name mock_benchmark --output-dir data/benchmark --max-qa-per-episode 100 --manifest benchmark-manifest.json`
+- Use `python scripts/build_benchmark.py --episodes mock-ai2thor.jsonl --episodes mock-habitat.jsonl --dataset-name mock_benchmark --output-dir data/benchmark --max-qa-per-episode 100 --qa-eval-report qa-eval-report.json --qa-eval-delta-report qa-delta-report.json --active-task-report active-report.json --active-task-delta-report active-delta-report.json --dashboard-bundle dashboard/dashboard.json --error-attribution-report error-attribution.json --graph-eval-report graph-eval-report.json --predicted-graph-report predicted-report.json --manifest benchmark-manifest.json`
   when a handoff needs a deterministic benchmark-scale artifact manifest from
   explicit episode JSONL files. The builder writes oracle graph JSON and QA
   JSONL artifacts under the explicit output directory, then records graph
   digests, QA dataset digests, summary counts, and coverage by scene, episode,
   question type, reference frame, tag, dynamic/static split, and
-  oracle/predicted source. Use
+  oracle/predicted source. Optional report and dashboard paths are recorded as
+  experiment artifacts with schema-aware digests, so a single manifest can tie
+  QA lift, active-task lift, predicted graph construction reports,
+  oracle-vs-predicted graph metrics, error attribution diagnostics, and review
+  dashboard outputs together. Use
   `python scripts/build_benchmark.py --validate-manifest benchmark-manifest.json`
   before accepting a saved manifest, and
   `python scripts/build_benchmark.py --compare-manifest benchmark-manifest.json`
-  to detect current graph/QA artifact digest or coverage drift.
-- Use `python scripts/export_dashboard.py --qa qa.jsonl --pred predictions.jsonl --eval-report qa-eval-report.json --graph oracle-graph.json --error-attribution error-attribution.json --active-task-report active-report.json --output dashboard/`
+  to detect current graph/QA/report/dashboard artifact digest or coverage
+  drift.
+- Use `python scripts/run_mock_experiment.py --output-dir data/mock-experiment --dataset-name mock_experiment --max-qa-per-episode 3 --episode-count 2 --qa-baseline majority --qa-baseline graph_text`
+  when a handoff needs the deterministic local smoke-test version of the full
+  evidence chain in one step. It writes mock episodes, oracle graphs,
+  predicted graph files and graph eval reports, per-episode and combined QA
+  datasets, oracle GraphTool, predicted GraphTool, and baseline
+  prediction/report files, one QA delta report per requested baseline, an
+  additional oracle-vs-predicted GraphTool QA delta for graph-construction
+  impact, per-episode error attribution reports for predicted GraphTool
+  failures, mock active task delta report, an oracle-vs-predicted active-task
+  delta for interactive graph-construction impact, benchmark manifest,
+  experiment summary, dashboard bundle, and final experiment record under the
+  explicit output directory. Omit `--episode-count` to keep the default
+  one-episode run. Omit `--qa-baseline` to keep the default `majority`
+  comparison.
+- Use `python scripts/summarize_experiment.py --manifest benchmark-manifest.json --report experiment-summary.json`
+  when a handoff needs one deterministic project-level answer to the four DSG
+  research questions. The summary reloads the manifest's explicit local
+  experiment artifacts and records source digests, QA delta lift for spatial QA,
+  dynamic memory, and GraphTool query axes, QA diagnostic slices by scene,
+  episode, question type, tag, and reference frame, graph-construction
+  diagnostics from graph eval artifacts, error attribution diagnostics from QA
+  failure attribution reports, plus active-task success lift for interactive
+  task ability. Graph diagnostics retain object recall, relation F1,
+  matched-object state accuracy, duplicate-track / ID-fragmentation counts, and
+  prediction-source precision slices. Attribution diagnostics retain
+  `graph_construction`, `evidence_missing`, `reasoning_or_tool_use`, and
+  research-axis and source-level failure summaries. Failure-linkage diagnostics
+  match attribution reports to graph eval reports by oracle/predicted graph
+  digest, so a handoff can inspect graph quality metrics beside the failure
+  categories for the same predicted graph. Each research-question row includes
+  a deterministic
+  `verdict` from the primary metric delta; use it as the compact "whether DSG
+  improved" answer while keeping the metric value as supporting evidence. Use
+  `python scripts/summarize_experiment.py --validate-report experiment-summary.json`
+  before accepting a saved summary; validation recomputes research-question
+  rows and summary counts from the embedded delta comparisons, so edited lift
+  metrics are rejected even when the report digest is recomputed. It also
+  checks that embedded delta comparison, graph eval summary, attribution
+  summary, and failure-linkage rows match their source artifact keys, paths,
+  graph digests, and report digests. The report includes a `readiness` block;
+  require
+  `readiness.status == "ready"` before treating the experiment as covering all
+  four project research questions, and inspect `missing_research_questions`
+  plus `missing_source_artifact_types` when it is `incomplete`. Use
+  `python scripts/summarize_experiment.py --compare-report experiment-summary.json`
+  to detect drift in the referenced QA, active delta, graph-eval, and
+  attribution artifacts.
+- Use `python scripts/record_experiment.py --summary-report experiment-summary.json --record experiment-record.json`
+  when a handoff needs a compact final evidence ledger. The record stores the
+  summary report path/digest, manifest path/digest, readiness status, RQ1-RQ4
+  verdict rows, verdict counts, diagnostic ledger counts/keys for QA diagnostic
+  slices, graph construction, error attribution, and failure-linkage pairs,
+  source artifact digests, and optionally a dashboard bundle digest when
+  `--dashboard-bundle dashboard/dashboard.json` is provided. Use
+  `python scripts/record_experiment.py --validate-record experiment-record.json`
+  before sharing it, and
+  `python scripts/record_experiment.py --compare-record experiment-record.json`
+  to detect current-file drift in the referenced summary/dashboard artifacts.
+- Use `python scripts/export_dashboard.py --qa qa.jsonl --pred predictions.jsonl --eval-report qa-eval-report.json --graph oracle-graph.json --error-attribution error-attribution.json --active-task-report active-report.json --active-task-delta-report active-delta-report.json --experiment-summary-report experiment-summary.json --output dashboard/`
   when a handoff needs a static per-case review artifact. The exporter reads
   only explicit local files, writes `dashboard.json` and `index.html` under the
   explicit output directory, and includes QA case data, prediction records,
   eval rows, optional attribution rows, evidence subgraphs, frame paths when
-  present, graph summary, predicted-evidence source summaries, optional
-  active-task review panels with transcripts and required/observed evidence
-  IDs, action evidence snapshots, active-task budget analysis, and a stable
-  bundle digest. Omit `--error-attribution` or
-  `--active-task-report` only when those reports have not been generated yet.
+  present, graph summary, research-axis attribution summaries,
+  predicted-evidence source summaries, optional active-task review panels with
+  transcripts and required/observed evidence IDs, action evidence snapshots,
+  active-task budget analysis, optional active-task delta review tables for
+  candidate-vs-baseline RQ4 lift, optional experiment-summary review rows for
+  RQ1-RQ4 lift, a per-measurement matrix for multi-baseline QA deltas,
+  failure-linkage rows connecting graph quality to QA failure causes, verdicts,
+  and readiness, local Research Axis and Evidence Source
+  filtering, and a stable bundle digest. Omit
+  `--error-attribution`, `--active-task-report`,
+  `--active-task-delta-report`, or `--experiment-summary-report` only when
+  those reports have not been generated yet.
 - Use `python scripts/run_active_tasks.py --tasks active-tasks.jsonl --graph oracle-graph.json --policy direct_answer --report active-report.json`
   when a handoff needs deterministic mock active EQA scoring. Active task JSONL
   records carry the question, gold answer, success conditions, max-action
@@ -188,7 +271,20 @@
   needs a deterministic missing-required-evidence action target without real
   navigation. Use
   `python scripts/run_active_tasks.py --validate-report active-report.json`
-  before accepting a saved report.
+  before accepting a saved report, and
+  `python scripts/run_active_tasks.py --compare-report active-report.json` to
+  reload the report's recorded task/graph paths, rerun the recorded policy,
+  and detect current artifact drift.
+- Use `python scripts/run_active_tasks.py --candidate-report next-best-view-report.json --baseline-report direct-answer-report.json --candidate-name next_best_view --baseline-name direct_answer --delta-report active-delta-report.json`
+  when a handoff needs a stable RQ4 candidate-vs-baseline active policy
+  comparison. The delta report stores task-success, answer-accuracy,
+  answer-graph-consistency, evidence-coverage, action-count, and max-action
+  budget deltas plus the source report digests. Use
+  `python scripts/run_active_tasks.py --validate-delta-report active-delta-report.json`
+  before accepting it, and
+  `python scripts/run_active_tasks.py --compare-delta-report active-delta-report.json`
+  to reload the recorded candidate/baseline reports and detect current-file
+  drift.
 - Use `python scripts/build_predicted_graph.py --mock --input mock-episode.jsonl --output-graph predicted-graph.json --report predicted-report.json`
   when a handoff needs a predicted DSG skeleton from deterministic mock
   perception. The builder consumes only `EpisodeFrame.metadata["mock_detections"]`

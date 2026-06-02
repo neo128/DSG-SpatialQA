@@ -9,6 +9,10 @@ from typing import Any, cast
 
 from dsg_spatialqa_lab.benchmark import QACase, qa_case_to_dict
 from dsg_spatialqa_lab.eval import QAPrediction, qa_prediction_to_dict
+from dsg_spatialqa_lab.eval.qa_metrics import (
+    QA_RESEARCH_AXIS_NAMES,
+    qa_research_axes_for_case,
+)
 from dsg_spatialqa_lab.memory import DynamicSceneGraph
 from dsg_spatialqa_lab.scene_io import graph_summary
 from dsg_spatialqa_lab.schema import Edge, Node, SpatialQAError
@@ -25,6 +29,8 @@ def dashboard_bundle(
     graph: DynamicSceneGraph,
     error_attribution_report: Mapping[str, Any] | None = None,
     active_task_report: Mapping[str, Any] | None = None,
+    active_task_delta_report: Mapping[str, Any] | None = None,
+    experiment_summary_report: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     prediction_by_id = _prediction_mapping(predictions)
     eval_by_id = _case_mapping(qa_eval_report.get("cases", ()))
@@ -51,6 +57,14 @@ def dashboard_bundle(
     }
     if active_task_report is not None:
         bundle["active_task_review"] = _active_task_review(active_task_report)
+    if active_task_delta_report is not None:
+        bundle["active_task_delta_review"] = _active_task_delta_review(
+            active_task_delta_report
+        )
+    if experiment_summary_report is not None:
+        bundle["experiment_summary_review"] = _experiment_summary_review(
+            experiment_summary_report
+        )
     bundle["bundle_digest"] = dashboard_bundle_digest(bundle)
     return bundle
 
@@ -96,6 +110,20 @@ def validate_dashboard_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
     )
     graph_summary_value = bundle.get("graph_summary")
     active_task_review = bundle.get("active_task_review")
+    active_task_delta_review = bundle.get("active_task_delta_review")
+    experiment_summary_review = bundle.get("experiment_summary_review")
+    expected_source_summary = _predicted_evidence_source_summary(_case_rows(bundle))
+    actual_source_summary = (
+        summary.get("by_predicted_evidence_source")
+        if isinstance(summary, Mapping)
+        else None
+    )
+    expected_axis_summary = _research_axis_summary(_case_rows(bundle))
+    actual_axis_summary = (
+        summary.get("by_research_axis")
+        if isinstance(summary, Mapping)
+        else None
+    )
     checks = [
         {
             "name": "schema_version",
@@ -119,12 +147,40 @@ def validate_dashboard_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
             "name": "graph_summary_present",
             "passed": isinstance(graph_summary_value, Mapping),
         },
+        {
+            "name": "predicted_evidence_source_summary",
+            "passed": actual_source_summary == expected_source_summary,
+            "expected": expected_source_summary,
+            "actual": actual_source_summary,
+        },
+        {
+            "name": "research_axis_summary",
+            "passed": actual_axis_summary == expected_axis_summary,
+            "expected": expected_axis_summary,
+            "actual": actual_axis_summary,
+        },
     ]
     if active_task_review is not None:
         checks.append(
             {
                 "name": "active_task_review",
                 "passed": _validate_active_task_review(active_task_review),
+            }
+        )
+    if active_task_delta_review is not None:
+        checks.append(
+            {
+                "name": "active_task_delta_review",
+                "passed": _validate_active_task_delta_review(active_task_delta_review),
+            }
+        )
+    if experiment_summary_review is not None:
+        checks.append(
+            {
+                "name": "experiment_summary_review",
+                "passed": _validate_experiment_summary_review(
+                    experiment_summary_review
+                ),
             }
         )
     return {
@@ -137,8 +193,23 @@ def validate_dashboard_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
 
 def dashboard_html(bundle: Mapping[str, Any]) -> str:
     payload = json.dumps(bundle, separators=(",", ":"), sort_keys=True)
-    rows = "\n".join(_table_row(case) for case in _case_rows(bundle))
+    cases = _case_rows(bundle)
+    rows = "\n".join(_table_row(case) for case in cases)
+    experiment_summary_section = _experiment_summary_section(bundle)
     active_task_section = _active_task_section(bundle)
+    active_task_delta_section = _active_task_delta_section(bundle)
+    question_type_options = _filter_options(
+        _string_value(_case_qa(case).get("question_type")) for case in cases
+    )
+    tag_options = _filter_options(tag for case in cases for tag in _case_tags(case))
+    correctness_options = _filter_options(_case_exact_match_value(case) for case in cases)
+    error_category_options = _filter_options(_case_error_category(case) for case in cases)
+    research_axis_options = _filter_options(
+        axis for case in cases for axis in _case_research_axes(case)
+    )
+    evidence_source_options = _filter_options(
+        source for case in cases for source in _predicted_evidence_sources(case)
+    )
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -163,10 +234,12 @@ def dashboard_html(bundle: Mapping[str, Any]) -> str:
     <p>Cases: {escape(str(_summary_value(bundle, "case_count")))} · Digest: {escape(str(bundle.get("bundle_digest", "")))}</p>
   </header>
   <section class="filters" aria-label="Filters">
-    <label>Question type<select id="question-type-filter"><option value="all">All</option></select></label>
-    <label>Tag<select id="tag-filter"><option value="all">All</option></select></label>
-    <label>Correctness<select id="correctness-filter"><option value="all">All</option></select></label>
-    <label>Error category<select id="error-category-filter"><option value="all">All</option></select></label>
+    <label>Question type<select id="question-type-filter"><option value="all">All</option>{question_type_options}</select></label>
+    <label>Tag<select id="tag-filter"><option value="all">All</option>{tag_options}</select></label>
+    <label>Correctness<select id="correctness-filter"><option value="all">All</option>{correctness_options}</select></label>
+    <label>Error category<select id="error-category-filter"><option value="all">All</option>{error_category_options}</select></label>
+    <label>Research axis<select id="research-axis-filter"><option value="all">All</option>{research_axis_options}</select></label>
+    <label>Evidence source<select id="evidence-source-filter"><option value="all">All</option>{evidence_source_options}</select></label>
   </section>
   <table>
     <thead>
@@ -176,8 +249,43 @@ def dashboard_html(bundle: Mapping[str, Any]) -> str:
 {rows}
     </tbody>
   </table>
+{experiment_summary_section}
 {active_task_section}
+{active_task_delta_section}
   <script id="dashboard-data" type="application/json">{escape(payload)}</script>
+  <script>
+    (function () {{
+      const filters = {{
+        questionType: document.getElementById("question-type-filter"),
+        tag: document.getElementById("tag-filter"),
+        correctness: document.getElementById("correctness-filter"),
+        errorCategory: document.getElementById("error-category-filter"),
+        researchAxis: document.getElementById("research-axis-filter"),
+        evidenceSource: document.getElementById("evidence-source-filter")
+      }};
+      const rows = Array.from(document.querySelectorAll("tbody tr[data-case-id]"));
+      function matches(values, selected) {{
+        return selected === "all" || values.split("|").includes(selected);
+      }}
+      function applyDashboardFilters() {{
+        rows.forEach(function (row) {{
+          const visible = (
+            matches(row.dataset.questionType || "", filters.questionType.value) &&
+            matches(row.dataset.tags || "", filters.tag.value) &&
+            matches(row.dataset.exactMatch || "", filters.correctness.value) &&
+            matches(row.dataset.errorCategory || "", filters.errorCategory.value) &&
+            matches(row.dataset.researchAxes || "", filters.researchAxis.value) &&
+            matches(row.dataset.evidenceSources || "", filters.evidenceSource.value)
+          );
+          row.hidden = !visible;
+        }});
+      }}
+      Object.values(filters).forEach(function (filter) {{
+        filter.addEventListener("change", applyDashboardFilters);
+      }});
+      applyDashboardFilters();
+    }}());
+  </script>
 </body>
 </html>
 """
@@ -216,6 +324,7 @@ def _dashboard_case(
         "evidence_subgraph": _evidence_subgraph(graph, case, prediction),
         "frame_paths": _frame_paths(case),
         "predicted_evidence_sources": _predicted_evidence_sources(attribution_payload),
+        "research_axes": list(qa_research_axes_for_case(qa_case_to_dict(case))),
     }
 
 
@@ -302,6 +411,7 @@ def _summary(cases: Sequence[Mapping[str, Any]], *, prediction_count: int) -> di
             for attribution in attributions
             if isinstance(attribution, Mapping)
         ),
+        "by_research_axis": _research_axis_summary(cases),
         "by_predicted_evidence_source": _predicted_evidence_source_summary(cases),
     }
 
@@ -344,6 +454,108 @@ def _active_task_review(report: Mapping[str, Any]) -> dict[str, Any]:
         ),
         "panels": panels,
     }
+
+
+def _active_task_delta_review(report: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        "schema_version": report.get("schema_version"),
+        "report_digest": report.get("report_digest"),
+        "candidate_name": report.get("candidate_name"),
+        "baseline_name": report.get("baseline_name"),
+        "candidate_report_digest": report.get("candidate_report_digest"),
+        "baseline_report_digest": report.get("baseline_report_digest"),
+        "paths": {
+            "candidate_report_path": report.get("candidate_report_path"),
+            "baseline_report_path": report.get("baseline_report_path"),
+        },
+        "summary_delta": (
+            _json_mapping(report["summary_delta"])
+            if isinstance(report.get("summary_delta"), Mapping)
+            else {}
+        ),
+        "metrics_delta": (
+            _json_mapping(report["metrics_delta"])
+            if isinstance(report.get("metrics_delta"), Mapping)
+            else {}
+        ),
+        "budget_delta": (
+            _json_mapping(report["budget_delta"])
+            if isinstance(report.get("budget_delta"), Mapping)
+            else {}
+        ),
+    }
+
+
+def _experiment_summary_review(report: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        "schema_version": report.get("schema_version"),
+        "report_digest": report.get("report_digest"),
+        "manifest_path": report.get("manifest_path"),
+        "manifest_digest": report.get("manifest_digest"),
+        "summary": (
+            _json_mapping(report["summary"])
+            if isinstance(report.get("summary"), Mapping)
+            else {}
+        ),
+        "readiness": (
+            _json_mapping(report["readiness"])
+            if isinstance(report.get("readiness"), Mapping)
+            else {}
+        ),
+        "source_artifact_digests": (
+            _json_mapping(report["source_artifact_digests"])
+            if isinstance(report.get("source_artifact_digests"), Mapping)
+            else {}
+        ),
+        "research_questions": (
+            _json_mapping(report["research_questions"])
+            if isinstance(report.get("research_questions"), Mapping)
+            else {}
+        ),
+        "failure_linkage_review": _failure_linkage_review(
+            report.get("failure_linkage_diagnostics")
+        ),
+        "research_question_matrix": _research_question_matrix(
+            report.get("research_questions")
+        ),
+    }
+
+
+def _failure_linkage_review(value: object) -> list[dict[str, Any]]:
+    if not isinstance(value, Mapping):
+        return []
+    rows: list[dict[str, Any]] = []
+    for artifact_key, row in sorted(value.items(), key=lambda item: str(item[0])):
+        if not isinstance(row, Mapping):
+            continue
+        error_key = row.get("error_attribution_artifact_key")
+        rows.append(
+            _json_mapping(
+                {
+                    "error_attribution_artifact_key": (
+                        error_key if isinstance(error_key, str) else str(artifact_key)
+                    ),
+                    "graph_eval_artifact_key": row.get("graph_eval_artifact_key"),
+                    "linked_by": row.get("linked_by"),
+                    "graph_primary_metrics": (
+                        row["graph_primary_metrics"]
+                        if isinstance(row.get("graph_primary_metrics"), Mapping)
+                        else {}
+                    ),
+                    "graph_diagnostics": (
+                        row["graph_diagnostics"]
+                        if isinstance(row.get("graph_diagnostics"), Mapping)
+                        else {}
+                    ),
+                    "attribution_summary": (
+                        row["attribution_summary"]
+                        if isinstance(row.get("attribution_summary"), Mapping)
+                        else {}
+                    ),
+                }
+            )
+        )
+    return rows
 
 
 def _active_task_panel(
@@ -397,6 +609,289 @@ def _validate_active_task_review(value: object) -> bool:
     return len(panels) == task_count
 
 
+def _validate_active_task_delta_review(value: object) -> bool:
+    if not isinstance(value, Mapping):
+        return False
+    if not isinstance(value.get("candidate_name"), str):
+        return False
+    if not isinstance(value.get("baseline_name"), str):
+        return False
+    if not isinstance(value.get("report_digest"), str):
+        return False
+    if not isinstance(value.get("summary_delta"), Mapping):
+        return False
+    if not isinstance(value.get("metrics_delta"), Mapping):
+        return False
+    if not isinstance(value.get("budget_delta"), Mapping):
+        return False
+    paths = value.get("paths")
+    return isinstance(paths, Mapping)
+
+
+def _validate_experiment_summary_review(value: object) -> bool:
+    if not isinstance(value, Mapping):
+        return False
+    if not isinstance(value.get("report_digest"), str):
+        return False
+    if not isinstance(value.get("manifest_digest"), str):
+        return False
+    summary = value.get("summary")
+    readiness = value.get("readiness")
+    research_questions = value.get("research_questions")
+    research_question_matrix = value.get("research_question_matrix")
+    failure_linkage_review = value.get("failure_linkage_review")
+    if not isinstance(summary, Mapping):
+        return False
+    if not isinstance(readiness, Mapping):
+        return False
+    if not isinstance(readiness.get("status"), str):
+        return False
+    if not isinstance(research_questions, Mapping):
+        return False
+    if not isinstance(research_question_matrix, Sequence) or isinstance(
+        research_question_matrix,
+        str,
+    ):
+        return False
+    if failure_linkage_review is not None and (
+        not isinstance(failure_linkage_review, Sequence)
+        or isinstance(failure_linkage_review, str)
+        or not all(isinstance(item, Mapping) for item in failure_linkage_review)
+    ):
+        return False
+    research_question_count = summary.get("research_question_count")
+    if isinstance(research_question_count, bool) or not isinstance(
+        research_question_count,
+        int,
+    ):
+        return False
+    return (
+        len(research_questions) == research_question_count
+        and len(research_question_matrix)
+        == _experiment_summary_measurement_count(research_questions)
+    )
+
+
+def _experiment_summary_section(bundle: Mapping[str, Any]) -> str:
+    review = bundle.get("experiment_summary_review")
+    if not isinstance(review, Mapping):
+        return ""
+    readiness = _mapping_value(review.get("readiness"))
+    missing_questions = ", ".join(
+        _string_items(readiness.get("missing_research_questions"))
+    )
+    if missing_questions == "":
+        missing_questions = "none"
+    rows = "\n".join(
+        _experiment_summary_row(item)
+        for item in _experiment_summary_research_question_rows(review)
+    )
+    matrix_rows = "\n".join(
+        _experiment_summary_matrix_row(row)
+        for row in _experiment_summary_matrix_rows(review)
+    )
+    matrix_table = ""
+    if matrix_rows != "":
+        matrix_table = f"""
+    <h3>Measurement Matrix</h3>
+    <table>
+      <thead>
+        <tr><th>Question</th><th>Candidate</th><th>Baseline</th><th>Verdict</th><th>Metric</th><th>Value</th><th>Artifact</th></tr>
+      </thead>
+      <tbody>
+{matrix_rows}
+      </tbody>
+    </table>"""
+    linkage_rows = "\n".join(
+        _failure_linkage_row(row)
+        for row in _failure_linkage_rows(review)
+    )
+    linkage_table = ""
+    if linkage_rows != "":
+        linkage_table = f"""
+    <h3>Failure Linkage</h3>
+    <table>
+      <thead>
+        <tr><th>Attribution</th><th>Graph Eval</th><th>Linked By</th><th>Graph Metrics</th><th>Graph Diagnostics</th><th>Failures</th></tr>
+      </thead>
+      <tbody>
+{linkage_rows}
+      </tbody>
+    </table>"""
+    return f"""
+  <section aria-label="Experiment Summary">
+    <h2>Experiment Summary</h2>
+    <p>Manifest: {escape(str(review.get("manifest_path", "")))} · Digest: {escape(str(review.get("report_digest", "")))} · Readiness: {escape(str(readiness.get("status", "")))} · Missing RQ: {escape(missing_questions)}</p>
+    <table>
+      <thead>
+        <tr><th>Question</th><th>Status</th><th>Verdict</th><th>Source</th><th>Primary Metric</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+{rows}
+      </tbody>
+    </table>
+{matrix_table}
+{linkage_table}
+  </section>"""
+
+
+def _experiment_summary_research_question_rows(
+    review: Mapping[str, Any],
+) -> tuple[tuple[str, Mapping[str, Any]], ...]:
+    research_questions = review.get("research_questions")
+    if not isinstance(research_questions, Mapping):
+        return ()
+    return tuple(
+        (str(name), cast(Mapping[str, Any], value))
+        for name, value in sorted(research_questions.items(), key=lambda item: str(item[0]))
+        if isinstance(value, Mapping)
+    )
+
+
+def _experiment_summary_row(item: tuple[str, Mapping[str, Any]]) -> str:
+    name, question = item
+    primary_metric = question.get("primary_metric")
+    metric_name = ""
+    metric_value = ""
+    if isinstance(primary_metric, Mapping):
+        metric_name = str(primary_metric.get("name", ""))
+        metric_value = str(primary_metric.get("value", ""))
+    return (
+        "        <tr>"
+        f"<td>{escape(name)}</td>"
+        f"<td>{escape(str(question.get('status', '')))}</td>"
+        f"<td>{escape(str(question.get('verdict', '')))}</td>"
+        f"<td>{escape(str(question.get('source_artifact_type', '')))}</td>"
+        f"<td>{escape(metric_name)}</td>"
+        f"<td>{escape(metric_value)}</td>"
+        "</tr>"
+    )
+
+
+def _research_question_matrix(value: object) -> list[dict[str, Any]]:
+    if not isinstance(value, Mapping):
+        return []
+    rows: list[dict[str, Any]] = []
+    for question_name, question_value in sorted(value.items(), key=lambda item: str(item[0])):
+        if not isinstance(question_value, Mapping):
+            continue
+        source_artifact_type = question_value.get("source_artifact_type")
+        question_verdict = question_value.get("verdict")
+        label = question_value.get("label")
+        measurements = question_value.get("measurements")
+        if not isinstance(measurements, Sequence) or isinstance(measurements, str):
+            continue
+        for measurement in measurements:
+            if not isinstance(measurement, Mapping):
+                continue
+            primary_metric = (
+                _json_mapping(measurement["primary_metric"])
+                if isinstance(measurement.get("primary_metric"), Mapping)
+                else {}
+            )
+            row = {
+                "artifact_key": measurement.get("artifact_key"),
+                "baseline_name": measurement.get("baseline_name"),
+                "candidate_name": measurement.get("candidate_name"),
+                "case_count_match": measurement.get("case_count_match"),
+                "label": label,
+                "measurement_verdict": _measurement_verdict(
+                    primary_metric,
+                    measurement.get("case_count_match"),
+                ),
+                "primary_metric": primary_metric,
+                "question_verdict": question_verdict,
+                "research_question": str(question_name),
+                "source_artifact_type": source_artifact_type,
+                "status": question_value.get("status"),
+                "supporting_metrics": (
+                    _json_mapping(measurement["supporting_metrics"])
+                    if isinstance(measurement.get("supporting_metrics"), Mapping)
+                    else {}
+                ),
+            }
+            rows.append(_json_mapping(row))
+    return rows
+
+
+def _measurement_verdict(primary_metric: Mapping[str, Any], case_count_match: object) -> str:
+    if case_count_match is False:
+        return "inconclusive"
+    value = primary_metric.get("value")
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return "inconclusive"
+    if value > 0:
+        return "improved"
+    if value < 0:
+        return "regressed"
+    return "unchanged"
+
+
+def _experiment_summary_measurement_count(
+    research_questions: Mapping[str, Any],
+) -> int:
+    count = 0
+    for value in research_questions.values():
+        if not isinstance(value, Mapping):
+            continue
+        measurements = value.get("measurements")
+        if isinstance(measurements, Sequence) and not isinstance(measurements, str):
+            count += sum(1 for item in measurements if isinstance(item, Mapping))
+    return count
+
+
+def _experiment_summary_matrix_rows(
+    review: Mapping[str, Any],
+) -> tuple[Mapping[str, Any], ...]:
+    matrix = review.get("research_question_matrix")
+    if not isinstance(matrix, Sequence) or isinstance(matrix, str):
+        return ()
+    return tuple(cast(Mapping[str, Any], row) for row in matrix if isinstance(row, Mapping))
+
+
+def _experiment_summary_matrix_row(row: Mapping[str, Any]) -> str:
+    primary_metric = row.get("primary_metric")
+    metric_name = ""
+    metric_value = ""
+    if isinstance(primary_metric, Mapping):
+        metric_name = str(primary_metric.get("name", ""))
+        metric_value = str(primary_metric.get("value", ""))
+    return (
+        "        <tr>"
+        f"<td>{escape(str(row.get('research_question', '')))}</td>"
+        f"<td>{escape(str(row.get('candidate_name', '')))}</td>"
+        f"<td>{escape(str(row.get('baseline_name', '')))}</td>"
+        f"<td>{escape(str(row.get('measurement_verdict', '')))}</td>"
+        f"<td>{escape(metric_name)}</td>"
+        f"<td>{escape(metric_value)}</td>"
+        f"<td>{escape(str(row.get('artifact_key', '')))}</td>"
+        "</tr>"
+    )
+
+
+def _failure_linkage_rows(review: Mapping[str, Any]) -> tuple[Mapping[str, Any], ...]:
+    rows = review.get("failure_linkage_review")
+    if not isinstance(rows, Sequence) or isinstance(rows, str):
+        return ()
+    return tuple(cast(Mapping[str, Any], row) for row in rows if isinstance(row, Mapping))
+
+
+def _failure_linkage_row(row: Mapping[str, Any]) -> str:
+    metrics = row.get("graph_primary_metrics")
+    diagnostics = row.get("graph_diagnostics")
+    attribution_summary = row.get("attribution_summary")
+    return (
+        "        <tr>"
+        f"<td>{escape(str(row.get('error_attribution_artifact_key', '')))}</td>"
+        f"<td>{escape(str(row.get('graph_eval_artifact_key', '')))}</td>"
+        f"<td>{escape(str(row.get('linked_by', '')))}</td>"
+        f"<td><code>{escape(json.dumps(metrics if isinstance(metrics, Mapping) else {}, sort_keys=True))}</code></td>"
+        f"<td><code>{escape(json.dumps(diagnostics if isinstance(diagnostics, Mapping) else {}, sort_keys=True))}</code></td>"
+        f"<td><code>{escape(json.dumps(attribution_summary if isinstance(attribution_summary, Mapping) else {}, sort_keys=True))}</code></td>"
+        "</tr>"
+    )
+
+
 def _active_task_section(bundle: Mapping[str, Any]) -> str:
     rows = "\n".join(_active_task_row(panel) for panel in _active_task_rows(bundle))
     if rows == "":
@@ -413,6 +908,79 @@ def _active_task_section(bundle: Mapping[str, Any]) -> str:
       </tbody>
     </table>
   </section>"""
+
+
+def _active_task_delta_section(bundle: Mapping[str, Any]) -> str:
+    review = bundle.get("active_task_delta_review")
+    if not isinstance(review, Mapping):
+        return ""
+    metric_rows = "\n".join(_active_task_delta_metric_row(item) for item in _active_task_delta_metric_rows(review))
+    budget_rows = "\n".join(_active_task_delta_budget_row(item) for item in _active_task_delta_budget_rows(review))
+    return f"""
+  <section aria-label="Active Task Delta">
+    <h2>Active Task Delta</h2>
+    <p>Candidate: {escape(str(review.get("candidate_name", "")))} · Baseline: {escape(str(review.get("baseline_name", "")))}</p>
+    <table>
+      <thead>
+        <tr><th>Metric</th><th>Count Delta</th><th>Rate Delta</th><th>Average Delta</th></tr>
+      </thead>
+      <tbody>
+{metric_rows}
+      </tbody>
+    </table>
+    <table>
+      <thead>
+        <tr><th>Max Actions</th><th>Success Rate Delta</th><th>Evidence Delta</th><th>Action Delta</th></tr>
+      </thead>
+      <tbody>
+{budget_rows}
+      </tbody>
+    </table>
+  </section>"""
+
+
+def _active_task_delta_metric_rows(review: Mapping[str, Any]) -> tuple[tuple[str, Mapping[str, Any]], ...]:
+    metrics = review.get("metrics_delta")
+    if not isinstance(metrics, Mapping):
+        return ()
+    return tuple(
+        (str(name), cast(Mapping[str, Any], value))
+        for name, value in sorted(metrics.items(), key=lambda item: str(item[0]))
+        if isinstance(value, Mapping)
+    )
+
+
+def _active_task_delta_metric_row(item: tuple[str, Mapping[str, Any]]) -> str:
+    name, metric = item
+    return (
+        "        <tr>"
+        f"<td>{escape(name)}</td>"
+        f"<td>{escape(str(metric.get('count_delta', '')))}</td>"
+        f"<td>{escape(str(metric.get('rate_delta', '')))}</td>"
+        f"<td>{escape(str(metric.get('average_delta', '')))}</td>"
+        "</tr>"
+    )
+
+
+def _active_task_delta_budget_rows(review: Mapping[str, Any]) -> tuple[Mapping[str, Any], ...]:
+    budget = review.get("budget_delta")
+    if not isinstance(budget, Mapping):
+        return ()
+    curve = budget.get("budget_curve", ())
+    if not isinstance(curve, Sequence) or isinstance(curve, str):
+        return ()
+    return tuple(cast(Mapping[str, Any], item) for item in curve if isinstance(item, Mapping))
+
+
+def _active_task_delta_budget_row(item: Mapping[str, Any]) -> str:
+    return (
+        "        <tr>"
+        f"<td>{escape(str(item.get('max_actions', '')))}</td>"
+        f"<td>{escape(str(item.get('success_rate_delta', '')))}</td>"
+        f"<td>{escape(str(item.get('average_evidence_coverage_delta', '')))}</td>"
+        f"<td>{escape(str(item.get('average_action_count_delta', '')))}</td>"
+        "</tr>"
+    )
 
 
 def _active_task_row(panel: Mapping[str, Any]) -> str:
@@ -449,25 +1017,26 @@ def _active_task_rows(bundle: Mapping[str, Any]) -> tuple[Mapping[str, Any], ...
 
 def _table_row(case: Mapping[str, Any]) -> str:
     qa_case = _case_qa(case)
-    eval_result = case.get("eval_result")
-    attribution = case.get("error_attribution")
-    exact_match = (
-        eval_result.get("exact_match")
-        if isinstance(eval_result, Mapping)
-        else None
-    )
-    error_category = (
-        attribution.get("error_category")
-        if isinstance(attribution, Mapping)
-        else "none"
-    )
-    evidence_sources = ", ".join(_predicted_evidence_sources(case))
+    exact_match = _case_exact_match_value(case)
+    error_category = _case_error_category(case)
+    research_axis_items = _case_research_axes(case)
+    evidence_source_items = _predicted_evidence_sources(case)
+    evidence_sources = ", ".join(evidence_source_items)
+    tag_items = _case_tags(case)
     return (
-        "      <tr>"
+        "      <tr"
+        f" data-case-id=\"{escape(str(case.get('case_id', '')))}\""
+        f" data-question-type=\"{escape(str(qa_case.get('question_type', '')))}\""
+        f" data-tags=\"{escape('|'.join(tag_items))}\""
+        f" data-exact-match=\"{escape(exact_match)}\""
+        f" data-error-category=\"{escape(error_category)}\""
+        f" data-research-axes=\"{escape('|'.join(research_axis_items))}\""
+        f" data-evidence-sources=\"{escape('|'.join(evidence_source_items))}\""
+        ">"
         f"<td>{escape(str(case.get('case_id', '')))}</td>"
         f"<td>{escape(str(qa_case.get('question_type', '')))}</td>"
-        f"<td>{escape(str(exact_match))}</td>"
-        f"<td>{escape(str(error_category))}</td>"
+        f"<td>{escape(exact_match)}</td>"
+        f"<td>{escape(error_category)}</td>"
         f"<td>{escape(evidence_sources)}</td>"
         f"<td><code>{escape(json.dumps(qa_case.get('answer', {}), sort_keys=True))}</code></td>"
         "</tr>"
@@ -484,6 +1053,41 @@ def _case_rows(bundle: Mapping[str, Any]) -> tuple[Mapping[str, Any], ...]:
 def _case_qa(case: Mapping[str, Any]) -> Mapping[str, Any]:
     qa_case = case.get("qa_case")
     return cast(Mapping[str, Any], qa_case) if isinstance(qa_case, Mapping) else {}
+
+
+def _case_tags(case: Mapping[str, Any]) -> tuple[str, ...]:
+    tags = _case_qa(case).get("tags", ())
+    if not isinstance(tags, Sequence) or isinstance(tags, str):
+        return ()
+    return tuple(tag for tag in tags if isinstance(tag, str) and tag)
+
+
+def _case_exact_match_value(case: Mapping[str, Any]) -> str:
+    eval_result = case.get("eval_result")
+    if not isinstance(eval_result, Mapping):
+        return "None"
+    return str(eval_result.get("exact_match"))
+
+
+def _case_error_category(case: Mapping[str, Any]) -> str:
+    attribution = case.get("error_attribution")
+    if not isinstance(attribution, Mapping):
+        return "none"
+    return str(attribution.get("error_category"))
+
+
+def _case_research_axes(case: Mapping[str, Any]) -> tuple[str, ...]:
+    axes = case.get("research_axes")
+    if not isinstance(axes, Sequence) or isinstance(axes, str):
+        return ()
+    return tuple(axis for axis in axes if isinstance(axis, str) and axis)
+
+
+def _filter_options(values: Iterable[str]) -> str:
+    return "".join(
+        f'<option value="{escape(value)}">{escape(value)}</option>'
+        for value in sorted({value for value in values if value})
+    )
 
 
 def _summary_value(bundle: Mapping[str, Any], key: str) -> object:
@@ -539,6 +1143,10 @@ def _string_value(value: object) -> str:
     return value if isinstance(value, str) else ""
 
 
+def _mapping_value(value: object) -> Mapping[str, Any]:
+    return cast(Mapping[str, Any], value) if isinstance(value, Mapping) else {}
+
+
 def _sorted_counts(values: Iterable[str]) -> dict[str, int]:
     counts: dict[str, int] = {}
     for value in values:
@@ -587,6 +1195,82 @@ def _predicted_evidence_source_summary(
         }
         for source, attributions in sorted(grouped.items())
     }
+
+
+def _research_axis_summary(cases: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    grouped: dict[str, list[Mapping[str, Any]]] = {
+        axis: [] for axis in QA_RESEARCH_AXIS_NAMES
+    }
+    for case in cases:
+        attribution = case.get("error_attribution")
+        if not isinstance(attribution, Mapping):
+            continue
+        for axis in _case_research_axes(case):
+            if axis in grouped:
+                grouped[axis].append(attribution)
+    return {axis: _attribution_summary(grouped[axis]) for axis in QA_RESEARCH_AXIS_NAMES}
+
+
+def _attribution_summary(attributions: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    return {
+        "answer_correct_count": _bool_count(attributions, "answer_correct"),
+        "by_error_category": _sorted_counts(
+            str(attribution.get("error_category")) for attribution in attributions
+        ),
+        "by_evidence_error_category": _sorted_counts(
+            str(attribution.get("evidence_error_category")) for attribution in attributions
+        ),
+        "by_predicted_evidence_source": _attribution_source_summary(attributions),
+        "case_count": len(attributions),
+        "error_count": sum(
+            1
+            for attribution in attributions
+            if attribution.get("error_category") != "correct"
+        ),
+        "oracle_graph_tool_correct_count": _bool_count(
+            attributions,
+            "oracle_graph_tool_correct",
+        ),
+        "predicted_graph_tool_correct_count": _bool_count(
+            attributions,
+            "predicted_graph_tool_correct",
+        ),
+    }
+
+
+def _attribution_source_summary(
+    attributions: Sequence[Mapping[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    grouped: dict[str, list[Mapping[str, Any]]] = {}
+    for attribution in attributions:
+        sources = _predicted_evidence_sources(attribution)
+        if not sources:
+            sources = ["missing_predicted_evidence"]
+        for source in sources:
+            grouped.setdefault(source, []).append(attribution)
+    return {
+        source: {
+            "by_error_category": _sorted_counts(
+                str(attribution.get("error_category"))
+                for attribution in source_attributions
+            ),
+            "by_evidence_error_category": _sorted_counts(
+                str(attribution.get("evidence_error_category"))
+                for attribution in source_attributions
+            ),
+            "case_count": len(source_attributions),
+            "error_count": sum(
+                1
+                for attribution in source_attributions
+                if attribution.get("error_category") != "correct"
+            ),
+        }
+        for source, source_attributions in sorted(grouped.items())
+    }
+
+
+def _bool_count(attributions: Sequence[Mapping[str, Any]], key: str) -> int:
+    return sum(1 for attribution in attributions if attribution.get(key) is True)
 
 
 def _json_mapping(value: Mapping[str, Any]) -> dict[str, Any]:

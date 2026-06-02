@@ -137,6 +137,284 @@ def test_evaluate_qa_predictions_reports_accuracy_evidence_and_breakdowns() -> N
     assert report["cases"][2]["error"] == "missing_prediction"
 
 
+def test_qa_eval_report_includes_research_axis_breakdowns() -> None:
+    cases = list(qa_metric_cases())
+    relation_payload = lab.qa_case_to_dict(cases[1])
+    relation_payload["tags"] = [*relation_payload["tags"], "dynamic", "memory"]
+    cases[1] = lab.qa_case_from_dict(relation_payload)
+    predictions = qa_metric_predictions(tuple(cases))
+
+    report = lab.qa_eval_report(cases, predictions)
+
+    assert report["breakdown"]["by_research_axis"] == {
+        "dynamic_memory": {
+            "case_count": 1,
+            "exact_match_count": 0,
+            "exact_match_rate": 0.0,
+            "mean_evidence_edge_recall": 0.0,
+            "mean_evidence_node_recall": 0.5,
+        },
+        "graph_tool_query": {
+            "case_count": 3,
+            "exact_match_count": 1,
+            "exact_match_rate": 0.333333,
+            "mean_evidence_edge_recall": 0.333333,
+            "mean_evidence_node_recall": 0.5,
+        },
+        "spatial_qa": {
+            "case_count": 3,
+            "exact_match_count": 1,
+            "exact_match_rate": 0.333333,
+            "mean_evidence_edge_recall": 0.333333,
+            "mean_evidence_node_recall": 0.5,
+        },
+    }
+
+
+def test_qa_eval_report_and_delta_include_scene_and_episode_breakdowns() -> None:
+    cases = list(qa_metric_cases())
+    moved_payload = lab.qa_case_to_dict(cases[2])
+    moved_payload["id"] = "episode_002:kitchen_scene:0008:nearest_object:mug_1"
+    moved_payload["scene_id"] = "kitchen_scene"
+    moved_payload["episode_id"] = "episode_002"
+    cases[2] = lab.qa_case_from_dict(moved_payload)
+    candidate_report = lab.qa_eval_report(cases, qa_metric_predictions(tuple(cases)))
+    baseline_report = lab.qa_eval_report(cases, ())
+
+    assert candidate_report["cases"][0]["scene_id"] == "tabletop_scene"
+    assert candidate_report["cases"][0]["episode_id"] == "episode_001"
+    assert candidate_report["cases"][2]["scene_id"] == "kitchen_scene"
+    assert candidate_report["cases"][2]["episode_id"] == "episode_002"
+    assert candidate_report["breakdown"]["by_scene_id"] == {
+        "kitchen_scene": {
+            "case_count": 1,
+            "exact_match_count": 0,
+            "exact_match_rate": 0.0,
+            "mean_evidence_edge_recall": 0.0,
+            "mean_evidence_node_recall": 0.0,
+        },
+        "tabletop_scene": {
+            "case_count": 2,
+            "exact_match_count": 1,
+            "exact_match_rate": 0.5,
+            "mean_evidence_edge_recall": 0.5,
+            "mean_evidence_node_recall": 0.75,
+        },
+    }
+    assert candidate_report["breakdown"]["by_episode_id"] == {
+        "episode_001": {
+            "case_count": 2,
+            "exact_match_count": 1,
+            "exact_match_rate": 0.5,
+            "mean_evidence_edge_recall": 0.5,
+            "mean_evidence_node_recall": 0.75,
+        },
+        "episode_002": {
+            "case_count": 1,
+            "exact_match_count": 0,
+            "exact_match_rate": 0.0,
+            "mean_evidence_edge_recall": 0.0,
+            "mean_evidence_node_recall": 0.0,
+        },
+    }
+
+    delta = lab.qa_eval_delta_report(candidate_report, baseline_report)
+
+    assert delta["breakdown_delta"]["by_scene_id"]["tabletop_scene"] == {
+        "baseline_case_count": 2,
+        "baseline_exact_match_count": 0,
+        "baseline_exact_match_rate": 0.0,
+        "baseline_mean_evidence_edge_recall": 0.0,
+        "baseline_mean_evidence_node_recall": 0.0,
+        "candidate_case_count": 2,
+        "candidate_exact_match_count": 1,
+        "candidate_exact_match_rate": 0.5,
+        "candidate_mean_evidence_edge_recall": 0.5,
+        "candidate_mean_evidence_node_recall": 0.75,
+        "case_count_delta": 0,
+        "case_count_match": True,
+        "exact_match_count_delta": 1,
+        "exact_match_rate_delta": 0.5,
+        "mean_evidence_edge_recall_delta": 0.5,
+        "mean_evidence_node_recall_delta": 0.75,
+    }
+    assert delta["breakdown_delta"]["by_episode_id"]["episode_002"][
+        "case_count_match"
+    ] is True
+    assert delta["breakdown_delta"]["by_episode_id"]["episode_002"][
+        "exact_match_rate_delta"
+    ] == 0.0
+
+
+def test_qa_eval_validation_detects_research_axis_breakdown_drift() -> None:
+    cases = qa_metric_cases()
+    predictions = qa_metric_predictions(cases)
+    report = lab.qa_eval_report(cases, predictions)
+    report["breakdown"]["by_research_axis"] = {}
+    report["report_digest"] = lab.qa_eval_report_digest(report)
+
+    validation = lab.validate_qa_eval_report(report)
+
+    checks = {check["name"]: check for check in validation["checks"]}
+    assert validation["valid"] is False
+    assert checks["research_axis_breakdown"]["passed"] is False
+    assert checks["research_axis_breakdown"]["expected"] == {
+        "dynamic_memory": {
+            "case_count": 0,
+            "exact_match_count": 0,
+            "exact_match_rate": 0.0,
+            "mean_evidence_edge_recall": 0.0,
+            "mean_evidence_node_recall": 0.0,
+        },
+        "graph_tool_query": {
+            "case_count": 3,
+            "exact_match_count": 1,
+            "exact_match_rate": 0.333333,
+            "mean_evidence_edge_recall": 0.333333,
+            "mean_evidence_node_recall": 0.5,
+        },
+        "spatial_qa": {
+            "case_count": 3,
+            "exact_match_count": 1,
+            "exact_match_rate": 0.333333,
+            "mean_evidence_edge_recall": 0.333333,
+            "mean_evidence_node_recall": 0.5,
+        },
+    }
+    assert checks["research_axis_breakdown"]["actual"] == {}
+
+
+def test_qa_eval_delta_report_compares_candidate_against_baseline() -> None:
+    assert hasattr(lab, "qa_eval_delta_report")
+    assert hasattr(lab, "validate_qa_eval_delta_report")
+    cases = list(qa_metric_cases())
+    relation_payload = lab.qa_case_to_dict(cases[1])
+    relation_payload["tags"] = [*relation_payload["tags"], "dynamic", "memory"]
+    cases[1] = lab.qa_case_from_dict(relation_payload)
+    candidate_report = lab.qa_eval_report(cases, qa_metric_predictions(tuple(cases)))
+    baseline_report = lab.qa_eval_report(cases, ())
+
+    delta = lab.qa_eval_delta_report(
+        candidate_report,
+        baseline_report,
+        candidate_name="graph_tool",
+        baseline_name="majority",
+    )
+    validation = lab.validate_qa_eval_delta_report(delta)
+
+    assert delta["schema_version"] == "dsg-spatialqa-lab.qa-eval-delta-report.v1"
+    assert delta["candidate_name"] == "graph_tool"
+    assert delta["baseline_name"] == "majority"
+    assert delta["summary_delta"] == {
+        "baseline_case_count": 3,
+        "baseline_exact_match_count": 0,
+        "baseline_exact_match_rate": 0.0,
+        "candidate_case_count": 3,
+        "candidate_exact_match_count": 1,
+        "candidate_exact_match_rate": 0.333333,
+        "case_count_delta": 0,
+        "case_count_match": True,
+        "exact_match_count_delta": 1,
+        "exact_match_rate_delta": 0.333333,
+    }
+    assert delta["metrics_delta"]["exact_match"] == {
+        "baseline_count": 0,
+        "baseline_rate": 0.0,
+        "candidate_count": 1,
+        "candidate_rate": 0.333333,
+        "count_delta": 1,
+        "rate_delta": 0.333333,
+    }
+    assert delta["metrics_delta"]["evidence_node_recall"] == {
+        "average_delta": 0.5,
+        "baseline_average": 0.0,
+        "candidate_average": 0.5,
+    }
+    assert delta["breakdown_delta"]["by_research_axis"]["dynamic_memory"] == {
+        "baseline_case_count": 1,
+        "baseline_exact_match_count": 0,
+        "baseline_exact_match_rate": 0.0,
+        "baseline_mean_evidence_edge_recall": 0.0,
+        "baseline_mean_evidence_node_recall": 0.0,
+        "candidate_case_count": 1,
+        "candidate_exact_match_count": 0,
+        "candidate_exact_match_rate": 0.0,
+        "candidate_mean_evidence_edge_recall": 0.0,
+        "candidate_mean_evidence_node_recall": 0.5,
+        "case_count_delta": 0,
+        "case_count_match": True,
+        "exact_match_count_delta": 0,
+        "exact_match_rate_delta": 0.0,
+        "mean_evidence_edge_recall_delta": 0.0,
+        "mean_evidence_node_recall_delta": 0.5,
+    }
+    assert delta["breakdown_delta"]["by_question_type"]["object_location"] == {
+        "baseline_case_count": 1,
+        "baseline_exact_match_count": 0,
+        "baseline_exact_match_rate": 0.0,
+        "baseline_mean_evidence_edge_recall": 0.0,
+        "baseline_mean_evidence_node_recall": 0.0,
+        "candidate_case_count": 1,
+        "candidate_exact_match_count": 1,
+        "candidate_exact_match_rate": 1.0,
+        "candidate_mean_evidence_edge_recall": 1.0,
+        "candidate_mean_evidence_node_recall": 1.0,
+        "case_count_delta": 0,
+        "case_count_match": True,
+        "exact_match_count_delta": 1,
+        "exact_match_rate_delta": 1.0,
+        "mean_evidence_edge_recall_delta": 1.0,
+        "mean_evidence_node_recall_delta": 1.0,
+    }
+    assert delta["breakdown_delta"]["by_tag"]["dynamic"] == {
+        "baseline_case_count": 1,
+        "baseline_exact_match_count": 0,
+        "baseline_exact_match_rate": 0.0,
+        "baseline_mean_evidence_edge_recall": 0.0,
+        "baseline_mean_evidence_node_recall": 0.0,
+        "candidate_case_count": 1,
+        "candidate_exact_match_count": 0,
+        "candidate_exact_match_rate": 0.0,
+        "candidate_mean_evidence_edge_recall": 0.0,
+        "candidate_mean_evidence_node_recall": 0.5,
+        "case_count_delta": 0,
+        "case_count_match": True,
+        "exact_match_count_delta": 0,
+        "exact_match_rate_delta": 0.0,
+        "mean_evidence_edge_recall_delta": 0.0,
+        "mean_evidence_node_recall_delta": 0.5,
+    }
+    assert delta["breakdown_delta"]["by_reference_frame"]["none"] == {
+        "baseline_case_count": 2,
+        "baseline_exact_match_count": 0,
+        "baseline_exact_match_rate": 0.0,
+        "baseline_mean_evidence_edge_recall": 0.0,
+        "baseline_mean_evidence_node_recall": 0.0,
+        "candidate_case_count": 2,
+        "candidate_exact_match_count": 1,
+        "candidate_exact_match_rate": 0.5,
+        "candidate_mean_evidence_edge_recall": 0.5,
+        "candidate_mean_evidence_node_recall": 0.5,
+        "case_count_delta": 0,
+        "case_count_match": True,
+        "exact_match_count_delta": 1,
+        "exact_match_rate_delta": 0.5,
+        "mean_evidence_edge_recall_delta": 0.5,
+        "mean_evidence_node_recall_delta": 0.5,
+    }
+    assert validation["valid"] is True
+
+    drifted_delta = dict(delta)
+    drifted_summary = dict(delta["summary_delta"])
+    drifted_summary["exact_match_rate_delta"] = 1.0
+    drifted_delta["summary_delta"] = drifted_summary
+    drifted_delta["report_digest"] = lab.qa_eval_delta_report_digest(drifted_delta)
+    drifted_validation = lab.validate_qa_eval_delta_report(drifted_delta)
+    checks = {check["name"]: check for check in drifted_validation["checks"]}
+    assert drifted_validation["valid"] is False
+    assert checks["summary_delta"]["passed"] is False
+
+
 def test_qa_prediction_jsonl_digest_report_validation_and_comparison(tmp_path: Path) -> None:
     assert hasattr(lab, "qa_prediction_to_dict")
     assert hasattr(lab, "qa_prediction_from_dict")
@@ -238,6 +516,59 @@ def test_run_qa_eval_cli_writes_validates_and_compares_report(
     comparison = json.loads(capsys.readouterr().out)
     assert comparison["action"] == "compare_qa_eval_report"
     assert comparison["path"] == str(report_path)
+    assert comparison["matches"] is True
+
+
+def test_run_qa_eval_cli_writes_validates_and_compares_delta_report(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_run_qa_eval_script()
+    main = cast(MainFn, getattr(module, "main"))
+    cases = qa_metric_cases()
+    candidate_report_path = tmp_path / "graph-tool-report.json"
+    baseline_report_path = tmp_path / "majority-report.json"
+    delta_report_path = tmp_path / "qa-delta-report.json"
+    candidate_report = lab.qa_eval_report(cases, qa_metric_predictions(cases))
+    baseline_report = lab.qa_eval_report(cases, ())
+    lab.save_qa_eval_report(candidate_report, candidate_report_path)
+    lab.save_qa_eval_report(baseline_report, baseline_report_path)
+
+    assert main(
+        [
+            "--candidate-report",
+            str(candidate_report_path),
+            "--baseline-report",
+            str(baseline_report_path),
+            "--candidate-name",
+            "graph_tool",
+            "--baseline-name",
+            "majority",
+            "--delta-report",
+            str(delta_report_path),
+        ]
+    ) == 0
+
+    output = json.loads(capsys.readouterr().out)
+    delta = lab.load_qa_eval_delta_report(delta_report_path)
+    assert output == {
+        "action": "qa_eval_delta_report",
+        "path": str(delta_report_path),
+        "valid": True,
+        "digest": delta["report_digest"],
+        "summary_delta": delta["summary_delta"],
+    }
+
+    assert main(["--validate-delta-report", str(delta_report_path)]) == 0
+    validation = json.loads(capsys.readouterr().out)
+    assert validation["action"] == "validate_qa_eval_delta_report"
+    assert validation["path"] == str(delta_report_path)
+    assert validation["valid"] is True
+
+    assert main(["--compare-delta-report", str(delta_report_path)]) == 0
+    comparison = json.loads(capsys.readouterr().out)
+    assert comparison["action"] == "compare_qa_eval_delta_report"
+    assert comparison["path"] == str(delta_report_path)
     assert comparison["matches"] is True
 
 

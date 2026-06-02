@@ -131,6 +131,94 @@ def test_error_attribution_summarizes_predicted_evidence_sources() -> None:
     assert lab.validate_error_attribution_report(report)["valid"] is True
 
 
+def test_error_attribution_summary_breaks_down_errors_by_research_axis() -> None:
+    oracle_graph = lab.load_scene_fixture("tabletop")
+    predicted_graph = _graph_with_moved_mug()
+    dynamic_case = _case_with_tags(
+        _case_by_type("relative_relation"),
+        ("dynamic", "memory"),
+    )
+    graph_tool_case = _case_by_type("object_location")
+    predictions = (
+        lab.QAPrediction(id=dynamic_case.id, answer={"wrong": True}),
+        lab.QAPrediction(id=graph_tool_case.id, answer={"wrong": True}),
+    )
+
+    report = lab.error_attribution_report(
+        (dynamic_case, graph_tool_case),
+        oracle_graph=oracle_graph,
+        predicted_graph=predicted_graph,
+        predictions=predictions,
+    )
+
+    assert report["summary"]["by_research_axis"] == {
+        "dynamic_memory": {
+            "answer_correct_count": 0,
+            "by_error_category": {"reasoning_or_tool_use": 1},
+            "by_evidence_error_category": {"none": 1},
+            "by_predicted_evidence_source": {
+                "unknown": {
+                    "by_error_category": {"reasoning_or_tool_use": 1},
+                    "by_evidence_error_category": {"none": 1},
+                    "case_count": 1,
+                    "error_count": 1,
+                },
+            },
+            "case_count": 1,
+            "error_count": 1,
+            "oracle_graph_tool_correct_count": 1,
+            "predicted_graph_tool_correct_count": 1,
+        },
+        "graph_tool_query": {
+            "answer_correct_count": 0,
+            "by_error_category": {
+                "graph_construction": 1,
+                "reasoning_or_tool_use": 1,
+            },
+            "by_evidence_error_category": {"none": 2},
+            "by_predicted_evidence_source": {
+                "unknown": {
+                    "by_error_category": {
+                        "graph_construction": 1,
+                        "reasoning_or_tool_use": 1,
+                    },
+                    "by_evidence_error_category": {"none": 2},
+                    "case_count": 2,
+                    "error_count": 2,
+                },
+            },
+            "case_count": 2,
+            "error_count": 2,
+            "oracle_graph_tool_correct_count": 2,
+            "predicted_graph_tool_correct_count": 1,
+        },
+        "spatial_qa": {
+            "answer_correct_count": 0,
+            "by_error_category": {
+                "graph_construction": 1,
+                "reasoning_or_tool_use": 1,
+            },
+            "by_evidence_error_category": {"none": 2},
+            "by_predicted_evidence_source": {
+                "unknown": {
+                    "by_error_category": {
+                        "graph_construction": 1,
+                        "reasoning_or_tool_use": 1,
+                    },
+                    "by_evidence_error_category": {"none": 2},
+                    "case_count": 2,
+                    "error_count": 2,
+                },
+            },
+            "case_count": 2,
+            "error_count": 2,
+            "oracle_graph_tool_correct_count": 2,
+            "predicted_graph_tool_correct_count": 1,
+        },
+    }
+    assert lab.validate_error_attribution_report(report)["valid"] is True
+
+
 def test_error_attribution_reports_benchmark_or_engine_error() -> None:
     oracle_graph = lab.load_scene_fixture("tabletop")
     case = lab.qa_case_from_dict(lab.qa_case_to_dict(_case_by_type("object_location")))
@@ -188,6 +276,33 @@ def test_error_attribution_report_digest_validation_and_comparison(tmp_path: Pat
     assert saved_path == report_path
     assert json.loads(lab.error_attribution_report_json(report)) == report
     assert report["report_digest"] == lab.error_attribution_report_digest(report)
+    empty_axis_summary = {
+        "answer_correct_count": 0,
+        "by_error_category": {},
+        "by_evidence_error_category": {},
+        "by_predicted_evidence_source": {},
+        "case_count": 0,
+        "error_count": 0,
+        "oracle_graph_tool_correct_count": 0,
+        "predicted_graph_tool_correct_count": 0,
+    }
+    graph_construction_axis_summary = {
+        "answer_correct_count": 0,
+        "by_error_category": {"graph_construction": 1},
+        "by_evidence_error_category": {"none": 1},
+        "by_predicted_evidence_source": {
+            "unknown": {
+                "by_error_category": {"graph_construction": 1},
+                "by_evidence_error_category": {"none": 1},
+                "case_count": 1,
+                "error_count": 1,
+            },
+        },
+        "case_count": 1,
+        "error_count": 1,
+        "oracle_graph_tool_correct_count": 1,
+        "predicted_graph_tool_correct_count": 0,
+    }
     assert report["summary"] == {
         "answer_correct_count": 0,
         "by_error_category": {"graph_construction": 1},
@@ -199,6 +314,11 @@ def test_error_attribution_report_digest_validation_and_comparison(tmp_path: Pat
                 "case_count": 1,
                 "error_count": 1,
             },
+        },
+        "by_research_axis": {
+            "dynamic_memory": empty_axis_summary,
+            "graph_tool_query": graph_construction_axis_summary,
+            "spatial_qa": graph_construction_axis_summary,
         },
         "case_count": 1,
         "error_count": 1,
@@ -299,6 +419,12 @@ def _case_by_type(question_type: str) -> lab.QACase:
 
 def _case_by_id_suffix(suffix: str) -> lab.QACase:
     return next(case for case in _tabletop_cases() if case.id.endswith(suffix))
+
+
+def _case_with_tags(case: lab.QACase, tags: tuple[str, ...]) -> lab.QACase:
+    payload = lab.qa_case_to_dict(case)
+    payload["tags"] = [*payload["tags"], *tags]
+    return lab.qa_case_from_dict(payload)
 
 
 def _clone_graph(graph: lab.DynamicSceneGraph) -> lab.DynamicSceneGraph:

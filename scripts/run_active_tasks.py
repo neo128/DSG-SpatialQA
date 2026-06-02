@@ -8,11 +8,18 @@ from typing import Any
 from dsg_spatialqa_lab import (
     ActiveGraphAgent,
     MockActiveEnvironment,
+    active_task_delta_report,
+    active_task_delta_report_digest,
     active_task_report,
+    compare_active_task_delta_report,
+    compare_active_task_report,
     load_active_eqa_tasks,
+    load_active_task_delta_report,
     load_active_task_report,
     load_graph_json,
+    save_active_task_delta_report,
     save_active_task_report,
+    validate_active_task_delta_report,
     validate_active_task_report,
 )
 from dsg_spatialqa_lab.schema import SpatialQAError
@@ -28,7 +35,115 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--policy", default="direct_answer", help="Active policy name.")
     parser.add_argument("--report", type=Path, help="Active task report JSON output path.")
     parser.add_argument("--validate-report", type=Path, help="Validate an active task report JSON.")
+    parser.add_argument(
+        "--compare-report",
+        type=Path,
+        help="Compare an active task report with current task and graph files.",
+    )
+    parser.add_argument("--candidate-report", type=Path, help="Candidate active task report path.")
+    parser.add_argument("--baseline-report", type=Path, help="Baseline active task report path.")
+    parser.add_argument("--candidate-name", default="candidate", help="Candidate policy name.")
+    parser.add_argument("--baseline-name", default="baseline", help="Baseline policy name.")
+    parser.add_argument("--delta-report", type=Path, help="Active task delta report output path.")
+    parser.add_argument("--validate-delta-report", type=Path, help="Validate an active task delta report.")
+    parser.add_argument(
+        "--compare-delta-report",
+        type=Path,
+        help="Compare an active task delta report with current candidate and baseline reports.",
+    )
     args = parser.parse_args(argv)
+
+    if args.validate_delta_report is not None:
+        try:
+            validation = validate_active_task_delta_report(
+                load_active_task_delta_report(args.validate_delta_report)
+            )
+        except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
+            _emit_json(
+                {
+                    "action": "validate_active_task_delta_report",
+                    "path": str(args.validate_delta_report),
+                    "valid": False,
+                    "error": str(exc),
+                }
+            )
+            return 1
+        _emit_json(
+            {
+                "action": "validate_active_task_delta_report",
+                "path": str(args.validate_delta_report),
+                **validation,
+            }
+        )
+        return 0 if validation["valid"] is True else 1
+
+    if args.compare_delta_report is not None:
+        try:
+            comparison = compare_active_task_delta_report(
+                load_active_task_delta_report(args.compare_delta_report)
+            )
+        except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
+            _emit_json(
+                {
+                    "action": "compare_active_task_delta_report",
+                    "path": str(args.compare_delta_report),
+                    "valid": False,
+                    "matches": False,
+                    "error": str(exc),
+                }
+            )
+            return 1
+        _emit_json(
+            {
+                "action": "compare_active_task_delta_report",
+                "path": str(args.compare_delta_report),
+                **comparison,
+            }
+        )
+        return 0 if comparison["matches"] is True else 1
+
+    if (
+        args.candidate_report is not None
+        or args.baseline_report is not None
+        or args.delta_report is not None
+    ):
+        if args.candidate_report is None:
+            parser.error("--candidate-report is required when generating a delta report")
+        if args.baseline_report is None:
+            parser.error("--baseline-report is required when generating a delta report")
+        if args.delta_report is None:
+            parser.error("--delta-report is required when generating a delta report")
+        try:
+            delta_report = active_task_delta_report(
+                load_active_task_report(args.candidate_report),
+                load_active_task_report(args.baseline_report),
+                candidate_name=args.candidate_name,
+                baseline_name=args.baseline_name,
+                candidate_report_path=args.candidate_report,
+                baseline_report_path=args.baseline_report,
+            )
+            save_active_task_delta_report(delta_report, args.delta_report)
+            validation = validate_active_task_delta_report(delta_report)
+        except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
+            _emit_json(
+                {
+                    "action": "active_task_delta_report",
+                    "path": str(args.delta_report),
+                    "valid": False,
+                    "error": str(exc),
+                }
+            )
+            return 1
+        _emit_json(
+            {
+                "action": "active_task_delta_report",
+                "path": str(args.delta_report),
+                "valid": validation["valid"],
+                "digest": active_task_delta_report_digest(delta_report),
+                "summary_delta": delta_report["summary_delta"],
+            }
+        )
+        return 0 if validation["valid"] is True else 1
 
     if args.validate_report is not None:
         try:
@@ -51,6 +166,29 @@ def main(argv: list[str] | None = None) -> int:
             }
         )
         return 0
+
+    if args.compare_report is not None:
+        try:
+            comparison = compare_active_task_report(load_active_task_report(args.compare_report))
+        except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
+            _emit_json(
+                {
+                    "action": "compare_active_task_report",
+                    "path": str(args.compare_report),
+                    "valid": False,
+                    "matches": False,
+                    "error": str(exc),
+                }
+            )
+            return 1
+        _emit_json(
+            {
+                "action": "compare_active_task_report",
+                "path": str(args.compare_report),
+                **comparison,
+            }
+        )
+        return 0 if comparison["matches"] is True else 1
 
     if args.tasks is None:
         parser.error("--tasks is required")

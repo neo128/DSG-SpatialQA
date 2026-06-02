@@ -9,8 +9,10 @@ from dsg_spatialqa_lab import (
     dashboard_bundle,
     export_dashboard,
     load_error_attribution_report,
+    load_active_task_delta_report,
     load_active_task_report,
     load_graph_json,
+    load_experiment_summary_report,
     load_qa_dataset,
     load_qa_eval_report,
     load_qa_predictions,
@@ -49,6 +51,16 @@ def main(argv: list[str] | None = None) -> int:
         help="Optional explicit local active task report JSON path.",
     )
     parser.add_argument(
+        "--active-task-delta-report",
+        type=Path,
+        help="Optional explicit local active task delta report JSON path.",
+    )
+    parser.add_argument(
+        "--experiment-summary-report",
+        type=Path,
+        help="Optional explicit local experiment summary report JSON path.",
+    )
+    parser.add_argument(
         "--output",
         type=Path,
         required=True,
@@ -67,6 +79,16 @@ def main(argv: list[str] | None = None) -> int:
             if args.active_task_report is not None
             else None
         )
+        active_task_delta_report = (
+            load_active_task_delta_report(args.active_task_delta_report)
+            if args.active_task_delta_report is not None
+            else None
+        )
+        experiment_summary_report = (
+            load_experiment_summary_report(args.experiment_summary_report)
+            if args.experiment_summary_report is not None
+            else None
+        )
         bundle = dashboard_bundle(
             load_qa_dataset(args.qa),
             predictions=load_qa_predictions(args.pred),
@@ -74,6 +96,8 @@ def main(argv: list[str] | None = None) -> int:
             graph=load_graph_json(args.graph),
             error_attribution_report=attribution_report,
             active_task_report=active_task_report,
+            active_task_delta_report=active_task_delta_report,
+            experiment_summary_report=experiment_summary_report,
         )
         export_result = export_dashboard(bundle, args.output)
         validation = validate_dashboard_bundle(bundle)

@@ -329,6 +329,237 @@ def test_active_task_report_digest_validation_and_cli(
     assert validation["path"] == str(report_path)
     assert validation["valid"] is True
 
+    assert main(["--compare-report", str(report_path)]) == 0
+    comparison = json.loads(capsys.readouterr().out)
+    assert comparison["action"] == "compare_active_task_report"
+    assert comparison["path"] == str(report_path)
+    assert comparison["matches"] is True
+
+
+def test_compare_active_task_report_detects_current_artifact_drift(tmp_path: Path) -> None:
+    assert hasattr(lab, "compare_active_task_report")
+    graph = lab.load_scene_fixture("tabletop")
+    task = _task_for_case(_case_by_type("object_location"), max_actions=1)
+    task_path = tmp_path / "active-tasks.jsonl"
+    graph_path = tmp_path / "graph.json"
+    lab.save_active_eqa_tasks((task,), task_path)
+    lab.save_graph_json(graph, graph_path)
+    result = lab.ActiveGraphAgent(policy="direct_answer").run(
+        task,
+        lab.MockActiveEnvironment({task.initial_step: graph}),
+    )
+    report = lab.active_task_report(
+        (task,),
+        (result,),
+        task_path=task_path,
+        graph_path=graph_path,
+        policy="direct_answer",
+    )
+
+    comparison = lab.compare_active_task_report(report)
+
+    assert comparison["matches"] is True
+    assert comparison["saved_digest"] == report["report_digest"]
+    assert comparison["current_digest"] == report["report_digest"]
+
+    drifted_report = dict(report)
+    drifted_summary = dict(report["summary"])
+    drifted_summary["success_count"] = 0
+    drifted_report["summary"] = drifted_summary
+    drifted_report["report_digest"] = lab.active_task_report_digest(drifted_report)
+
+    drifted_comparison = lab.compare_active_task_report(drifted_report)
+
+    assert drifted_comparison["matches"] is False
+    checks = {check["name"]: check for check in drifted_comparison["checks"]}
+    assert checks["summary_matches_current"]["passed"] is False
+    assert checks["metrics_match_current"]["passed"] is True
+
+
+def test_active_task_delta_report_compares_candidate_against_baseline() -> None:
+    assert hasattr(lab, "active_task_delta_report")
+    assert hasattr(lab, "validate_active_task_delta_report")
+    case = _case_by_id_suffix("object_location:plate_1")
+    task = _task_for_case(case, max_actions=1)
+    baseline_result = lab.ActiveTaskResult(
+        task_id=task.id,
+        policy="direct_answer",
+        answer={},
+        success=False,
+        action_count=0,
+        final_step=task.initial_step,
+        confidence=0.0,
+        error="missing_required_evidence",
+    )
+    candidate_result = lab.ActiveTaskResult(
+        task_id=task.id,
+        policy="oracle_evidence",
+        answer=case.answer,
+        success=True,
+        action_count=1,
+        evidence_nodes=case.required_nodes,
+        evidence_edges=case.required_edges,
+        final_step=task.initial_step + 1,
+        confidence=1.0,
+    )
+    baseline_report = lab.active_task_report((task,), (baseline_result,))
+    candidate_report = lab.active_task_report((task,), (candidate_result,))
+
+    delta = lab.active_task_delta_report(
+        candidate_report,
+        baseline_report,
+        candidate_name="oracle_evidence",
+        baseline_name="direct_answer",
+    )
+    validation = lab.validate_active_task_delta_report(delta)
+
+    assert delta["schema_version"] == "dsg-spatialqa-lab.active-task-delta-report.v1"
+    assert delta["candidate_name"] == "oracle_evidence"
+    assert delta["baseline_name"] == "direct_answer"
+    assert delta["summary_delta"] == {
+        "baseline_failure_count": 1,
+        "baseline_success_count": 0,
+        "baseline_task_count": 1,
+        "baseline_total_action_count": 0,
+        "candidate_failure_count": 0,
+        "candidate_success_count": 1,
+        "candidate_task_count": 1,
+        "candidate_total_action_count": 1,
+        "failure_count_delta": -1,
+        "success_count_delta": 1,
+        "task_count_delta": 0,
+        "task_count_match": True,
+        "total_action_count_delta": 1,
+    }
+    assert delta["metrics_delta"]["task_success"] == {
+        "baseline_count": 0,
+        "baseline_rate": 0.0,
+        "candidate_count": 1,
+        "candidate_rate": 1.0,
+        "count_delta": 1,
+        "rate_delta": 1.0,
+        "total_match": True,
+    }
+    assert delta["metrics_delta"]["evidence_coverage"] == {
+        "average_delta": 1.0,
+        "baseline_average": 0.0,
+        "candidate_average": 1.0,
+        "total_match": True,
+    }
+    assert delta["budget_delta"]["by_max_actions"]["1"] == {
+        "average_action_count_delta": 1.0,
+        "average_evidence_coverage_delta": 1.0,
+        "baseline_average_action_count": 0.0,
+        "baseline_average_evidence_coverage": 0.0,
+        "baseline_success_count": 0,
+        "baseline_success_rate": 0.0,
+        "baseline_task_count": 1,
+        "candidate_average_action_count": 1.0,
+        "candidate_average_evidence_coverage": 1.0,
+        "candidate_success_count": 1,
+        "candidate_success_rate": 1.0,
+        "candidate_task_count": 1,
+        "success_count_delta": 1,
+        "success_rate_delta": 1.0,
+        "task_count_delta": 0,
+        "task_count_match": True,
+    }
+    assert delta["budget_delta"]["budget_curve"] == [
+        {"max_actions": 1, **delta["budget_delta"]["by_max_actions"]["1"]}
+    ]
+    assert validation["valid"] is True
+
+    drifted_delta = dict(delta)
+    drifted_metrics = dict(delta["metrics_delta"])
+    drifted_task_success = dict(drifted_metrics["task_success"])
+    drifted_task_success["rate_delta"] = 0.0
+    drifted_metrics["task_success"] = drifted_task_success
+    drifted_delta["metrics_delta"] = drifted_metrics
+    drifted_delta["report_digest"] = lab.active_task_delta_report_digest(drifted_delta)
+    drifted_validation = lab.validate_active_task_delta_report(drifted_delta)
+    checks = {check["name"]: check for check in drifted_validation["checks"]}
+    assert drifted_validation["valid"] is False
+    assert checks["metrics_delta"]["passed"] is False
+
+
+def test_run_active_tasks_cli_writes_validates_and_compares_delta_report(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_run_active_tasks_script()
+    main = cast(MainFn, getattr(module, "main"))
+    case = _case_by_id_suffix("object_location:plate_1")
+    task = _task_for_case(case, max_actions=1)
+    candidate_report_path = tmp_path / "oracle-evidence-report.json"
+    baseline_report_path = tmp_path / "direct-answer-report.json"
+    delta_report_path = tmp_path / "active-delta-report.json"
+    baseline_result = lab.ActiveTaskResult(
+        task_id=task.id,
+        policy="direct_answer",
+        answer={},
+        success=False,
+        action_count=0,
+        final_step=task.initial_step,
+        confidence=0.0,
+        error="missing_required_evidence",
+    )
+    candidate_result = lab.ActiveTaskResult(
+        task_id=task.id,
+        policy="oracle_evidence",
+        answer=case.answer,
+        success=True,
+        action_count=1,
+        evidence_nodes=case.required_nodes,
+        evidence_edges=case.required_edges,
+        final_step=task.initial_step + 1,
+        confidence=1.0,
+    )
+    lab.save_active_task_report(
+        lab.active_task_report((task,), (candidate_result,)),
+        candidate_report_path,
+    )
+    lab.save_active_task_report(
+        lab.active_task_report((task,), (baseline_result,)),
+        baseline_report_path,
+    )
+
+    assert main(
+        [
+            "--candidate-report",
+            str(candidate_report_path),
+            "--baseline-report",
+            str(baseline_report_path),
+            "--candidate-name",
+            "oracle_evidence",
+            "--baseline-name",
+            "direct_answer",
+            "--delta-report",
+            str(delta_report_path),
+        ]
+    ) == 0
+
+    output = json.loads(capsys.readouterr().out)
+    delta = lab.load_active_task_delta_report(delta_report_path)
+    assert output == {
+        "action": "active_task_delta_report",
+        "path": str(delta_report_path),
+        "valid": True,
+        "digest": delta["report_digest"],
+        "summary_delta": delta["summary_delta"],
+    }
+
+    assert main(["--validate-delta-report", str(delta_report_path)]) == 0
+    validation = json.loads(capsys.readouterr().out)
+    assert validation["action"] == "validate_active_task_delta_report"
+    assert validation["path"] == str(delta_report_path)
+    assert validation["valid"] is True
+
+    assert main(["--compare-delta-report", str(delta_report_path)]) == 0
+    comparison = json.loads(capsys.readouterr().out)
+    assert comparison["action"] == "compare_active_task_delta_report"
+    assert comparison["path"] == str(delta_report_path)
+    assert comparison["matches"] is True
+
 
 def test_run_active_tasks_cli_returns_structured_json_for_invalid_tasks(
     tmp_path: Path,

@@ -115,6 +115,31 @@ def load_offline_prediction_records(path: str | Path) -> list[OfflinePredictionR
     return offline_prediction_records_from_jsonl(Path(path).read_text(encoding="utf-8"))
 
 
+def offline_prediction_source_profile(
+    source_name: str,
+    source_kind: str = "offline",
+    source_metadata: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
+    _validate_non_empty_str(source_name, "source_name")
+    _validate_non_empty_str(source_kind, "source_kind")
+    metadata = _json_mapping(source_metadata or {})
+    return {
+        "adapter": _metadata_text(metadata, ("adapter", "source_adapter"), source_kind),
+        "capability_axes": _capability_axes(metadata),
+        "dataset_id": _metadata_text(metadata, ("dataset_id", "dataset"), "unspecified"),
+        "kind": source_kind,
+        "metadata_keys": sorted(str(key) for key in metadata),
+        "model_id": _metadata_text(
+            metadata,
+            ("model_id", "model", "provider_model"),
+            "unspecified",
+        ),
+        "name": source_name,
+        "prompt_id": _metadata_text(metadata, ("prompt_id", "prompt"), "unspecified"),
+        "source_key": f"{source_kind}:{source_name}",
+    }
+
+
 def import_offline_predictions(
     gold_cases: Sequence[QACase],
     records: Sequence[OfflinePredictionRecord],
@@ -128,6 +153,7 @@ def import_offline_predictions(
 ) -> tuple[list[QAPrediction], dict[str, Any]]:
     _validate_non_empty_str(source_name, "source_name")
     _validate_non_empty_str(source_kind, "source_kind")
+    normalized_metadata = _json_mapping(source_metadata or {})
     case_ids = [case.id for case in gold_cases]
     known_case_ids = set(case_ids)
     imported_case_ids: set[str] = set()
@@ -163,9 +189,14 @@ def import_offline_predictions(
         "schema_version": OFFLINE_PREDICTION_IMPORT_REPORT_SCHEMA_VERSION,
         "source": {
             "kind": source_kind,
-            "metadata": _json_mapping(source_metadata or {}),
+            "metadata": normalized_metadata,
             "name": source_name,
         },
+        "source_profile": offline_prediction_source_profile(
+            source_name,
+            source_kind,
+            normalized_metadata,
+        ),
         "qa_path": str(qa_path) if qa_path is not None else None,
         "input_path": str(input_path) if input_path is not None else None,
         "prediction_path": str(prediction_path) if prediction_path is not None else None,
@@ -219,6 +250,7 @@ def validate_offline_prediction_import_report(report: Mapping[str, Any]) -> dict
     schema_version = report.get("schema_version")
     report_digest = _string_or_none(report.get("report_digest"))
     expected_digest = offline_prediction_import_report_digest(report)
+    expected_source_profile = _expected_source_profile(report.get("source"))
     records = _mapping_items(report.get("records"))
     summary = report.get("summary")
     missing_case_ids = _string_items(report.get("missing_case_ids"))
@@ -267,6 +299,12 @@ def validate_offline_prediction_import_report(report: Mapping[str, Any]) -> dict
             "passed": _summary_value(summary, "duplicate_case_count") == len(duplicate_case_ids),
             "expected": len(duplicate_case_ids),
             "actual": _summary_value(summary, "duplicate_case_count"),
+        },
+        {
+            "name": "source_profile",
+            "passed": report.get("source_profile") == expected_source_profile,
+            "expected": expected_source_profile,
+            "actual": report.get("source_profile"),
         },
     ]
     return {
@@ -330,6 +368,11 @@ def compare_offline_prediction_import_report(report: Mapping[str, Any]) -> dict[
             report.get("missing_case_ids"),
             current_report["missing_case_ids"],
         ),
+        _equality_check(
+            "source_profile_matches_current",
+            report.get("source_profile"),
+            current_report["source_profile"],
+        ),
     ]
     return {
         "matches": all(check["passed"] is True for check in checks),
@@ -353,6 +396,25 @@ def _record_result(
         "imported": imported,
         "line_number": line_number,
     }
+
+
+def _expected_source_profile(source: object) -> dict[str, Any] | None:
+    if not isinstance(source, Mapping):
+        return None
+    name = source.get("name")
+    kind = source.get("kind")
+    metadata = source.get("metadata", {})
+    if not isinstance(name, str) or name == "":
+        return None
+    if not isinstance(kind, str) or kind == "":
+        return None
+    if not isinstance(metadata, Mapping):
+        return None
+    return offline_prediction_source_profile(
+        name,
+        kind,
+        cast(Mapping[str, Any], metadata),
+    )
 
 
 def _equality_check(name: str, expected: object, actual: object) -> dict[str, Any]:
@@ -447,6 +509,29 @@ def _string_or_none(value: object) -> str | None:
 
 def _summary_value(summary: object, key: str) -> object:
     return summary.get(key) if isinstance(summary, Mapping) else None
+
+
+def _metadata_text(
+    metadata: Mapping[str, Any],
+    keys: Sequence[str],
+    default: str,
+) -> str:
+    for key in keys:
+        value = metadata.get(key)
+        if isinstance(value, str) and value != "":
+            return value
+    return default
+
+
+def _capability_axes(metadata: Mapping[str, Any]) -> list[str]:
+    axes: set[str] = set()
+    for key in ("capability_axes", "capabilities", "research_axes"):
+        value = metadata.get(key)
+        if isinstance(value, str):
+            axes.update(item.strip() for item in value.split(",") if item.strip())
+        elif isinstance(value, Sequence):
+            axes.update(item for item in value if isinstance(item, str) and item != "")
+    return sorted(axes)
 
 
 def _json_mapping(value: Mapping[str, Any]) -> dict[str, Any]:

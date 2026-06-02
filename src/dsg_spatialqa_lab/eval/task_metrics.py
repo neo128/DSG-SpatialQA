@@ -6,13 +6,23 @@ import json
 from pathlib import Path
 from typing import Any, cast
 
-from dsg_spatialqa_lab.agents.active_graph_agent import ActiveTaskResult
+from dsg_spatialqa_lab.agents.active_graph_agent import ActiveGraphAgent, ActiveTaskResult
+from dsg_spatialqa_lab.scene_io import load_graph_json
 from dsg_spatialqa_lab.schema import SpatialQAError
-from dsg_spatialqa_lab.tasks import ActiveEQATask, active_eqa_tasks_digest, active_eqa_task_to_dict
+from dsg_spatialqa_lab.tasks import (
+    ActiveEQATask,
+    MockActiveEnvironment,
+    active_eqa_tasks_digest,
+    active_eqa_task_to_dict,
+    load_active_eqa_tasks,
+)
 
 
 ACTIVE_TASK_RESULT_SCHEMA_VERSION = "dsg-spatialqa-lab.active-task-result.v1"
 ACTIVE_TASK_REPORT_SCHEMA_VERSION = "dsg-spatialqa-lab.active-task-report.v1"
+ACTIVE_TASK_DELTA_REPORT_SCHEMA_VERSION = (
+    "dsg-spatialqa-lab.active-task-delta-report.v1"
+)
 
 
 def active_task_result_to_dict(result: ActiveTaskResult) -> dict[str, Any]:
@@ -208,6 +218,221 @@ def validate_active_task_report(report: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+def compare_active_task_report(report: Mapping[str, Any]) -> dict[str, Any]:
+    task_path = _required_report_path(report, "task_path")
+    graph_path = _required_report_path(report, "graph_path")
+    policy = _required_report_policy(report)
+    tasks = load_active_eqa_tasks(task_path)
+    graph = load_graph_json(graph_path)
+    agent = ActiveGraphAgent(policy=policy)
+    results = [
+        agent.run(task, MockActiveEnvironment({task.initial_step: graph}))
+        for task in tasks
+    ]
+    current_report = active_task_report(
+        tasks,
+        results,
+        task_path=task_path,
+        graph_path=graph_path,
+        policy=policy,
+    )
+    validation = validate_active_task_report(report)
+    saved_digest = _string_or_none(report.get("report_digest"))
+    current_digest = _string_or_none(current_report.get("report_digest"))
+    checks = [
+        {
+            "name": "report_valid",
+            "passed": validation["valid"] is True,
+            "expected": True,
+            "actual": validation["valid"],
+        },
+        {
+            "name": "report_digest_matches_current",
+            "passed": saved_digest == current_digest,
+            "expected": saved_digest,
+            "actual": current_digest,
+        },
+        _equality_check("summary_matches_current", report.get("summary"), current_report["summary"]),
+        _equality_check("metrics_match_current", report.get("metrics"), current_report["metrics"]),
+        _equality_check("budget_analysis_matches_current", report.get("budget_analysis"), current_report["budget_analysis"]),
+        _equality_check("tasks_match_current", report.get("tasks"), current_report["tasks"]),
+        _equality_check("results_match_current", report.get("results"), current_report["results"]),
+        _equality_check("cases_match_current", report.get("cases"), current_report["cases"]),
+    ]
+    return {
+        "matches": all(check["passed"] is True for check in checks),
+        "saved_digest": saved_digest,
+        "current_digest": current_digest,
+        "validation": validation,
+        "checks": checks,
+    }
+
+
+def active_task_delta_report(
+    candidate_report: Mapping[str, Any],
+    baseline_report: Mapping[str, Any],
+    *,
+    candidate_name: str = "candidate",
+    baseline_name: str = "baseline",
+    candidate_report_path: str | Path | None = None,
+    baseline_report_path: str | Path | None = None,
+) -> dict[str, Any]:
+    report: dict[str, Any] = {
+        "schema_version": ACTIVE_TASK_DELTA_REPORT_SCHEMA_VERSION,
+        "candidate_name": candidate_name,
+        "baseline_name": baseline_name,
+        "candidate_report_path": (
+            str(candidate_report_path) if candidate_report_path is not None else None
+        ),
+        "baseline_report_path": (
+            str(baseline_report_path) if baseline_report_path is not None else None
+        ),
+        "candidate_report_digest": _string_or_none(candidate_report.get("report_digest")),
+        "baseline_report_digest": _string_or_none(baseline_report.get("report_digest")),
+        "summary_delta": _active_summary_delta(
+            candidate_report.get("summary"),
+            baseline_report.get("summary"),
+        ),
+        "metrics_delta": _active_metrics_delta(
+            candidate_report.get("metrics"),
+            baseline_report.get("metrics"),
+        ),
+        "budget_delta": _active_budget_delta(
+            candidate_report.get("budget_analysis"),
+            baseline_report.get("budget_analysis"),
+        ),
+    }
+    report["report_digest"] = active_task_delta_report_digest(report)
+    return report
+
+
+def active_task_delta_report_digest(report: Mapping[str, Any]) -> str:
+    payload = {key: value for key, value in report.items() if key != "report_digest"}
+    return hashlib.sha256(
+        json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    ).hexdigest()
+
+
+def active_task_delta_report_json(report: Mapping[str, Any]) -> str:
+    return json.dumps(report, indent=2, sort_keys=True) + "\n"
+
+
+def save_active_task_delta_report(report: Mapping[str, Any], path: str | Path) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(active_task_delta_report_json(report), encoding="utf-8")
+    return output_path
+
+
+def load_active_task_delta_report(path: str | Path) -> dict[str, Any]:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(payload, Mapping):
+        raise SpatialQAError("Active task delta report JSON must be an object")
+    return cast(dict[str, Any], payload)
+
+
+def validate_active_task_delta_report(report: Mapping[str, Any]) -> dict[str, Any]:
+    schema_version = report.get("schema_version")
+    report_digest = _string_or_none(report.get("report_digest"))
+    expected_report_digest = active_task_delta_report_digest(report)
+    summary_delta = report.get("summary_delta")
+    metrics_delta = report.get("metrics_delta")
+    budget_delta = report.get("budget_delta")
+    expected_summary_delta = _active_summary_delta_from_entry(summary_delta)
+    expected_metrics_delta = _active_metrics_delta_from_entry(metrics_delta)
+    expected_budget_delta = _active_budget_delta_from_entry(budget_delta)
+    checks = [
+        {
+            "name": "schema_version",
+            "passed": schema_version == ACTIVE_TASK_DELTA_REPORT_SCHEMA_VERSION,
+            "expected": ACTIVE_TASK_DELTA_REPORT_SCHEMA_VERSION,
+            "actual": schema_version,
+        },
+        {
+            "name": "report_digest",
+            "passed": report_digest == expected_report_digest,
+            "expected": expected_report_digest,
+            "actual": report_digest,
+        },
+        {
+            "name": "summary_delta",
+            "passed": summary_delta == expected_summary_delta,
+            "expected": expected_summary_delta,
+            "actual": summary_delta,
+        },
+        {
+            "name": "metrics_delta",
+            "passed": metrics_delta == expected_metrics_delta,
+            "expected": expected_metrics_delta,
+            "actual": metrics_delta,
+        },
+        {
+            "name": "budget_delta",
+            "passed": budget_delta == expected_budget_delta,
+            "expected": expected_budget_delta,
+            "actual": budget_delta,
+        },
+    ]
+    return {
+        "valid": all(check["passed"] is True for check in checks),
+        "schema_version": schema_version,
+        "report_digest": report_digest,
+        "checks": checks,
+    }
+
+
+def compare_active_task_delta_report(report: Mapping[str, Any]) -> dict[str, Any]:
+    candidate_report_path = _required_delta_report_path(report, "candidate_report_path")
+    baseline_report_path = _required_delta_report_path(report, "baseline_report_path")
+    current_report = active_task_delta_report(
+        load_active_task_report(candidate_report_path),
+        load_active_task_report(baseline_report_path),
+        candidate_name=_delta_report_name(report, "candidate_name"),
+        baseline_name=_delta_report_name(report, "baseline_name"),
+        candidate_report_path=candidate_report_path,
+        baseline_report_path=baseline_report_path,
+    )
+    validation = validate_active_task_delta_report(report)
+    saved_digest = _string_or_none(report.get("report_digest"))
+    current_digest = _string_or_none(current_report.get("report_digest"))
+    checks = [
+        {
+            "name": "report_valid",
+            "passed": validation["valid"] is True,
+            "expected": True,
+            "actual": validation["valid"],
+        },
+        {
+            "name": "report_digest_matches_current",
+            "passed": saved_digest == current_digest,
+            "expected": saved_digest,
+            "actual": current_digest,
+        },
+        _equality_check(
+            "summary_delta_matches_current",
+            report.get("summary_delta"),
+            current_report["summary_delta"],
+        ),
+        _equality_check(
+            "metrics_delta_matches_current",
+            report.get("metrics_delta"),
+            current_report["metrics_delta"],
+        ),
+        _equality_check(
+            "budget_delta_matches_current",
+            report.get("budget_delta"),
+            current_report["budget_delta"],
+        ),
+    ]
+    return {
+        "matches": all(check["passed"] is True for check in checks),
+        "saved_digest": saved_digest,
+        "current_digest": current_digest,
+        "validation": validation,
+        "checks": checks,
+    }
+
+
 def _case_result(task: ActiveEQATask | None, result: ActiveTaskResult) -> dict[str, Any]:
     required = task.required_evidence if task is not None else {}
     answer_accuracy = (
@@ -314,6 +539,359 @@ def _metrics(case_results: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _active_summary_delta(candidate_summary: object, baseline_summary: object) -> dict[str, Any]:
+    candidate_task_count = _int_mapping_value(candidate_summary, "task_count")
+    baseline_task_count = _int_mapping_value(baseline_summary, "task_count")
+    candidate_success_count = _int_mapping_value(candidate_summary, "success_count")
+    baseline_success_count = _int_mapping_value(baseline_summary, "success_count")
+    candidate_failure_count = _int_mapping_value(candidate_summary, "failure_count")
+    baseline_failure_count = _int_mapping_value(baseline_summary, "failure_count")
+    candidate_total_action_count = _int_mapping_value(
+        candidate_summary,
+        "total_action_count",
+    )
+    baseline_total_action_count = _int_mapping_value(
+        baseline_summary,
+        "total_action_count",
+    )
+    return {
+        "baseline_failure_count": baseline_failure_count,
+        "baseline_success_count": baseline_success_count,
+        "baseline_task_count": baseline_task_count,
+        "baseline_total_action_count": baseline_total_action_count,
+        "candidate_failure_count": candidate_failure_count,
+        "candidate_success_count": candidate_success_count,
+        "candidate_task_count": candidate_task_count,
+        "candidate_total_action_count": candidate_total_action_count,
+        "failure_count_delta": _int_delta(
+            candidate_failure_count,
+            baseline_failure_count,
+        ),
+        "success_count_delta": _int_delta(
+            candidate_success_count,
+            baseline_success_count,
+        ),
+        "task_count_delta": _int_delta(candidate_task_count, baseline_task_count),
+        "task_count_match": candidate_task_count == baseline_task_count,
+        "total_action_count_delta": _int_delta(
+            candidate_total_action_count,
+            baseline_total_action_count,
+        ),
+    }
+
+
+def _active_summary_delta_from_entry(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    return {
+        "baseline_failure_count": _int_mapping_value(entry, "baseline_failure_count"),
+        "baseline_success_count": _int_mapping_value(entry, "baseline_success_count"),
+        "baseline_task_count": _int_mapping_value(entry, "baseline_task_count"),
+        "baseline_total_action_count": _int_mapping_value(
+            entry,
+            "baseline_total_action_count",
+        ),
+        "candidate_failure_count": _int_mapping_value(entry, "candidate_failure_count"),
+        "candidate_success_count": _int_mapping_value(entry, "candidate_success_count"),
+        "candidate_task_count": _int_mapping_value(entry, "candidate_task_count"),
+        "candidate_total_action_count": _int_mapping_value(
+            entry,
+            "candidate_total_action_count",
+        ),
+        "failure_count_delta": _int_delta(
+            _int_mapping_value(entry, "candidate_failure_count"),
+            _int_mapping_value(entry, "baseline_failure_count"),
+        ),
+        "success_count_delta": _int_delta(
+            _int_mapping_value(entry, "candidate_success_count"),
+            _int_mapping_value(entry, "baseline_success_count"),
+        ),
+        "task_count_delta": _int_delta(
+            _int_mapping_value(entry, "candidate_task_count"),
+            _int_mapping_value(entry, "baseline_task_count"),
+        ),
+        "task_count_match": (
+            _int_mapping_value(entry, "candidate_task_count")
+            == _int_mapping_value(entry, "baseline_task_count")
+        ),
+        "total_action_count_delta": _int_delta(
+            _int_mapping_value(entry, "candidate_total_action_count"),
+            _int_mapping_value(entry, "baseline_total_action_count"),
+        ),
+    }
+
+
+def _active_metrics_delta(candidate_metrics: object, baseline_metrics: object) -> dict[str, Any]:
+    return {
+        "action_count": _average_metric_delta(
+            candidate_metrics,
+            baseline_metrics,
+            "action_count",
+        ),
+        "answer_accuracy": _count_rate_metric_delta(
+            candidate_metrics,
+            baseline_metrics,
+            "answer_accuracy",
+        ),
+        "answer_graph_consistency": _count_rate_metric_delta(
+            candidate_metrics,
+            baseline_metrics,
+            "answer_graph_consistency",
+        ),
+        "evidence_coverage": _average_metric_delta(
+            candidate_metrics,
+            baseline_metrics,
+            "evidence_coverage",
+        ),
+        "task_success": _count_rate_metric_delta(
+            candidate_metrics,
+            baseline_metrics,
+            "task_success",
+        ),
+    }
+
+
+def _active_metrics_delta_from_entry(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    return {
+        "action_count": _average_metric_delta_from_entry(entry.get("action_count")),
+        "answer_accuracy": _count_rate_metric_delta_from_entry(
+            entry.get("answer_accuracy")
+        ),
+        "answer_graph_consistency": _count_rate_metric_delta_from_entry(
+            entry.get("answer_graph_consistency")
+        ),
+        "evidence_coverage": _average_metric_delta_from_entry(
+            entry.get("evidence_coverage")
+        ),
+        "task_success": _count_rate_metric_delta_from_entry(entry.get("task_success")),
+    }
+
+
+def _count_rate_metric_delta(
+    candidate_metrics: object,
+    baseline_metrics: object,
+    metric_name: str,
+) -> dict[str, Any]:
+    candidate_count = _metric_int_value(candidate_metrics, metric_name, "count")
+    baseline_count = _metric_int_value(baseline_metrics, metric_name, "count")
+    candidate_rate = _metric_float_value(candidate_metrics, metric_name, "rate")
+    baseline_rate = _metric_float_value(baseline_metrics, metric_name, "rate")
+    candidate_total = _metric_int_value(candidate_metrics, metric_name, "total")
+    baseline_total = _metric_int_value(baseline_metrics, metric_name, "total")
+    return {
+        "baseline_count": baseline_count,
+        "baseline_rate": baseline_rate,
+        "candidate_count": candidate_count,
+        "candidate_rate": candidate_rate,
+        "count_delta": _int_delta(candidate_count, baseline_count),
+        "rate_delta": _float_delta(candidate_rate, baseline_rate),
+        "total_match": candidate_total == baseline_total,
+    }
+
+
+def _count_rate_metric_delta_from_entry(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    return {
+        "baseline_count": _int_mapping_value(entry, "baseline_count"),
+        "baseline_rate": _float_mapping_value(entry, "baseline_rate"),
+        "candidate_count": _int_mapping_value(entry, "candidate_count"),
+        "candidate_rate": _float_mapping_value(entry, "candidate_rate"),
+        "count_delta": _int_delta(
+            _int_mapping_value(entry, "candidate_count"),
+            _int_mapping_value(entry, "baseline_count"),
+        ),
+        "rate_delta": _float_delta(
+            _float_mapping_value(entry, "candidate_rate"),
+            _float_mapping_value(entry, "baseline_rate"),
+        ),
+        "total_match": _bool_mapping_value(entry, "total_match"),
+    }
+
+
+def _average_metric_delta(
+    candidate_metrics: object,
+    baseline_metrics: object,
+    metric_name: str,
+) -> dict[str, Any]:
+    candidate_average = _metric_float_value(candidate_metrics, metric_name, "average")
+    baseline_average = _metric_float_value(baseline_metrics, metric_name, "average")
+    candidate_total = _metric_int_value(candidate_metrics, metric_name, "total")
+    baseline_total = _metric_int_value(baseline_metrics, metric_name, "total")
+    return {
+        "average_delta": _float_delta(candidate_average, baseline_average),
+        "baseline_average": baseline_average,
+        "candidate_average": candidate_average,
+        "total_match": candidate_total == baseline_total,
+    }
+
+
+def _average_metric_delta_from_entry(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    return {
+        "average_delta": _float_delta(
+            _float_mapping_value(entry, "candidate_average"),
+            _float_mapping_value(entry, "baseline_average"),
+        ),
+        "baseline_average": _float_mapping_value(entry, "baseline_average"),
+        "candidate_average": _float_mapping_value(entry, "candidate_average"),
+        "total_match": _bool_mapping_value(entry, "total_match"),
+    }
+
+
+def _active_budget_delta(
+    candidate_budget: object,
+    baseline_budget: object,
+) -> dict[str, Any]:
+    candidate_by_max_actions = _budget_analysis_mapping(candidate_budget)
+    baseline_by_max_actions = _budget_analysis_mapping(baseline_budget)
+    by_max_actions = {
+        budget: _budget_bucket_delta(
+            candidate_by_max_actions.get(budget),
+            baseline_by_max_actions.get(budget),
+        )
+        for budget in _sorted_budget_keys(candidate_by_max_actions, baseline_by_max_actions)
+    }
+    return {
+        "budget_curve": [
+            {"max_actions": int(budget), **by_max_actions[budget]}
+            for budget in _sorted_budget_keys(by_max_actions)
+        ],
+        "by_max_actions": by_max_actions,
+    }
+
+
+def _active_budget_delta_from_entry(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    by_max_actions = entry.get("by_max_actions")
+    if not isinstance(by_max_actions, Mapping):
+        return None
+    expected_by_max_actions = {
+        str(budget): _budget_bucket_delta_from_entry(by_max_actions.get(str(budget)))
+        for budget in _sorted_budget_keys(by_max_actions)
+    }
+    return {
+        "budget_curve": [
+            {"max_actions": int(budget), **expected_by_max_actions[budget]}
+            for budget in _sorted_budget_keys(expected_by_max_actions)
+        ],
+        "by_max_actions": expected_by_max_actions,
+    }
+
+
+def _budget_bucket_delta(
+    candidate_bucket: object,
+    baseline_bucket: object,
+) -> dict[str, Any]:
+    candidate_average_action_count = _float_mapping_value(
+        candidate_bucket,
+        "average_action_count",
+    )
+    baseline_average_action_count = _float_mapping_value(
+        baseline_bucket,
+        "average_action_count",
+    )
+    candidate_average_evidence_coverage = _float_mapping_value(
+        candidate_bucket,
+        "average_evidence_coverage",
+    )
+    baseline_average_evidence_coverage = _float_mapping_value(
+        baseline_bucket,
+        "average_evidence_coverage",
+    )
+    candidate_success_count = _int_mapping_value(candidate_bucket, "success_count")
+    baseline_success_count = _int_mapping_value(baseline_bucket, "success_count")
+    candidate_success_rate = _float_mapping_value(candidate_bucket, "success_rate")
+    baseline_success_rate = _float_mapping_value(baseline_bucket, "success_rate")
+    candidate_task_count = _int_mapping_value(candidate_bucket, "task_count")
+    baseline_task_count = _int_mapping_value(baseline_bucket, "task_count")
+    return {
+        "average_action_count_delta": _float_delta(
+            candidate_average_action_count,
+            baseline_average_action_count,
+        ),
+        "average_evidence_coverage_delta": _float_delta(
+            candidate_average_evidence_coverage,
+            baseline_average_evidence_coverage,
+        ),
+        "baseline_average_action_count": baseline_average_action_count,
+        "baseline_average_evidence_coverage": baseline_average_evidence_coverage,
+        "baseline_success_count": baseline_success_count,
+        "baseline_success_rate": baseline_success_rate,
+        "baseline_task_count": baseline_task_count,
+        "candidate_average_action_count": candidate_average_action_count,
+        "candidate_average_evidence_coverage": candidate_average_evidence_coverage,
+        "candidate_success_count": candidate_success_count,
+        "candidate_success_rate": candidate_success_rate,
+        "candidate_task_count": candidate_task_count,
+        "success_count_delta": _int_delta(
+            candidate_success_count,
+            baseline_success_count,
+        ),
+        "success_rate_delta": _float_delta(
+            candidate_success_rate,
+            baseline_success_rate,
+        ),
+        "task_count_delta": _int_delta(candidate_task_count, baseline_task_count),
+        "task_count_match": candidate_task_count == baseline_task_count,
+    }
+
+
+def _budget_bucket_delta_from_entry(entry: object) -> dict[str, Any]:
+    return {
+        "average_action_count_delta": _float_delta(
+            _float_mapping_value(entry, "candidate_average_action_count"),
+            _float_mapping_value(entry, "baseline_average_action_count"),
+        ),
+        "average_evidence_coverage_delta": _float_delta(
+            _float_mapping_value(entry, "candidate_average_evidence_coverage"),
+            _float_mapping_value(entry, "baseline_average_evidence_coverage"),
+        ),
+        "baseline_average_action_count": _float_mapping_value(
+            entry,
+            "baseline_average_action_count",
+        ),
+        "baseline_average_evidence_coverage": _float_mapping_value(
+            entry,
+            "baseline_average_evidence_coverage",
+        ),
+        "baseline_success_count": _int_mapping_value(entry, "baseline_success_count"),
+        "baseline_success_rate": _float_mapping_value(entry, "baseline_success_rate"),
+        "baseline_task_count": _int_mapping_value(entry, "baseline_task_count"),
+        "candidate_average_action_count": _float_mapping_value(
+            entry,
+            "candidate_average_action_count",
+        ),
+        "candidate_average_evidence_coverage": _float_mapping_value(
+            entry,
+            "candidate_average_evidence_coverage",
+        ),
+        "candidate_success_count": _int_mapping_value(entry, "candidate_success_count"),
+        "candidate_success_rate": _float_mapping_value(entry, "candidate_success_rate"),
+        "candidate_task_count": _int_mapping_value(entry, "candidate_task_count"),
+        "success_count_delta": _int_delta(
+            _int_mapping_value(entry, "candidate_success_count"),
+            _int_mapping_value(entry, "baseline_success_count"),
+        ),
+        "success_rate_delta": _float_delta(
+            _float_mapping_value(entry, "candidate_success_rate"),
+            _float_mapping_value(entry, "baseline_success_rate"),
+        ),
+        "task_count_delta": _int_delta(
+            _int_mapping_value(entry, "candidate_task_count"),
+            _int_mapping_value(entry, "baseline_task_count"),
+        ),
+        "task_count_match": (
+            _int_mapping_value(entry, "candidate_task_count")
+            == _int_mapping_value(entry, "baseline_task_count")
+        ),
+    }
+
+
 def _evidence_coverage(
     evidence_nodes: Sequence[str],
     evidence_edges: Sequence[str],
@@ -352,6 +930,29 @@ def _summary_value(summary: object, key: str) -> object:
     return summary.get(key)
 
 
+def _required_report_path(report: Mapping[str, Any], key: str) -> Path:
+    value = report.get(key)
+    if not isinstance(value, str) or value == "":
+        raise SpatialQAError(f"Active task report missing required path: {key}")
+    return Path(value)
+
+
+def _required_report_policy(report: Mapping[str, Any]) -> str:
+    value = report.get("policy")
+    if not isinstance(value, str) or value == "":
+        raise SpatialQAError("Active task report missing required policy")
+    return value
+
+
+def _equality_check(name: str, saved: object, current: object) -> dict[str, Any]:
+    return {
+        "name": name,
+        "passed": saved == current,
+        "expected": saved,
+        "actual": current,
+    }
+
+
 def _budget_curve_keys(value: object) -> list[str] | None:
     if not isinstance(value, Sequence) or isinstance(value, str):
         return None
@@ -378,6 +979,94 @@ def _budget_mapping_keys(value: object) -> list[str] | None:
         except ValueError:
             return None
     return [str(key) for key in sorted(keys)]
+
+
+def _budget_analysis_mapping(value: object) -> Mapping[str, Any]:
+    if not isinstance(value, Mapping):
+        return {}
+    by_max_actions = value.get("by_max_actions")
+    if not isinstance(by_max_actions, Mapping):
+        return {}
+    return cast(Mapping[str, Any], by_max_actions)
+
+
+def _sorted_budget_keys(*values: Mapping[str, Any]) -> list[str]:
+    keys: set[int] = set()
+    for value in values:
+        for key in value:
+            if not isinstance(key, str):
+                continue
+            try:
+                keys.add(int(key))
+            except ValueError:
+                continue
+    return [str(key) for key in sorted(keys)]
+
+
+def _metric_int_value(metrics: object, metric_name: str, key: str) -> int | None:
+    return _int_mapping_value(_metric_mapping(metrics, metric_name), key)
+
+
+def _metric_float_value(metrics: object, metric_name: str, key: str) -> float | None:
+    return _float_mapping_value(_metric_mapping(metrics, metric_name), key)
+
+
+def _metric_mapping(metrics: object, metric_name: str) -> Mapping[str, Any] | None:
+    if not isinstance(metrics, Mapping):
+        return None
+    metric = metrics.get(metric_name)
+    return cast(Mapping[str, Any], metric) if isinstance(metric, Mapping) else None
+
+
+def _int_mapping_value(payload: object, key: str) -> int | None:
+    if not isinstance(payload, Mapping):
+        return None
+    value = payload.get(key)
+    if isinstance(value, bool) or not isinstance(value, int):
+        return None
+    return value
+
+
+def _float_mapping_value(payload: object, key: str) -> float | None:
+    if not isinstance(payload, Mapping):
+        return None
+    value = payload.get(key)
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    return float(value)
+
+
+def _bool_mapping_value(payload: object, key: str) -> bool | None:
+    if not isinstance(payload, Mapping):
+        return None
+    value = payload.get(key)
+    return value if isinstance(value, bool) else None
+
+
+def _int_delta(candidate: int | None, baseline: int | None) -> int | None:
+    if candidate is None or baseline is None:
+        return None
+    return candidate - baseline
+
+
+def _float_delta(candidate: float | None, baseline: float | None) -> float | None:
+    if candidate is None or baseline is None:
+        return None
+    return round(candidate - baseline, 6)
+
+
+def _required_delta_report_path(report: Mapping[str, Any], key: str) -> Path:
+    value = report.get(key)
+    if not isinstance(value, str) or not value:
+        raise SpatialQAError(f"Active task delta report missing required path: {key}")
+    return Path(value)
+
+
+def _delta_report_name(report: Mapping[str, Any], key: str) -> str:
+    value = report.get(key)
+    return value if isinstance(value, str) and value else key.replace("_name", "")
 
 
 def _string_or_none(value: object) -> str | None:

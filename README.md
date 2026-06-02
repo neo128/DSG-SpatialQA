@@ -163,12 +163,24 @@ python scripts/run_qa_eval.py \
   --report qa-eval-report.json
 python scripts/run_qa_eval.py --validate-report qa-eval-report.json
 python scripts/run_qa_eval.py --compare-report qa-eval-report.json
+python scripts/run_qa_eval.py \
+  --candidate-report graph-tool-report.json \
+  --baseline-report majority-report.json \
+  --candidate-name graph_tool \
+  --baseline-name majority \
+  --delta-report qa-delta-report.json
+python scripts/run_qa_eval.py --validate-delta-report qa-delta-report.json
+python scripts/run_qa_eval.py --compare-delta-report qa-delta-report.json
 ```
 
 QA evaluation reads only explicit local gold and prediction files. Reports
 include exact match, multiple-choice accuracy, numeric MAE, evidence node/edge
-recall, answer-graph consistency, question-type/tag/reference-frame breakdowns,
-stable report digests, and current-file comparison.
+recall, answer-graph consistency, scene/episode/question-type/tag/reference-frame
+breakdowns, research-axis breakdowns for spatial QA, dynamic memory, and
+GraphTool query coverage, stable report digests, current-file comparison, and
+pairwise delta reports for candidate-vs-baseline accuracy/evidence lift. Delta
+reports retain scene, episode, question-type, tag, and reference-frame slice
+deltas for failure-mode triage.
 
 Run deterministic local baselines over a QA dataset:
 
@@ -211,9 +223,11 @@ python scripts/run_qa_eval.py \
 ```
 
 Offline import reads only local JSONL records, skips unknown case IDs with
-report diagnostics, records missing gold cases, preserves source metadata, and
-writes deterministic `QAPrediction` JSONL for the existing QA evaluation,
-attribution, and dashboard pipeline.
+report diagnostics, records missing gold cases, preserves source metadata,
+derives a stable `source_profile` with source key, adapter, model, prompt,
+dataset, metadata keys, and capability axes, and writes deterministic
+`QAPrediction` JSONL for the existing QA evaluation, attribution, and
+dashboard pipeline.
 
 Build a deterministic predicted DSG from mock perception detections in episode
 metadata:
@@ -284,8 +298,8 @@ graph, compares model/baseline predictions with gold answers, checks required
 evidence nodes and edges in the predicted graph, and reports stable categories
 such as `benchmark_or_engine_error`, `evidence_missing`, `graph_construction`,
 and `reasoning_or_tool_use`. Each case also records predicted evidence sources,
-and the summary groups errors by predicted evidence source so graph-source
-quality can be connected to QA failures.
+and the summary groups errors by research axis and predicted evidence source so
+RQ-level and graph-source quality can be connected to QA failures.
 
 Build a deterministic benchmark manifest from explicit episode JSONL files:
 
@@ -296,6 +310,14 @@ python scripts/build_benchmark.py \
   --dataset-name mock_benchmark \
   --output-dir data/benchmark \
   --max-qa-per-episode 100 \
+  --qa-eval-report qa-eval-report.json \
+  --qa-eval-delta-report qa-delta-report.json \
+  --active-task-report active-report.json \
+  --active-task-delta-report active-delta-report.json \
+  --dashboard-bundle dashboard/dashboard.json \
+  --error-attribution-report error-attribution.json \
+  --graph-eval-report graph-eval-report.json \
+  --predicted-graph-report predicted-report.json \
   --manifest benchmark-manifest.json
 python scripts/build_benchmark.py --validate-manifest benchmark-manifest.json
 python scripts/build_benchmark.py --compare-manifest benchmark-manifest.json
@@ -304,7 +326,87 @@ python scripts/build_benchmark.py --compare-manifest benchmark-manifest.json
 Benchmark building turns each explicit episode into an oracle graph JSON and QA
 JSONL artifact, then writes a manifest with graph digests, QA dataset digests,
 summary counts, and coverage by scene, episode, question type, reference frame,
-tag, dynamic/static split, and oracle/predicted source.
+tag, dynamic/static split, and oracle/predicted source. Optional experiment
+artifact paths let the same manifest record QA eval reports, QA delta reports,
+active task reports, active delta reports, dashboard bundles, oracle-vs-
+predicted graph eval reports, error attribution reports, and predicted graph
+reports with stable digests for current-file drift checks.
+
+Run the deterministic mock experiment pipeline when you want a local
+end-to-end final record in one command. It defaults to one episode and can
+aggregate multiple deterministic mock episodes with `--episode-count`. Repeat
+`--qa-baseline` to compare `graph_tool` against multiple local QA agents in the
+same manifest-linked experiment matrix:
+
+```bash
+python scripts/run_mock_experiment.py \
+  --output-dir data/mock-experiment \
+  --dataset-name mock_experiment \
+  --max-qa-per-episode 3 \
+  --episode-count 2 \
+  --qa-baseline majority \
+  --qa-baseline graph_text
+```
+
+The pipeline writes mock episode files, oracle graphs, per-episode QA datasets,
+a deterministic predicted graph and graph eval report for each episode, a
+combined QA dataset, oracle GraphTool, predicted GraphTool, and baseline
+prediction/report files, one QA delta report per requested baseline, an
+additional oracle-vs-predicted GraphTool QA delta for graph-construction impact,
+per-episode error attribution reports for predicted GraphTool failures,
+mock active-task delta report, an oracle-vs-predicted active-task delta for
+interactive graph-construction impact, benchmark manifest, experiment summary,
+static dashboard, and final experiment record. It uses only deterministic local
+mocks and explicit output paths.
+
+Summarize the manifest's experiment artifacts into the four project research
+questions:
+
+```bash
+python scripts/summarize_experiment.py \
+  --manifest benchmark-manifest.json \
+  --report experiment-summary.json
+python scripts/summarize_experiment.py --validate-report experiment-summary.json
+python scripts/summarize_experiment.py --compare-report experiment-summary.json
+python scripts/record_experiment.py \
+  --summary-report experiment-summary.json \
+  --record experiment-record.json
+python scripts/record_experiment.py --validate-record experiment-record.json
+python scripts/record_experiment.py --compare-record experiment-record.json
+```
+
+The experiment summary report records stable source artifact digests, QA
+candidate-vs-baseline lift for spatial QA, dynamic memory, and GraphTool query
+axes, QA diagnostic slices by scene, episode, question type, tag, and reference
+frame, graph-construction diagnostics from oracle-vs-predicted graph eval
+reports, error attribution diagnostics from QA failure attribution reports,
+plus active-task lift for interactive task ability. Each research question also
+gets a deterministic `verdict` of `improved`, `unchanged`, `regressed`, or
+`inconclusive` from the primary metric delta. The graph diagnostic block
+records object recall, relation F1, state accuracy, duplicate-track /
+ID-fragmentation counts, and prediction-source precision slices. The
+attribution diagnostic block records failure categories such as
+`graph_construction`, `evidence_missing`, and `reasoning_or_tool_use`, plus
+research-axis and predicted-evidence source summaries, so QA and task lift can
+be reviewed beside predicted DSG quality and failure causes. The failure-linkage
+block matches
+attribution reports to graph eval reports by oracle/predicted graph digest, so
+the same summary row can show graph quality metrics beside the failure
+categories for that predicted graph. The report records a `readiness` block
+that marks the experiment `ready` only when RQ1-RQ4 all have
+candidate-vs-baseline evidence, otherwise listing missing research questions
+and missing source artifact types. Comparison reloads the manifest path stored
+in the summary and detects drift in the referenced local QA, active delta,
+graph-eval, and attribution artifacts.
+
+The experiment record projects the saved summary into a compact final handoff:
+manifest and summary digests, readiness status, RQ1-RQ4 verdict rows,
+`verdict_counts`, a per-measurement `research_question_matrix`,
+`diagnostic_ledger` counts/keys for QA slices, graph construction, attribution,
+and failure-linkage pairs, source artifact digests, and optional dashboard bundle digest when
+`--dashboard-bundle dashboard/dashboard.json` is supplied. Record comparison
+reloads only the explicit summary/dashboard paths stored in the record and
+reports current-file drift.
 
 Export a deterministic static dashboard for per-sample review:
 
@@ -316,16 +418,23 @@ python scripts/export_dashboard.py \
   --graph oracle-graph.json \
   --error-attribution error-attribution.json \
   --active-task-report active-report.json \
+  --active-task-delta-report active-delta-report.json \
+  --experiment-summary-report experiment-summary.json \
   --output dashboard/
 ```
 
 Dashboard export writes `dashboard/dashboard.json` and `dashboard/index.html`
 from explicit local artifacts. The bundle contains QA cases, predictions,
 per-case QA eval results, optional error attribution rows, evidence subgraphs,
-predicted evidence source summaries, frame paths when present, graph summary,
-optional active-task review panels with task transcripts, action evidence
-snapshots, evidence coverage, budget analysis, and a stable bundle digest. The
-HTML table includes an Evidence Source column when attribution data is present.
+research-axis attribution summaries, predicted evidence source summaries, frame
+paths when present, graph summary, optional active-task review panels with task
+transcripts, action evidence snapshots, evidence coverage, budget analysis,
+optional active-task delta review tables for candidate-vs-baseline RQ4 lift,
+optional experiment-summary review rows for RQ1-RQ4 lift, a per-measurement
+matrix for multi-baseline QA deltas, failure-linkage rows connecting graph
+quality to QA failure causes, verdicts, and experiment readiness, and a stable
+bundle digest. The HTML table includes local Research Axis and Evidence Source
+filters when attribution data is present.
 
 Run deterministic mock active EQA tasks against an explicit graph artifact:
 
@@ -336,12 +445,26 @@ python scripts/run_active_tasks.py \
   --policy direct_answer \
   --report active-report.json
 python scripts/run_active_tasks.py --validate-report active-report.json
+python scripts/run_active_tasks.py --compare-report active-report.json
+python scripts/run_active_tasks.py \
+  --candidate-report next-best-view-report.json \
+  --baseline-report direct-answer-report.json \
+  --candidate-name next_best_view \
+  --baseline-name direct_answer \
+  --delta-report active-delta-report.json
+python scripts/run_active_tasks.py --validate-delta-report active-delta-report.json
+python scripts/run_active_tasks.py --compare-delta-report active-delta-report.json
 ```
 
 Active task reports score task success, answer accuracy, action count, evidence
 coverage, answer-graph consistency, per-action evidence snapshots, and
-budget-vs-success analysis under explicit max-action budgets. The
-`next_best_view` policy deterministically targets missing required evidence in
+budget-vs-success analysis under explicit max-action budgets. Report comparison
+reloads the recorded explicit task and graph paths and reruns the recorded
+policy to detect current artifact drift. Active delta reports compare a
+candidate policy against a baseline policy and record task-success,
+answer-accuracy, evidence-coverage, action-count, and budget-curve lift for
+RQ4 review. The `next_best_view` policy
+deterministically targets missing required evidence in
 the local mock loop. The mock environment only switches between caller-supplied
 graph steps; it does not launch a simulator or navigation stack.
 
@@ -441,7 +564,8 @@ python scripts/verify.py --skip-install
 - Deterministic oracle QA JSONL generation from explicit graph artifacts,
   including answer/evidence replay validation and current-graph comparison.
 - Deterministic QA prediction JSONL evaluation with stable accuracy, evidence,
-  breakdown, validation, and comparison reports.
+  research-axis breakdown, validation, current-file comparison, and
+  candidate-vs-baseline delta reports.
 - Deterministic local baseline runner with `graph_tool`, `majority`,
   `graph_text`, and disabled `caption_memory` interfaces that emit prediction
   JSONL without external calls.
@@ -454,14 +578,17 @@ python scripts/verify.py --skip-install
   depth projection, stable object IDs, hidden low-confidence updates, relation
   inference, graph/report digests, and explicit-path validation/comparison.
 - Deterministic QA error attribution across oracle graph answers, predicted
-  graph answers, model/baseline predictions, and required evidence presence.
+  graph answers, model/baseline predictions, required evidence presence,
+  research-axis failure summaries, and predicted-evidence source summaries.
 - Static dashboard export for per-sample QA, prediction, evaluation,
-  attribution, predicted-evidence source, graph-summary, and evidence-subgraph
-  review without default dashboard dependencies.
+  attribution, research-axis and predicted-evidence source filtering,
+  graph-summary, and evidence-subgraph review without default dashboard
+  dependencies.
 - Deterministic active EQA task schema, mock environment, local active
   `GraphTool` policies, task metrics, action evidence snapshots, and
-  budget-vs-success analysis for explicit graph-step handoffs, including a
-  deterministic `next_best_view` missing-evidence policy placeholder.
+  budget-vs-success analysis for explicit graph-step handoffs, including
+  active report comparison and a deterministic `next_best_view`
+  missing-evidence policy placeholder.
 - Deterministic benchmark manifest tooling that builds oracle graph and QA
   artifacts from explicit episodes and records stable coverage/digest metadata.
 - Offline evaluation report, manifest, and bundle CLI entrypoints with

@@ -31,6 +31,62 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output-dir", type=Path, help="Explicit benchmark artifact output dir.")
     parser.add_argument("--max-qa-per-episode", type=int, help="QA case limit per episode.")
     parser.add_argument("--tag", action="append", dest="tags", help="Optional QA generation tag.")
+    parser.add_argument(
+        "--qa-eval-report",
+        action="append",
+        type=Path,
+        dest="qa_eval_reports",
+        help="Optional explicit QA eval report path to record in the manifest.",
+    )
+    parser.add_argument(
+        "--qa-eval-delta-report",
+        action="append",
+        type=Path,
+        dest="qa_eval_delta_reports",
+        help="Optional explicit QA eval delta report path to record in the manifest.",
+    )
+    parser.add_argument(
+        "--active-task-report",
+        action="append",
+        type=Path,
+        dest="active_task_reports",
+        help="Optional explicit active task report path to record in the manifest.",
+    )
+    parser.add_argument(
+        "--active-task-delta-report",
+        action="append",
+        type=Path,
+        dest="active_task_delta_reports",
+        help="Optional explicit active task delta report path to record in the manifest.",
+    )
+    parser.add_argument(
+        "--dashboard-bundle",
+        action="append",
+        type=Path,
+        dest="dashboard_bundles",
+        help="Optional explicit dashboard bundle JSON path to record in the manifest.",
+    )
+    parser.add_argument(
+        "--error-attribution-report",
+        action="append",
+        type=Path,
+        dest="error_attribution_reports",
+        help="Optional explicit error attribution report path to record in the manifest.",
+    )
+    parser.add_argument(
+        "--graph-eval-report",
+        action="append",
+        type=Path,
+        dest="graph_eval_reports",
+        help="Optional explicit graph eval report path to record in the manifest.",
+    )
+    parser.add_argument(
+        "--predicted-graph-report",
+        action="append",
+        type=Path,
+        dest="predicted_graph_reports",
+        help="Optional explicit predicted graph report path to record in the manifest.",
+    )
     parser.add_argument("--manifest", type=Path, help="Explicit manifest JSON output path.")
     parser.add_argument("--validate-manifest", type=Path, help="Validate a benchmark manifest.")
     parser.add_argument("--compare-manifest", type=Path, help="Compare a benchmark manifest.")
@@ -89,6 +145,14 @@ def main(argv: list[str] | None = None) -> int:
             output_dir=args.output_dir,
             max_qa_per_episode=args.max_qa_per_episode,
             tags=tuple(args.tags or ("benchmark", "oracle")),
+            qa_eval_report_paths=tuple(args.qa_eval_reports or ()),
+            qa_eval_delta_report_paths=tuple(args.qa_eval_delta_reports or ()),
+            active_task_report_paths=tuple(args.active_task_reports or ()),
+            active_task_delta_report_paths=tuple(args.active_task_delta_reports or ()),
+            dashboard_bundle_paths=tuple(args.dashboard_bundles or ()),
+            error_attribution_report_paths=tuple(args.error_attribution_reports or ()),
+            graph_eval_report_paths=tuple(args.graph_eval_reports or ()),
+            predicted_graph_report_paths=tuple(args.predicted_graph_reports or ()),
         )
         save_benchmark_manifest(manifest, args.manifest)
         validation = validate_benchmark_manifest(manifest)

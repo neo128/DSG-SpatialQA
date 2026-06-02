@@ -130,6 +130,262 @@ def test_benchmark_manifest_json_save_load_and_compare_detects_qa_drift(
     assert checks["coverage_matches_current"]["passed"] is True
 
 
+def test_benchmark_manifest_records_experiment_artifacts_and_detects_drift(
+    tmp_path: Path,
+) -> None:
+    manifest = lab.build_benchmark_artifacts(
+        dataset_name="mock_benchmark",
+        episode_paths=_write_mock_episodes(tmp_path),
+        output_dir=tmp_path / "benchmark",
+        max_qa_per_episode=3,
+    )
+    case = lab.load_qa_dataset(cast(str, manifest["artifacts"][0]["qa_path"]))[0]
+    graph = lab.load_graph_json(cast(str, manifest["artifacts"][0]["graph_path"]))
+    episode_path = Path(cast(str, manifest["artifacts"][0]["episode_path"]))
+    frames = lab.load_episode_sequence(episode_path)
+    predicted_graph = lab.build_predicted_graph_from_episode(frames)
+    prediction = lab.QAPrediction(id=case.id, answer=case.answer, confidence=1.0)
+    candidate_report = lab.qa_eval_report((case,), (prediction,))
+    baseline_report = lab.qa_eval_report((case,), ())
+    qa_delta_report = lab.qa_eval_delta_report(
+        candidate_report,
+        baseline_report,
+        candidate_name="graph_tool",
+        baseline_name="majority",
+    )
+    active_task = _task_for_case(case, max_actions=1)
+    active_candidate_result = lab.ActiveTaskResult(
+        task_id=active_task.id,
+        policy="oracle_evidence",
+        answer=case.answer,
+        success=True,
+        action_count=1,
+        evidence_nodes=case.required_nodes,
+        evidence_edges=case.required_edges,
+        final_step=active_task.initial_step + 1,
+        confidence=1.0,
+    )
+    active_baseline_result = lab.ActiveTaskResult(
+        task_id=active_task.id,
+        policy="direct_answer",
+        answer={},
+        success=False,
+        action_count=0,
+        final_step=active_task.initial_step,
+        confidence=0.0,
+        error="missing_required_evidence",
+    )
+    active_report = lab.active_task_report((active_task,), (active_candidate_result,))
+    active_delta_report = lab.active_task_delta_report(
+        active_report,
+        lab.active_task_report((active_task,), (active_baseline_result,)),
+        candidate_name="oracle_evidence",
+        baseline_name="direct_answer",
+    )
+    dashboard = lab.dashboard_bundle(
+        (case,),
+        predictions=(prediction,),
+        qa_eval_report=candidate_report,
+        graph=graph,
+        active_task_report=active_report,
+        active_task_delta_report=active_delta_report,
+    )
+    predicted_graph_path = tmp_path / "predicted-graph.json"
+    predicted_report_path = tmp_path / "predicted-report.json"
+    graph_eval_path = tmp_path / "graph-eval-report.json"
+    error_attribution_path = tmp_path / "error-attribution-report.json"
+    prediction_path = tmp_path / "predictions.jsonl"
+    qa_report_path = tmp_path / "qa-eval-report.json"
+    qa_delta_path = tmp_path / "qa-delta-report.json"
+    active_report_path = tmp_path / "active-report.json"
+    active_delta_path = tmp_path / "active-delta-report.json"
+    dashboard_path = tmp_path / "dashboard.json"
+    lab.save_graph_json(predicted_graph, predicted_graph_path)
+    lab.save_qa_predictions((prediction,), prediction_path)
+    predicted_report = lab.predicted_graph_report(
+        input_path=episode_path,
+        graph_path=predicted_graph_path,
+        graph=predicted_graph,
+        frames=frames,
+    )
+    graph_eval = lab.graph_eval_report(
+        graph,
+        predicted_graph,
+        oracle_path=cast(str, manifest["artifacts"][0]["graph_path"]),
+        predicted_path=predicted_graph_path,
+    )
+    error_attribution_report = lab.error_attribution_report(
+        (case,),
+        oracle_graph=graph,
+        predicted_graph=predicted_graph,
+        predictions=(prediction,),
+        gold_path=cast(str, manifest["artifacts"][0]["qa_path"]),
+        oracle_graph_path=cast(str, manifest["artifacts"][0]["graph_path"]),
+        predicted_graph_path=predicted_graph_path,
+        prediction_path=prediction_path,
+    )
+    lab.save_predicted_graph_report(predicted_report, predicted_report_path)
+    lab.save_graph_eval_report(graph_eval, graph_eval_path)
+    lab.save_error_attribution_report(
+        error_attribution_report,
+        error_attribution_path,
+    )
+    lab.save_qa_eval_report(candidate_report, qa_report_path)
+    lab.save_qa_eval_delta_report(qa_delta_report, qa_delta_path)
+    lab.save_active_task_report(active_report, active_report_path)
+    lab.save_active_task_delta_report(active_delta_report, active_delta_path)
+    lab.save_dashboard_bundle(dashboard, dashboard_path)
+
+    manifest_with_artifacts = lab.build_benchmark_artifacts(
+        dataset_name="mock_benchmark",
+        episode_paths=_write_mock_episodes(tmp_path / "with-artifacts"),
+        output_dir=tmp_path / "benchmark-with-artifacts",
+        max_qa_per_episode=3,
+        qa_eval_report_paths=(qa_report_path,),
+        qa_eval_delta_report_paths=(qa_delta_path,),
+        active_task_report_paths=(active_report_path,),
+        active_task_delta_report_paths=(active_delta_path,),
+        dashboard_bundle_paths=(dashboard_path,),
+        error_attribution_report_paths=(error_attribution_path,),
+        graph_eval_report_paths=(graph_eval_path,),
+        predicted_graph_report_paths=(predicted_report_path,),
+    )
+    validation = lab.validate_benchmark_manifest(manifest_with_artifacts)
+    comparison = lab.compare_benchmark_manifest(manifest_with_artifacts)
+
+    assert manifest_with_artifacts["summary"]["experiment_artifact_count"] == 8
+    assert manifest_with_artifacts["experiment_artifact_digests"] == {
+        "active_task_delta_report:active-delta-report.json": active_delta_report[
+            "report_digest"
+        ],
+        "active_task_report:active-report.json": active_report["report_digest"],
+        "dashboard_bundle:dashboard.json": dashboard["bundle_digest"],
+        "error_attribution_report:error-attribution-report.json": (
+            error_attribution_report["report_digest"]
+        ),
+        "graph_eval_report:graph-eval-report.json": graph_eval["report_digest"],
+        "predicted_graph_report:predicted-report.json": predicted_report["digest"],
+        "qa_eval_delta_report:qa-delta-report.json": qa_delta_report["report_digest"],
+        "qa_eval_report:qa-eval-report.json": candidate_report["report_digest"],
+    }
+    assert [item["artifact_type"] for item in manifest_with_artifacts["experiment_artifacts"]] == [
+        "active_task_delta_report",
+        "active_task_report",
+        "dashboard_bundle",
+        "error_attribution_report",
+        "graph_eval_report",
+        "predicted_graph_report",
+        "qa_eval_delta_report",
+        "qa_eval_report",
+    ]
+    assert validation["valid"] is True
+    assert comparison["matches"] is True
+
+    drifted_active_delta = dict(active_delta_report)
+    drifted_metrics = dict(active_delta_report["metrics_delta"])
+    drifted_metrics["task_success"] = dict(drifted_metrics["task_success"])
+    drifted_metrics["task_success"]["rate_delta"] = 0.0
+    drifted_active_delta["metrics_delta"] = drifted_metrics
+    drifted_active_delta["report_digest"] = lab.active_task_delta_report_digest(
+        drifted_active_delta
+    )
+    lab.save_active_task_delta_report(drifted_active_delta, active_delta_path)
+
+    drift = lab.compare_benchmark_manifest(manifest_with_artifacts)
+    checks = {check["name"]: check for check in drift["checks"]}
+    assert drift["matches"] is False
+    assert checks["experiment_artifacts_match_current"]["passed"] is False
+
+
+def test_build_benchmark_cli_accepts_experiment_artifact_paths(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_build_benchmark_script()
+    main = cast(MainFn, getattr(module, "main"))
+    episode_paths = _write_mock_episodes(tmp_path)
+    graph = lab.load_scene_fixture("tabletop")
+    frames = lab.load_episode_sequence(episode_paths[0])
+    predicted_graph = lab.build_predicted_graph_from_episode(frames)
+    case = lab.generate_qa_cases(graph, scene_id="tabletop_scene", episode_id="episode_001")[0]
+    prediction = lab.QAPrediction(id=case.id, answer=case.answer, confidence=1.0)
+    report = lab.qa_eval_report((case,), (prediction,))
+    qa_report_path = tmp_path / "qa-eval-report.json"
+    predicted_graph_path = tmp_path / "predicted-graph.json"
+    predicted_report_path = tmp_path / "predicted-report.json"
+    graph_eval_path = tmp_path / "graph-eval-report.json"
+    error_attribution_path = tmp_path / "error-attribution-report.json"
+    prediction_path = tmp_path / "predictions.jsonl"
+    lab.save_graph_json(predicted_graph, predicted_graph_path)
+    lab.save_qa_predictions((prediction,), prediction_path)
+    lab.save_predicted_graph_report(
+        lab.predicted_graph_report(
+            input_path=episode_paths[0],
+            graph_path=predicted_graph_path,
+            graph=predicted_graph,
+            frames=frames,
+        ),
+        predicted_report_path,
+    )
+    lab.save_graph_eval_report(
+        lab.graph_eval_report(
+            graph,
+            predicted_graph,
+            predicted_path=predicted_graph_path,
+        ),
+        graph_eval_path,
+    )
+    lab.save_error_attribution_report(
+        lab.error_attribution_report(
+            (case,),
+            oracle_graph=graph,
+            predicted_graph=predicted_graph,
+            predictions=(prediction,),
+            predicted_graph_path=predicted_graph_path,
+            prediction_path=prediction_path,
+        ),
+        error_attribution_path,
+    )
+    lab.save_qa_eval_report(report, qa_report_path)
+    output_dir = tmp_path / "benchmark"
+    manifest_path = tmp_path / "benchmark-manifest.json"
+
+    assert main(
+        [
+            "--episodes",
+            str(episode_paths[0]),
+            "--dataset-name",
+            "mock_benchmark",
+            "--output-dir",
+            str(output_dir),
+            "--max-qa-per-episode",
+            "2",
+            "--qa-eval-report",
+            str(qa_report_path),
+            "--graph-eval-report",
+            str(graph_eval_path),
+            "--error-attribution-report",
+            str(error_attribution_path),
+            "--predicted-graph-report",
+            str(predicted_report_path),
+            "--manifest",
+            str(manifest_path),
+        ]
+    ) == 0
+
+    output = json.loads(capsys.readouterr().out)
+    manifest = lab.load_benchmark_manifest(manifest_path)
+    assert output["valid"] is True
+    assert output["digest"] == manifest["manifest_digest"]
+    assert manifest["summary"]["experiment_artifact_count"] == 4
+    assert [item["artifact_type"] for item in manifest["experiment_artifacts"]] == [
+        "error_attribution_report",
+        "graph_eval_report",
+        "predicted_graph_report",
+        "qa_eval_report",
+    ]
+
+
 def test_build_benchmark_cli_outputs_validates_compares_and_reports_invalid_json(
     tmp_path: Path,
     capsys: CaptureFixture[str],
@@ -216,3 +472,20 @@ def _write_mock_episodes(tmp_path: Path) -> tuple[Path, Path]:
         habitat_path,
     )
     return ai2thor_path, habitat_path
+
+
+def _task_for_case(case: lab.QACase, *, max_actions: int) -> lab.ActiveEQATask:
+    return lab.ActiveEQATask(
+        id=f"active:{case.id}",
+        scene_id=case.scene_id,
+        episode_id=case.episode_id,
+        initial_step=case.step,
+        question=case.question,
+        gold_answer=case.answer,
+        success_conditions={"answer_exact": True},
+        max_actions=max_actions,
+        required_evidence={
+            "nodes": case.required_nodes,
+            "edges": case.required_edges,
+        },
+    )

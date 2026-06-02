@@ -118,6 +118,7 @@ def main(argv: list[str] | None = None) -> int:
         "valid": validation["valid"],
         "digest": offline_prediction_import_report_digest(report),
         "prediction_digest": qa_predictions_digest(predictions),
+        "source_profile": report["source_profile"],
         "summary": report["summary"],
     }
     _emit_json(payload)

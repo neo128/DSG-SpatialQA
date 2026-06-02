@@ -17,6 +17,34 @@ from dsg_spatialqa_lab.schema import SpatialQAError
 
 QA_PREDICTION_SCHEMA_VERSION = "dsg-spatialqa-lab.qa-prediction.v1"
 QA_EVAL_REPORT_SCHEMA_VERSION = "dsg-spatialqa-lab.qa-eval-report.v1"
+QA_EVAL_DELTA_REPORT_SCHEMA_VERSION = "dsg-spatialqa-lab.qa-eval-delta-report.v1"
+QA_RESEARCH_AXIS_NAMES = (
+    "dynamic_memory",
+    "graph_tool_query",
+    "spatial_qa",
+)
+QA_DYNAMIC_MEMORY_TAGS = frozenset(
+    (
+        "dynamic",
+        "memory",
+        "move",
+        "occlusion",
+        "reobserve",
+        "temporal",
+    )
+)
+QA_GRAPH_TOOL_QUERY_TAGS = frozenset(("graph_query", "nearest", "query", "retrieval"))
+QA_GRAPH_TOOL_QUERY_TYPES = frozenset(
+    (
+        "nearest_object",
+        "object_location",
+        "object_room",
+        "object_status",
+        "relative_relation",
+        "scene_delta",
+        "scene_snapshot",
+    )
+)
 
 
 @dataclass
@@ -113,9 +141,12 @@ def qa_eval_report(
         "summary": summary,
         "metrics": metrics,
         "breakdown": {
+            "by_episode_id": _breakdown_by_episode_id(case_results),
             "by_question_type": _breakdown_by_question_type(case_results),
-            "by_tag": _breakdown_by_tag(case_results),
             "by_reference_frame": _breakdown_by_reference_frame(case_results),
+            "by_research_axis": _breakdown_by_research_axis(case_results),
+            "by_scene_id": _breakdown_by_scene_id(case_results),
+            "by_tag": _breakdown_by_tag(case_results),
         },
         "cases": case_results,
     }
@@ -155,9 +186,22 @@ def validate_qa_eval_report(report: Mapping[str, Any]) -> dict[str, Any]:
     cases = report.get("cases")
     summary = report.get("summary")
     metrics = report.get("metrics")
+    breakdown = report.get("breakdown")
     case_results = cast(Sequence[Mapping[str, Any]], cases) if isinstance(cases, Sequence) else ()
     expected_case_count = len(case_results) if not isinstance(cases, str) else None
     exact_match_count = _case_bool_count(case_results, "exact_match")
+    expected_episode_breakdown = _breakdown_by_episode_id(case_results)
+    expected_research_axis_breakdown = _breakdown_by_research_axis(case_results)
+    expected_scene_breakdown = _breakdown_by_scene_id(case_results)
+    actual_episode_breakdown = (
+        breakdown.get("by_episode_id") if isinstance(breakdown, Mapping) else None
+    )
+    actual_research_axis_breakdown = (
+        breakdown.get("by_research_axis") if isinstance(breakdown, Mapping) else None
+    )
+    actual_scene_breakdown = (
+        breakdown.get("by_scene_id") if isinstance(breakdown, Mapping) else None
+    )
     checks = [
         {
             "name": "schema_version",
@@ -188,6 +232,24 @@ def validate_qa_eval_report(report: Mapping[str, Any]) -> dict[str, Any]:
             "passed": _metric_value(metrics, "exact_match", "count") == exact_match_count,
             "expected": exact_match_count,
             "actual": _metric_value(metrics, "exact_match", "count"),
+        },
+        {
+            "name": "episode_breakdown",
+            "passed": actual_episode_breakdown == expected_episode_breakdown,
+            "expected": expected_episode_breakdown,
+            "actual": actual_episode_breakdown,
+        },
+        {
+            "name": "research_axis_breakdown",
+            "passed": actual_research_axis_breakdown == expected_research_axis_breakdown,
+            "expected": expected_research_axis_breakdown,
+            "actual": actual_research_axis_breakdown,
+        },
+        {
+            "name": "scene_breakdown",
+            "passed": actual_scene_breakdown == expected_scene_breakdown,
+            "expected": expected_scene_breakdown,
+            "actual": actual_scene_breakdown,
         },
     ]
     return {
@@ -237,6 +299,694 @@ def compare_qa_eval_report(report: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+def qa_eval_delta_report(
+    candidate_report: Mapping[str, Any],
+    baseline_report: Mapping[str, Any],
+    *,
+    candidate_name: str = "candidate",
+    baseline_name: str = "baseline",
+    candidate_report_path: str | Path | None = None,
+    baseline_report_path: str | Path | None = None,
+) -> dict[str, Any]:
+    report: dict[str, Any] = {
+        "schema_version": QA_EVAL_DELTA_REPORT_SCHEMA_VERSION,
+        "candidate_name": candidate_name,
+        "baseline_name": baseline_name,
+        "candidate_report_path": (
+            str(candidate_report_path) if candidate_report_path is not None else None
+        ),
+        "baseline_report_path": (
+            str(baseline_report_path) if baseline_report_path is not None else None
+        ),
+        "candidate_report_digest": _string_or_none(candidate_report.get("report_digest")),
+        "baseline_report_digest": _string_or_none(baseline_report.get("report_digest")),
+        "summary_delta": _summary_delta(
+            candidate_report.get("summary"),
+            baseline_report.get("summary"),
+        ),
+        "metrics_delta": _metrics_delta(
+            candidate_report.get("metrics"),
+            baseline_report.get("metrics"),
+        ),
+        "breakdown_delta": {
+            "by_episode_id": _breakdown_group_delta(
+                candidate_report.get("breakdown"),
+                baseline_report.get("breakdown"),
+                "by_episode_id",
+            ),
+            "by_question_type": _breakdown_group_delta(
+                candidate_report.get("breakdown"),
+                baseline_report.get("breakdown"),
+                "by_question_type",
+            ),
+            "by_reference_frame": _breakdown_group_delta(
+                candidate_report.get("breakdown"),
+                baseline_report.get("breakdown"),
+                "by_reference_frame",
+            ),
+            "by_research_axis": _research_axis_delta(
+                candidate_report.get("breakdown"),
+                baseline_report.get("breakdown"),
+            ),
+            "by_scene_id": _breakdown_group_delta(
+                candidate_report.get("breakdown"),
+                baseline_report.get("breakdown"),
+                "by_scene_id",
+            ),
+            "by_tag": _breakdown_group_delta(
+                candidate_report.get("breakdown"),
+                baseline_report.get("breakdown"),
+                "by_tag",
+            ),
+        },
+    }
+    report["report_digest"] = qa_eval_delta_report_digest(report)
+    return report
+
+
+def qa_eval_delta_report_digest(report: Mapping[str, Any]) -> str:
+    payload = {key: value for key, value in report.items() if key != "report_digest"}
+    return hashlib.sha256(
+        json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    ).hexdigest()
+
+
+def qa_eval_delta_report_json(report: Mapping[str, Any]) -> str:
+    return json.dumps(report, indent=2, sort_keys=True) + "\n"
+
+
+def save_qa_eval_delta_report(report: Mapping[str, Any], path: str | Path) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(qa_eval_delta_report_json(report), encoding="utf-8")
+    return output_path
+
+
+def load_qa_eval_delta_report(path: str | Path) -> dict[str, Any]:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(payload, Mapping):
+        raise SpatialQAError("QA eval delta report JSON must be an object")
+    return cast(dict[str, Any], payload)
+
+
+def validate_qa_eval_delta_report(report: Mapping[str, Any]) -> dict[str, Any]:
+    schema_version = report.get("schema_version")
+    report_digest = _string_or_none(report.get("report_digest"))
+    expected_report_digest = qa_eval_delta_report_digest(report)
+    summary_delta = report.get("summary_delta")
+    metrics_delta = report.get("metrics_delta")
+    breakdown_delta = report.get("breakdown_delta")
+    expected_summary_delta = _summary_delta_from_entry(summary_delta)
+    expected_metrics_delta = _metrics_delta_from_entry(metrics_delta)
+    expected_breakdown_delta = _breakdown_delta_from_entry(breakdown_delta)
+    checks = [
+        {
+            "name": "schema_version",
+            "passed": schema_version == QA_EVAL_DELTA_REPORT_SCHEMA_VERSION,
+            "expected": QA_EVAL_DELTA_REPORT_SCHEMA_VERSION,
+            "actual": schema_version,
+        },
+        {
+            "name": "report_digest",
+            "passed": report_digest == expected_report_digest,
+            "expected": expected_report_digest,
+            "actual": report_digest,
+        },
+        {
+            "name": "summary_delta",
+            "passed": summary_delta == expected_summary_delta,
+            "expected": expected_summary_delta,
+            "actual": summary_delta,
+        },
+        {
+            "name": "metrics_delta",
+            "passed": metrics_delta == expected_metrics_delta,
+            "expected": expected_metrics_delta,
+            "actual": metrics_delta,
+        },
+        {
+            "name": "breakdown_delta",
+            "passed": breakdown_delta == expected_breakdown_delta,
+            "expected": expected_breakdown_delta,
+            "actual": breakdown_delta,
+        },
+    ]
+    return {
+        "valid": all(check["passed"] is True for check in checks),
+        "schema_version": schema_version,
+        "report_digest": report_digest,
+        "checks": checks,
+    }
+
+
+def compare_qa_eval_delta_report(report: Mapping[str, Any]) -> dict[str, Any]:
+    candidate_report_path = _required_delta_report_path(report, "candidate_report_path")
+    baseline_report_path = _required_delta_report_path(report, "baseline_report_path")
+    current_report = qa_eval_delta_report(
+        load_qa_eval_report(candidate_report_path),
+        load_qa_eval_report(baseline_report_path),
+        candidate_name=_delta_report_name(report, "candidate_name"),
+        baseline_name=_delta_report_name(report, "baseline_name"),
+        candidate_report_path=candidate_report_path,
+        baseline_report_path=baseline_report_path,
+    )
+    validation = validate_qa_eval_delta_report(report)
+    saved_digest = _string_or_none(report.get("report_digest"))
+    current_digest = _string_or_none(current_report.get("report_digest"))
+    checks = [
+        {
+            "name": "report_valid",
+            "passed": validation["valid"] is True,
+            "expected": True,
+            "actual": validation["valid"],
+        },
+        {
+            "name": "report_digest_matches_current",
+            "passed": saved_digest == current_digest,
+            "expected": saved_digest,
+            "actual": current_digest,
+        },
+        _equality_check(
+            "summary_delta_matches_current",
+            report.get("summary_delta"),
+            current_report["summary_delta"],
+        ),
+        _equality_check(
+            "metrics_delta_matches_current",
+            report.get("metrics_delta"),
+            current_report["metrics_delta"],
+        ),
+        _equality_check(
+            "breakdown_delta_matches_current",
+            report.get("breakdown_delta"),
+            current_report["breakdown_delta"],
+        ),
+    ]
+    return {
+        "matches": all(check["passed"] is True for check in checks),
+        "saved_digest": saved_digest,
+        "current_digest": current_digest,
+        "validation": validation,
+        "checks": checks,
+    }
+
+
+def _summary_delta(candidate_summary: object, baseline_summary: object) -> dict[str, Any]:
+    candidate_case_count = _int_mapping_value(candidate_summary, "case_count")
+    baseline_case_count = _int_mapping_value(baseline_summary, "case_count")
+    candidate_exact_match_count = _int_mapping_value(
+        candidate_summary,
+        "exact_match_count",
+    )
+    baseline_exact_match_count = _int_mapping_value(
+        baseline_summary,
+        "exact_match_count",
+    )
+    candidate_exact_match_rate = _float_mapping_value(
+        candidate_summary,
+        "exact_match_rate",
+    )
+    baseline_exact_match_rate = _float_mapping_value(
+        baseline_summary,
+        "exact_match_rate",
+    )
+    return {
+        "baseline_case_count": baseline_case_count,
+        "baseline_exact_match_count": baseline_exact_match_count,
+        "baseline_exact_match_rate": baseline_exact_match_rate,
+        "candidate_case_count": candidate_case_count,
+        "candidate_exact_match_count": candidate_exact_match_count,
+        "candidate_exact_match_rate": candidate_exact_match_rate,
+        "case_count_delta": _int_delta(candidate_case_count, baseline_case_count),
+        "case_count_match": candidate_case_count == baseline_case_count,
+        "exact_match_count_delta": _int_delta(
+            candidate_exact_match_count,
+            baseline_exact_match_count,
+        ),
+        "exact_match_rate_delta": _float_delta(
+            candidate_exact_match_rate,
+            baseline_exact_match_rate,
+        ),
+    }
+
+
+def _summary_delta_from_entry(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    return {
+        "baseline_case_count": _int_mapping_value(entry, "baseline_case_count"),
+        "baseline_exact_match_count": _int_mapping_value(
+            entry,
+            "baseline_exact_match_count",
+        ),
+        "baseline_exact_match_rate": _float_mapping_value(
+            entry,
+            "baseline_exact_match_rate",
+        ),
+        "candidate_case_count": _int_mapping_value(entry, "candidate_case_count"),
+        "candidate_exact_match_count": _int_mapping_value(
+            entry,
+            "candidate_exact_match_count",
+        ),
+        "candidate_exact_match_rate": _float_mapping_value(
+            entry,
+            "candidate_exact_match_rate",
+        ),
+        "case_count_delta": _int_delta(
+            _int_mapping_value(entry, "candidate_case_count"),
+            _int_mapping_value(entry, "baseline_case_count"),
+        ),
+        "case_count_match": (
+            _int_mapping_value(entry, "candidate_case_count")
+            == _int_mapping_value(entry, "baseline_case_count")
+        ),
+        "exact_match_count_delta": _int_delta(
+            _int_mapping_value(entry, "candidate_exact_match_count"),
+            _int_mapping_value(entry, "baseline_exact_match_count"),
+        ),
+        "exact_match_rate_delta": _float_delta(
+            _float_mapping_value(entry, "candidate_exact_match_rate"),
+            _float_mapping_value(entry, "baseline_exact_match_rate"),
+        ),
+    }
+
+
+def _metrics_delta(candidate_metrics: object, baseline_metrics: object) -> dict[str, Any]:
+    return {
+        "answer_graph_consistency": _count_rate_metric_delta(
+            candidate_metrics,
+            baseline_metrics,
+            "answer_graph_consistency",
+        ),
+        "evidence_edge_recall": _average_metric_delta(
+            candidate_metrics,
+            baseline_metrics,
+            "evidence_edge_recall",
+        ),
+        "evidence_node_recall": _average_metric_delta(
+            candidate_metrics,
+            baseline_metrics,
+            "evidence_node_recall",
+        ),
+        "exact_match": _count_rate_metric_delta(
+            candidate_metrics,
+            baseline_metrics,
+            "exact_match",
+        ),
+        "multiple_choice_accuracy": _count_rate_metric_delta(
+            candidate_metrics,
+            baseline_metrics,
+            "multiple_choice_accuracy",
+        ),
+        "numeric_mae": _numeric_mae_metric_delta(candidate_metrics, baseline_metrics),
+    }
+
+
+def _metrics_delta_from_entry(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    return {
+        "answer_graph_consistency": _count_rate_metric_delta_from_entry(
+            entry.get("answer_graph_consistency")
+        ),
+        "evidence_edge_recall": _average_metric_delta_from_entry(
+            entry.get("evidence_edge_recall")
+        ),
+        "evidence_node_recall": _average_metric_delta_from_entry(
+            entry.get("evidence_node_recall")
+        ),
+        "exact_match": _count_rate_metric_delta_from_entry(entry.get("exact_match")),
+        "multiple_choice_accuracy": _count_rate_metric_delta_from_entry(
+            entry.get("multiple_choice_accuracy")
+        ),
+        "numeric_mae": _numeric_mae_metric_delta_from_entry(entry.get("numeric_mae")),
+    }
+
+
+def _count_rate_metric_delta(
+    candidate_metrics: object,
+    baseline_metrics: object,
+    metric_name: str,
+) -> dict[str, Any]:
+    candidate_metric = _metric_mapping(candidate_metrics, metric_name)
+    baseline_metric = _metric_mapping(baseline_metrics, metric_name)
+    candidate_count = _int_mapping_value(candidate_metric, "count")
+    baseline_count = _int_mapping_value(baseline_metric, "count")
+    candidate_rate = _float_mapping_value(candidate_metric, "rate")
+    baseline_rate = _float_mapping_value(baseline_metric, "rate")
+    return _count_rate_metric_delta_from_values(
+        candidate_count=candidate_count,
+        baseline_count=baseline_count,
+        candidate_rate=candidate_rate,
+        baseline_rate=baseline_rate,
+    )
+
+
+def _count_rate_metric_delta_from_entry(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    return _count_rate_metric_delta_from_values(
+        candidate_count=_int_mapping_value(entry, "candidate_count"),
+        baseline_count=_int_mapping_value(entry, "baseline_count"),
+        candidate_rate=_float_mapping_value(entry, "candidate_rate"),
+        baseline_rate=_float_mapping_value(entry, "baseline_rate"),
+    )
+
+
+def _count_rate_metric_delta_from_values(
+    *,
+    candidate_count: int | None,
+    baseline_count: int | None,
+    candidate_rate: float | None,
+    baseline_rate: float | None,
+) -> dict[str, Any]:
+    return {
+        "baseline_count": baseline_count,
+        "baseline_rate": baseline_rate,
+        "candidate_count": candidate_count,
+        "candidate_rate": candidate_rate,
+        "count_delta": _int_delta(candidate_count, baseline_count),
+        "rate_delta": _float_delta(candidate_rate, baseline_rate),
+    }
+
+
+def _average_metric_delta(
+    candidate_metrics: object,
+    baseline_metrics: object,
+    metric_name: str,
+) -> dict[str, Any]:
+    candidate_average = _float_mapping_value(
+        _metric_mapping(candidate_metrics, metric_name),
+        "average",
+    )
+    baseline_average = _float_mapping_value(
+        _metric_mapping(baseline_metrics, metric_name),
+        "average",
+    )
+    return _average_metric_delta_from_values(
+        candidate_average=candidate_average,
+        baseline_average=baseline_average,
+    )
+
+
+def _average_metric_delta_from_entry(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    return _average_metric_delta_from_values(
+        candidate_average=_float_mapping_value(entry, "candidate_average"),
+        baseline_average=_float_mapping_value(entry, "baseline_average"),
+    )
+
+
+def _average_metric_delta_from_values(
+    *,
+    candidate_average: float | None,
+    baseline_average: float | None,
+) -> dict[str, Any]:
+    return {
+        "average_delta": _float_delta(candidate_average, baseline_average),
+        "baseline_average": baseline_average,
+        "candidate_average": candidate_average,
+    }
+
+
+def _numeric_mae_metric_delta(
+    candidate_metrics: object,
+    baseline_metrics: object,
+) -> dict[str, Any]:
+    candidate_mae = _float_mapping_value(
+        _metric_mapping(candidate_metrics, "numeric_mae"),
+        "mean_absolute_error",
+    )
+    baseline_mae = _float_mapping_value(
+        _metric_mapping(baseline_metrics, "numeric_mae"),
+        "mean_absolute_error",
+    )
+    return _numeric_mae_metric_delta_from_values(
+        candidate_mae=candidate_mae,
+        baseline_mae=baseline_mae,
+    )
+
+
+def _numeric_mae_metric_delta_from_entry(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    return _numeric_mae_metric_delta_from_values(
+        candidate_mae=_float_mapping_value(entry, "candidate_mean_absolute_error"),
+        baseline_mae=_float_mapping_value(entry, "baseline_mean_absolute_error"),
+    )
+
+
+def _numeric_mae_metric_delta_from_values(
+    *,
+    candidate_mae: float | None,
+    baseline_mae: float | None,
+) -> dict[str, Any]:
+    return {
+        "baseline_mean_absolute_error": baseline_mae,
+        "candidate_mean_absolute_error": candidate_mae,
+        "mean_absolute_error_delta": _float_delta(candidate_mae, baseline_mae),
+    }
+
+
+def _research_axis_delta(
+    candidate_breakdown: object,
+    baseline_breakdown: object,
+) -> dict[str, Any]:
+    candidate_axes = _research_axis_mapping(candidate_breakdown)
+    baseline_axes = _research_axis_mapping(baseline_breakdown)
+    axis_names = sorted(set(QA_RESEARCH_AXIS_NAMES) | set(candidate_axes) | set(baseline_axes))
+    return {
+        axis: _breakdown_delta(candidate_axes.get(axis), baseline_axes.get(axis))
+        for axis in axis_names
+    }
+
+
+def _breakdown_group_delta(
+    candidate_breakdown: object,
+    baseline_breakdown: object,
+    group_name: str,
+) -> dict[str, Any]:
+    candidate_group = _breakdown_group_mapping(candidate_breakdown, group_name)
+    baseline_group = _breakdown_group_mapping(baseline_breakdown, group_name)
+    group_keys = sorted(set(candidate_group) | set(baseline_group))
+    return {
+        str(key): _breakdown_delta(candidate_group.get(key), baseline_group.get(key))
+        for key in group_keys
+    }
+
+
+def _breakdown_delta_from_entry(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    return {
+        "by_episode_id": _breakdown_group_delta_from_entry(
+            entry.get("by_episode_id")
+        ),
+        "by_question_type": _breakdown_group_delta_from_entry(
+            entry.get("by_question_type")
+        ),
+        "by_reference_frame": _breakdown_group_delta_from_entry(
+            entry.get("by_reference_frame")
+        ),
+        "by_research_axis": _breakdown_group_delta_from_entry(
+            entry.get("by_research_axis")
+        ),
+        "by_scene_id": _breakdown_group_delta_from_entry(entry.get("by_scene_id")),
+        "by_tag": _breakdown_group_delta_from_entry(entry.get("by_tag")),
+    }
+
+
+def _breakdown_group_delta_from_entry(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    return {
+        str(key): _breakdown_delta_from_values(value)
+        for key, value in sorted(entry.items(), key=lambda item: str(item[0]))
+    }
+
+
+def _breakdown_delta(candidate: object, baseline: object) -> dict[str, Any]:
+    return _breakdown_delta_from_numbers(
+        candidate_case_count=_int_mapping_value(candidate, "case_count"),
+        baseline_case_count=_int_mapping_value(baseline, "case_count"),
+        candidate_exact_match_count=_int_mapping_value(candidate, "exact_match_count"),
+        baseline_exact_match_count=_int_mapping_value(baseline, "exact_match_count"),
+        candidate_exact_match_rate=_float_mapping_value(candidate, "exact_match_rate"),
+        baseline_exact_match_rate=_float_mapping_value(baseline, "exact_match_rate"),
+        candidate_mean_edge_recall=_float_mapping_value(
+            candidate,
+            "mean_evidence_edge_recall",
+        ),
+        baseline_mean_edge_recall=_float_mapping_value(
+            baseline,
+            "mean_evidence_edge_recall",
+        ),
+        candidate_mean_node_recall=_float_mapping_value(
+            candidate,
+            "mean_evidence_node_recall",
+        ),
+        baseline_mean_node_recall=_float_mapping_value(
+            baseline,
+            "mean_evidence_node_recall",
+        ),
+    )
+
+
+def _breakdown_delta_from_values(entry: object) -> dict[str, Any] | None:
+    if not isinstance(entry, Mapping):
+        return None
+    return _breakdown_delta_from_numbers(
+        candidate_case_count=_int_mapping_value(entry, "candidate_case_count"),
+        baseline_case_count=_int_mapping_value(entry, "baseline_case_count"),
+        candidate_exact_match_count=_int_mapping_value(
+            entry,
+            "candidate_exact_match_count",
+        ),
+        baseline_exact_match_count=_int_mapping_value(
+            entry,
+            "baseline_exact_match_count",
+        ),
+        candidate_exact_match_rate=_float_mapping_value(
+            entry,
+            "candidate_exact_match_rate",
+        ),
+        baseline_exact_match_rate=_float_mapping_value(
+            entry,
+            "baseline_exact_match_rate",
+        ),
+        candidate_mean_edge_recall=_float_mapping_value(
+            entry,
+            "candidate_mean_evidence_edge_recall",
+        ),
+        baseline_mean_edge_recall=_float_mapping_value(
+            entry,
+            "baseline_mean_evidence_edge_recall",
+        ),
+        candidate_mean_node_recall=_float_mapping_value(
+            entry,
+            "candidate_mean_evidence_node_recall",
+        ),
+        baseline_mean_node_recall=_float_mapping_value(
+            entry,
+            "baseline_mean_evidence_node_recall",
+        ),
+    )
+
+
+def _breakdown_delta_from_numbers(
+    *,
+    candidate_case_count: int | None,
+    baseline_case_count: int | None,
+    candidate_exact_match_count: int | None,
+    baseline_exact_match_count: int | None,
+    candidate_exact_match_rate: float | None,
+    baseline_exact_match_rate: float | None,
+    candidate_mean_edge_recall: float | None,
+    baseline_mean_edge_recall: float | None,
+    candidate_mean_node_recall: float | None,
+    baseline_mean_node_recall: float | None,
+) -> dict[str, Any]:
+    return {
+        "baseline_case_count": baseline_case_count,
+        "baseline_exact_match_count": baseline_exact_match_count,
+        "baseline_exact_match_rate": baseline_exact_match_rate,
+        "baseline_mean_evidence_edge_recall": baseline_mean_edge_recall,
+        "baseline_mean_evidence_node_recall": baseline_mean_node_recall,
+        "candidate_case_count": candidate_case_count,
+        "candidate_exact_match_count": candidate_exact_match_count,
+        "candidate_exact_match_rate": candidate_exact_match_rate,
+        "candidate_mean_evidence_edge_recall": candidate_mean_edge_recall,
+        "candidate_mean_evidence_node_recall": candidate_mean_node_recall,
+        "case_count_delta": _int_delta(candidate_case_count, baseline_case_count),
+        "case_count_match": candidate_case_count == baseline_case_count,
+        "exact_match_count_delta": _int_delta(
+            candidate_exact_match_count,
+            baseline_exact_match_count,
+        ),
+        "exact_match_rate_delta": _float_delta(
+            candidate_exact_match_rate,
+            baseline_exact_match_rate,
+        ),
+        "mean_evidence_edge_recall_delta": _float_delta(
+            candidate_mean_edge_recall,
+            baseline_mean_edge_recall,
+        ),
+        "mean_evidence_node_recall_delta": _float_delta(
+            candidate_mean_node_recall,
+            baseline_mean_node_recall,
+        ),
+    }
+
+
+def _metric_mapping(metrics: object, metric_name: str) -> Mapping[str, Any] | None:
+    if not isinstance(metrics, Mapping):
+        return None
+    metric = metrics.get(metric_name)
+    return cast(Mapping[str, Any], metric) if isinstance(metric, Mapping) else None
+
+
+def _research_axis_mapping(breakdown: object) -> Mapping[str, Any]:
+    if not isinstance(breakdown, Mapping):
+        return {}
+    axes = breakdown.get("by_research_axis")
+    return cast(Mapping[str, Any], axes) if isinstance(axes, Mapping) else {}
+
+
+def _breakdown_group_mapping(
+    breakdown: object,
+    group_name: str,
+) -> Mapping[str, Any]:
+    if not isinstance(breakdown, Mapping):
+        return {}
+    group = breakdown.get(group_name)
+    return cast(Mapping[str, Any], group) if isinstance(group, Mapping) else {}
+
+
+def _int_mapping_value(payload: object, key: str) -> int | None:
+    if not isinstance(payload, Mapping):
+        return None
+    value = payload.get(key)
+    if isinstance(value, bool) or not isinstance(value, int):
+        return None
+    return value
+
+
+def _float_mapping_value(payload: object, key: str) -> float | None:
+    if not isinstance(payload, Mapping):
+        return None
+    value = payload.get(key)
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    return float(value)
+
+
+def _int_delta(candidate: int | None, baseline: int | None) -> int | None:
+    if candidate is None or baseline is None:
+        return None
+    return candidate - baseline
+
+
+def _float_delta(candidate: float | None, baseline: float | None) -> float | None:
+    if candidate is None or baseline is None:
+        return None
+    return round(candidate - baseline, 6)
+
+
+def _required_delta_report_path(report: Mapping[str, Any], key: str) -> Path:
+    value = report.get(key)
+    if not isinstance(value, str) or not value:
+        raise SpatialQAError(f"QA eval delta report missing {key}")
+    return Path(value)
+
+
+def _delta_report_name(report: Mapping[str, Any], key: str) -> str:
+    value = report.get(key)
+    return value if isinstance(value, str) and value else key.replace("_name", "")
+
+
 def _prediction_mapping(predictions: Sequence[QAPrediction]) -> dict[str, QAPrediction]:
     mapping: dict[str, QAPrediction] = {}
     for prediction in predictions:
@@ -249,6 +999,8 @@ def _case_result(case: QACase, prediction: QAPrediction | None) -> dict[str, Any
     if prediction is None:
         return {
             "case_id": case.id,
+            "episode_id": case.episode_id,
+            "scene_id": case.scene_id,
             "question_type": case.question_type,
             "tags": list(case.tags),
             "reference_frame": case.reference_frame,
@@ -269,6 +1021,8 @@ def _case_result(case: QACase, prediction: QAPrediction | None) -> dict[str, Any
     edge_recall = _recall(prediction.evidence_edges, case.required_edges)
     return {
         "case_id": case.id,
+        "episode_id": case.episode_id,
+        "scene_id": case.scene_id,
         "question_type": case.question_type,
         "tags": list(case.tags),
         "reference_frame": case.reference_frame,
@@ -353,6 +1107,14 @@ def _breakdown_by_question_type(case_results: Sequence[Mapping[str, Any]]) -> di
     return _breakdown(case_results, lambda result: str(result["question_type"]))
 
 
+def _breakdown_by_episode_id(case_results: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    return _breakdown(case_results, lambda result: str(result["episode_id"]))
+
+
+def _breakdown_by_scene_id(case_results: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    return _breakdown(case_results, lambda result: str(result["scene_id"]))
+
+
 def _breakdown_by_tag(case_results: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
     grouped: dict[str, list[Mapping[str, Any]]] = {}
     for result in case_results:
@@ -368,6 +1130,31 @@ def _breakdown_by_reference_frame(case_results: Sequence[Mapping[str, Any]]) -> 
         if result["reference_frame"] is not None
         else "none",
     )
+
+
+def _breakdown_by_research_axis(case_results: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+    grouped: dict[str, list[Mapping[str, Any]]] = {
+        axis: [] for axis in QA_RESEARCH_AXIS_NAMES
+    }
+    for result in case_results:
+        for axis in qa_research_axes_for_case(result):
+            grouped[axis].append(result)
+    return {axis: _breakdown_entry(grouped[axis]) for axis in QA_RESEARCH_AXIS_NAMES}
+
+
+def qa_research_axes_for_case(case_result: Mapping[str, Any]) -> tuple[str, ...]:
+    tags = {
+        tag
+        for tag in case_result.get("tags", ())
+        if isinstance(tag, str) and tag
+    }
+    question_type = str(case_result.get("question_type", ""))
+    axes = {"spatial_qa"}
+    if tags & QA_DYNAMIC_MEMORY_TAGS:
+        axes.add("dynamic_memory")
+    if question_type in QA_GRAPH_TOOL_QUERY_TYPES or tags & QA_GRAPH_TOOL_QUERY_TAGS:
+        axes.add("graph_tool_query")
+    return tuple(axis for axis in QA_RESEARCH_AXIS_NAMES if axis in axes)
 
 
 def _breakdown(

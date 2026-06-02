@@ -40,6 +40,7 @@ def test_offline_prediction_import_normalizes_records_and_reports(tmp_path: Path
     assert hasattr(lab, "offline_prediction_records_jsonl")
     assert hasattr(lab, "offline_prediction_records_digest")
     assert hasattr(lab, "offline_prediction_records_from_jsonl")
+    assert hasattr(lab, "offline_prediction_source_profile")
     assert hasattr(lab, "import_offline_predictions")
     assert hasattr(lab, "offline_prediction_import_report_digest")
     assert hasattr(lab, "save_offline_prediction_import_report")
@@ -60,7 +61,12 @@ def test_offline_prediction_import_normalizes_records_and_reports(tmp_path: Path
         records,
         source_name="vlm_fixture",
         source_kind="vlm",
-        source_metadata={"prompt_id": "spatial-qa-v1"},
+        source_metadata={
+            "capabilities": ("spatial_qa", "dynamic_memory"),
+            "dataset_id": "mock_eval",
+            "model_id": "mock-vlm",
+            "prompt_id": "spatial-qa-v1",
+        },
         qa_path=qa_path,
         input_path=input_path,
         prediction_path=pred_path,
@@ -85,8 +91,29 @@ def test_offline_prediction_import_normalizes_records_and_reports(tmp_path: Path
     assert predictions[0].evidence_edges == cases[0].required_edges
     assert report["source"] == {
         "kind": "vlm",
-        "metadata": {"prompt_id": "spatial-qa-v1"},
+        "metadata": {
+            "capabilities": ["spatial_qa", "dynamic_memory"],
+            "dataset_id": "mock_eval",
+            "model_id": "mock-vlm",
+            "prompt_id": "spatial-qa-v1",
+        },
         "name": "vlm_fixture",
+    }
+    assert report["source_profile"] == {
+        "adapter": "vlm",
+        "capability_axes": ["dynamic_memory", "spatial_qa"],
+        "dataset_id": "mock_eval",
+        "kind": "vlm",
+        "metadata_keys": [
+            "capabilities",
+            "dataset_id",
+            "model_id",
+            "prompt_id",
+        ],
+        "model_id": "mock-vlm",
+        "name": "vlm_fixture",
+        "prompt_id": "spatial-qa-v1",
+        "source_key": "vlm:vlm_fixture",
     }
     assert report["summary"] == {
         "duplicate_case_count": 0,
@@ -109,6 +136,19 @@ def test_offline_prediction_import_normalizes_records_and_reports(tmp_path: Path
     assert report["report_digest"] == lab.offline_prediction_import_report_digest(report)
     assert validation["valid"] is True
     assert comparison["matches"] is True
+
+    tampered_report = dict(report)
+    tampered_report["source_profile"] = {
+        **cast(dict[str, object], report["source_profile"]),
+        "source_key": "vlm:changed",
+    }
+    tampered_report["report_digest"] = lab.offline_prediction_import_report_digest(
+        tampered_report
+    )
+    tampered_validation = lab.validate_offline_prediction_import_report(tampered_report)
+    tampered_checks = {check["name"]: check for check in tampered_validation["checks"]}
+    assert tampered_validation["valid"] is False
+    assert tampered_checks["source_profile"]["passed"] is False
 
 
 def test_import_predictions_cli_writes_predictions_and_report(
@@ -138,6 +178,10 @@ def test_import_predictions_cli_writes_predictions_and_report(
             "caption_memory",
             "--metadata",
             "prompt_id=caption-v1",
+            "--metadata",
+            "model_id=caption-baseline",
+            "--metadata",
+            "capabilities=spatial_qa,dynamic_memory",
             "--pred",
             str(pred_path),
             "--report",
@@ -154,9 +198,25 @@ def test_import_predictions_cli_writes_predictions_and_report(
         "valid": True,
         "digest": report["report_digest"],
         "prediction_digest": lab.qa_predictions_digest(predictions),
+        "source_profile": report["source_profile"],
         "summary": report["summary"],
     }
-    assert report["source"]["metadata"] == {"prompt_id": "caption-v1"}
+    assert report["source"]["metadata"] == {
+        "capabilities": "spatial_qa,dynamic_memory",
+        "model_id": "caption-baseline",
+        "prompt_id": "caption-v1",
+    }
+    assert report["source_profile"] == {
+        "adapter": "caption_memory",
+        "capability_axes": ["dynamic_memory", "spatial_qa"],
+        "dataset_id": "unspecified",
+        "kind": "caption_memory",
+        "metadata_keys": ["capabilities", "model_id", "prompt_id"],
+        "model_id": "caption-baseline",
+        "name": "caption_fixture",
+        "prompt_id": "caption-v1",
+        "source_key": "caption_memory:caption_fixture",
+    }
     assert report["summary"]["missing_case_count"] == 1
 
     assert main(["--validate-report", str(report_path)]) == 0
