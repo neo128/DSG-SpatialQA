@@ -49,8 +49,77 @@ python scripts/evaluate.py --compare-bundle reobserve-bundle.json
 ```
 
 Evaluation artifact validation and comparison return non-zero structured JSON
-with `valid: false` when an explicit report, manifest, or bundle file is
+with `valid: false` when an explicit report, case listing, manifest, or bundle file is
 unreadable or fails artifact loading.
+
+Validate deterministic episode JSONL artifacts from the shell:
+
+```bash
+python scripts/episodes.py --validate mock-episode.jsonl
+python scripts/episodes.py --summary mock-episode.jsonl
+python scripts/episodes.py --compare mock-episode.jsonl
+```
+
+Episode JSONL validation reads only the explicit local file, checks frame schema,
+episode/step ordering, duplicate episode steps, and emits stable digest and
+summary metadata. Invalid files return non-zero structured JSON with
+`valid: false`.
+
+Generate a deterministic mock AI2-THOR episode JSONL artifact without launching
+a simulator:
+
+```bash
+python scripts/collect_ai2thor.py \
+  --mock \
+  --scene FloorPlan1 \
+  --episode-id ai2thor_mock_001 \
+  --step 1 \
+  --step 2 \
+  --action Initialize \
+  --action MoveAhead \
+  --output mock-ai2thor.jsonl
+```
+
+The adapter CLI requires explicit caller-supplied steps. In the default local
+environment, non-mock collection returns non-zero structured JSON with the
+missing optional dependency message instead of importing or calling a simulator.
+
+Build a deterministic oracle DSG from mock episode metadata:
+
+```bash
+python scripts/build_oracle_graph.py \
+  --input mock-episode.jsonl \
+  --output-graph oracle-graph.json \
+  --report oracle-report.json
+python scripts/build_oracle_graph.py --validate-report oracle-report.json
+python scripts/build_oracle_graph.py --compare-report oracle-report.json
+```
+
+Oracle graph building reads only the explicit episode JSONL file, consumes
+metadata-provided rooms, regions, objects, and relations, writes graph JSON only
+to `--output-graph`, and writes a stable report only to `--report`. Report
+validation checks digest, path, and nested graph-report consistency; comparison
+rebuilds from the recorded episode path and checks current graph/report drift
+plus exported graph-file drift.
+
+Generate a deterministic oracle QA dataset from an explicit graph artifact:
+
+```bash
+python scripts/generate_qa.py \
+  --graph oracle-graph.json \
+  --scene-id mock_scene \
+  --episode-id mock_episode \
+  --max-cases 100 \
+  --output qa.jsonl
+python scripts/generate_qa.py --validate qa.jsonl
+python scripts/generate_qa.py --compare qa.jsonl --graph oracle-graph.json
+```
+
+Generated QA cases are JSONL records with stable IDs, graph digests, questions,
+oracle answers, evidence node IDs, evidence edge IDs, choices, tags, and
+question types. Validation checks dataset shape and stable digests; comparison
+replays each case through the current `SpatialQAEngine` against the supplied
+graph and reports answer/evidence drift.
 
 Export and validate a deterministic scene fixture graph from the shell:
 
@@ -92,6 +161,12 @@ Ingest a deterministic mock perception observation sequence from an explicit
 local file and export the resulting graph/report artifacts:
 
 ```bash
+python scripts/observations.py --validate-sequence mock-observation-sequence.json
+python scripts/observations.py \
+  --summarize-sequence mock-observation-sequence.json \
+  --report mock-observation-sequence-summary.json
+python scripts/observations.py --validate-sequence-summary mock-observation-sequence-summary.json
+python scripts/observations.py --compare-sequence-summary mock-observation-sequence-summary.json
 python scripts/observations.py \
   --input mock-observation-sequence.json \
   --output-graph mock-observation-graph.json \
@@ -100,13 +175,21 @@ python scripts/observations.py --validate-report mock-observation-ingest-report.
 python scripts/observations.py --compare-report mock-observation-ingest-report.json
 ```
 
-Observation ingestion reads only the explicit sequence JSON file, writes graph
-JSON only to `--output-graph`, and writes the structured ingest report only when
-`--report` is supplied. Observation ingest report validation and comparison read
-only explicit local report, sequence, and graph artifacts, then compare saved
-sequence digest, graph digest, graph-file digest, summaries, and per-step ingest
-results against a current deterministic re-ingest. Invalid or drifted sequence,
-graph, or report files return non-zero structured JSON with `valid: false` or
+Observation sequence validation reads only the explicit sequence JSON file,
+checks the sequence schema/count/step shape, and reports the stable sequence
+digest plus graph-free summary without building a graph. Observation sequence
+summarization reads only the explicit sequence JSON file and reports stable
+sequence digest, step, object, visibility, confidence, and label-count metadata.
+Summary validation checks the explicit summary artifact fingerprint and internal
+count consistency; summary comparison reads only the sequence path recorded in
+that artifact and detects current sequence drift. Observation ingestion reads
+only the explicit sequence JSON file, writes graph JSON only to `--output-graph`,
+and writes the structured ingest report only when `--report` is supplied.
+Observation ingest report validation and comparison read only explicit local
+report, sequence, and graph artifacts, then compare saved sequence digest, graph
+digest, graph-file digest, summaries, and per-step ingest results against a
+current deterministic re-ingest. Invalid or drifted sequence, graph, summary, or
+report files return non-zero structured JSON with `valid: false` or
 `matches: false`.
 
 If the editable development install is already current, skip that first gate:
@@ -119,21 +202,36 @@ python scripts/verify.py --skip-install
 
 - In-memory Dynamic Scene Graph state for agents, objects, rooms, regions,
   actions, events, current state, and explicit-step history.
-- Deterministic spatial relations and graph retrieval through `GraphTool`.
+- Deterministic spatial relations and graph retrieval through `GraphTool`,
+  including bbox surface-distance `NEAR`, centroid containment `INSIDE`,
+  support-overlap `ON` / `SUPPORTS`, stable metric distance reports, and
+  explicit placeholder edges for visibility, reachability, and occlusion.
 - Structured QA intents for object state, agent state, label-candidate
   ambiguity, room-level containment, timelines, scene snapshots, scene deltas,
   world state, recent events, graph queries, and re-observation targets.
 - Deterministic VLA anchor planning for pick and place-relative commands,
-  including ambiguity candidate diagnostics, stale-action, and re-observation
-  handling.
+  including ambiguity candidate diagnostics, stale-action, re-observation, and
+  target/reference visibility-confidence precondition handling.
 - Built-in scene fixtures and evaluation cases with stable suite summaries,
   failure diagnostics, and SHA-256 digests for experiment records.
+- Deterministic oracle QA JSONL generation from explicit graph artifacts,
+  including answer/evidence replay validation and current-graph comparison.
 - Offline evaluation report, manifest, and bundle CLI entrypoints with
   structured invalid-file diagnostics for reproducible handoffs.
-- Offline observation sequence ingest CLI that turns explicit mock perception
-  JSON artifacts into graph JSON plus stable digest/summary reports.
-- Dynamic fixture coverage for multi-room relocation, occlusion, re-observation,
-  relation shifts, temporal deltas, and step-window event audits.
+- Deterministic episode JSONL schema and CLI validation for simulator/mock
+  collection handoffs without connecting to a simulator.
+- Optional AI2-THOR adapter boundary with deterministic mock episode generation,
+  explicit-step collection config, and structured missing-dependency diagnostics
+  for non-mock collection.
+- Deterministic oracle DSG builder for episode metadata, including room/region
+  containment, explicit relations, moved-object evidence, stable graph/report
+  digests, and explicit-path validation/comparison.
+- Offline observation sequence summary and ingest CLI that turns explicit mock
+  perception JSON artifacts into stable dataset summaries, graph JSON, and
+  digest/summary reports.
+- Dynamic fixture coverage for multi-room relocation, stable room containment,
+  occlusion, re-observation, relation shifts, temporal deltas, and step-window
+  event audits.
 - JSON graph import/export helpers, graph digests, graph summaries with
   object-state, current-location, current-room, node-type, edge-relation, and
   object-label counts, and a scene fixture metadata/export/validate/compare CLI
@@ -198,20 +296,23 @@ python scripts/evaluate.py --compare-manifest relations-manifest.json
 
 The CLI prints stable JSON to stdout and, when `--report` is provided, writes
 the selected report, case listing, manifest, or bundle to an explicit local
-path. `--list-cases` emits only filtered case metadata, a case count, and a
-stable digest without running cases, which is useful for discovering focused
-benchmark slices.
-Case listing validation checks the explicit listing digest and case count, while
-case listing comparison regenerates current filtered metadata without running
+path. `--list-cases` emits only the listing schema version, filtered case
+metadata, case count, and stable digest without running cases, which is useful
+for discovering focused benchmark slices.
+Case listing validation checks the explicit schema version, listing digest, and
+case count, plus required case metadata shape and unique case names. Case
+listing comparison regenerates current filtered metadata without running
 evaluation cases and reports stable case metadata drift by case name.
 Manifest output includes the filter manifest, selected scene fixtures, selected
 evaluation cases, deterministic coverage counts, and a digest without running
 cases. Manifest validation reads only the explicit local JSON file and checks
-schema version, digest, scene fixture coverage, and coverage summary
-consistency. `evaluation_manifest_digest()` recomputes the saved metadata
-fingerprint for Python handoffs. Coverage summary validation and comparison
+schema version, digest, required case metadata shape, unique case names, scene
+fixture coverage, case-backed scene fixture metadata consistency, and coverage
+summary consistency.
+`evaluation_manifest_digest()` recomputes the saved metadata fingerprint for
+Python handoffs. Fixture metadata and coverage summary validation/comparison
 include stable nested `differences` entries with paths such as
-`by_scene_fixture.tabletop`.
+`tabletop.tags` and `by_scene_fixture.tabletop`.
 Manifest comparison reads the saved filters from an explicit local manifest,
 regenerates the current deterministic metadata without running cases, and
 returns a non-zero status when digest, coverage, case manifest, or fixture
@@ -220,7 +321,24 @@ include stable nested `differences` entries with paths such as `by_tag.qa` and
 `tabletop_relation_timeline.tags`.
 Report comparison reads the selected case names from an explicit local compact
 report, reruns that deterministic case slice, and returns a non-zero status when
-digest, summary, metrics, failure diagnostics, or breakdown drift is detected.
+digest, case selection metadata, summary, metrics, runtime error metrics,
+failure diagnostics, or breakdown drift is detected.
+Report validation checks the compact report schema version, suite digest format,
+case selection digest, case selection entry metadata shape, case selection
+consistency with `summary.selected_cases`, failed-case detail consistency with
+`summary.failed_cases`, failed-case entry metadata shape, case digest
+consistency with `summary.selected_cases`, summary case-list shape and
+failed-case membership in selected cases, summary count consistency with the
+selected/failed case lists, breakdown count consistency with each grouped
+entry's selected/failed case lists, breakdown case-list consistency with
+`case_selection` metadata, metric consistency with summary/breakdown, top-level
+and grouped evidence metric internal consistency with summary/breakdown counts,
+evidence metric value ranges, runtime error category entry shape, runtime error
+category count/case consistency with selected cases, runtime error metric
+consistency with category aggregates, per-case digest format, per-case digest
+metadata consistency with `case_selection`, per-case digest pass/fail status
+consistency with `summary.failed_cases`, failure diagnostic aggregate
+consistency with `failed_cases`, and saved report digest before handoff.
 Summary, failed-case, metric, and breakdown drift checks include stable nested
 `differences` entries with paths such as `failed`,
 `tabletop_object_location`, `by_tag.qa.pass_rate`, and `by_tag.qa.failed` for
@@ -244,13 +362,14 @@ intent-level triage.
 Bundle validation reads only the explicit local JSON file, recomputes
 deterministic consistency checks, and returns a non-zero status when the bundle
 does not validate. Validation checks schema version, suite digest, bundle digest,
-report consistency, case manifest names and suite-backed metadata, scene fixture
-coverage and case-backed metadata, and coverage summary consistency. Report
-consistency, case manifest metadata, scene fixture metadata, and coverage
-summary validation include stable nested `differences` entries for quick
-handoff triage, including compact-report paths such as
-`failed_cases.tabletop_object_location`, case manifest paths such as
-`multi_room_rearrangement_reobserve_targets.tags`, and fixture manifest paths
+report consistency, case manifest names, required case metadata shape, unique
+case names, suite-backed metadata, scene fixture coverage and case-backed
+metadata, and coverage summary consistency. Report consistency, case manifest
+metadata, case metadata shape, scene fixture metadata, and coverage summary
+validation include stable nested `differences` entries for quick handoff triage,
+including compact-report paths such as `failed_cases.tabletop_object_location`,
+case metadata paths such as `evaluation_cases[0].question`, case manifest paths
+such as `multi_room_rearrangement_reobserve_targets.tags`, and fixture manifest paths
 such as `needs_reobserve.tags` when summaries or metadata drift.
 Bundle comparison reads the saved filters from an explicit local bundle, reruns
 the current deterministic suite, and returns a non-zero status when digest,
@@ -373,6 +492,9 @@ fixture_comparison = compare_graph_file_to_fixture("tabletop-scene.json", "table
 
 ```python
 from dsg_spatialqa_lab import (
+    AI2THOR_MISSING_DEPENDENCY_MESSAGE,
+    AI2ThorAdapterConfig,
+    AI2ThorEpisodeCollector,
     BBox3D,
     compare_evaluation_bundle,
     compare_evaluation_case_listing,
@@ -382,9 +504,15 @@ from dsg_spatialqa_lab import (
     compare_graph_report,
     compare_graph_report_to_file,
     compare_graph_to_fixture,
+    compare_episode_sequence,
     compare_observation_ingest_report,
+    compare_oracle_graph_report,
+    compare_scene_observation_sequence_summary,
+    build_oracle_graph_from_episode,
+    build_mock_ai2thor_episode,
     build_relation_shift_scene,
     DynamicSceneGraph,
+    EpisodeFrame,
     EvaluationCase,
     compare_scene_fixture_manifest,
     evaluation_bundle,
@@ -415,6 +543,12 @@ from dsg_spatialqa_lab import (
     graph_report_json,
     graph_summary,
     graph_to_json,
+    episode_frame_from_dict,
+    episode_frame_to_dict,
+    episode_sequence_digest,
+    episode_sequence_from_jsonl,
+    episode_sequence_summary,
+    episode_sequence_to_jsonl,
     ingest_scene_observation_sequence,
     load_evaluation_bundle,
     load_evaluation_case_listing,
@@ -423,8 +557,11 @@ from dsg_spatialqa_lab import (
     load_graph_report,
     load_graph_json,
     load_observation_ingest_report,
+    load_oracle_graph_report,
+    load_episode_sequence,
     load_scene_observation,
     load_scene_observation_sequence,
+    load_scene_observation_sequence_summary,
     load_scene_fixture_manifest,
     list_scene_fixture_metadata,
     list_scene_fixtures,
@@ -435,7 +572,13 @@ from dsg_spatialqa_lab import (
     observation_ingest_report,
     observation_ingest_report_digest,
     observation_ingest_report_json,
+    oracle_graph_report,
+    oracle_graph_report_digest,
+    oracle_graph_report_json,
+    oracle_graph_summary,
     save_observation_ingest_report,
+    save_oracle_graph_report,
+    save_episode_sequence,
     save_evaluation_bundle,
     save_evaluation_case_listing,
     save_evaluation_manifest,
@@ -444,12 +587,16 @@ from dsg_spatialqa_lab import (
     save_graph_json,
     save_scene_observation,
     save_scene_observation_sequence,
+    save_scene_observation_sequence_summary,
     save_scene_fixture_manifest,
     scene_observation_from_dict,
     scene_observation_from_json,
     scene_observation_sequence_from_dict,
     scene_observation_sequence_from_json,
     scene_observation_sequence_digest,
+    scene_observation_sequence_summary,
+    scene_observation_sequence_summary_digest,
+    scene_observation_sequence_summary_json,
     scene_observation_sequence_to_dict,
     scene_observation_sequence_to_json,
     scene_observation_to_dict,
@@ -460,9 +607,14 @@ from dsg_spatialqa_lab import (
     validate_evaluation_case_listing,
     validate_evaluation_manifest,
     validate_evaluation_report,
+    validate_episode_sequence,
     validate_graph_report,
     validate_observation_ingest_report,
+    validate_oracle_graph_report,
+    validate_scene_observation_sequence_payload,
+    validate_scene_observation_sequence_summary,
     validate_scene_fixture_manifest,
+    convert_ai2thor_event_to_episode_frame,
 )
 
 available_scenes = list_scene_fixtures()
@@ -541,12 +693,99 @@ current_room = tool.current_room("mug_1")
 current_world = tool.world_state(visible=True)
 recent_event_trace = tool.recent_events(since_step=1)
 targets_to_reobserve = tool.reobserve_targets()
+metric_distance = tool.compute_distance("mug_1", "plate_1")
 
 inferred_edges = tool.update_spatial_relations(
     step=2,
-    object_ids=("mug_1", "plate_1"),
-    relations=("LEFT_OF", "RIGHT_OF", "NEAR"),
-    reference_frames=("agent",),
+    object_ids=("mug_1", "plate_1", "table_1"),
+    relations=("LEFT_OF", "RIGHT_OF", "NEAR", "INSIDE", "SUPPORTS"),
+    reference_frames=("world", "agent"),
+)
+
+episode_frames = (
+    EpisodeFrame(
+        episode_id="episode_001",
+        scene_id="FloorPlan1",
+        step=1,
+        rgb_path="rgb/0001.png",
+        depth_path="depth/0001.npy",
+        segmentation_path=None,
+        agent_id="agent",
+        agent_pose=Pose3D(0.0, 0.0, 0.0),
+        action="MoveAhead",
+        visible_object_ids=("mug_1",),
+        metadata={
+            "rooms": [{"room_id": "kitchen", "label": "Kitchen"}],
+            "objects": [
+                {
+                    "object_id": "mug_1",
+                    "label": "mug",
+                    "pose": {"x": 0.0, "y": 1.0, "z": 0.75, "yaw": 0.0},
+                    "bbox": {
+                        "center": {"x": 0.0, "y": 1.0, "z": 0.75, "yaw": 0.0},
+                        "size": [0.1, 0.1, 0.1],
+                    },
+                    "confidence": 0.9,
+                    "visible": True,
+                    "room_id": "kitchen",
+                    "states": {"clean": True},
+                }
+            ],
+        },
+    ),
+)
+episode_jsonl = episode_sequence_to_jsonl(episode_frames)
+episode_round_trip = episode_sequence_from_jsonl(episode_jsonl)
+episode_frame_payload = episode_frame_to_dict(episode_round_trip[0])
+episode_frame = episode_frame_from_dict(episode_frame_payload)
+episode_digest = episode_sequence_digest(episode_round_trip)
+episode_summary = episode_sequence_summary(episode_round_trip)
+episode_validation = validate_episode_sequence(episode_round_trip)
+episode_comparison = compare_episode_sequence(episode_round_trip)
+save_episode_sequence(episode_round_trip, "mock-episode.jsonl")
+loaded_episode = load_episode_sequence("mock-episode.jsonl")
+ai2thor_config = AI2ThorAdapterConfig(
+    scene_id="FloorPlan1",
+    episode_id="ai2thor_mock_001",
+    steps=(1, 2),
+    actions=("Initialize", "MoveAhead"),
+    artifact_root="artifacts/ai2thor",
+)
+ai2thor_mock_episode = build_mock_ai2thor_episode(ai2thor_config)
+ai2thor_frame = convert_ai2thor_event_to_episode_frame(
+    {
+        "agent_pose": {"x": 0.0, "y": 0.0, "z": 0.0, "yaw": 0.0},
+        "visible_object_ids": ["mug_1"],
+        "metadata": {"objects": []},
+    },
+    config=ai2thor_config,
+    step=3,
+    action="LookDown",
+)
+ai2thor_missing_message = AI2THOR_MISSING_DEPENDENCY_MESSAGE
+ai2thor_real_collector = AI2ThorEpisodeCollector(ai2thor_config)
+oracle_graph = build_oracle_graph_from_episode(loaded_episode)
+oracle_summary_payload = oracle_graph_summary(oracle_graph, loaded_episode)
+save_graph_json(oracle_graph, "oracle-graph.json")
+oracle_graph_report_payload = oracle_graph_report(
+    input_path="mock-episode.jsonl",
+    graph_path="oracle-graph.json",
+    graph=oracle_graph,
+    frames=loaded_episode,
+)
+oracle_graph_report_payload_json = oracle_graph_report_json(
+    oracle_graph_report_payload
+)
+oracle_graph_report_payload_digest = oracle_graph_report_digest(
+    oracle_graph_report_payload
+)
+save_oracle_graph_report(oracle_graph_report_payload, "oracle-report.json")
+loaded_oracle_graph_report = load_oracle_graph_report("oracle-report.json")
+oracle_graph_report_validation = validate_oracle_graph_report(
+    loaded_oracle_graph_report
+)
+oracle_graph_report_comparison = compare_oracle_graph_report(
+    loaded_oracle_graph_report
 )
 
 ingest_result = ObservationIngestor(graph).ingest(
@@ -600,6 +839,37 @@ loaded_scene_observation_sequence = load_scene_observation_sequence(
 )
 observation_sequence_digest = scene_observation_sequence_digest(
     loaded_scene_observation_sequence
+)
+observation_sequence_validation = validate_scene_observation_sequence_payload(
+    scene_observation_sequence_to_dict(loaded_scene_observation_sequence)
+)
+observation_sequence_summary = scene_observation_sequence_summary(
+    loaded_scene_observation_sequence
+)
+observation_sequence_summary_digest = scene_observation_sequence_summary_digest(
+    observation_sequence_summary
+)
+observation_sequence_summary_payload = {
+    "action": "summarize_observation_sequence",
+    "path": "mock-observation-sequence.json",
+    "valid": True,
+    **observation_sequence_summary,
+}
+observation_sequence_summary_json = scene_observation_sequence_summary_json(
+    observation_sequence_summary_payload
+)
+save_scene_observation_sequence_summary(
+    observation_sequence_summary_payload,
+    "mock-observation-sequence-summary.json",
+)
+loaded_observation_sequence_summary = load_scene_observation_sequence_summary(
+    "mock-observation-sequence-summary.json"
+)
+observation_sequence_summary_validation = validate_scene_observation_sequence_summary(
+    loaded_observation_sequence_summary
+)
+observation_sequence_summary_comparison = compare_scene_observation_sequence_summary(
+    loaded_observation_sequence_summary
 )
 observation_graph, observation_ingest_results = ingest_scene_observation_sequence(
     loaded_scene_observation_sequence,
@@ -804,18 +1074,29 @@ Each result includes deterministic `mismatches` with path, reason, category,
 expected, and actual fields, so failed regression cases are reproducible and
 inspectable.
 QA and VLA actual outputs with a non-empty `error` also include stable
-`error_category` values such as `missing_object`, `invalid_time_window`,
-`ambiguous_label`, `needs_reobserve`, and `unsupported_relation` for
+`error_category` values such as `missing_object`, `missing_label`,
+`missing_reference`, `missing_target`, `invalid_time_window`,
+`invalid_question`, `ambiguous_label`, `needs_reobserve`, `target_not_visible`,
+`low_confidence`, `unsupported_question`, and `unsupported_relation` for
 machine-comparable runtime diagnostics.
 Suites and compact reports also include deterministic `runtime_error_categories`
 aggregates with category counts and affected case names, so an experiment can
-compare its runtime error mix without reprocessing every result.
+compare its runtime error mix without reprocessing every result. Report
+validation checks that saved category entries are non-empty, positive-count
+aggregates and that category counts match unique affected selected cases.
 Report comparison surfaces drift in those aggregates with stable category
 paths such as `missing_object.count`.
+Compact reports additionally include deterministic `runtime_error_metrics` with
+total case count, runtime-error case count, clean case count, runtime-error
+rate, and per-category case rates for quick benchmark triage. Report validation
+checks those metrics against the saved runtime error category aggregates, and
+comparison surfaces metric drift with stable nested paths such as
+`by_category.missing_target.case_rate`.
 Compact reports preserve failed-case `mismatch_paths`, report-level
 `failure_paths`, raw `failure_reasons`, and stable `failure_categories` such as
 `missing_output`, `cardinality_mismatch`, `schema_mismatch`, and
-`value_mismatch` for benchmark-level triage.
+`value_mismatch` for benchmark-level triage. Report validation checks that
+those failure diagnostic aggregates match the saved `failed_cases` summaries.
 Report comparison surfaces failure-reason, failure-category, and failure-path
 drift with stable paths such as `value_mismatch` and `answer.visible`.
 Their `metrics` include `case_count`, `passed_case_count`, `failed_case_count`,
@@ -825,12 +1106,19 @@ count/rate metrics under `by_kind`, `by_question_type`, `by_scene_fixture`, and
 Their `evidence_metrics` summarize evidence-node counts, evidence-edge counts,
 VLA command evidence counts, evidence-covered cases, and average evidence items
 per case, with the same grouped views for offline explainability audits.
-Compact reports also include `case_digests`, a per-case SHA-256 digest summary
-with case name, kind, question type, scene fixture, and pass status so a changed
-suite digest can be narrowed to individual deterministic cases. Each compact
-report also carries `report_digest`, and `evaluation_report_digest()` plus
-`validate_evaluation_report()` can recompute and validate that artifact
-fingerprint before comparison.
+Compact reports also include `case_selection`, a compact ordered summary of
+selected case name, kind, question type, scene fixture, and tags, plus
+`case_selection_digest` for validating the experiment slice. They also include
+`case_digests`, a per-case SHA-256 digest summary with case name, kind, question
+type, scene fixture, and pass status so a changed suite digest can be narrowed
+to individual deterministic cases. Each compact report also carries the report
+schema version and `report_digest`, and
+`evaluation_report_digest()` plus `validate_evaluation_report()` can recompute
+and validate that artifact fingerprint, case selection and case digest
+consistency, per-case digest format, per-case digest metadata and pass/fail
+status, summary metrics, runtime error metrics, and evidence metric internal
+consistency plus non-negative value ranges across top-level and grouped
+summaries before comparison.
 Evaluation manifests expose `evaluation_manifest_digest()` for recomputing their
 saved metadata digest, while evaluation bundles expose
 `evaluation_bundle_digest()` and `bundle_digest` for validating the complete
@@ -845,14 +1133,16 @@ regressions that derive an old action from a deterministic baseline scene.
 `run_evaluation_suite(tags=("qa", "world_state"))` selects current-scene
 world-state regressions for dynamic spatial state checks.
 `run_evaluation_suite(tags=("qa", "foundation"))` selects basic QA contract
-regressions for agent location, missing-object error diagnostics, object
-status, object history, and direct relative-relation checks over the tabletop
-fixture.
+regressions for agent location, agent pose history, missing-object error
+diagnostics, object status, object history, and direct relative-relation checks
+over the tabletop fixture.
 `run_evaluation_suite(tags=("qa", "error"))` selects structured QA error-path
-regressions, including missing-object and reversed time-window diagnostics, that
-should remain deterministic and local.
-`run_evaluation_suite(tags=("qa", "temporal"))` selects timeline and delta
-regressions, including relation timelines, for explicit-step memory audits.
+regressions, including missing-object, invalid-question-field,
+unsupported-question, and reversed time-window diagnostics, that should remain
+deterministic and local.
+`run_evaluation_suite(tags=("qa", "temporal"))` selects agent history,
+timeline, and delta regressions, including relation timelines, for explicit-step
+memory audits.
 `run_evaluation_suite(tags=("qa", "relations"))` selects static and dynamic
 relation regressions, including direct relative checks and the `relation_shift`
 fixture.
@@ -862,7 +1152,8 @@ nearest-object QA, plus text-seeded `retrieve_subgraph` QA.
 `run_evaluation_suite(tags=("qa", "snapshot"))` selects explicit-step scene
 snapshot regressions for state reconstruction audits.
 `run_evaluation_suite(tags=("qa", "reobserve"))` selects re-observation target
-regressions over the deterministic `needs_reobserve` scene.
+and low-confidence label-candidate regressions over the deterministic
+`needs_reobserve` scene.
 `run_evaluation_suite(tags=("qa", "label", "ambiguity"))` selects direct QA
 candidate-list regressions for same-label object ambiguity over the deterministic
 `ambiguous_mugs` scene.
@@ -874,12 +1165,16 @@ only anchor-planner cases.
 regressions, including stale pick targets and stale place-relative reference
 anchors.
 `run_evaluation_suite(tags=("vla", "reobserve"))` selects VLA planner
-regressions where low-confidence invisible targets must return
-`needs_reobserve` without emitting a command.
-`run_evaluation_suite(tags=("vla", "error"))` selects VLA planner error-path
-regressions, including missing pick targets, missing place references, and
-unsupported place relations that must return structured `error` results without
+regressions where low-confidence invisible pick targets, place-relative
+targets, or place-relative references must return `needs_reobserve` without
 emitting a command.
+`run_evaluation_suite(tags=("vla", "error"))` selects VLA planner error-path
+regressions, including missing pick/place target inputs, missing object pick
+targets, missing semantic-label targets, invisible pick targets and
+place-relative targets/references, visible low-confidence pick targets and
+place-relative targets/references, missing place references, missing reference
+inputs, and unsupported place relations that must return structured diagnostics
+without emitting a command.
 `run_evaluation_suite(tags=("vla", "label", "ambiguity"))` selects semantic
 target and reference ambiguity regressions where the planner must return
 `ambiguous` instead of choosing among same-label objects, with deterministic
@@ -903,17 +1198,18 @@ experiments can provide deterministic in-memory scenes outside the built-in
 fixture registry.
 `list_evaluation_case_metadata()` returns deterministic case metadata without
 loading scenes or executing QA/VLA logic. `evaluation_case_listing()` wraps that
-metadata with the applied filters, case count, and digest;
+metadata with the listing schema version, applied filters, case count, and digest;
 `evaluation_case_listing_digest()` recomputes the fingerprint for filtered
 discovery handoffs. `save_evaluation_case_listing()`,
 `load_evaluation_case_listing()`, `validate_evaluation_case_listing()`, and
 `compare_evaluation_case_listing()` support explicit-path listing artifacts and
-current-code metadata drift checks. Each entry includes the case name, scene
-fixture, fixture description/tags when available, kind, tags, structured
-question copy, question type, baseline fixture metadata for stale-action cases,
-action target fields, relation, and expected top-level keys. Listing helpers
-support the same tag, kind, exact-name, and `question_types` filters for
-deterministic QA intent discovery. Caller-supplied fixture names that are not in
+current-code metadata drift checks. Listing validation checks the schema
+version, saved digest, and case count before handoff. Each entry includes the
+case name, scene fixture, fixture description/tags when available, kind, tags,
+structured question copy, question type, baseline fixture metadata for
+stale-action cases, action target fields, relation, and expected top-level keys.
+Listing helpers support the same tag, kind, exact-name, and `question_types`
+filters for deterministic QA intent discovery. Caller-supplied fixture names that are not in
 the built-in scene registry keep `scene_description=None` and `scene_tags=[]`.
 Use `evaluation_cases_metadata()` for the same deterministic manifest over
 caller-supplied custom `EvaluationCase` sequences.
@@ -975,9 +1271,50 @@ was across explicit steps.
 
 Spatial relations are computed geometrically. `NEAR` uses 3D bbox surface
 distance, `ON` requires vertical contact plus configurable support-area overlap,
-and egocentric relations respect the agent yaw. `GraphTool.update_spatial_relations`
-can append inferred relation edges for an explicit caller-supplied step while
-preserving previous relation history.
+`SUPPORTS` is the inverse of a valid `ON` relation, `INSIDE` checks whether the
+source bbox centroid lies within the destination bbox, and egocentric relations
+respect the agent yaw. `GraphTool.compute_distance()` returns a stable rounded
+world-frame distance payload with source/destination poses for offline metrics.
+`GraphTool.update_spatial_relations()` can append inferred relation edges for an
+explicit caller-supplied step while preserving previous relation history.
+`VISIBLE_FROM`, `REACHABLE_FROM`, and `OCCLUDES` are explicit placeholder edges:
+they can be saved and queried, including `image` and `object:*` reference-frame
+strings, but the MVP does not infer them from RGB/depth, frustums, or navmeshes.
+
+Episode JSONL helpers define a deterministic simulator/mock collection boundary
+without importing simulator packages. Each `EpisodeFrame` line records explicit
+episode id, scene id, step, optional RGB/depth/segmentation artifact paths,
+agent pose, optional action, visible object ids, and metadata. The
+`episode_sequence_*` helpers support stable JSONL round-trips, SHA-256 digests,
+summary metadata, explicit-path save/load, validation for episode/step ordering
+and duplicate episode steps, and canonical round-trip comparison.
+`scripts/episodes.py --validate`, `--summary`, and `--compare` provide the same
+local handoff checks from the shell and return structured non-zero JSON for
+invalid explicit files.
+
+The optional AI2-THOR adapter is a boundary, not a simulator integration in the
+default runtime. `AI2ThorAdapterConfig` requires caller-supplied `steps`;
+`build_mock_ai2thor_episode()` creates deterministic episode frames with local
+artifact paths and metadata that can feed the oracle builder; and
+`AI2ThorEpisodeCollector.collect_episode()` raises the missing optional
+dependency diagnostic unless a future integration supplies an external collector
+layer. `scripts/collect_ai2thor.py --mock` writes valid Episode JSONL to an
+explicit `--output` path, while non-mock collection fails closed with local JSON
+diagnostics.
+
+The oracle builder turns mock episode metadata into a local `DynamicSceneGraph`
+without importing simulator packages. `EpisodeFrame.metadata` may include
+`rooms`, `regions`, `objects`, and explicit `relations`; object records include
+pose, bbox, confidence, visibility, optional `room_id`/`region_id`, and arbitrary
+state keys. `build_oracle_graph_from_episode()` adds agent poses, containment,
+explicit relation edges, action nodes, event nodes for moved objects, and
+`MOVED_FROM` / `MOVED_TO` evidence while preserving last-seen pose/step for
+hidden low-confidence objects through the existing graph memory semantics.
+`oracle_graph_report()`, `oracle_graph_report_digest()`,
+`save_oracle_graph_report()`, `load_oracle_graph_report()`,
+`validate_oracle_graph_report()`, and `compare_oracle_graph_report()` provide
+stable explicit-path graph/report handoffs. `scripts/build_oracle_graph.py`
+offers the same build, validation, and comparison flow from the shell.
 
 `ObservationIngestor` is the deterministic boundary for mock perception frames:
 callers provide explicit `SceneObservation.step`, optional agent pose, room/region
@@ -989,10 +1326,25 @@ network services. `scene_observation_to_dict()`, `scene_observation_to_json()`,
 round-trips and explicit-path local files for offline mock perception handoffs.
 The `scene_observation_sequence_*` helpers provide the same stable JSON
 round-trip for ordered multi-frame observation streams, including explicit step
-lists and observation counts. `scripts/observations.py` ingests such a sequence
-into a new in-memory graph, exports graph JSON to an explicit `--output-graph`
-path, and emits a stable ingest report with per-step `IngestResult` data plus
-the input sequence digest, graph digest/summary, and report digest.
+lists and observation counts. `validate_scene_observation_sequence_payload()`
+checks raw sequence schema/count/step shape and returns the sequence digest plus
+graph-free summary for pre-ingest gates. `scene_observation_sequence_summary()`
+and `scene_observation_sequence_summary_digest()` provide graph-free dataset
+handoff metadata for ordered observation streams, including step spans,
+object-observation counts, unique object IDs, label counts, visibility counts,
+low-confidence counts, and re-observation candidate counts.
+`scene_observation_sequence_summary_json()`,
+`save_scene_observation_sequence_summary()`,
+`load_scene_observation_sequence_summary()`,
+`validate_scene_observation_sequence_summary()`, and
+`compare_scene_observation_sequence_summary()` support explicit-path summary
+artifacts, digest checks, internal count consistency checks, and current
+sequence drift checks before graph ingest. `scripts/observations.py` can
+summarize such a sequence with `--summarize-sequence`, validate or compare the
+summary artifact, or ingest it into a new in-memory graph, export graph JSON to
+an explicit `--output-graph` path, and emit a stable ingest report with per-step
+`IngestResult` data plus the input sequence digest, graph digest/summary, and
+report digest.
 `scene_observation_sequence_digest()`, `observation_ingest_report_digest()`,
 `save_observation_ingest_report()`, `load_observation_ingest_report()`,
 `validate_observation_ingest_report()`, and

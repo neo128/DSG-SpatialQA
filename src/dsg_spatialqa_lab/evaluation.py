@@ -29,6 +29,8 @@ EvaluationKind = Literal[
 SceneLoader = Callable[[], DynamicSceneGraph]
 EVALUATION_MANIFEST_SCHEMA_VERSION = "dsg-spatialqa-lab.evaluation-manifest.v1"
 EVALUATION_BUNDLE_SCHEMA_VERSION = "dsg-spatialqa-lab.evaluation-bundle.v1"
+EVALUATION_CASE_LISTING_SCHEMA_VERSION = "dsg-spatialqa-lab.evaluation-case-listing.v1"
+EVALUATION_REPORT_SCHEMA_VERSION = "dsg-spatialqa-lab.evaluation-report.v1"
 
 
 @dataclass(frozen=True)
@@ -420,6 +422,42 @@ _EVALUATION_CASES: dict[str, EvaluationCase] = {
             "error": None,
         },
     ),
+    "multi_room_rearrangement_object_room_milk": EvaluationCase(
+        name="multi_room_rearrangement_object_room_milk",
+        scene_fixture="multi_room_rearrangement",
+        kind="qa",
+        tags=("qa", "dynamic", "multi_room", "room"),
+        question={"type": "object_room", "object_id": "milk_1"},
+        expected={
+            "answer": {
+                "object_id": "milk_1",
+                "room_id": "kitchen",
+                "room_label": "Kitchen",
+                "path": [
+                    {
+                        "src": "milk_1",
+                        "relation": "IN_REGION",
+                        "dst": "prep_counter",
+                        "step": 1,
+                    },
+                    {
+                        "src": "prep_counter",
+                        "relation": "IN_ROOM",
+                        "dst": "kitchen",
+                        "step": 1,
+                    },
+                ],
+            },
+            "evidence_nodes": ["milk_1", "prep_counter", "kitchen"],
+            "evidence_edges": [
+                "milk_1-IN_REGION-prep_counter-1",
+                "prep_counter-IN_ROOM-kitchen-1",
+            ],
+            "confidence": 0.9,
+            "needs_reobserve": False,
+            "error": None,
+        },
+    ),
     "multi_room_rearrangement_recent_events": EvaluationCase(
         name="multi_room_rearrangement_recent_events",
         scene_fixture="multi_room_rearrangement",
@@ -516,6 +554,215 @@ _EVALUATION_CASES: dict[str, EvaluationCase] = {
             "error": "needs_reobserve",
             "error_category": "needs_reobserve",
             "needs_reobserve": True,
+        },
+    ),
+    "needs_reobserve_spoon_place_reference": EvaluationCase(
+        name="needs_reobserve_spoon_place_reference",
+        scene_fixture="needs_reobserve",
+        kind="vla_place_relative",
+        tags=("vla", "place", "reobserve", "occlusion"),
+        target_object="mug_1",
+        reference_object="spoon_1",
+        relation="RIGHT_OF",
+        expected={
+            "status": "needs_reobserve",
+            "error": "needs_reobserve",
+            "error_category": "needs_reobserve",
+            "needs_reobserve": True,
+        },
+    ),
+    "needs_reobserve_spoon_place_target": EvaluationCase(
+        name="needs_reobserve_spoon_place_target",
+        scene_fixture="needs_reobserve",
+        kind="vla_place_relative",
+        tags=("vla", "place", "reobserve", "occlusion"),
+        target_object="spoon_1",
+        reference_object="plate_1",
+        relation="RIGHT_OF",
+        expected={
+            "status": "needs_reobserve",
+            "error": "needs_reobserve",
+            "error_category": "needs_reobserve",
+            "needs_reobserve": True,
+        },
+    ),
+    "needs_reobserve_bowl_pick_target_not_visible": EvaluationCase(
+        name="needs_reobserve_bowl_pick_target_not_visible",
+        scene_fixture="needs_reobserve",
+        kind="vla_pick",
+        tags=("vla", "pick", "error", "occlusion", "visibility"),
+        target_object="bowl_1",
+        expected={
+            "status": "needs_replan",
+            "command": None,
+            "error": "target_not_visible",
+            "error_category": "target_not_visible",
+            "needs_reobserve": False,
+            "needs_replan": True,
+            "details": {
+                "target_object": "bowl_1",
+                "visible": False,
+                "confidence": 0.75,
+                "min_confidence": 0.5,
+                "last_seen_step": None,
+                "current_step": 2,
+            },
+        },
+    ),
+    "needs_reobserve_bowl_place_reference_target_not_visible": EvaluationCase(
+        name="needs_reobserve_bowl_place_reference_target_not_visible",
+        scene_fixture="needs_reobserve",
+        kind="vla_place_relative",
+        tags=("vla", "place", "error", "occlusion", "visibility"),
+        target_object="mug_1",
+        reference_object="bowl_1",
+        relation="RIGHT_OF",
+        expected={
+            "status": "needs_replan",
+            "command": None,
+            "error": "target_not_visible",
+            "error_category": "target_not_visible",
+            "needs_reobserve": False,
+            "needs_replan": True,
+            "details": {
+                "reference_object": "bowl_1",
+                "visible": False,
+                "confidence": 0.75,
+                "min_confidence": 0.5,
+                "last_seen_step": None,
+                "current_step": 2,
+            },
+        },
+    ),
+    "needs_reobserve_bowl_place_target_not_visible": EvaluationCase(
+        name="needs_reobserve_bowl_place_target_not_visible",
+        scene_fixture="needs_reobserve",
+        kind="vla_place_relative",
+        tags=("vla", "place", "error", "occlusion", "visibility"),
+        target_object="bowl_1",
+        reference_object="plate_1",
+        relation="RIGHT_OF",
+        expected={
+            "status": "needs_replan",
+            "command": None,
+            "error": "target_not_visible",
+            "error_category": "target_not_visible",
+            "needs_reobserve": False,
+            "needs_replan": True,
+            "details": {
+                "target_object": "bowl_1",
+                "visible": False,
+                "confidence": 0.75,
+                "min_confidence": 0.5,
+                "last_seen_step": None,
+                "current_step": 2,
+            },
+        },
+    ),
+    "needs_reobserve_cup_pick_low_confidence": EvaluationCase(
+        name="needs_reobserve_cup_pick_low_confidence",
+        scene_fixture="needs_reobserve",
+        kind="vla_pick",
+        tags=("vla", "pick", "error", "confidence"),
+        target_object="cup_1",
+        expected={
+            "status": "needs_replan",
+            "command": None,
+            "error": "low_confidence",
+            "error_category": "low_confidence",
+            "needs_reobserve": False,
+            "needs_replan": True,
+            "details": {
+                "target_object": "cup_1",
+                "visible": True,
+                "confidence": 0.2,
+                "min_confidence": 0.5,
+                "last_seen_step": 2,
+                "current_step": 2,
+            },
+        },
+    ),
+    "needs_reobserve_cup_place_reference_low_confidence": EvaluationCase(
+        name="needs_reobserve_cup_place_reference_low_confidence",
+        scene_fixture="needs_reobserve",
+        kind="vla_place_relative",
+        tags=("vla", "place", "error", "confidence"),
+        target_object="mug_1",
+        reference_object="cup_1",
+        relation="RIGHT_OF",
+        expected={
+            "status": "needs_replan",
+            "command": None,
+            "error": "low_confidence",
+            "error_category": "low_confidence",
+            "needs_reobserve": False,
+            "needs_replan": True,
+            "details": {
+                "reference_object": "cup_1",
+                "visible": True,
+                "confidence": 0.2,
+                "min_confidence": 0.5,
+                "last_seen_step": 2,
+                "current_step": 2,
+            },
+        },
+    ),
+    "needs_reobserve_cup_place_target_low_confidence": EvaluationCase(
+        name="needs_reobserve_cup_place_target_low_confidence",
+        scene_fixture="needs_reobserve",
+        kind="vla_place_relative",
+        tags=("vla", "place", "error", "confidence"),
+        target_object="cup_1",
+        reference_object="plate_1",
+        relation="RIGHT_OF",
+        expected={
+            "status": "needs_replan",
+            "command": None,
+            "error": "low_confidence",
+            "error_category": "low_confidence",
+            "needs_reobserve": False,
+            "needs_replan": True,
+            "details": {
+                "target_object": "cup_1",
+                "visible": True,
+                "confidence": 0.2,
+                "min_confidence": 0.5,
+                "last_seen_step": 2,
+                "current_step": 2,
+            },
+        },
+    ),
+    "needs_reobserve_spoon_label_candidates": EvaluationCase(
+        name="needs_reobserve_spoon_label_candidates",
+        scene_fixture="needs_reobserve",
+        kind="qa",
+        tags=("qa", "label", "reobserve", "occlusion"),
+        question={"type": "label_candidates", "label": "spoon", "visible": False},
+        expected={
+            "answer": {
+                "label": "spoon",
+                "visible": False,
+                "count": 1,
+                "ambiguous": False,
+                "objects": [
+                    {
+                        "object_id": "spoon_1",
+                        "label": "spoon",
+                        "pose": {"x": 0.2, "y": 0.8, "z": 0.75, "yaw": 0.0},
+                        "visible": False,
+                        "confidence": 0.25,
+                        "last_seen_step": None,
+                        "last_seen_pose": None,
+                        "state_step": 2,
+                        "needs_reobserve": True,
+                    }
+                ],
+            },
+            "evidence_nodes": ["spoon_1", "state:spoon_1:2"],
+            "evidence_edges": ["spoon_1-STATE_CHANGED-state:spoon_1:2-2"],
+            "confidence": 0.25,
+            "needs_reobserve": True,
+            "error": None,
         },
     ),
     "needs_reobserve_targets": EvaluationCase(
@@ -622,6 +869,23 @@ _EVALUATION_CASES: dict[str, EvaluationCase] = {
             "error": None,
         },
     ),
+    "tabletop_agent_history": EvaluationCase(
+        name="tabletop_agent_history",
+        scene_fixture="tabletop",
+        kind="qa",
+        tags=("qa", "foundation", "memory", "temporal"),
+        question={"type": "agent_history"},
+        expected={
+            "answer": {
+                "agent_id": "agent",
+                "poses": [{"x": 0.0, "y": 0.0, "z": 0.0, "yaw": 0.0}],
+                "steps": [1],
+            },
+            "evidence_nodes": ["agent", "state:agent:1"],
+            "evidence_edges": ["agent-STATE_CHANGED-state:agent:1-1"],
+            "error": None,
+        },
+    ),
     "tabletop_agent_timeline": EvaluationCase(
         name="tabletop_agent_timeline",
         scene_fixture="tabletop",
@@ -694,6 +958,39 @@ _EVALUATION_CASES: dict[str, EvaluationCase] = {
             "error_category": "missing_object",
         },
     ),
+    "tabletop_unsupported_question_type_error": EvaluationCase(
+        name="tabletop_unsupported_question_type_error",
+        scene_fixture="tabletop",
+        kind="qa",
+        tags=("qa", "error"),
+        question={"type": "unsupported_intent"},
+        expected={
+            "answer": {},
+            "evidence_nodes": [],
+            "evidence_edges": [],
+            "confidence": 0.0,
+            "needs_reobserve": False,
+            "error": "Unsupported question type: unsupported_intent",
+            "error_category": "unsupported_question",
+        },
+    ),
+    "tabletop_missing_label_pick_error": EvaluationCase(
+        name="tabletop_missing_label_pick_error",
+        scene_fixture="tabletop",
+        kind="vla_pick",
+        tags=("vla", "pick", "error", "label"),
+        target_label="fork",
+        expected={
+            "status": "error",
+            "command": None,
+            "error": "Object label not found: fork",
+            "error_category": "missing_label",
+            "needs_reobserve": False,
+            "needs_replan": False,
+            "ambiguous_ids": [],
+            "details": {},
+        },
+    ),
     "tabletop_missing_object_pick_error": EvaluationCase(
         name="tabletop_missing_object_pick_error",
         scene_fixture="tabletop",
@@ -705,6 +1002,24 @@ _EVALUATION_CASES: dict[str, EvaluationCase] = {
             "command": None,
             "error": "Object not found: missing_object",
             "error_category": "missing_object",
+            "needs_reobserve": False,
+            "needs_replan": False,
+            "ambiguous_ids": [],
+            "details": {},
+        },
+    ),
+    "tabletop_missing_reference_input_place_error": EvaluationCase(
+        name="tabletop_missing_reference_input_place_error",
+        scene_fixture="tabletop",
+        kind="vla_place_relative",
+        tags=("vla", "place", "error"),
+        target_object="mug_1",
+        relation="RIGHT_OF",
+        expected={
+            "status": "error",
+            "command": None,
+            "error": "reference_object or reference_label is required",
+            "error_category": "missing_reference",
             "needs_reobserve": False,
             "needs_replan": False,
             "ambiguous_ids": [],
@@ -724,6 +1039,40 @@ _EVALUATION_CASES: dict[str, EvaluationCase] = {
             "command": None,
             "error": "Object not found: missing_object",
             "error_category": "missing_object",
+            "needs_reobserve": False,
+            "needs_replan": False,
+            "ambiguous_ids": [],
+            "details": {},
+        },
+    ),
+    "tabletop_missing_target_input_place_error": EvaluationCase(
+        name="tabletop_missing_target_input_place_error",
+        scene_fixture="tabletop",
+        kind="vla_place_relative",
+        tags=("vla", "place", "error"),
+        reference_object="plate_1",
+        relation="RIGHT_OF",
+        expected={
+            "status": "error",
+            "command": None,
+            "error": "target_object or target_label is required",
+            "error_category": "missing_target",
+            "needs_reobserve": False,
+            "needs_replan": False,
+            "ambiguous_ids": [],
+            "details": {},
+        },
+    ),
+    "tabletop_missing_target_pick_error": EvaluationCase(
+        name="tabletop_missing_target_pick_error",
+        scene_fixture="tabletop",
+        kind="vla_pick",
+        tags=("vla", "pick", "error"),
+        expected={
+            "status": "error",
+            "command": None,
+            "error": "target_object or label is required",
+            "error_category": "missing_target",
             "needs_reobserve": False,
             "needs_replan": False,
             "ambiguous_ids": [],
@@ -972,6 +1321,22 @@ _EVALUATION_CASES: dict[str, EvaluationCase] = {
             "error": None,
         },
     ),
+    "tabletop_scene_snapshot_invalid_step_error": EvaluationCase(
+        name="tabletop_scene_snapshot_invalid_step_error",
+        scene_fixture="tabletop",
+        kind="qa",
+        tags=("qa", "snapshot", "error"),
+        question={"type": "scene_snapshot", "step": True},
+        expected={
+            "answer": {},
+            "evidence_nodes": [],
+            "evidence_edges": [],
+            "confidence": 0.0,
+            "needs_reobserve": False,
+            "error": "Question field must be integer: step",
+            "error_category": "invalid_question",
+        },
+    ),
     "tabletop_place_mug_right_of_plate": EvaluationCase(
         name="tabletop_place_mug_right_of_plate",
         scene_fixture="tabletop",
@@ -1043,6 +1408,7 @@ def evaluation_case_listing(
         names=names,
     )
     listing = {
+        "schema_version": EVALUATION_CASE_LISTING_SCHEMA_VERSION,
         "filters": {
             "names": list(names or ()),
             "tags": list(tags or ()),
@@ -1058,6 +1424,7 @@ def evaluation_case_listing(
 
 def evaluation_case_listing_digest(listing: Mapping[str, Any]) -> str:
     payload = {
+        "schema_version": listing.get("schema_version"),
         "filters": listing.get("filters"),
         "case_count": listing.get("case_count"),
         "evaluation_cases": listing.get("evaluation_cases"),
@@ -1100,6 +1467,15 @@ def load_evaluation_case_listing(path: str | Path) -> dict[str, Any]:
 def validate_evaluation_case_listing(listing: Mapping[str, Any]) -> dict[str, Any]:
     checks: list[dict[str, Any]] = []
 
+    schema_version = listing.get("schema_version")
+    _append_validation_check(
+        checks,
+        name="schema_version",
+        passed=schema_version == EVALUATION_CASE_LISTING_SCHEMA_VERSION,
+        expected=EVALUATION_CASE_LISTING_SCHEMA_VERSION,
+        actual=schema_version,
+    )
+
     expected_digest = evaluation_case_listing_digest(listing)
     listing_digest = _string_or_none(listing.get("digest"))
     _append_validation_check(
@@ -1120,8 +1496,20 @@ def validate_evaluation_case_listing(listing: Mapping[str, Any]) -> dict[str, An
         actual=actual_case_count,
     )
 
+    case_metadata_differences = _case_listing_metadata_differences(
+        listing.get("evaluation_cases")
+    )
+    _append_validation_check(
+        checks,
+        name="case_metadata_entries_valid",
+        passed=case_metadata_differences == [],
+    )
+    if case_metadata_differences:
+        checks[-1]["differences"] = case_metadata_differences
+
     return {
         "valid": all(check["passed"] is True for check in checks),
+        "schema_version": _string_or_none(schema_version),
         "digest": listing_digest,
         "checks": checks,
     }
@@ -1407,7 +1795,10 @@ def evaluation_report(suite: Mapping[str, Any]) -> dict[str, Any]:
         }
         for path, entry in sorted(failure_path_index.items())
     ]
+    case_selection = _evaluation_case_selection(results)
+    runtime_error_categories = _runtime_error_category_summary(results)
     report = {
+        "schema_version": EVALUATION_REPORT_SCHEMA_VERSION,
         "digest": str(suite["digest"]),
         "summary": dict(summary),
         "metrics": _evaluation_report_metrics(
@@ -1416,9 +1807,15 @@ def evaluation_report(suite: Mapping[str, Any]) -> dict[str, Any]:
             breakdown=breakdown,
         ),
         "evidence_metrics": _evaluation_evidence_metrics(results),
+        "case_selection": case_selection,
+        "case_selection_digest": _evaluation_case_selection_digest(case_selection),
         "case_digests": _evaluation_case_digests(results),
         "failed_cases": failed_cases,
-        "runtime_error_categories": _runtime_error_category_summary(results),
+        "runtime_error_categories": runtime_error_categories,
+        "runtime_error_metrics": _runtime_error_metrics(
+            total=total,
+            categories=runtime_error_categories,
+        ),
         "failure_reasons": failure_reasons,
         "failure_categories": failure_categories,
         "failure_paths": failure_paths,
@@ -1493,6 +1890,40 @@ def _evaluation_case_digests(results: Sequence[Mapping[str, Any]]) -> list[dict[
         }
         for result in results
     ]
+
+
+def _evaluation_case_selection(results: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    return [
+        {
+            "case": str(result["case"]),
+            "kind": str(result["kind"]),
+            "question_type": (
+                str(result["question_type"])
+                if isinstance(result.get("question_type"), str)
+                else None
+            ),
+            "scene_fixture": str(result["scene_fixture"]),
+            "tags": list(cast(Sequence[str], result.get("tags", ()))),
+        }
+        for result in results
+    ]
+
+
+def _evaluation_case_selection_digest(case_selection: object) -> str:
+    entries: list[Any]
+    if isinstance(case_selection, Sequence) and not isinstance(
+        case_selection,
+        (str, bytes, bytearray),
+    ):
+        entries = list(case_selection)
+    else:
+        entries = []
+    return _stable_digest(
+        {
+            "case_count": len(entries),
+            "case_selection": entries,
+        }
+    )
 
 
 def _stable_digest(payload: Mapping[str, Any]) -> str:
@@ -1749,15 +2180,35 @@ def validate_evaluation_manifest(manifest: Mapping[str, Any]) -> dict[str, Any]:
         actual=manifest_digest,
     )
 
+    case_metadata_differences = _case_listing_metadata_differences(
+        manifest.get("evaluation_cases")
+    )
+    _append_validation_check(
+        checks,
+        name="case_metadata_entries_valid",
+        passed=case_metadata_differences == [],
+    )
+    if case_metadata_differences:
+        checks[-1]["differences"] = case_metadata_differences
+
     expected_scene_fixtures = _scene_fixture_names_from_case_manifest(manifest)
     actual_scene_fixtures = _scene_fixture_names_from_bundle(manifest)
+    scene_fixture_manifest_differences = _manifest_entry_differences(
+        _scene_fixture_manifest_from_case_manifest(manifest),
+        _scene_fixture_manifest_case_projection(_scene_fixture_manifest_from_bundle(manifest)),
+    )
     _append_validation_check(
         checks,
         name="scene_fixture_manifest_covers_cases",
-        passed=set(expected_scene_fixtures).issubset(set(actual_scene_fixtures)),
+        passed=(
+            set(expected_scene_fixtures).issubset(set(actual_scene_fixtures))
+            and scene_fixture_manifest_differences == []
+        ),
         expected=expected_scene_fixtures,
         actual=actual_scene_fixtures,
     )
+    if scene_fixture_manifest_differences:
+        checks[-1]["differences"] = scene_fixture_manifest_differences
 
     expected_coverage = _evaluation_bundle_coverage(
         _case_manifest_from_bundle(manifest),
@@ -1976,6 +2427,17 @@ def validate_evaluation_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
     if case_manifest_differences:
         checks[-1]["differences"] = case_manifest_differences
 
+    case_metadata_differences = _case_listing_metadata_differences(
+        bundle.get("evaluation_cases")
+    )
+    _append_validation_check(
+        checks,
+        name="case_metadata_entries_valid",
+        passed=case_metadata_differences == [],
+    )
+    if case_metadata_differences:
+        checks[-1]["differences"] = case_metadata_differences
+
     expected_scene_fixtures = _scene_fixture_names_from_case_manifest(bundle)
     actual_scene_fixtures = _scene_fixture_names_from_bundle(bundle)
     scene_fixture_manifest_differences = _manifest_entry_differences(
@@ -2127,6 +2589,103 @@ def _filters_from_bundle(bundle: Mapping[str, Any]) -> Mapping[str, Any]:
     return filters
 
 
+def _case_listing_metadata_differences(evaluation_cases: object) -> list[dict[str, Any]]:
+    if not isinstance(evaluation_cases, Sequence) or isinstance(evaluation_cases, str):
+        return [
+            {
+                "path": "evaluation_cases",
+                "expected": "sequence of case metadata objects",
+                "actual": evaluation_cases,
+            }
+        ]
+
+    differences: list[dict[str, Any]] = []
+    seen_names: dict[str, int] = {}
+    for index, case_metadata in enumerate(evaluation_cases):
+        entry_path = f"evaluation_cases[{index}]"
+        if not isinstance(case_metadata, Mapping):
+            differences.append(
+                {
+                    "path": entry_path,
+                    "expected": "case metadata object",
+                    "actual": case_metadata,
+                }
+            )
+            continue
+
+        case_name = case_metadata.get("name")
+        if not isinstance(case_name, str) or case_name == "":
+            differences.append(
+                {
+                    "path": f"{entry_path}.name",
+                    "expected": "non-empty string",
+                    "actual": case_name,
+                }
+            )
+        elif case_name in seen_names:
+            differences.append(
+                {
+                    "path": f"{entry_path}.name",
+                    "expected": (
+                        "unique case name first seen at "
+                        f"evaluation_cases[{seen_names[case_name]}]"
+                    ),
+                    "actual": case_name,
+                }
+            )
+        else:
+            seen_names[case_name] = index
+
+        for field_name in ("scene_fixture", "kind"):
+            field_value = case_metadata.get(field_name)
+            if not isinstance(field_value, str) or field_value == "":
+                differences.append(
+                    {
+                        "path": f"{entry_path}.{field_name}",
+                        "expected": "non-empty string",
+                        "actual": field_value,
+                    }
+                )
+
+        for field_name in ("tags", "expected_keys", "scene_tags", "baseline_scene_tags"):
+            field_value = case_metadata.get(field_name)
+            if not _is_string_sequence(field_value):
+                differences.append(
+                    {
+                        "path": f"{entry_path}.{field_name}",
+                        "expected": "sequence of strings",
+                        "actual": field_value,
+                    }
+                )
+
+        question = case_metadata.get("question")
+        if not isinstance(question, Mapping):
+            differences.append(
+                {
+                    "path": f"{entry_path}.question",
+                    "expected": "object",
+                    "actual": question,
+                }
+            )
+
+    return differences
+
+
+def _is_string_sequence(value: object) -> bool:
+    return (
+        isinstance(value, Sequence)
+        and not isinstance(value, str)
+        and all(isinstance(item, str) for item in value)
+    )
+
+
+def _is_unique_string_sequence(value: object) -> bool:
+    if not _is_string_sequence(value):
+        return False
+    values = list(cast(Sequence[str], value))
+    return len(set(values)) == len(values)
+
+
 def _optional_filter_values(filters: Mapping[str, Any], key: str) -> tuple[str, ...] | None:
     values = filters.get(key, ())
     if not isinstance(values, Sequence) or isinstance(values, str):
@@ -2165,6 +2724,310 @@ def _selected_cases_from_suite(suite: Mapping[str, Any]) -> list[str]:
     if not isinstance(selected_cases, Sequence) or isinstance(selected_cases, str):
         return []
     return [str(name) for name in selected_cases]
+
+
+def _failed_cases_from_suite(suite: Mapping[str, Any]) -> list[str]:
+    summary = suite.get("summary")
+    if not isinstance(summary, Mapping):
+        return []
+    failed_cases = summary.get("failed_cases", ())
+    if not isinstance(failed_cases, Sequence) or isinstance(failed_cases, str):
+        return []
+    return [str(name) for name in failed_cases]
+
+
+def _summary_counts_from_case_lists(
+    report: Mapping[str, Any],
+) -> dict[str, int] | None:
+    summary = report.get("summary")
+    return _summary_counts_from_summary(summary)
+
+
+def _summary_counts_from_summary(summary: object) -> dict[str, int] | None:
+    if not isinstance(summary, Mapping):
+        return None
+    selected_cases = summary.get("selected_cases")
+    failed_cases = summary.get("failed_cases")
+    if not _is_string_sequence(selected_cases) or not _is_string_sequence(failed_cases):
+        return None
+    total = len(cast(Sequence[str], selected_cases))
+    failed = len(cast(Sequence[str], failed_cases))
+    return {
+        "failed": failed,
+        "passed": total - failed,
+        "total": total,
+    }
+
+
+def _summary_case_list_differences(summary: object) -> list[dict[str, Any]]:
+    if not isinstance(summary, Mapping):
+        return [
+            {
+                "path": "summary",
+                "expected": "summary object",
+                "actual": summary,
+            }
+        ]
+
+    differences: list[dict[str, Any]] = []
+    selected_cases = summary.get("selected_cases")
+    failed_cases = summary.get("failed_cases")
+    selected_case_names = _validate_summary_case_name_list(
+        differences,
+        selected_cases,
+        path="summary.selected_cases",
+    )
+    failed_case_names = _validate_summary_case_name_list(
+        differences,
+        failed_cases,
+        path="summary.failed_cases",
+    )
+    if selected_case_names is None or failed_case_names is None:
+        return differences
+
+    selected_case_name_set = set(selected_case_names)
+    for index, failed_case_name in enumerate(failed_case_names):
+        if failed_case_name not in selected_case_name_set:
+            differences.append(
+                {
+                    "path": f"summary.failed_cases[{index}]",
+                    "expected": "case from summary.selected_cases",
+                    "actual": failed_case_name,
+                }
+            )
+
+    return differences
+
+
+def _validate_summary_case_name_list(
+    differences: list[dict[str, Any]],
+    value: object,
+    *,
+    path: str,
+) -> list[str] | None:
+    if not isinstance(value, Sequence) or isinstance(value, str):
+        differences.append(
+            {
+                "path": path,
+                "expected": "sequence of case names",
+                "actual": value,
+            }
+        )
+        return None
+
+    case_names: list[str] = []
+    seen_names: dict[str, int] = {}
+    for index, case_name in enumerate(value):
+        item_path = f"{path}[{index}]"
+        if not isinstance(case_name, str) or case_name == "":
+            differences.append(
+                {
+                    "path": item_path,
+                    "expected": "non-empty string",
+                    "actual": case_name,
+                }
+            )
+            continue
+        if case_name in seen_names:
+            differences.append(
+                {
+                    "path": item_path,
+                    "expected": (
+                        "unique case name first seen at "
+                        f"{path}[{seen_names[case_name]}]"
+                    ),
+                    "actual": case_name,
+                }
+            )
+            continue
+        seen_names[case_name] = index
+        case_names.append(case_name)
+
+    return case_names
+
+
+def _summary_count_projection(summary: object) -> dict[str, int] | None:
+    if not isinstance(summary, Mapping):
+        return None
+    counts: dict[str, int] = {}
+    for field_name in ("failed", "passed", "total"):
+        value = summary.get(field_name)
+        if not isinstance(value, int) or isinstance(value, bool):
+            return None
+        counts[field_name] = value
+    return counts
+
+
+def _breakdown_counts_from_case_lists(
+    report: Mapping[str, Any],
+) -> dict[str, dict[str, dict[str, int]]] | None:
+    breakdown = report.get("breakdown")
+    if not isinstance(breakdown, Mapping):
+        return None
+    counts: dict[str, dict[str, dict[str, int]]] = {}
+    for group_name in (
+        "by_kind",
+        "by_question_type",
+        "by_scene_fixture",
+        "by_tag",
+    ):
+        group = breakdown.get(group_name)
+        if not isinstance(group, Mapping):
+            return None
+        group_counts: dict[str, dict[str, int]] = {}
+        for entry_name, summary in sorted(group.items()):
+            entry_counts = _summary_counts_from_summary(summary)
+            if entry_counts is None:
+                return None
+            group_counts[str(entry_name)] = entry_counts
+        counts[group_name] = group_counts
+    return counts
+
+
+def _breakdown_count_projection(
+    breakdown: object,
+) -> dict[str, dict[str, dict[str, int]]] | None:
+    if not isinstance(breakdown, Mapping):
+        return None
+    counts: dict[str, dict[str, dict[str, int]]] = {}
+    for group_name in (
+        "by_kind",
+        "by_question_type",
+        "by_scene_fixture",
+        "by_tag",
+    ):
+        group = breakdown.get(group_name)
+        if not isinstance(group, Mapping):
+            return None
+        group_counts: dict[str, dict[str, int]] = {}
+        for entry_name, summary in sorted(group.items()):
+            entry_counts = _summary_count_projection(summary)
+            if entry_counts is None:
+                return None
+            group_counts[str(entry_name)] = entry_counts
+        counts[group_name] = group_counts
+    return counts
+
+
+def _breakdown_case_lists_from_selection(
+    report: Mapping[str, Any],
+) -> dict[str, dict[str, dict[str, list[str]]]] | None:
+    case_selection = report.get("case_selection")
+    if not isinstance(case_selection, Sequence) or isinstance(case_selection, str):
+        return None
+    summary = report.get("summary")
+    if not isinstance(summary, Mapping):
+        return None
+    failed_cases = summary.get("failed_cases")
+    if not _is_string_sequence(failed_cases):
+        return None
+    failed_case_names = set(cast(Sequence[str], failed_cases))
+    groups: dict[str, dict[str, dict[str, list[str]]]] = {
+        "by_kind": {},
+        "by_question_type": {},
+        "by_scene_fixture": {},
+        "by_tag": {},
+    }
+    for entry in case_selection:
+        if not isinstance(entry, Mapping):
+            return None
+        case_name = entry.get("case")
+        kind = entry.get("kind")
+        question_type = entry.get("question_type")
+        scene_fixture = entry.get("scene_fixture")
+        tags = entry.get("tags")
+        if (
+            not isinstance(case_name, str)
+            or not isinstance(kind, str)
+            or not isinstance(scene_fixture, str)
+            or (question_type is not None and not isinstance(question_type, str))
+            or not _is_string_sequence(tags)
+        ):
+            return None
+        _append_breakdown_case_list_entry(
+            groups["by_kind"],
+            kind,
+            case_name=case_name,
+            failed_case_names=failed_case_names,
+        )
+        if isinstance(question_type, str):
+            _append_breakdown_case_list_entry(
+                groups["by_question_type"],
+                question_type,
+                case_name=case_name,
+                failed_case_names=failed_case_names,
+            )
+        _append_breakdown_case_list_entry(
+            groups["by_scene_fixture"],
+            scene_fixture,
+            case_name=case_name,
+            failed_case_names=failed_case_names,
+        )
+        for tag in cast(Sequence[str], tags):
+            _append_breakdown_case_list_entry(
+                groups["by_tag"],
+                tag,
+                case_name=case_name,
+                failed_case_names=failed_case_names,
+            )
+    return {
+        group_name: {
+            entry_name: entries[entry_name]
+            for entry_name in sorted(entries)
+        }
+        for group_name, entries in groups.items()
+    }
+
+
+def _append_breakdown_case_list_entry(
+    entries: dict[str, dict[str, list[str]]],
+    entry_name: str,
+    *,
+    case_name: str,
+    failed_case_names: set[str],
+) -> None:
+    summary = entries.setdefault(entry_name, {"failed_cases": [], "selected_cases": []})
+    summary["selected_cases"].append(case_name)
+    if case_name in failed_case_names:
+        summary["failed_cases"].append(case_name)
+
+
+def _breakdown_case_list_projection(
+    breakdown: object,
+) -> dict[str, dict[str, dict[str, list[str]]]] | None:
+    if not isinstance(breakdown, Mapping):
+        return None
+    projected: dict[str, dict[str, dict[str, list[str]]]] = {}
+    for group_name in (
+        "by_kind",
+        "by_question_type",
+        "by_scene_fixture",
+        "by_tag",
+    ):
+        group = breakdown.get(group_name)
+        if not isinstance(group, Mapping):
+            return None
+        projected_group: dict[str, dict[str, list[str]]] = {}
+        for entry_name, summary in sorted(group.items()):
+            case_lists = _case_lists_from_summary(summary)
+            if case_lists is None:
+                return None
+            projected_group[str(entry_name)] = case_lists
+        projected[group_name] = projected_group
+    return projected
+
+
+def _case_lists_from_summary(summary: object) -> dict[str, list[str]] | None:
+    if not isinstance(summary, Mapping):
+        return None
+    failed_cases = summary.get("failed_cases")
+    selected_cases = summary.get("selected_cases")
+    if not _is_string_sequence(failed_cases) or not _is_string_sequence(selected_cases):
+        return None
+    return {
+        "failed_cases": list(cast(Sequence[str], failed_cases)),
+        "selected_cases": list(cast(Sequence[str], selected_cases)),
+    }
 
 
 def _case_manifest_from_suite_results(suite: Mapping[str, Any]) -> list[dict[str, Any]]:
@@ -2422,6 +3285,14 @@ def load_evaluation_report(path: str | Path) -> dict[str, Any]:
 
 def validate_evaluation_report(report: Mapping[str, Any]) -> dict[str, Any]:
     checks: list[dict[str, Any]] = []
+    schema_version = report.get("schema_version")
+    _append_validation_check(
+        checks,
+        name="schema_version",
+        passed=schema_version == EVALUATION_REPORT_SCHEMA_VERSION,
+        expected=EVALUATION_REPORT_SCHEMA_VERSION,
+        actual=schema_version,
+    )
     suite_digest = _string_or_none(report.get("digest"))
     _append_validation_check(
         checks,
@@ -2430,6 +3301,363 @@ def validate_evaluation_report(report: Mapping[str, Any]) -> dict[str, Any]:
         expected="64 lowercase sha256 hex characters",
         actual=suite_digest,
     )
+    case_selection_digest = _string_or_none(report.get("case_selection_digest"))
+    expected_case_selection_digest = _evaluation_case_selection_digest(
+        report.get("case_selection")
+    )
+    _append_validation_check(
+        checks,
+        name="case_selection_digest",
+        passed=case_selection_digest == expected_case_selection_digest,
+        expected=expected_case_selection_digest,
+        actual=case_selection_digest,
+    )
+    case_selection_entry_differences = _case_selection_entry_differences(
+        report.get("case_selection")
+    )
+    _append_validation_check(
+        checks,
+        name="case_selection_entries_valid",
+        passed=case_selection_entry_differences == [],
+    )
+    if case_selection_entry_differences:
+        checks[-1]["differences"] = case_selection_entry_differences
+    expected_selected_cases = _selected_cases_from_suite(report)
+    actual_selected_cases = _evaluation_case_selection_names(report.get("case_selection"))
+    _append_validation_check(
+        checks,
+        name="case_selection_matches_summary",
+        passed=actual_selected_cases == expected_selected_cases,
+        expected=expected_selected_cases,
+        actual=(
+            actual_selected_cases
+            if actual_selected_cases is not None
+            else report.get("case_selection")
+        ),
+    )
+    expected_failed_cases = _failed_cases_from_suite(report)
+    actual_failed_cases = _report_failed_case_names(report.get("failed_cases"))
+    _append_validation_check(
+        checks,
+        name="failed_cases_match_summary",
+        passed=actual_failed_cases == expected_failed_cases,
+        expected=expected_failed_cases,
+        actual=(
+            actual_failed_cases
+            if actual_failed_cases is not None
+            else report.get("failed_cases")
+        ),
+    )
+    failed_case_entry_differences = _failed_case_entry_differences(
+        report.get("failed_cases")
+    )
+    _append_validation_check(
+        checks,
+        name="failed_case_entries_valid",
+        passed=failed_case_entry_differences == [],
+    )
+    if failed_case_entry_differences:
+        checks[-1]["differences"] = failed_case_entry_differences
+    summary_case_list_differences = _summary_case_list_differences(
+        report.get("summary")
+    )
+    _append_validation_check(
+        checks,
+        name="summary_case_lists_valid",
+        passed=summary_case_list_differences == [],
+    )
+    if summary_case_list_differences:
+        checks[-1]["differences"] = summary_case_list_differences
+    expected_summary_counts = _summary_counts_from_case_lists(report)
+    actual_summary_counts = _summary_count_projection(report.get("summary"))
+    summary_count_differences = _nested_differences(
+        expected_summary_counts,
+        actual_summary_counts,
+    )
+    _append_validation_check(
+        checks,
+        name="summary_counts_consistent",
+        passed=(
+            expected_summary_counts is not None
+            and actual_summary_counts == expected_summary_counts
+        ),
+        expected=expected_summary_counts,
+        actual=(
+            actual_summary_counts
+            if actual_summary_counts is not None
+            else report.get("summary")
+        ),
+    )
+    if summary_count_differences:
+        checks[-1]["differences"] = summary_count_differences
+    expected_breakdown_counts = _breakdown_counts_from_case_lists(report)
+    actual_breakdown_counts = _breakdown_count_projection(report.get("breakdown"))
+    breakdown_count_differences = _nested_differences(
+        expected_breakdown_counts,
+        actual_breakdown_counts,
+    )
+    _append_validation_check(
+        checks,
+        name="breakdown_counts_consistent",
+        passed=(
+            expected_breakdown_counts is not None
+            and actual_breakdown_counts == expected_breakdown_counts
+        ),
+        expected=expected_breakdown_counts,
+        actual=(
+            actual_breakdown_counts
+            if actual_breakdown_counts is not None
+            else report.get("breakdown")
+        ),
+    )
+    if breakdown_count_differences:
+        checks[-1]["differences"] = breakdown_count_differences
+    expected_breakdown_case_lists = _breakdown_case_lists_from_selection(report)
+    actual_breakdown_case_lists = _breakdown_case_list_projection(
+        report.get("breakdown")
+    )
+    breakdown_case_list_differences = _nested_differences(
+        expected_breakdown_case_lists,
+        actual_breakdown_case_lists,
+    )
+    _append_validation_check(
+        checks,
+        name="breakdown_case_lists_match_selection",
+        passed=(
+            expected_breakdown_case_lists is not None
+            and actual_breakdown_case_lists == expected_breakdown_case_lists
+        ),
+        expected=expected_breakdown_case_lists,
+        actual=(
+            actual_breakdown_case_lists
+            if actual_breakdown_case_lists is not None
+            else report.get("breakdown")
+        ),
+    )
+    if breakdown_case_list_differences:
+        checks[-1]["differences"] = breakdown_case_list_differences
+    actual_case_digest_cases = _report_case_digest_names(report.get("case_digests"))
+    _append_validation_check(
+        checks,
+        name="case_digests_match_summary",
+        passed=actual_case_digest_cases == expected_selected_cases,
+        expected=expected_selected_cases,
+        actual=(
+            actual_case_digest_cases
+            if actual_case_digest_cases is not None
+            else report.get("case_digests")
+        ),
+    )
+    expected_case_digest_metadata = _case_selection_digest_projection(
+        report.get("case_selection")
+    )
+    actual_case_digest_metadata = _case_digest_selection_projection(
+        report.get("case_digests")
+    )
+    _append_validation_check(
+        checks,
+        name="case_digests_match_selection",
+        passed=(
+            expected_case_digest_metadata is not None
+            and actual_case_digest_metadata == expected_case_digest_metadata
+        ),
+        expected=expected_case_digest_metadata,
+        actual=(
+            actual_case_digest_metadata
+            if actual_case_digest_metadata is not None
+            else report.get("case_digests")
+        ),
+    )
+    expected_case_digest_status = _case_digest_statuses_from_summary(report)
+    actual_case_digest_status = _case_digest_status_projection(
+        report.get("case_digests")
+    )
+    case_digest_status_differences = _report_summary_entry_differences(
+        expected_case_digest_status,
+        actual_case_digest_status,
+        key_name="case",
+    )
+    _append_validation_check(
+        checks,
+        name="case_digest_status_matches_summary",
+        passed=(
+            expected_case_digest_status is not None
+            and actual_case_digest_status == expected_case_digest_status
+        ),
+        expected=expected_case_digest_status,
+        actual=(
+            actual_case_digest_status
+            if actual_case_digest_status is not None
+            else report.get("case_digests")
+        ),
+    )
+    if case_digest_status_differences:
+        checks[-1]["differences"] = case_digest_status_differences
+    case_digest_format_differences = _case_digest_format_differences(
+        report.get("case_digests")
+    )
+    _append_validation_check(
+        checks,
+        name="case_digest_formats",
+        passed=not case_digest_format_differences,
+        expected="64 lowercase sha256 hex characters",
+        actual=report.get("case_digests"),
+    )
+    if case_digest_format_differences:
+        checks[-1]["differences"] = case_digest_format_differences
+    expected_metrics = _evaluation_report_metrics_from_report(report)
+    actual_metrics = report.get("metrics")
+    _append_validation_check(
+        checks,
+        name="metrics_match_summary",
+        passed=(
+            expected_metrics is not None
+            and isinstance(actual_metrics, Mapping)
+            and actual_metrics == expected_metrics
+        ),
+        expected=expected_metrics,
+        actual=actual_metrics,
+    )
+    expected_evidence_metrics = _evaluation_evidence_metrics_from_report(report)
+    actual_evidence_metrics = _evidence_metrics_summary_projection(
+        report.get("evidence_metrics")
+    )
+    _append_validation_check(
+        checks,
+        name="evidence_metrics_consistent",
+        passed=(
+            expected_evidence_metrics is not None
+            and actual_evidence_metrics == expected_evidence_metrics
+        ),
+        expected=expected_evidence_metrics,
+        actual=(
+            actual_evidence_metrics
+            if actual_evidence_metrics is not None
+            else report.get("evidence_metrics")
+        ),
+    )
+    expected_evidence_metric_groups = _evaluation_evidence_metric_groups_from_report(
+        report
+    )
+    actual_evidence_metric_groups = _evidence_metric_groups_projection(
+        report.get("evidence_metrics")
+    )
+    evidence_metric_group_differences = _nested_differences(
+        expected_evidence_metric_groups,
+        actual_evidence_metric_groups,
+    )
+    _append_validation_check(
+        checks,
+        name="evidence_metric_groups_consistent",
+        passed=(
+            expected_evidence_metric_groups is not None
+            and actual_evidence_metric_groups == expected_evidence_metric_groups
+        ),
+        expected=expected_evidence_metric_groups,
+        actual=(
+            actual_evidence_metric_groups
+            if actual_evidence_metric_groups is not None
+            else report.get("evidence_metrics")
+        ),
+    )
+    if evidence_metric_group_differences:
+        checks[-1]["differences"] = evidence_metric_group_differences
+    evidence_metric_value_differences = _evidence_metric_value_differences(
+        report.get("evidence_metrics")
+    )
+    _append_validation_check(
+        checks,
+        name="evidence_metric_values_valid",
+        passed=evidence_metric_value_differences == [],
+    )
+    if evidence_metric_value_differences:
+        checks[-1]["differences"] = evidence_metric_value_differences
+    expected_runtime_error_categories = _runtime_error_categories_from_report(report)
+    actual_runtime_error_categories = _runtime_error_category_projection(
+        report.get("runtime_error_categories")
+    )
+    runtime_error_category_differences = _runtime_error_category_differences(
+        expected_runtime_error_categories,
+        actual_runtime_error_categories,
+    )
+    _append_validation_check(
+        checks,
+        name="runtime_error_categories_consistent",
+        passed=(
+            expected_runtime_error_categories is not None
+            and actual_runtime_error_categories == expected_runtime_error_categories
+        ),
+        expected=expected_runtime_error_categories,
+        actual=(
+            actual_runtime_error_categories
+            if actual_runtime_error_categories is not None
+            else report.get("runtime_error_categories")
+        ),
+    )
+    if runtime_error_category_differences:
+        checks[-1]["differences"] = runtime_error_category_differences
+    runtime_error_category_entry_differences = (
+        _runtime_error_category_entry_differences(
+            report.get("runtime_error_categories")
+        )
+    )
+    _append_validation_check(
+        checks,
+        name="runtime_error_category_entries_valid",
+        passed=runtime_error_category_entry_differences == [],
+    )
+    if runtime_error_category_entry_differences:
+        checks[-1]["differences"] = runtime_error_category_entry_differences
+    expected_runtime_error_metrics = _runtime_error_metrics_from_report(report)
+    actual_runtime_error_metrics = _runtime_error_metrics_projection(
+        report.get("runtime_error_metrics")
+    )
+    runtime_error_metric_differences = _nested_differences(
+        expected_runtime_error_metrics,
+        actual_runtime_error_metrics,
+    )
+    _append_validation_check(
+        checks,
+        name="runtime_error_metrics_consistent",
+        passed=(
+            expected_runtime_error_metrics is not None
+            and actual_runtime_error_metrics == expected_runtime_error_metrics
+        ),
+        expected=expected_runtime_error_metrics,
+        actual=(
+            actual_runtime_error_metrics
+            if actual_runtime_error_metrics is not None
+            else report.get("runtime_error_metrics")
+        ),
+    )
+    if runtime_error_metric_differences:
+        checks[-1]["differences"] = runtime_error_metric_differences
+    expected_failure_diagnostics = _failure_diagnostics_from_report(report)
+    actual_failure_diagnostics = _failure_diagnostics_projection(report)
+    failure_diagnostic_differences = _failure_diagnostic_differences(
+        expected_failure_diagnostics,
+        actual_failure_diagnostics,
+    )
+    _append_validation_check(
+        checks,
+        name="failure_diagnostics_consistent",
+        passed=(
+            expected_failure_diagnostics is not None
+            and actual_failure_diagnostics == expected_failure_diagnostics
+        ),
+        expected=expected_failure_diagnostics,
+        actual=(
+            actual_failure_diagnostics
+            if actual_failure_diagnostics is not None
+            else {
+                "failure_reasons": report.get("failure_reasons"),
+                "failure_categories": report.get("failure_categories"),
+                "failure_paths": report.get("failure_paths"),
+            }
+        ),
+    )
+    if failure_diagnostic_differences:
+        checks[-1]["differences"] = failure_diagnostic_differences
     report_digest = _string_or_none(report.get("report_digest"))
     expected_report_digest = evaluation_report_digest(report)
     _append_validation_check(
@@ -2441,10 +3669,997 @@ def validate_evaluation_report(report: Mapping[str, Any]) -> dict[str, Any]:
     )
     return {
         "valid": all(check["passed"] is True for check in checks),
+        "schema_version": _string_or_none(schema_version),
         "digest": suite_digest,
+        "case_selection_digest": case_selection_digest,
         "report_digest": report_digest,
         "checks": checks,
     }
+
+
+def _case_selection_entry_differences(case_selection: object) -> list[dict[str, Any]]:
+    if not isinstance(case_selection, Sequence) or isinstance(case_selection, str):
+        return [
+            {
+                "path": "case_selection",
+                "expected": "sequence of case selection objects",
+                "actual": case_selection,
+            }
+        ]
+
+    differences: list[dict[str, Any]] = []
+    seen_cases: dict[str, int] = {}
+    for index, item in enumerate(case_selection):
+        entry_path = f"case_selection[{index}]"
+        if not isinstance(item, Mapping):
+            differences.append(
+                {
+                    "path": entry_path,
+                    "expected": "case selection object",
+                    "actual": item,
+                }
+            )
+            continue
+
+        case_name = item.get("case")
+        if not isinstance(case_name, str) or case_name == "":
+            differences.append(
+                {
+                    "path": f"{entry_path}.case",
+                    "expected": "non-empty string",
+                    "actual": case_name,
+                }
+            )
+        elif case_name in seen_cases:
+            differences.append(
+                {
+                    "path": f"{entry_path}.case",
+                    "expected": (
+                        "unique case name first seen at "
+                        f"case_selection[{seen_cases[case_name]}]"
+                    ),
+                    "actual": case_name,
+                }
+            )
+        else:
+            seen_cases[case_name] = index
+
+        for field_name in ("kind", "scene_fixture"):
+            field_value = item.get(field_name)
+            if not isinstance(field_value, str) or field_value == "":
+                differences.append(
+                    {
+                        "path": f"{entry_path}.{field_name}",
+                        "expected": "non-empty string",
+                        "actual": field_value,
+                    }
+                )
+
+        question_type = item.get("question_type")
+        if question_type is not None and (
+            not isinstance(question_type, str) or question_type == ""
+        ):
+            differences.append(
+                {
+                    "path": f"{entry_path}.question_type",
+                    "expected": "null or non-empty string",
+                    "actual": question_type,
+                }
+            )
+
+        tags = item.get("tags")
+        if not _is_string_sequence(tags):
+            differences.append(
+                {
+                    "path": f"{entry_path}.tags",
+                    "expected": "sequence of strings",
+                    "actual": tags,
+                }
+            )
+
+    return differences
+
+
+def _failed_case_entry_differences(failed_cases: object) -> list[dict[str, Any]]:
+    if not isinstance(failed_cases, Sequence) or isinstance(failed_cases, str):
+        return [
+            {
+                "path": "failed_cases",
+                "expected": "sequence of failed case detail objects",
+                "actual": failed_cases,
+            }
+        ]
+
+    differences: list[dict[str, Any]] = []
+    seen_cases: dict[str, int] = {}
+    for index, item in enumerate(failed_cases):
+        entry_path = f"failed_cases[{index}]"
+        if not isinstance(item, Mapping):
+            differences.append(
+                {
+                    "path": entry_path,
+                    "expected": "failed case detail object",
+                    "actual": item,
+                }
+            )
+            continue
+
+        case_name = item.get("case")
+        if not isinstance(case_name, str) or case_name == "":
+            differences.append(
+                {
+                    "path": f"{entry_path}.case",
+                    "expected": "non-empty string",
+                    "actual": case_name,
+                }
+            )
+        elif case_name in seen_cases:
+            differences.append(
+                {
+                    "path": f"{entry_path}.case",
+                    "expected": (
+                        "unique case name first seen at "
+                        f"failed_cases[{seen_cases[case_name]}]"
+                    ),
+                    "actual": case_name,
+                }
+            )
+        else:
+            seen_cases[case_name] = index
+
+        for field_name in ("kind", "scene_fixture"):
+            field_value = item.get(field_name)
+            if not isinstance(field_value, str) or field_value == "":
+                differences.append(
+                    {
+                        "path": f"{entry_path}.{field_name}",
+                        "expected": "non-empty string",
+                        "actual": field_value,
+                    }
+                )
+
+        tags = item.get("tags")
+        if not _is_string_sequence(tags):
+            differences.append(
+                {
+                    "path": f"{entry_path}.tags",
+                    "expected": "sequence of strings",
+                    "actual": tags,
+                }
+            )
+
+        mismatch_count = item.get("mismatch_count")
+        if (
+            not isinstance(mismatch_count, int)
+            or isinstance(mismatch_count, bool)
+            or mismatch_count < 0
+        ):
+            differences.append(
+                {
+                    "path": f"{entry_path}.mismatch_count",
+                    "expected": "non-negative integer",
+                    "actual": mismatch_count,
+                }
+            )
+
+        for field_name in ("mismatch_categories", "mismatch_paths", "mismatch_reasons"):
+            field_value = item.get(field_name)
+            if not _is_unique_string_sequence(field_value):
+                differences.append(
+                    {
+                        "path": f"{entry_path}.{field_name}",
+                        "expected": "unique sequence of strings",
+                        "actual": field_value,
+                    }
+                )
+
+    return differences
+
+
+def _evaluation_case_selection_names(case_selection: object) -> list[str] | None:
+    if not isinstance(case_selection, Sequence) or isinstance(case_selection, str):
+        return None
+    names: list[str] = []
+    for item in case_selection:
+        if not isinstance(item, Mapping):
+            return None
+        case_name = item.get("case")
+        if not isinstance(case_name, str):
+            return None
+        names.append(case_name)
+    return names
+
+
+def _case_selection_digest_projection(case_selection: object) -> list[dict[str, Any]] | None:
+    if not isinstance(case_selection, Sequence) or isinstance(case_selection, str):
+        return None
+    entries: list[dict[str, Any]] = []
+    for item in case_selection:
+        if not isinstance(item, Mapping):
+            return None
+        projected = _case_digest_projection_entry(item)
+        if projected is None:
+            return None
+        entries.append(projected)
+    return entries
+
+
+def _case_digest_selection_projection(case_digests: object) -> list[dict[str, Any]] | None:
+    if not isinstance(case_digests, Sequence) or isinstance(case_digests, str):
+        return None
+    entries: list[dict[str, Any]] = []
+    for item in case_digests:
+        if not isinstance(item, Mapping):
+            return None
+        projected = _case_digest_projection_entry(item)
+        if projected is None:
+            return None
+        entries.append(projected)
+    return entries
+
+
+def _case_digest_statuses_from_summary(
+    report: Mapping[str, Any],
+) -> list[dict[str, Any]] | None:
+    summary = report.get("summary")
+    if not isinstance(summary, Mapping):
+        return None
+    selected_cases = summary.get("selected_cases")
+    failed_cases = summary.get("failed_cases")
+    if not _is_string_sequence(selected_cases) or not _is_string_sequence(failed_cases):
+        return None
+    failed_case_names = set(cast(Sequence[str], failed_cases))
+    return [
+        {
+            "case": case_name,
+            "passed": case_name not in failed_case_names,
+        }
+        for case_name in cast(Sequence[str], selected_cases)
+    ]
+
+
+def _case_digest_status_projection(case_digests: object) -> list[dict[str, Any]] | None:
+    if not isinstance(case_digests, Sequence) or isinstance(case_digests, str):
+        return None
+    entries: list[dict[str, Any]] = []
+    for item in case_digests:
+        if not isinstance(item, Mapping):
+            return None
+        case_name = item.get("case")
+        passed = item.get("passed")
+        if not isinstance(case_name, str) or not isinstance(passed, bool):
+            return None
+        entries.append(
+            {
+                "case": case_name,
+                "passed": passed,
+            }
+        )
+    return entries
+
+
+def _case_digest_format_differences(case_digests: object) -> list[dict[str, Any]]:
+    if not isinstance(case_digests, Sequence) or isinstance(case_digests, str):
+        return [
+            {
+                "path": "case_digests",
+                "expected": "sequence of case digest objects",
+                "actual": case_digests,
+            }
+        ]
+    differences: list[dict[str, Any]] = []
+    for index, item in enumerate(case_digests):
+        entry_path = f"case_digests[{index}]"
+        if not isinstance(item, Mapping):
+            differences.append(
+                {
+                    "path": entry_path,
+                    "expected": "case digest object",
+                    "actual": item,
+                }
+            )
+            continue
+        case_name = item.get("case")
+        digest = item.get("digest")
+        path = f"{case_name}.digest" if isinstance(case_name, str) else f"{entry_path}.digest"
+        if not _is_sha256_hexdigest(digest):
+            differences.append(
+                {
+                    "path": path,
+                    "expected": "64 lowercase sha256 hex characters",
+                    "actual": digest,
+                }
+            )
+    return differences
+
+
+def _case_digest_projection_entry(item: Mapping[str, Any]) -> dict[str, Any] | None:
+    case_name = item.get("case")
+    kind = item.get("kind")
+    scene_fixture = item.get("scene_fixture")
+    question_type = item.get("question_type")
+    if (
+        not isinstance(case_name, str)
+        or not isinstance(kind, str)
+        or not isinstance(scene_fixture, str)
+        or (question_type is not None and not isinstance(question_type, str))
+    ):
+        return None
+    return {
+        "case": case_name,
+        "kind": kind,
+        "question_type": question_type,
+        "scene_fixture": scene_fixture,
+    }
+
+
+def _report_case_digest_names(case_digests: object) -> list[str] | None:
+    if not isinstance(case_digests, Sequence) or isinstance(case_digests, str):
+        return None
+    names: list[str] = []
+    for item in case_digests:
+        if not isinstance(item, Mapping):
+            return None
+        case_name = item.get("case")
+        if not isinstance(case_name, str):
+            return None
+        names.append(case_name)
+    return names
+
+
+def _report_failed_case_names(failed_cases: object) -> list[str] | None:
+    if not isinstance(failed_cases, Sequence) or isinstance(failed_cases, str):
+        return None
+    names: list[str] = []
+    for item in failed_cases:
+        if not isinstance(item, Mapping):
+            return None
+        case_name = item.get("case")
+        if not isinstance(case_name, str):
+            return None
+        names.append(case_name)
+    return names
+
+
+def _evaluation_report_metrics_from_report(report: Mapping[str, Any]) -> dict[str, Any] | None:
+    summary = report.get("summary")
+    breakdown = report.get("breakdown")
+    if not isinstance(summary, Mapping) or not isinstance(breakdown, Mapping):
+        return None
+    total = summary.get("total")
+    passed = summary.get("passed")
+    if (
+        not isinstance(total, int)
+        or isinstance(total, bool)
+        or not isinstance(passed, int)
+        or isinstance(passed, bool)
+    ):
+        return None
+    return _evaluation_report_metrics(
+        total=total,
+        passed=passed,
+        breakdown=cast(Mapping[str, Any], breakdown),
+    )
+
+
+def _evaluation_evidence_metrics_from_report(
+    report: Mapping[str, Any],
+) -> dict[str, int | float] | None:
+    summary = report.get("summary")
+    if not isinstance(summary, Mapping):
+        return None
+    case_count = summary.get("total")
+    if not isinstance(case_count, int) or isinstance(case_count, bool):
+        return None
+    evidence_metrics = _evidence_metrics_summary_projection(
+        report.get("evidence_metrics")
+    )
+    if evidence_metrics is None:
+        return None
+    cases_with_evidence_count = evidence_metrics["cases_with_evidence_count"]
+    evidence_node_count = evidence_metrics["evidence_node_count"]
+    evidence_edge_count = evidence_metrics["evidence_edge_count"]
+    command_evidence_count = evidence_metrics["command_evidence_count"]
+    total_evidence_item_count = (
+        evidence_node_count + evidence_edge_count + command_evidence_count
+    )
+    return {
+        "average_evidence_item_count": (
+            0.0 if case_count == 0 else total_evidence_item_count / case_count
+        ),
+        "case_count": case_count,
+        "cases_with_evidence_count": cases_with_evidence_count,
+        "cases_without_evidence_count": case_count - cases_with_evidence_count,
+        "command_evidence_count": command_evidence_count,
+        "evidence_edge_count": evidence_edge_count,
+        "evidence_node_count": evidence_node_count,
+        "total_evidence_item_count": total_evidence_item_count,
+    }
+
+
+def _evaluation_evidence_metric_groups_from_report(
+    report: Mapping[str, Any],
+) -> dict[str, dict[str, dict[str, int | float]]] | None:
+    breakdown = report.get("breakdown")
+    evidence_metrics = report.get("evidence_metrics")
+    if not isinstance(breakdown, Mapping) or not isinstance(evidence_metrics, Mapping):
+        return None
+    groups: dict[str, dict[str, dict[str, int | float]]] = {}
+    for group_name in (
+        "by_kind",
+        "by_question_type",
+        "by_scene_fixture",
+        "by_tag",
+    ):
+        breakdown_group = breakdown.get(group_name)
+        evidence_group = evidence_metrics.get(group_name)
+        if not isinstance(breakdown_group, Mapping) or not isinstance(evidence_group, Mapping):
+            return None
+        expected_entries: dict[str, dict[str, int | float]] = {}
+        for entry_name, summary in sorted(breakdown_group.items()):
+            if not isinstance(summary, Mapping):
+                return None
+            case_count = summary.get("total")
+            if not isinstance(case_count, int) or isinstance(case_count, bool):
+                return None
+            expected_entry = _evidence_metrics_summary_from_case_count(
+                evidence_group.get(entry_name),
+                case_count=case_count,
+            )
+            if expected_entry is None:
+                return None
+            expected_entries[str(entry_name)] = expected_entry
+        groups[group_name] = expected_entries
+    return groups
+
+
+def _evidence_metric_groups_projection(
+    evidence_metrics: object,
+) -> dict[str, dict[str, dict[str, int | float]]] | None:
+    if not isinstance(evidence_metrics, Mapping):
+        return None
+    groups: dict[str, dict[str, dict[str, int | float]]] = {}
+    for group_name in (
+        "by_kind",
+        "by_question_type",
+        "by_scene_fixture",
+        "by_tag",
+    ):
+        evidence_group = evidence_metrics.get(group_name)
+        if not isinstance(evidence_group, Mapping):
+            return None
+        group_entries: dict[str, dict[str, int | float]] = {}
+        for entry_name, entry_metrics in sorted(evidence_group.items()):
+            projected = _evidence_metrics_summary_projection(entry_metrics)
+            if projected is None:
+                return None
+            group_entries[str(entry_name)] = projected
+        groups[group_name] = group_entries
+    return groups
+
+
+def _evidence_metrics_summary_from_case_count(
+    evidence_metrics: object,
+    *,
+    case_count: int,
+) -> dict[str, int | float] | None:
+    metrics = _evidence_metrics_summary_projection(evidence_metrics)
+    if metrics is None:
+        return None
+    cases_with_evidence_count = metrics["cases_with_evidence_count"]
+    evidence_node_count = metrics["evidence_node_count"]
+    evidence_edge_count = metrics["evidence_edge_count"]
+    command_evidence_count = metrics["command_evidence_count"]
+    total_evidence_item_count = (
+        evidence_node_count + evidence_edge_count + command_evidence_count
+    )
+    return {
+        "average_evidence_item_count": (
+            0.0 if case_count == 0 else total_evidence_item_count / case_count
+        ),
+        "case_count": case_count,
+        "cases_with_evidence_count": cases_with_evidence_count,
+        "cases_without_evidence_count": case_count - cases_with_evidence_count,
+        "command_evidence_count": command_evidence_count,
+        "evidence_edge_count": evidence_edge_count,
+        "evidence_node_count": evidence_node_count,
+        "total_evidence_item_count": total_evidence_item_count,
+    }
+
+
+def _evidence_metrics_summary_projection(
+    evidence_metrics: object,
+) -> dict[str, int | float] | None:
+    if not isinstance(evidence_metrics, Mapping):
+        return None
+    required_integer_fields = (
+        "case_count",
+        "cases_with_evidence_count",
+        "cases_without_evidence_count",
+        "command_evidence_count",
+        "evidence_edge_count",
+        "evidence_node_count",
+        "total_evidence_item_count",
+    )
+    projected: dict[str, int | float] = {}
+    average = evidence_metrics.get("average_evidence_item_count")
+    if (
+        not isinstance(average, int | float)
+        or isinstance(average, bool)
+    ):
+        return None
+    projected["average_evidence_item_count"] = float(average)
+    for field_name in required_integer_fields:
+        value = evidence_metrics.get(field_name)
+        if not isinstance(value, int) or isinstance(value, bool):
+            return None
+        projected[field_name] = value
+    return {field_name: projected[field_name] for field_name in sorted(projected)}
+
+
+def _evidence_metric_value_differences(evidence_metrics: object) -> list[dict[str, Any]]:
+    if not isinstance(evidence_metrics, Mapping):
+        return [
+            {
+                "path": "evidence_metrics",
+                "expected": "evidence metrics object",
+                "actual": evidence_metrics,
+            }
+        ]
+
+    differences: list[dict[str, Any]] = []
+    _append_evidence_metric_summary_value_differences(
+        differences,
+        evidence_metrics,
+        path="evidence_metrics",
+    )
+    for group_name in (
+        "by_kind",
+        "by_question_type",
+        "by_scene_fixture",
+        "by_tag",
+    ):
+        group = evidence_metrics.get(group_name)
+        if not isinstance(group, Mapping):
+            continue
+        for entry_name, entry_metrics in sorted(group.items()):
+            entry_path = f"evidence_metrics.{group_name}.{entry_name}"
+            if not isinstance(entry_metrics, Mapping):
+                differences.append(
+                    {
+                        "path": entry_path,
+                        "expected": "evidence metric summary object",
+                        "actual": entry_metrics,
+                    }
+                )
+                continue
+            _append_evidence_metric_summary_value_differences(
+                differences,
+                entry_metrics,
+                path=entry_path,
+            )
+    return differences
+
+
+def _append_evidence_metric_summary_value_differences(
+    differences: list[dict[str, Any]],
+    metrics: Mapping[str, Any],
+    *,
+    path: str,
+) -> None:
+    for field_name in (
+        "case_count",
+        "cases_with_evidence_count",
+        "cases_without_evidence_count",
+        "command_evidence_count",
+        "evidence_edge_count",
+        "evidence_node_count",
+        "total_evidence_item_count",
+    ):
+        value = metrics.get(field_name)
+        if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+            differences.append(
+                {
+                    "path": f"{path}.{field_name}",
+                    "expected": "non-negative integer",
+                    "actual": value,
+                }
+            )
+
+    average = metrics.get("average_evidence_item_count")
+    if not isinstance(average, int | float) or isinstance(average, bool) or average < 0:
+        differences.append(
+            {
+                "path": f"{path}.average_evidence_item_count",
+                "expected": "non-negative number",
+                "actual": average,
+            }
+        )
+
+
+def _runtime_error_categories_from_report(
+    report: Mapping[str, Any],
+) -> list[dict[str, Any]] | None:
+    selected_cases = set(_selected_cases_from_suite(report))
+    categories = _runtime_error_category_projection(
+        report.get("runtime_error_categories")
+    )
+    if categories is None:
+        return None
+    expected: list[dict[str, Any]] = []
+    for category in categories:
+        cases = category["cases"]
+        if not isinstance(cases, list):
+            return None
+        expected_cases = sorted(
+            {
+                case_name
+                for case_name in cases
+                if isinstance(case_name, str) and case_name in selected_cases
+            }
+        )
+        expected.append(
+            {
+                "category": category["category"],
+                "count": len(expected_cases),
+                "cases": expected_cases,
+            }
+        )
+    return expected
+
+
+def _runtime_error_category_projection(categories: object) -> list[dict[str, Any]] | None:
+    if not isinstance(categories, Sequence) or isinstance(categories, str):
+        return None
+    projected: list[dict[str, Any]] = []
+    seen_categories: set[str] = set()
+    for entry in categories:
+        if not isinstance(entry, Mapping):
+            return None
+        category = entry.get("category")
+        count = entry.get("count")
+        cases = entry.get("cases")
+        if (
+            not isinstance(category, str)
+            or category == ""
+            or category in seen_categories
+            or not isinstance(count, int)
+            or isinstance(count, bool)
+            or not _is_string_sequence(cases)
+        ):
+            return None
+        seen_categories.add(category)
+        projected.append(
+            {
+                "category": category,
+                "count": count,
+                "cases": list(cast(Sequence[str], cases)),
+            }
+        )
+    return sorted(projected, key=lambda item: str(item["category"]))
+
+
+def _runtime_error_category_entry_differences(
+    categories: object,
+) -> list[dict[str, Any]]:
+    if not isinstance(categories, Sequence) or isinstance(categories, str):
+        return [
+            {
+                "path": "runtime_error_categories",
+                "expected": "sequence of runtime error category objects",
+                "actual": categories,
+            }
+        ]
+
+    differences: list[dict[str, Any]] = []
+    seen_categories: dict[str, int] = {}
+    for index, entry in enumerate(categories):
+        entry_path = f"runtime_error_categories[{index}]"
+        if not isinstance(entry, Mapping):
+            differences.append(
+                {
+                    "path": entry_path,
+                    "expected": "runtime error category object",
+                    "actual": entry,
+                }
+            )
+            continue
+
+        category = entry.get("category")
+        if not isinstance(category, str) or category == "":
+            differences.append(
+                {
+                    "path": f"{entry_path}.category",
+                    "expected": "non-empty string",
+                    "actual": category,
+                }
+            )
+        elif category in seen_categories:
+            differences.append(
+                {
+                    "path": f"{entry_path}.category",
+                    "expected": (
+                        "unique category first seen at "
+                        f"runtime_error_categories[{seen_categories[category]}]"
+                    ),
+                    "actual": category,
+                }
+            )
+        else:
+            seen_categories[category] = index
+
+        count = entry.get("count")
+        if not isinstance(count, int) or isinstance(count, bool) or count <= 0:
+            differences.append(
+                {
+                    "path": f"{entry_path}.count",
+                    "expected": "positive integer",
+                    "actual": count,
+                }
+            )
+
+        cases = entry.get("cases")
+        if not _is_unique_string_sequence(cases):
+            differences.append(
+                {
+                    "path": f"{entry_path}.cases",
+                    "expected": "unique sequence of strings",
+                    "actual": cases,
+                }
+            )
+
+    return differences
+
+
+def _runtime_error_metrics_from_report(
+    report: Mapping[str, Any],
+) -> dict[str, Any] | None:
+    summary = report.get("summary")
+    if not isinstance(summary, Mapping):
+        return None
+    total = summary.get("total")
+    if not isinstance(total, int) or isinstance(total, bool) or total < 0:
+        return None
+    categories = _runtime_error_category_projection(
+        report.get("runtime_error_categories")
+    )
+    if categories is None:
+        return None
+    return _runtime_error_metrics(total=total, categories=categories)
+
+
+def _runtime_error_metrics_projection(metrics: object) -> dict[str, Any] | None:
+    if not isinstance(metrics, Mapping):
+        return None
+
+    case_count = metrics.get("case_count")
+    cases_with_runtime_error_count = metrics.get("cases_with_runtime_error_count")
+    cases_without_runtime_error_count = metrics.get("cases_without_runtime_error_count")
+    runtime_error_rate = metrics.get("runtime_error_rate")
+    by_category = metrics.get("by_category")
+    if (
+        not isinstance(case_count, int)
+        or isinstance(case_count, bool)
+        or case_count < 0
+        or not isinstance(cases_with_runtime_error_count, int)
+        or isinstance(cases_with_runtime_error_count, bool)
+        or cases_with_runtime_error_count < 0
+        or not isinstance(cases_without_runtime_error_count, int)
+        or isinstance(cases_without_runtime_error_count, bool)
+        or cases_without_runtime_error_count < 0
+        or not isinstance(runtime_error_rate, int | float)
+        or isinstance(runtime_error_rate, bool)
+        or runtime_error_rate < 0
+        or not isinstance(by_category, Mapping)
+    ):
+        return None
+
+    category_metrics: dict[str, dict[str, int | float]] = {}
+    for category, entry in sorted(by_category.items()):
+        if (
+            not isinstance(category, str)
+            or category == ""
+            or not isinstance(entry, Mapping)
+        ):
+            return None
+        category_case_count = entry.get("case_count")
+        case_rate = entry.get("case_rate")
+        if (
+            not isinstance(category_case_count, int)
+            or isinstance(category_case_count, bool)
+            or category_case_count < 0
+            or not isinstance(case_rate, int | float)
+            or isinstance(case_rate, bool)
+            or case_rate < 0
+        ):
+            return None
+        category_metrics[category] = {
+            "case_count": category_case_count,
+            "case_rate": float(case_rate),
+        }
+
+    return {
+        "case_count": case_count,
+        "cases_with_runtime_error_count": cases_with_runtime_error_count,
+        "cases_without_runtime_error_count": cases_without_runtime_error_count,
+        "runtime_error_rate": float(runtime_error_rate),
+        "by_category": category_metrics,
+    }
+
+
+def _failure_diagnostics_from_report(
+    report: Mapping[str, Any],
+) -> dict[str, list[dict[str, Any]]] | None:
+    failed_cases = _failed_case_failure_diagnostic_projection(report.get("failed_cases"))
+    if failed_cases is None:
+        return None
+    return {
+        "failure_reasons": _failure_summary_from_failed_cases(
+            failed_cases,
+            field_name="mismatch_reasons",
+            key_name="reason",
+        ),
+        "failure_categories": _failure_summary_from_failed_cases(
+            failed_cases,
+            field_name="mismatch_categories",
+            key_name="category",
+        ),
+        "failure_paths": _failure_summary_from_failed_cases(
+            failed_cases,
+            field_name="mismatch_paths",
+            key_name="path",
+        ),
+    }
+
+
+def _failed_case_failure_diagnostic_projection(
+    failed_cases: object,
+) -> list[dict[str, Any]] | None:
+    if not isinstance(failed_cases, Sequence) or isinstance(failed_cases, str):
+        return None
+    projected: list[dict[str, Any]] = []
+    seen_cases: set[str] = set()
+    for failed_case in failed_cases:
+        if not isinstance(failed_case, Mapping):
+            return None
+        case_name = failed_case.get("case")
+        mismatch_count = failed_case.get("mismatch_count")
+        mismatch_reasons = failed_case.get("mismatch_reasons")
+        mismatch_categories = failed_case.get("mismatch_categories")
+        mismatch_paths = failed_case.get("mismatch_paths")
+        if (
+            not isinstance(case_name, str)
+            or case_name == ""
+            or case_name in seen_cases
+            or not isinstance(mismatch_count, int)
+            or isinstance(mismatch_count, bool)
+            or not _is_unique_string_sequence(mismatch_reasons)
+            or not _is_unique_string_sequence(mismatch_categories)
+            or not _is_unique_string_sequence(mismatch_paths)
+        ):
+            return None
+        seen_cases.add(case_name)
+        projected.append(
+            {
+                "case": case_name,
+                "mismatch_count": mismatch_count,
+                "mismatch_reasons": sorted(cast(Sequence[str], mismatch_reasons)),
+                "mismatch_categories": sorted(cast(Sequence[str], mismatch_categories)),
+                "mismatch_paths": sorted(cast(Sequence[str], mismatch_paths)),
+            }
+        )
+    return sorted(projected, key=lambda item: str(item["case"]))
+
+
+def _failure_summary_from_failed_cases(
+    failed_cases: Sequence[Mapping[str, Any]],
+    *,
+    field_name: str,
+    key_name: str,
+) -> list[dict[str, Any]]:
+    index: dict[str, dict[str, Any]] = {}
+    for failed_case in failed_cases:
+        case_name = str(failed_case["case"])
+        for value in cast(Sequence[str], failed_case[field_name]):
+            entry = index.setdefault(value, {"count": 0, "cases": set()})
+            entry["count"] = int(entry["count"]) + 1
+            cast(set[str], entry["cases"]).add(case_name)
+    return [
+        {
+            key_name: value,
+            "count": int(entry["count"]),
+            "cases": sorted(cast(set[str], entry["cases"])),
+        }
+        for value, entry in sorted(index.items())
+    ]
+
+
+def _failure_diagnostics_projection(
+    report: Mapping[str, Any],
+) -> dict[str, list[dict[str, Any]]] | None:
+    failure_reasons = _failure_summary_projection(
+        report.get("failure_reasons"),
+        key_name="reason",
+    )
+    failure_categories = _failure_summary_projection(
+        report.get("failure_categories"),
+        key_name="category",
+    )
+    failure_paths = _failure_summary_projection(
+        report.get("failure_paths"),
+        key_name="path",
+    )
+    if (
+        failure_reasons is None
+        or failure_categories is None
+        or failure_paths is None
+    ):
+        return None
+    return {
+        "failure_reasons": failure_reasons,
+        "failure_categories": failure_categories,
+        "failure_paths": failure_paths,
+    }
+
+
+def _failure_summary_projection(
+    summary: object,
+    *,
+    key_name: str,
+) -> list[dict[str, Any]] | None:
+    if not isinstance(summary, Sequence) or isinstance(summary, str):
+        return None
+    projected: list[dict[str, Any]] = []
+    seen_values: set[str] = set()
+    for entry in summary:
+        if not isinstance(entry, Mapping):
+            return None
+        value = entry.get(key_name)
+        count = entry.get("count")
+        cases = entry.get("cases")
+        if (
+            not isinstance(value, str)
+            or value == ""
+            or value in seen_values
+            or not isinstance(count, int)
+            or isinstance(count, bool)
+            or not _is_string_sequence(cases)
+        ):
+            return None
+        seen_values.add(value)
+        projected.append(
+            {
+                key_name: value,
+                "count": count,
+                "cases": sorted(cast(Sequence[str], cases)),
+            }
+        )
+    return sorted(projected, key=lambda item: str(item[key_name]))
+
+
+def _failure_diagnostic_differences(
+    expected: object,
+    actual: object,
+) -> list[dict[str, Any]]:
+    if not isinstance(expected, Mapping) or not isinstance(actual, Mapping):
+        return _nested_differences(expected, actual)
+    differences: list[dict[str, Any]] = []
+    for field_name, key_name in (
+        ("failure_reasons", "reason"),
+        ("failure_categories", "category"),
+        ("failure_paths", "path"),
+    ):
+        differences.extend(
+            _prefix_differences(
+                field_name,
+                _report_summary_entry_differences(
+                    expected.get(field_name),
+                    actual.get(field_name),
+                    key_name=key_name,
+                ),
+            )
+        )
+    return differences
 
 
 def compare_evaluation_report(report: Mapping[str, Any]) -> dict[str, Any]:
@@ -2502,6 +4717,20 @@ def compare_evaluation_report(report: Mapping[str, Any]) -> dict[str, Any]:
     )
     if evidence_metric_differences:
         checks[-1]["differences"] = evidence_metric_differences
+    case_selection_differences = _report_summary_entry_differences(
+        report.get("case_selection"),
+        current_report["case_selection"],
+        key_name="case",
+    )
+    _append_validation_check(
+        checks,
+        name="case_selection_matches_current",
+        passed=report.get("case_selection") == current_report["case_selection"],
+        expected=report.get("case_selection"),
+        actual=current_report["case_selection"],
+    )
+    if case_selection_differences:
+        checks[-1]["differences"] = case_selection_differences
     case_digest_differences = _report_summary_entry_differences(
         report.get("case_digests"),
         current_report["case_digests"],
@@ -2558,6 +4787,20 @@ def compare_evaluation_report(report: Mapping[str, Any]) -> dict[str, Any]:
     )
     if runtime_error_category_differences:
         checks[-1]["differences"] = runtime_error_category_differences
+    runtime_error_metric_differences = _nested_differences(
+        report.get("runtime_error_metrics"),
+        current_report["runtime_error_metrics"],
+    )
+    _append_validation_check(
+        checks,
+        name="runtime_error_metrics_match_current",
+        passed=report.get("runtime_error_metrics")
+        == current_report["runtime_error_metrics"],
+        expected=report.get("runtime_error_metrics"),
+        actual=current_report["runtime_error_metrics"],
+    )
+    if runtime_error_metric_differences:
+        checks[-1]["differences"] = runtime_error_metric_differences
     failure_category_differences = _report_summary_entry_differences(
         report.get("failure_categories"),
         current_report["failure_categories"],
@@ -2643,14 +4886,18 @@ def _evaluation_report_differences(
         return _nested_differences(expected, actual)
 
     fields = (
+        "schema_version",
         "digest",
         "report_digest",
         "summary",
         "metrics",
         "evidence_metrics",
+        "case_selection",
+        "case_selection_digest",
         "case_digests",
         "failed_cases",
         "runtime_error_categories",
+        "runtime_error_metrics",
         "failure_reasons",
         "failure_categories",
         "failure_paths",
@@ -2684,6 +4931,8 @@ def _evaluation_report_field_differences(
     actual: object,
 ) -> list[dict[str, Any]]:
     if field == "failed_cases":
+        return _report_summary_entry_differences(expected, actual, key_name="case")
+    if field == "case_selection":
         return _report_summary_entry_differences(expected, actual, key_name="case")
     if field == "case_digests":
         return _report_summary_entry_differences(expected, actual, key_name="case")
@@ -2781,6 +5030,39 @@ def _runtime_error_category_summary(
         }
         for category, entry in sorted(category_index.items())
     ]
+
+
+def _runtime_error_metrics(
+    *,
+    total: int,
+    categories: Sequence[Mapping[str, Any]],
+) -> dict[str, Any]:
+    runtime_error_cases: set[str] = set()
+    by_category: dict[str, dict[str, int | float]] = {}
+    for entry in sorted(categories, key=lambda item: str(item.get("category"))):
+        category = str(entry["category"])
+        cases = entry.get("cases", ())
+        case_names = (
+            sorted({str(case_name) for case_name in cases})
+            if isinstance(cases, Sequence) and not isinstance(cases, str)
+            else []
+        )
+        runtime_error_cases.update(case_names)
+        by_category[category] = {
+            "case_count": len(case_names),
+            "case_rate": 0.0 if total == 0 else len(case_names) / total,
+        }
+
+    cases_with_runtime_error_count = len(runtime_error_cases)
+    return {
+        "case_count": total,
+        "cases_with_runtime_error_count": cases_with_runtime_error_count,
+        "cases_without_runtime_error_count": total - cases_with_runtime_error_count,
+        "runtime_error_rate": (
+            0.0 if total == 0 else cases_with_runtime_error_count / total
+        ),
+        "by_category": by_category,
+    }
 
 
 def _suite_result(results: list[dict[str, Any]]) -> dict[str, Any]:
@@ -2899,22 +5181,19 @@ def _run_case(
         return _qa_response_to_dict(response)
     if case.kind == "vla_pick":
         graph = _load_scene(case.scene_fixture, scene_loaders)
-        target_object, target_label = _required_pick_target(case)
         result = VLAAnchorPlanner(GraphTool(graph)).plan_pick(
-            target_object=target_object,
-            label=target_label,
+            target_object=case.target_object,
+            label=case.target_label,
         )
         return _planner_result_to_dict(result)
     if case.kind == "vla_place_relative":
         graph = _load_scene(case.scene_fixture, scene_loaders)
-        target_object, target_label = _required_pick_target(case)
-        reference_object, reference_label = _required_place_reference(case)
         result = VLAAnchorPlanner(GraphTool(graph)).plan_place_relative(
-            target_object,
-            reference_object,
+            case.target_object,
+            case.reference_object,
             _required_relation(case),
-            target_label=target_label,
-            reference_label=reference_label,
+            target_label=case.target_label,
+            reference_label=case.reference_label,
         )
         return _planner_result_to_dict(result)
     if case.kind == "vla_stale_pick":
@@ -3001,6 +5280,10 @@ def _runtime_error_category(error: str | None) -> str | None:
         return "missing_label"
     if error.startswith("Unsupported place relation:"):
         return "unsupported_relation"
+    if error.startswith("Unsupported question type:"):
+        return "unsupported_question"
+    if error.startswith("Question field must be") or error.startswith("Question missing"):
+        return "invalid_question"
     if error.startswith("Ambiguous label:"):
         return "ambiguous_label"
     if error in {
@@ -3022,6 +5305,8 @@ def _runtime_error_category(error: str | None) -> str | None:
         "needs_reobserve",
         "stale_object_state",
         "stale_reference_state",
+        "target_not_visible",
+        "low_confidence",
     }:
         return error
     return "runtime_error"

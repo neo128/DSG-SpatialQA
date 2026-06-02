@@ -31,6 +31,28 @@ def test_on_requires_vertical_contact_and_support_overlap_ratio() -> None:
     assert engine.evaluate(floating_mug, table, "ON", reference_frame="world") is False
 
 
+def test_inside_uses_source_centroid_inside_container_bbox() -> None:
+    engine = RelationEngine(RelationConfig(margin=0.0))
+    cabinet = box((0.0, 0.0, 1.0), (1.0, 1.0, 2.0))
+    mug_inside = box((0.2, 0.1, 1.2), (0.2, 0.2, 0.2))
+    mug_outside = box((0.8, 0.1, 1.2), (0.2, 0.2, 0.2))
+
+    assert engine.evaluate(mug_inside, cabinet, "INSIDE", reference_frame="world") is True
+    assert engine.evaluate(mug_outside, cabinet, "INSIDE", reference_frame="world") is False
+
+
+def test_supports_is_inverse_of_valid_on_relation() -> None:
+    engine = RelationEngine(
+        RelationConfig(margin=0.0, on_vertical_margin=0.05, support_overlap_ratio=0.5)
+    )
+    table = box((0.0, 0.0, 0.35), (1.0, 1.0, 0.7))
+    centered_mug = box((0.0, 0.0, 0.78), (0.2, 0.2, 0.16))
+    floating_mug = box((0.0, 0.0, 1.0), (0.2, 0.2, 0.16))
+
+    assert engine.evaluate(table, centered_mug, "SUPPORTS", reference_frame="world") is True
+    assert engine.evaluate(table, floating_mug, "SUPPORTS", reference_frame="world") is False
+
+
 def test_agent_frame_relations_respect_agent_yaw() -> None:
     engine = RelationEngine(RelationConfig(margin=0.01))
     agent = Pose3D(0.0, 0.0, 0.0, yaw=pi / 2.0)

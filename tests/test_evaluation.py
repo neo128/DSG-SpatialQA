@@ -60,18 +60,33 @@ def test_evaluation_case_registry_is_deterministic() -> None:
         "moved_mug_stale_place_plate_right_of_mug",
         "moved_mug_world_state",
         "multi_room_rearrangement_object_room_cereal_box",
+        "multi_room_rearrangement_object_room_milk",
         "multi_room_rearrangement_recent_events",
         "multi_room_rearrangement_reobserve_targets",
         "multi_room_rearrangement_scene_delta",
+        "needs_reobserve_bowl_pick_target_not_visible",
+        "needs_reobserve_bowl_place_reference_target_not_visible",
+        "needs_reobserve_bowl_place_target_not_visible",
+        "needs_reobserve_cup_pick_low_confidence",
+        "needs_reobserve_cup_place_reference_low_confidence",
+        "needs_reobserve_cup_place_target_low_confidence",
+        "needs_reobserve_spoon_label_candidates",
         "needs_reobserve_spoon_pick",
+        "needs_reobserve_spoon_place_reference",
+        "needs_reobserve_spoon_place_target",
         "needs_reobserve_targets",
         "relation_shift_relation_timeline",
+        "tabletop_agent_history",
         "tabletop_agent_location",
         "tabletop_agent_timeline",
         "tabletop_graph_query_mug_plate",
+        "tabletop_missing_label_pick_error",
         "tabletop_missing_object_location_error",
         "tabletop_missing_object_pick_error",
+        "tabletop_missing_reference_input_place_error",
         "tabletop_missing_reference_place_error",
+        "tabletop_missing_target_input_place_error",
+        "tabletop_missing_target_pick_error",
         "tabletop_mug_pick",
         "tabletop_nearest_candidate_plate",
         "tabletop_object_history_mug",
@@ -81,8 +96,10 @@ def test_evaluation_case_registry_is_deterministic() -> None:
         "tabletop_relation_timeline",
         "tabletop_relative_relation_mug_left_of_plate",
         "tabletop_retrieve_subgraph_mug",
+        "tabletop_scene_snapshot_invalid_step_error",
         "tabletop_scene_snapshot_step1",
         "tabletop_unsupported_place_relation_error",
+        "tabletop_unsupported_question_type_error",
     )
     assert list_evaluation_cases(tags=("vla", "anchor")) == (
         "tabletop_mug_pick",
@@ -96,6 +113,7 @@ def test_evaluation_case_registry_is_deterministic() -> None:
         "moved_mug_scene_delta_reversed_window_error",
         "moved_mug_world_state",
         "multi_room_rearrangement_object_room_cereal_box",
+        "multi_room_rearrangement_object_room_milk",
         "multi_room_rearrangement_recent_events",
         "multi_room_rearrangement_scene_delta",
         "relation_shift_relation_timeline",
@@ -110,6 +128,7 @@ def test_evaluation_case_registry_is_deterministic() -> None:
         "multi_room_rearrangement_recent_events",
         "multi_room_rearrangement_scene_delta",
         "relation_shift_relation_timeline",
+        "tabletop_agent_history",
         "tabletop_agent_timeline",
         "tabletop_relation_timeline",
         "tabletop_scene_snapshot_step1",
@@ -120,6 +139,7 @@ def test_evaluation_case_registry_is_deterministic() -> None:
         "tabletop_relative_relation_mug_left_of_plate",
     )
     assert list_evaluation_cases(tags=("qa", "foundation")) == (
+        "tabletop_agent_history",
         "tabletop_agent_location",
         "tabletop_missing_object_location_error",
         "tabletop_object_history_mug",
@@ -129,10 +149,22 @@ def test_evaluation_case_registry_is_deterministic() -> None:
     assert list_evaluation_cases(tags=("qa", "error")) == (
         "moved_mug_scene_delta_reversed_window_error",
         "tabletop_missing_object_location_error",
+        "tabletop_scene_snapshot_invalid_step_error",
+        "tabletop_unsupported_question_type_error",
     )
     assert list_evaluation_cases(tags=("vla", "error")) == (
+        "needs_reobserve_bowl_pick_target_not_visible",
+        "needs_reobserve_bowl_place_reference_target_not_visible",
+        "needs_reobserve_bowl_place_target_not_visible",
+        "needs_reobserve_cup_pick_low_confidence",
+        "needs_reobserve_cup_place_reference_low_confidence",
+        "needs_reobserve_cup_place_target_low_confidence",
+        "tabletop_missing_label_pick_error",
         "tabletop_missing_object_pick_error",
+        "tabletop_missing_reference_input_place_error",
         "tabletop_missing_reference_place_error",
+        "tabletop_missing_target_input_place_error",
+        "tabletop_missing_target_pick_error",
         "tabletop_unsupported_place_relation_error",
     )
     assert list_evaluation_cases(tags=("qa", "retrieval")) == (
@@ -148,6 +180,10 @@ def test_evaluation_case_registry_is_deterministic() -> None:
     )
     assert list_evaluation_cases(question_types=("label_candidates",)) == (
         "ambiguous_mug_label_candidates",
+        "needs_reobserve_spoon_label_candidates",
+    )
+    assert list_evaluation_cases(question_types=("agent_history",)) == (
+        "tabletop_agent_history",
     )
     assert list_evaluation_cases(question_types=("agent_location",)) == (
         "tabletop_agent_location",
@@ -164,12 +200,16 @@ def test_evaluation_case_registry_is_deterministic() -> None:
     )
     assert list_evaluation_cases(question_types=("object_room",)) == (
         "multi_room_rearrangement_object_room_cereal_box",
+        "multi_room_rearrangement_object_room_milk",
     )
     assert list_evaluation_cases(question_types=("relative_relation",)) == (
         "tabletop_relative_relation_mug_left_of_plate",
     )
     assert list_evaluation_cases(question_types=("retrieve_subgraph",)) == (
         "tabletop_retrieve_subgraph_mug",
+    )
+    assert list_evaluation_cases(question_types=("unsupported_intent",)) == (
+        "tabletop_unsupported_question_type_error",
     )
     assert list_evaluation_cases(question_types=("next_action_validity",)) == (
         "moved_mug_next_action_validity",
@@ -183,11 +223,17 @@ def test_evaluation_case_registry_is_deterministic() -> None:
         "moved_mug_scene_delta_reversed_window_error",
         "multi_room_rearrangement_scene_delta",
     )
+    assert list_evaluation_cases(question_types=("scene_snapshot",)) == (
+        "tabletop_scene_snapshot_invalid_step_error",
+        "tabletop_scene_snapshot_step1",
+    )
     assert list_evaluation_cases(tags=("qa", "snapshot")) == (
+        "tabletop_scene_snapshot_invalid_step_error",
         "tabletop_scene_snapshot_step1",
     )
     assert list_evaluation_cases(tags=("qa", "reobserve")) == (
         "multi_room_rearrangement_reobserve_targets",
+        "needs_reobserve_spoon_label_candidates",
         "needs_reobserve_targets",
     )
     assert list_evaluation_cases(tags=("qa", "label", "ambiguity")) == (
@@ -196,9 +242,21 @@ def test_evaluation_case_registry_is_deterministic() -> None:
     assert list_evaluation_cases(kinds=("vla_pick", "vla_place_relative")) == (
         "ambiguous_mug_pick_by_label",
         "ambiguous_plate_place_reference_by_label",
+        "needs_reobserve_bowl_pick_target_not_visible",
+        "needs_reobserve_bowl_place_reference_target_not_visible",
+        "needs_reobserve_bowl_place_target_not_visible",
+        "needs_reobserve_cup_pick_low_confidence",
+        "needs_reobserve_cup_place_reference_low_confidence",
+        "needs_reobserve_cup_place_target_low_confidence",
         "needs_reobserve_spoon_pick",
+        "needs_reobserve_spoon_place_reference",
+        "needs_reobserve_spoon_place_target",
+        "tabletop_missing_label_pick_error",
         "tabletop_missing_object_pick_error",
+        "tabletop_missing_reference_input_place_error",
         "tabletop_missing_reference_place_error",
+        "tabletop_missing_target_input_place_error",
+        "tabletop_missing_target_pick_error",
         "tabletop_mug_pick",
         "tabletop_place_mug_right_of_plate",
         "tabletop_unsupported_place_relation_error",
@@ -219,6 +277,8 @@ def test_evaluation_case_registry_is_deterministic() -> None:
     )
     assert list_evaluation_cases(tags=("vla", "reobserve")) == (
         "needs_reobserve_spoon_pick",
+        "needs_reobserve_spoon_place_reference",
+        "needs_reobserve_spoon_place_target",
     )
     assert list_evaluation_cases(tags=("vla", "label", "ambiguity")) == (
         "ambiguous_mug_pick_by_label",
@@ -303,10 +363,184 @@ def test_list_evaluation_case_metadata_returns_deterministic_manifest() -> None:
             "expected_keys": ["ambiguous_ids", "details", "error", "error_category", "status"],
         },
         {
+            "name": "needs_reobserve_bowl_pick_target_not_visible",
+            "scene_fixture": "needs_reobserve",
+            "scene_description": (
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
+            ),
+            "scene_tags": ["static", "tabletop", "reobserve"],
+            "kind": "vla_pick",
+            "tags": ["vla", "pick", "error", "occlusion", "visibility"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": "bowl_1",
+            "target_label": None,
+            "reference_object": None,
+            "reference_label": None,
+            "relation": None,
+            "expected_keys": [
+                "command",
+                "details",
+                "error",
+                "error_category",
+                "needs_reobserve",
+                "needs_replan",
+                "status",
+            ],
+        },
+        {
+            "name": "needs_reobserve_bowl_place_reference_target_not_visible",
+            "scene_fixture": "needs_reobserve",
+            "scene_description": (
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
+            ),
+            "scene_tags": ["static", "tabletop", "reobserve"],
+            "kind": "vla_place_relative",
+            "tags": ["vla", "place", "error", "occlusion", "visibility"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": "mug_1",
+            "target_label": None,
+            "reference_object": "bowl_1",
+            "reference_label": None,
+            "relation": "RIGHT_OF",
+            "expected_keys": [
+                "command",
+                "details",
+                "error",
+                "error_category",
+                "needs_reobserve",
+                "needs_replan",
+                "status",
+            ],
+        },
+        {
+            "name": "needs_reobserve_bowl_place_target_not_visible",
+            "scene_fixture": "needs_reobserve",
+            "scene_description": (
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
+            ),
+            "scene_tags": ["static", "tabletop", "reobserve"],
+            "kind": "vla_place_relative",
+            "tags": ["vla", "place", "error", "occlusion", "visibility"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": "bowl_1",
+            "target_label": None,
+            "reference_object": "plate_1",
+            "reference_label": None,
+            "relation": "RIGHT_OF",
+            "expected_keys": [
+                "command",
+                "details",
+                "error",
+                "error_category",
+                "needs_reobserve",
+                "needs_replan",
+                "status",
+            ],
+        },
+        {
+            "name": "needs_reobserve_cup_pick_low_confidence",
+            "scene_fixture": "needs_reobserve",
+            "scene_description": (
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
+            ),
+            "scene_tags": ["static", "tabletop", "reobserve"],
+            "kind": "vla_pick",
+            "tags": ["vla", "pick", "error", "confidence"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": "cup_1",
+            "target_label": None,
+            "reference_object": None,
+            "reference_label": None,
+            "relation": None,
+            "expected_keys": [
+                "command",
+                "details",
+                "error",
+                "error_category",
+                "needs_reobserve",
+                "needs_replan",
+                "status",
+            ],
+        },
+        {
+            "name": "needs_reobserve_cup_place_reference_low_confidence",
+            "scene_fixture": "needs_reobserve",
+            "scene_description": (
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
+            ),
+            "scene_tags": ["static", "tabletop", "reobserve"],
+            "kind": "vla_place_relative",
+            "tags": ["vla", "place", "error", "confidence"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": "mug_1",
+            "target_label": None,
+            "reference_object": "cup_1",
+            "reference_label": None,
+            "relation": "RIGHT_OF",
+            "expected_keys": [
+                "command",
+                "details",
+                "error",
+                "error_category",
+                "needs_reobserve",
+                "needs_replan",
+                "status",
+            ],
+        },
+        {
+            "name": "needs_reobserve_cup_place_target_low_confidence",
+            "scene_fixture": "needs_reobserve",
+            "scene_description": (
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
+            ),
+            "scene_tags": ["static", "tabletop", "reobserve"],
+            "kind": "vla_place_relative",
+            "tags": ["vla", "place", "error", "confidence"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": "cup_1",
+            "target_label": None,
+            "reference_object": "plate_1",
+            "reference_label": None,
+            "relation": "RIGHT_OF",
+            "expected_keys": [
+                "command",
+                "details",
+                "error",
+                "error_category",
+                "needs_reobserve",
+                "needs_replan",
+                "status",
+            ],
+        },
+        {
             "name": "needs_reobserve_spoon_pick",
             "scene_fixture": "needs_reobserve",
             "scene_description": (
-                "Tabletop scene with one invisible low-confidence spoon requiring re-observation."
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
             ),
             "scene_tags": ["static", "tabletop", "reobserve"],
             "kind": "vla_pick",
@@ -322,6 +556,76 @@ def test_list_evaluation_case_metadata_returns_deterministic_manifest() -> None:
             "reference_label": None,
             "relation": None,
             "expected_keys": ["error", "error_category", "needs_reobserve", "status"],
+        },
+        {
+            "name": "needs_reobserve_spoon_place_reference",
+            "scene_fixture": "needs_reobserve",
+            "scene_description": (
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
+            ),
+            "scene_tags": ["static", "tabletop", "reobserve"],
+            "kind": "vla_place_relative",
+            "tags": ["vla", "place", "reobserve", "occlusion"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": "mug_1",
+            "target_label": None,
+            "reference_object": "spoon_1",
+            "reference_label": None,
+            "relation": "RIGHT_OF",
+            "expected_keys": ["error", "error_category", "needs_reobserve", "status"],
+        },
+        {
+            "name": "needs_reobserve_spoon_place_target",
+            "scene_fixture": "needs_reobserve",
+            "scene_description": (
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
+            ),
+            "scene_tags": ["static", "tabletop", "reobserve"],
+            "kind": "vla_place_relative",
+            "tags": ["vla", "place", "reobserve", "occlusion"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": "spoon_1",
+            "target_label": None,
+            "reference_object": "plate_1",
+            "reference_label": None,
+            "relation": "RIGHT_OF",
+            "expected_keys": ["error", "error_category", "needs_reobserve", "status"],
+        },
+        {
+            "name": "tabletop_missing_label_pick_error",
+            "scene_fixture": "tabletop",
+            "scene_description": "Static tabletop scene with mug, plate, table, room, and agent.",
+            "scene_tags": ["static", "tabletop"],
+            "kind": "vla_pick",
+            "tags": ["vla", "pick", "error", "label"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": None,
+            "target_label": "fork",
+            "reference_object": None,
+            "reference_label": None,
+            "relation": None,
+            "expected_keys": [
+                "ambiguous_ids",
+                "command",
+                "details",
+                "error",
+                "error_category",
+                "needs_reobserve",
+                "needs_replan",
+                "status",
+            ],
         },
         {
             "name": "tabletop_missing_object_pick_error",
@@ -352,6 +656,34 @@ def test_list_evaluation_case_metadata_returns_deterministic_manifest() -> None:
             ],
         },
         {
+            "name": "tabletop_missing_reference_input_place_error",
+            "scene_fixture": "tabletop",
+            "scene_description": "Static tabletop scene with mug, plate, table, room, and agent.",
+            "scene_tags": ["static", "tabletop"],
+            "kind": "vla_place_relative",
+            "tags": ["vla", "place", "error"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": "mug_1",
+            "target_label": None,
+            "reference_object": None,
+            "reference_label": None,
+            "relation": "RIGHT_OF",
+            "expected_keys": [
+                "ambiguous_ids",
+                "command",
+                "details",
+                "error",
+                "error_category",
+                "needs_reobserve",
+                "needs_replan",
+                "status",
+            ],
+        },
+        {
             "name": "tabletop_missing_reference_place_error",
             "scene_fixture": "tabletop",
             "scene_description": "Static tabletop scene with mug, plate, table, room, and agent.",
@@ -368,6 +700,62 @@ def test_list_evaluation_case_metadata_returns_deterministic_manifest() -> None:
             "reference_object": "missing_object",
             "reference_label": None,
             "relation": "RIGHT_OF",
+            "expected_keys": [
+                "ambiguous_ids",
+                "command",
+                "details",
+                "error",
+                "error_category",
+                "needs_reobserve",
+                "needs_replan",
+                "status",
+            ],
+        },
+        {
+            "name": "tabletop_missing_target_input_place_error",
+            "scene_fixture": "tabletop",
+            "scene_description": "Static tabletop scene with mug, plate, table, room, and agent.",
+            "scene_tags": ["static", "tabletop"],
+            "kind": "vla_place_relative",
+            "tags": ["vla", "place", "error"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": None,
+            "target_label": None,
+            "reference_object": "plate_1",
+            "reference_label": None,
+            "relation": "RIGHT_OF",
+            "expected_keys": [
+                "ambiguous_ids",
+                "command",
+                "details",
+                "error",
+                "error_category",
+                "needs_reobserve",
+                "needs_replan",
+                "status",
+            ],
+        },
+        {
+            "name": "tabletop_missing_target_pick_error",
+            "scene_fixture": "tabletop",
+            "scene_description": "Static tabletop scene with mug, plate, table, room, and agent.",
+            "scene_tags": ["static", "tabletop"],
+            "kind": "vla_pick",
+            "tags": ["vla", "pick", "error"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": None,
+            "target_label": None,
+            "reference_object": None,
+            "reference_label": None,
+            "relation": None,
             "expected_keys": [
                 "ambiguous_ids",
                 "command",
@@ -598,6 +986,7 @@ def test_timeline_evaluation_case_metadata_is_discoverable() -> None:
         "multi_room_rearrangement_recent_events",
         "multi_room_rearrangement_scene_delta",
         "relation_shift_relation_timeline",
+        "tabletop_agent_history",
         "tabletop_agent_timeline",
         "tabletop_relation_timeline",
         "tabletop_scene_snapshot_step1",
@@ -609,6 +998,7 @@ def test_timeline_evaluation_case_metadata_is_discoverable() -> None:
         "recent_events",
         "scene_delta",
         "relation_timeline",
+        "agent_history",
         "agent_timeline",
         "relation_timeline",
         "scene_snapshot",
@@ -625,14 +1015,15 @@ def test_timeline_evaluation_case_metadata_is_discoverable() -> None:
         "dst": "plate_1",
         "reference_frame": "agent",
     }
-    assert manifest[6]["question"] == {"type": "agent_timeline"}
-    assert manifest[7]["question"] == {
+    assert manifest[6]["question"] == {"type": "agent_history"}
+    assert manifest[7]["question"] == {"type": "agent_timeline"}
+    assert manifest[8]["question"] == {
         "type": "relation_timeline",
         "src": "mug_1",
         "dst": "plate_1",
         "reference_frame": "agent",
     }
-    assert manifest[8]["question"] == {
+    assert manifest[9]["question"] == {
         "type": "scene_snapshot",
         "step": 1,
         "visible": True,
@@ -665,10 +1056,38 @@ def test_reobserve_evaluation_case_metadata_is_discoverable() -> None:
             "expected_keys": ["answer", "error", "evidence_edges", "needs_reobserve"],
         },
         {
+            "name": "needs_reobserve_spoon_label_candidates",
+            "scene_fixture": "needs_reobserve",
+            "scene_description": (
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
+            ),
+            "scene_tags": ["static", "tabletop", "reobserve"],
+            "kind": "qa",
+            "tags": ["qa", "label", "reobserve", "occlusion"],
+            "question": {"type": "label_candidates", "label": "spoon", "visible": False},
+            "question_type": "label_candidates",
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": None,
+            "target_label": None,
+            "reference_object": None,
+            "reference_label": None,
+            "relation": None,
+            "expected_keys": [
+                "answer",
+                "confidence",
+                "error",
+                "evidence_edges",
+                "evidence_nodes",
+                "needs_reobserve",
+            ],
+        },
+        {
             "name": "needs_reobserve_targets",
             "scene_fixture": "needs_reobserve",
             "scene_description": (
-                "Tabletop scene with one invisible low-confidence spoon requiring re-observation."
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
             ),
             "scene_tags": ["static", "tabletop", "reobserve"],
             "kind": "qa",
@@ -696,7 +1115,7 @@ def test_vla_reobserve_evaluation_case_metadata_is_discoverable() -> None:
             "name": "needs_reobserve_spoon_pick",
             "scene_fixture": "needs_reobserve",
             "scene_description": (
-                "Tabletop scene with one invisible low-confidence spoon requiring re-observation."
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
             ),
             "scene_tags": ["static", "tabletop", "reobserve"],
             "kind": "vla_pick",
@@ -711,6 +1130,48 @@ def test_vla_reobserve_evaluation_case_metadata_is_discoverable() -> None:
             "reference_object": None,
             "reference_label": None,
             "relation": None,
+            "expected_keys": ["error", "error_category", "needs_reobserve", "status"],
+        },
+        {
+            "name": "needs_reobserve_spoon_place_reference",
+            "scene_fixture": "needs_reobserve",
+            "scene_description": (
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
+            ),
+            "scene_tags": ["static", "tabletop", "reobserve"],
+            "kind": "vla_place_relative",
+            "tags": ["vla", "place", "reobserve", "occlusion"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": "mug_1",
+            "target_label": None,
+            "reference_object": "spoon_1",
+            "reference_label": None,
+            "relation": "RIGHT_OF",
+            "expected_keys": ["error", "error_category", "needs_reobserve", "status"],
+        },
+        {
+            "name": "needs_reobserve_spoon_place_target",
+            "scene_fixture": "needs_reobserve",
+            "scene_description": (
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
+            ),
+            "scene_tags": ["static", "tabletop", "reobserve"],
+            "kind": "vla_place_relative",
+            "tags": ["vla", "place", "reobserve", "occlusion"],
+            "question": {},
+            "question_type": None,
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": "spoon_1",
+            "target_label": None,
+            "reference_object": "plate_1",
+            "reference_label": None,
+            "relation": "RIGHT_OF",
             "expected_keys": ["error", "error_category", "needs_reobserve", "status"],
         },
     )
@@ -826,6 +1287,7 @@ def test_foundation_evaluation_case_metadata_is_discoverable() -> None:
     manifest = list_evaluation_case_metadata(tags=("qa", "foundation"))
 
     assert [item["name"] for item in manifest] == [
+        "tabletop_agent_history",
         "tabletop_agent_location",
         "tabletop_missing_object_location_error",
         "tabletop_object_history_mug",
@@ -833,6 +1295,7 @@ def test_foundation_evaluation_case_metadata_is_discoverable() -> None:
         "tabletop_relative_relation_mug_left_of_plate",
     ]
     assert [item["question_type"] for item in manifest] == [
+        "agent_history",
         "agent_location",
         "object_location",
         "object_history",
@@ -840,25 +1303,26 @@ def test_foundation_evaluation_case_metadata_is_discoverable() -> None:
         "relative_relation",
     ]
     assert [item["expected_keys"] for item in manifest] == [
+        ["answer", "error", "evidence_edges", "evidence_nodes"],
         ["answer", "error", "evidence_nodes"],
-            [
-                "answer",
-                "confidence",
-                "error",
-                "error_category",
-                "evidence_edges",
-                "evidence_nodes",
-                "needs_reobserve",
+        [
+            "answer",
+            "confidence",
+            "error",
+            "error_category",
+            "evidence_edges",
+            "evidence_nodes",
+            "needs_reobserve",
         ],
         ["answer", "error", "evidence_edges"],
         ["answer", "error", "evidence_edges"],
         ["answer", "error", "evidence_edges"],
     ]
-    assert manifest[1]["question"] == {
+    assert manifest[2]["question"] == {
         "type": "object_location",
         "object_id": "missing_object",
     }
-    assert manifest[4]["question"] == {
+    assert manifest[5]["question"] == {
         "type": "relative_relation",
         "src": "mug_1",
         "dst": "plate_1",
@@ -951,6 +1415,33 @@ def test_scene_snapshot_evaluation_case_metadata_is_discoverable() -> None:
 
     assert manifest == (
         {
+            "name": "tabletop_scene_snapshot_invalid_step_error",
+            "scene_fixture": "tabletop",
+            "scene_description": "Static tabletop scene with mug, plate, table, room, and agent.",
+            "scene_tags": ["static", "tabletop"],
+            "kind": "qa",
+            "tags": ["qa", "snapshot", "error"],
+            "question": {"type": "scene_snapshot", "step": True},
+            "question_type": "scene_snapshot",
+            "baseline_scene_fixture": None,
+            "baseline_scene_description": None,
+            "baseline_scene_tags": [],
+            "target_object": None,
+            "target_label": None,
+            "reference_object": None,
+            "reference_label": None,
+            "relation": None,
+            "expected_keys": [
+                "answer",
+                "confidence",
+                "error",
+                "error_category",
+                "evidence_edges",
+                "evidence_nodes",
+                "needs_reobserve",
+            ],
+        },
+        {
             "name": "tabletop_scene_snapshot_step1",
             "scene_fixture": "tabletop",
             "scene_description": "Static tabletop scene with mug, plate, table, room, and agent.",
@@ -1027,11 +1518,19 @@ def test_evaluation_case_metadata_filters_by_question_type() -> None:
 
     label_manifest = list_evaluation_case_metadata(question_types=("label_candidates",))
 
-    assert [item["name"] for item in label_manifest] == ["ambiguous_mug_label_candidates"]
+    assert [item["name"] for item in label_manifest] == [
+        "ambiguous_mug_label_candidates",
+        "needs_reobserve_spoon_label_candidates",
+    ]
     assert label_manifest[0]["question"] == {
         "type": "label_candidates",
         "label": "mug",
         "visible": True,
+    }
+    assert label_manifest[1]["question"] == {
+        "type": "label_candidates",
+        "label": "spoon",
+        "visible": False,
     }
 
     action_manifest = list_evaluation_case_metadata(question_types=("next_action_validity",))
@@ -1044,11 +1543,16 @@ def test_evaluation_case_metadata_filters_by_question_type() -> None:
     room_manifest = list_evaluation_case_metadata(question_types=("object_room",))
 
     assert [item["name"] for item in room_manifest] == [
-        "multi_room_rearrangement_object_room_cereal_box"
+        "multi_room_rearrangement_object_room_cereal_box",
+        "multi_room_rearrangement_object_room_milk",
     ]
     assert room_manifest[0]["question"] == {
         "type": "object_room",
         "object_id": "cereal_box_1",
+    }
+    assert room_manifest[1]["question"] == {
+        "type": "object_room",
+        "object_id": "milk_1",
     }
 
 
@@ -1070,13 +1574,14 @@ def test_evaluation_case_listing_includes_stable_digest_without_running_suite() 
 
     listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
     expected_payload = {
+        "schema_version": "dsg-spatialqa-lab.evaluation-case-listing.v1",
         "filters": {
             "names": [],
             "tags": ["qa"],
             "kinds": [],
             "question_types": ["object_room"],
         },
-        "case_count": 1,
+        "case_count": 2,
         "evaluation_cases": list(
             list_evaluation_case_metadata(
                 tags=("qa",),
@@ -1123,20 +1628,28 @@ def test_evaluation_case_listing_loads_from_explicit_file_and_validates(
     assert loaded_listing == listing
     assert validation == {
         "valid": True,
+        "schema_version": "dsg-spatialqa-lab.evaluation-case-listing.v1",
         "digest": listing["digest"],
         "checks": [
+            {
+                "name": "schema_version",
+                "passed": True,
+                "expected": "dsg-spatialqa-lab.evaluation-case-listing.v1",
+                "actual": "dsg-spatialqa-lab.evaluation-case-listing.v1",
+            },
             {
                 "name": "listing_digest",
                 "passed": True,
                 "expected": listing["digest"],
                 "actual": listing["digest"],
             },
-            {
-                "name": "case_count_matches_listing",
-                "passed": True,
-                "expected": 1,
-                "actual": 1,
-            },
+                {
+                    "name": "case_count_matches_listing",
+                    "passed": True,
+                    "expected": 2,
+                    "actual": 2,
+                },
+            {"name": "case_metadata_entries_valid", "passed": True},
         ],
     }
 
@@ -1150,21 +1663,75 @@ def test_evaluation_case_listing_validation_reports_tampered_digest_and_count() 
     validation = validate_evaluation_case_listing(tampered_listing)
 
     assert validation["valid"] is False
+    assert validation["schema_version"] == "dsg-spatialqa-lab.evaluation-case-listing.v1"
     assert validation["digest"] == "0" * 64
     assert validation["checks"] == [
+        {
+            "name": "schema_version",
+            "passed": True,
+            "expected": "dsg-spatialqa-lab.evaluation-case-listing.v1",
+            "actual": "dsg-spatialqa-lab.evaluation-case-listing.v1",
+        },
         {
             "name": "listing_digest",
             "passed": False,
             "expected": lab.evaluation_case_listing_digest(tampered_listing),
             "actual": "0" * 64,
         },
-        {
-            "name": "case_count_matches_listing",
-            "passed": False,
-            "expected": 1,
-            "actual": 999,
-        },
+            {
+                "name": "case_count_matches_listing",
+                "passed": False,
+                "expected": 2,
+                "actual": 999,
+            },
+        {"name": "case_metadata_entries_valid", "passed": True},
     ]
+
+
+def test_evaluation_case_listing_validation_reports_tampered_schema_version() -> None:
+    listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+    tampered_listing = json.loads(evaluation_case_listing_json(listing))
+    tampered_listing["schema_version"] = "legacy-listing"
+    tampered_listing["digest"] = lab.evaluation_case_listing_digest(tampered_listing)
+
+    validation = validate_evaluation_case_listing(tampered_listing)
+
+    schema_check = next(
+        check for check in validation["checks"] if check["name"] == "schema_version"
+    )
+    assert validation["valid"] is False
+    assert validation["schema_version"] == "legacy-listing"
+    assert schema_check == {
+        "name": "schema_version",
+        "passed": False,
+        "expected": "dsg-spatialqa-lab.evaluation-case-listing.v1",
+        "actual": "legacy-listing",
+    }
+
+
+def test_evaluation_case_listing_validation_reports_invalid_case_metadata() -> None:
+    listing = evaluation_case_listing(tags=("qa",), question_types=("object_room",))
+    tampered_listing = json.loads(evaluation_case_listing_json(listing))
+    tampered_listing["evaluation_cases"][0]["name"] = 123
+    tampered_listing["digest"] = lab.evaluation_case_listing_digest(tampered_listing)
+
+    validation = validate_evaluation_case_listing(tampered_listing)
+
+    checks = {check["name"]: check for check in validation["checks"]}
+    assert validation["valid"] is False
+    assert checks["listing_digest"]["passed"] is True
+    assert checks["case_count_matches_listing"]["passed"] is True
+    assert checks["case_metadata_entries_valid"] == {
+        "name": "case_metadata_entries_valid",
+        "passed": False,
+        "differences": [
+            {
+                "path": "evaluation_cases[0].name",
+                "expected": "non-empty string",
+                "actual": 123,
+            },
+        ],
+    }
 
 
 def test_evaluation_case_listing_compare_matches_current_metadata() -> None:
@@ -1185,18 +1752,24 @@ def test_evaluation_case_listing_compare_matches_current_metadata() -> None:
                 "expected": listing["digest"],
                 "actual": listing["digest"],
             },
-            {
-                "name": "case_count_matches_current",
-                "passed": True,
-                "expected": 1,
-                "actual": 1,
-            },
-            {
-                "name": "case_metadata_matches_current",
-                "passed": True,
-                "expected": ["multi_room_rearrangement_object_room_cereal_box"],
-                "actual": ["multi_room_rearrangement_object_room_cereal_box"],
-            },
+                {
+                    "name": "case_count_matches_current",
+                    "passed": True,
+                    "expected": 2,
+                    "actual": 2,
+                },
+                {
+                    "name": "case_metadata_matches_current",
+                    "passed": True,
+                    "expected": [
+                        "multi_room_rearrangement_object_room_cereal_box",
+                        "multi_room_rearrangement_object_room_milk",
+                    ],
+                    "actual": [
+                        "multi_room_rearrangement_object_room_cereal_box",
+                        "multi_room_rearrangement_object_room_milk",
+                    ],
+                },
         ],
     }
 
@@ -1277,6 +1850,41 @@ def test_run_qa_evaluation_case_returns_comparable_result_dict() -> None:
             "error": None,
         },
         "mismatches": [],
+    }
+
+
+def test_low_confidence_label_candidate_evaluation_case_marks_reobserve() -> None:
+    result = run_evaluation_case("needs_reobserve_spoon_label_candidates")
+
+    assert result["passed"] is True
+    assert result["scene_fixture"] == "needs_reobserve"
+    assert result["question_type"] == "label_candidates"
+    assert result["tags"] == ["qa", "label", "reobserve", "occlusion"]
+    assert result["actual"] == {
+        "answer": {
+            "label": "spoon",
+            "visible": False,
+            "count": 1,
+            "ambiguous": False,
+            "objects": [
+                {
+                    "object_id": "spoon_1",
+                    "label": "spoon",
+                    "pose": {"x": 0.2, "y": 0.8, "z": 0.75, "yaw": 0.0},
+                    "visible": False,
+                    "confidence": 0.25,
+                    "last_seen_step": None,
+                    "last_seen_pose": None,
+                    "state_step": 2,
+                    "needs_reobserve": True,
+                }
+            ],
+        },
+        "evidence_nodes": ["spoon_1", "state:spoon_1:2"],
+        "evidence_edges": ["spoon_1-STATE_CHANGED-state:spoon_1:2-2"],
+        "confidence": 0.25,
+        "needs_reobserve": True,
+        "error": None,
     }
 
 
@@ -1366,6 +1974,23 @@ def test_run_missing_object_location_evaluation_case_returns_structured_error() 
     assert result["mismatches"] == []
 
 
+def test_run_unsupported_question_type_evaluation_case_returns_structured_error() -> None:
+    result = run_evaluation_case("tabletop_unsupported_question_type_error")
+
+    assert result["passed"] is True
+    assert result["actual"] == {
+        "answer": {},
+        "evidence_nodes": [],
+        "evidence_edges": [],
+        "confidence": 0.0,
+        "needs_reobserve": False,
+        "error": "Unsupported question type: unsupported_intent",
+        "error_category": "unsupported_question",
+    }
+    assert result["expected"] == result["actual"]
+    assert result["mismatches"] == []
+
+
 def test_run_next_action_validity_evaluation_case_detects_stale_command() -> None:
     result = run_evaluation_case("moved_mug_next_action_validity")
 
@@ -1387,6 +2012,41 @@ def test_run_next_action_validity_evaluation_case_detects_stale_command() -> Non
         "mug_1-STATE_CHANGED-state:mug_1:2-2",
     ]
     assert result["actual"]["needs_reobserve"] is False
+
+
+def test_run_multi_room_object_room_evaluation_case_covers_static_kitchen_object() -> None:
+    result = run_evaluation_case("multi_room_rearrangement_object_room_milk")
+
+    assert result["passed"] is True
+    assert result["actual"] == {
+        "answer": {
+            "object_id": "milk_1",
+            "room_id": "kitchen",
+            "room_label": "Kitchen",
+            "path": [
+                {
+                    "src": "milk_1",
+                    "relation": "IN_REGION",
+                    "dst": "prep_counter",
+                    "step": 1,
+                },
+                {
+                    "src": "prep_counter",
+                    "relation": "IN_ROOM",
+                    "dst": "kitchen",
+                    "step": 1,
+                },
+            ],
+        },
+        "evidence_nodes": ["milk_1", "prep_counter", "kitchen"],
+        "evidence_edges": [
+            "milk_1-IN_REGION-prep_counter-1",
+            "prep_counter-IN_ROOM-kitchen-1",
+        ],
+        "confidence": 0.9,
+        "needs_reobserve": False,
+        "error": None,
+    }
 
 
 def test_run_retrieve_subgraph_evaluation_case_returns_text_seeded_subgraph() -> None:
@@ -1472,6 +2132,23 @@ def test_run_scene_snapshot_evaluation_case_reconstructs_step_state() -> None:
     ]
 
 
+def test_run_scene_snapshot_invalid_step_evaluation_case_returns_structured_error() -> None:
+    result = run_evaluation_case("tabletop_scene_snapshot_invalid_step_error")
+
+    assert result["passed"] is True
+    assert result["actual"] == {
+        "answer": {},
+        "evidence_nodes": [],
+        "evidence_edges": [],
+        "confidence": 0.0,
+        "needs_reobserve": False,
+        "error": "Question field must be integer: step",
+        "error_category": "invalid_question",
+    }
+    assert result["expected"] == result["actual"]
+    assert result["mismatches"] == []
+
+
 def test_run_vla_evaluation_case_detects_stale_pick() -> None:
     result = run_evaluation_case("moved_mug_stale_pick")
 
@@ -1548,6 +2225,112 @@ def test_run_missing_object_pick_evaluation_case_returns_structured_error() -> N
     assert result["mismatches"] == []
 
 
+def test_run_missing_label_pick_evaluation_case_returns_structured_error() -> None:
+    result = run_evaluation_case("tabletop_missing_label_pick_error")
+
+    assert result["passed"] is True
+    assert result["actual"] == {
+        "status": "error",
+        "command": None,
+        "error": "Object label not found: fork",
+        "error_category": "missing_label",
+        "needs_reobserve": False,
+        "needs_replan": False,
+        "ambiguous_ids": [],
+        "details": {},
+    }
+    assert result["expected"] == result["actual"]
+    assert result["mismatches"] == []
+
+
+def test_run_pick_case_without_target_returns_structured_error() -> None:
+    result = run_evaluation_case_definition(
+        EvaluationCase(
+            name="custom_missing_pick_target",
+            scene_fixture="tabletop",
+            kind="vla_pick",
+            tags=("vla", "pick", "error"),
+            expected={
+                "status": "error",
+                "command": None,
+                "error": "target_object or label is required",
+                "error_category": "missing_target",
+                "needs_reobserve": False,
+                "needs_replan": False,
+                "ambiguous_ids": [],
+                "details": {},
+            },
+        )
+    )
+
+    assert result["passed"] is True
+    assert result["actual"] == result["expected"]
+    assert result["mismatches"] == []
+
+
+def test_run_missing_target_pick_evaluation_case_returns_structured_error() -> None:
+    result = run_evaluation_case("tabletop_missing_target_pick_error")
+
+    assert result["passed"] is True
+    assert result["actual"] == {
+        "status": "error",
+        "command": None,
+        "error": "target_object or label is required",
+        "error_category": "missing_target",
+        "needs_reobserve": False,
+        "needs_replan": False,
+        "ambiguous_ids": [],
+        "details": {},
+    }
+    assert result["expected"] == result["actual"]
+    assert result["mismatches"] == []
+
+
+def test_run_place_relative_case_without_target_returns_structured_error() -> None:
+    result = run_evaluation_case_definition(
+        EvaluationCase(
+            name="custom_missing_place_target",
+            scene_fixture="tabletop",
+            kind="vla_place_relative",
+            tags=("vla", "place", "error"),
+            reference_object="plate_1",
+            relation="RIGHT_OF",
+            expected={
+                "status": "error",
+                "command": None,
+                "error": "target_object or target_label is required",
+                "error_category": "missing_target",
+                "needs_reobserve": False,
+                "needs_replan": False,
+                "ambiguous_ids": [],
+                "details": {},
+            },
+        )
+    )
+
+    assert result["passed"] is True
+    assert result["actual"] == result["expected"]
+    assert result["mismatches"] == []
+
+
+def test_run_missing_target_input_place_evaluation_case_returns_structured_error() -> None:
+    result = run_evaluation_case("tabletop_missing_target_input_place_error")
+
+    assert result["passed"] is True
+    assert result["actual"] == {
+        "status": "error",
+        "command": None,
+        "error": "target_object or target_label is required",
+        "error_category": "missing_target",
+        "needs_reobserve": False,
+        "needs_replan": False,
+        "ambiguous_ids": [],
+        "details": {},
+    }
+    assert result["expected"] == result["actual"]
+    assert result["mismatches"] == []
+
+
 def test_run_missing_reference_place_evaluation_case_returns_structured_error() -> None:
     result = run_evaluation_case("tabletop_missing_reference_place_error")
 
@@ -1563,6 +2346,51 @@ def test_run_missing_reference_place_evaluation_case_returns_structured_error() 
         "details": {},
     }
     assert result["expected"] == result["actual"]
+    assert result["mismatches"] == []
+
+
+def test_run_missing_reference_input_place_evaluation_case_returns_structured_error() -> None:
+    result = run_evaluation_case("tabletop_missing_reference_input_place_error")
+
+    assert result["passed"] is True
+    assert result["actual"] == {
+        "status": "error",
+        "command": None,
+        "error": "reference_object or reference_label is required",
+        "error_category": "missing_reference",
+        "needs_reobserve": False,
+        "needs_replan": False,
+        "ambiguous_ids": [],
+        "details": {},
+    }
+    assert result["expected"] == result["actual"]
+    assert result["mismatches"] == []
+
+
+def test_run_place_relative_case_without_reference_returns_structured_error() -> None:
+    result = run_evaluation_case_definition(
+        EvaluationCase(
+            name="custom_missing_reference_input",
+            scene_fixture="tabletop",
+            kind="vla_place_relative",
+            tags=("vla", "place", "error"),
+            target_object="mug_1",
+            relation="RIGHT_OF",
+            expected={
+                "status": "error",
+                "command": None,
+                "error": "reference_object or reference_label is required",
+                "error_category": "missing_reference",
+                "needs_reobserve": False,
+                "needs_replan": False,
+                "ambiguous_ids": [],
+                "details": {},
+            },
+        )
+    )
+
+    assert result["passed"] is True
+    assert result["actual"] == result["expected"]
     assert result["mismatches"] == []
 
 
@@ -1955,6 +2783,199 @@ def test_run_vla_reobserve_evaluation_case_does_not_emit_command() -> None:
     }
 
 
+def test_run_vla_place_reference_reobserve_case_does_not_emit_command() -> None:
+    result = run_evaluation_case("needs_reobserve_spoon_place_reference")
+
+    assert result["passed"] is True
+    assert result["actual"]["status"] == "needs_reobserve"
+    assert result["actual"]["command"] is None
+    assert result["actual"]["error"] == "needs_reobserve"
+    assert result["actual"]["error_category"] == "needs_reobserve"
+    assert result["actual"]["needs_reobserve"] is True
+    assert result["actual"]["needs_replan"] is False
+    assert result["actual"]["details"] == {
+        "reference_object": "spoon_1",
+        "visible": False,
+        "confidence": 0.25,
+        "min_confidence": 0.5,
+        "last_seen_step": None,
+        "current_step": 2,
+    }
+
+
+def test_run_vla_place_target_reobserve_case_does_not_emit_command() -> None:
+    result = run_evaluation_case("needs_reobserve_spoon_place_target")
+
+    assert result["passed"] is True
+    assert result["actual"]["status"] == "needs_reobserve"
+    assert result["actual"]["command"] is None
+    assert result["actual"]["error"] == "needs_reobserve"
+    assert result["actual"]["error_category"] == "needs_reobserve"
+    assert result["actual"]["needs_reobserve"] is True
+    assert result["actual"]["needs_replan"] is False
+    assert result["actual"]["details"] == {
+        "target_object": "spoon_1",
+        "visible": False,
+        "confidence": 0.25,
+        "min_confidence": 0.5,
+        "last_seen_step": None,
+        "current_step": 2,
+    }
+
+
+def test_run_vla_target_not_visible_evaluation_case_is_categorized() -> None:
+    result = run_evaluation_case("needs_reobserve_bowl_pick_target_not_visible")
+
+    assert result["passed"] is True
+    assert result["actual"]["status"] == "needs_replan"
+    assert result["actual"]["command"] is None
+    assert result["actual"]["error"] == "target_not_visible"
+    assert result["actual"]["error_category"] == "target_not_visible"
+    assert result["actual"]["needs_reobserve"] is False
+    assert result["actual"]["needs_replan"] is True
+    assert result["actual"]["details"] == {
+        "target_object": "bowl_1",
+        "visible": False,
+        "confidence": 0.75,
+        "min_confidence": 0.5,
+        "last_seen_step": None,
+        "current_step": 2,
+    }
+
+
+def test_run_vla_place_reference_not_visible_evaluation_case_is_categorized() -> None:
+    result = run_evaluation_case("needs_reobserve_bowl_place_reference_target_not_visible")
+
+    assert result["passed"] is True
+    assert result["actual"]["status"] == "needs_replan"
+    assert result["actual"]["command"] is None
+    assert result["actual"]["error"] == "target_not_visible"
+    assert result["actual"]["error_category"] == "target_not_visible"
+    assert result["actual"]["needs_reobserve"] is False
+    assert result["actual"]["needs_replan"] is True
+    assert result["actual"]["details"] == {
+        "reference_object": "bowl_1",
+        "visible": False,
+        "confidence": 0.75,
+        "min_confidence": 0.5,
+        "last_seen_step": None,
+        "current_step": 2,
+    }
+
+
+def test_run_vla_place_target_not_visible_evaluation_case_is_categorized() -> None:
+    result = run_evaluation_case("needs_reobserve_bowl_place_target_not_visible")
+
+    assert result["passed"] is True
+    assert result["actual"]["status"] == "needs_replan"
+    assert result["actual"]["command"] is None
+    assert result["actual"]["error"] == "target_not_visible"
+    assert result["actual"]["error_category"] == "target_not_visible"
+    assert result["actual"]["needs_reobserve"] is False
+    assert result["actual"]["needs_replan"] is True
+    assert result["actual"]["details"] == {
+        "target_object": "bowl_1",
+        "visible": False,
+        "confidence": 0.75,
+        "min_confidence": 0.5,
+        "last_seen_step": None,
+        "current_step": 2,
+    }
+
+
+def test_run_vla_low_confidence_evaluation_case_is_categorized() -> None:
+    result = run_evaluation_case("needs_reobserve_cup_pick_low_confidence")
+
+    assert result["passed"] is True
+    assert result["actual"]["status"] == "needs_replan"
+    assert result["actual"]["command"] is None
+    assert result["actual"]["error"] == "low_confidence"
+    assert result["actual"]["error_category"] == "low_confidence"
+    assert result["actual"]["needs_reobserve"] is False
+    assert result["actual"]["needs_replan"] is True
+    assert result["actual"]["details"] == {
+        "target_object": "cup_1",
+        "visible": True,
+        "confidence": 0.2,
+        "min_confidence": 0.5,
+        "last_seen_step": 2,
+        "current_step": 2,
+    }
+
+
+def test_run_vla_place_target_low_confidence_evaluation_case_is_categorized() -> None:
+    result = run_evaluation_case("needs_reobserve_cup_place_target_low_confidence")
+
+    assert result["passed"] is True
+    assert result["actual"]["status"] == "needs_replan"
+    assert result["actual"]["command"] is None
+    assert result["actual"]["error"] == "low_confidence"
+    assert result["actual"]["error_category"] == "low_confidence"
+    assert result["actual"]["needs_reobserve"] is False
+    assert result["actual"]["needs_replan"] is True
+    assert result["actual"]["details"] == {
+        "target_object": "cup_1",
+        "visible": True,
+        "confidence": 0.2,
+        "min_confidence": 0.5,
+        "last_seen_step": 2,
+        "current_step": 2,
+    }
+
+
+def test_run_vla_place_reference_low_confidence_evaluation_case_is_categorized() -> None:
+    result = run_evaluation_case("needs_reobserve_cup_place_reference_low_confidence")
+
+    assert result["passed"] is True
+    assert result["actual"]["status"] == "needs_replan"
+    assert result["actual"]["command"] is None
+    assert result["actual"]["error"] == "low_confidence"
+    assert result["actual"]["error_category"] == "low_confidence"
+    assert result["actual"]["needs_reobserve"] is False
+    assert result["actual"]["needs_replan"] is True
+    assert result["actual"]["details"] == {
+        "reference_object": "cup_1",
+        "visible": True,
+        "confidence": 0.2,
+        "min_confidence": 0.5,
+        "last_seen_step": 2,
+        "current_step": 2,
+    }
+
+
+def test_visible_low_confidence_vla_pick_error_is_categorized() -> None:
+    case = EvaluationCase(
+        name="custom_visible_low_confidence_pick",
+        scene_fixture="custom_low_confidence",
+        kind="vla_pick",
+        tags=("vla", "custom", "error"),
+        target_object="cup_1",
+        expected={
+            "status": "needs_replan",
+            "error": "low_confidence",
+            "error_category": "low_confidence",
+            "needs_reobserve": False,
+            "needs_replan": True,
+            "details": {
+                "target_object": "cup_1",
+                "visible": True,
+                "confidence": 0.2,
+                "min_confidence": 0.5,
+                "last_seen_step": 4,
+                "current_step": 4,
+            },
+        },
+    )
+
+    result = run_evaluation_case_definition(
+        case,
+        scene_loaders={"custom_low_confidence": _build_custom_low_confidence_scene},
+    )
+
+    assert result["passed"] is True
+    assert result["actual"]["error_category"] == "low_confidence"
+
+
 def test_run_qa_label_ambiguity_evaluation_case_lists_candidates() -> None:
     result = run_evaluation_case("ambiguous_mug_label_candidates")
 
@@ -2076,6 +3097,7 @@ def test_run_vla_reference_ambiguity_evaluation_case_does_not_choose_reference()
 
 def test_run_foundation_qa_evaluation_cases_cover_basic_intents() -> None:
     agent_location = run_evaluation_case("tabletop_agent_location")
+    agent_history = run_evaluation_case("tabletop_agent_history")
     object_status = run_evaluation_case("tabletop_object_status_plate")
     object_history = run_evaluation_case("tabletop_object_history_mug")
     relative_relation = run_evaluation_case("tabletop_relative_relation_mug_left_of_plate")
@@ -2086,6 +3108,15 @@ def test_run_foundation_qa_evaluation_cases_cover_basic_intents() -> None:
         "pose": {"x": 0.0, "y": 0.0, "z": 0.0, "yaw": 0.0},
     }
     assert agent_location["actual"]["evidence_nodes"] == ["agent"]
+    assert agent_history["passed"] is True
+    assert agent_history["actual"]["answer"] == {
+        "agent_id": "agent",
+        "poses": [{"x": 0.0, "y": 0.0, "z": 0.0, "yaw": 0.0}],
+        "steps": [1],
+    }
+    assert agent_history["actual"]["evidence_edges"] == [
+        "agent-STATE_CHANGED-state:agent:1-1"
+    ]
     assert object_status["passed"] is True
     assert object_status["actual"]["answer"] == {
         "object_id": "plate_1",
@@ -2210,8 +3241,8 @@ def test_run_evaluation_suite_filters_by_tags() -> None:
     suite = run_evaluation_suite(tags=("qa", "dynamic"))
 
     assert suite["summary"] == {
-        "total": 10,
-        "passed": 10,
+        "total": 11,
+        "passed": 11,
         "failed": 0,
         "failed_cases": [],
         "selected_cases": [
@@ -2222,6 +3253,7 @@ def test_run_evaluation_suite_filters_by_tags() -> None:
             "moved_mug_scene_delta_reversed_window_error",
             "moved_mug_world_state",
             "multi_room_rearrangement_object_room_cereal_box",
+            "multi_room_rearrangement_object_room_milk",
             "multi_room_rearrangement_recent_events",
             "multi_room_rearrangement_scene_delta",
             "relation_shift_relation_timeline",
@@ -2235,6 +3267,7 @@ def test_run_evaluation_suite_filters_by_tags() -> None:
         "moved_mug_scene_delta_reversed_window_error",
         "moved_mug_world_state",
         "multi_room_rearrangement_object_room_cereal_box",
+        "multi_room_rearrangement_object_room_milk",
         "multi_room_rearrangement_recent_events",
         "multi_room_rearrangement_scene_delta",
         "relation_shift_relation_timeline",
@@ -2245,16 +3278,28 @@ def test_run_evaluation_suite_filters_by_kinds() -> None:
     suite = run_evaluation_suite(kinds=("vla_pick", "vla_place_relative"))
 
     assert suite["summary"] == {
-        "total": 8,
-        "passed": 8,
+        "total": 20,
+        "passed": 20,
         "failed": 0,
         "failed_cases": [],
         "selected_cases": [
             "ambiguous_mug_pick_by_label",
             "ambiguous_plate_place_reference_by_label",
+            "needs_reobserve_bowl_pick_target_not_visible",
+            "needs_reobserve_bowl_place_reference_target_not_visible",
+            "needs_reobserve_bowl_place_target_not_visible",
+            "needs_reobserve_cup_pick_low_confidence",
+            "needs_reobserve_cup_place_reference_low_confidence",
+            "needs_reobserve_cup_place_target_low_confidence",
             "needs_reobserve_spoon_pick",
+            "needs_reobserve_spoon_place_reference",
+            "needs_reobserve_spoon_place_target",
+            "tabletop_missing_label_pick_error",
             "tabletop_missing_object_pick_error",
+            "tabletop_missing_reference_input_place_error",
             "tabletop_missing_reference_place_error",
+            "tabletop_missing_target_input_place_error",
+            "tabletop_missing_target_pick_error",
             "tabletop_mug_pick",
             "tabletop_place_mug_right_of_plate",
             "tabletop_unsupported_place_relation_error",
@@ -2262,25 +3307,37 @@ def test_run_evaluation_suite_filters_by_kinds() -> None:
     }
     assert suite["breakdown"]["by_kind"] == {
         "vla_pick": {
-            "total": 4,
-            "passed": 4,
+            "total": 8,
+            "passed": 8,
             "failed": 0,
             "failed_cases": [],
             "selected_cases": [
                 "ambiguous_mug_pick_by_label",
+                "needs_reobserve_bowl_pick_target_not_visible",
+                "needs_reobserve_cup_pick_low_confidence",
                 "needs_reobserve_spoon_pick",
+                "tabletop_missing_label_pick_error",
                 "tabletop_missing_object_pick_error",
+                "tabletop_missing_target_pick_error",
                 "tabletop_mug_pick",
             ],
         },
         "vla_place_relative": {
-            "total": 4,
-            "passed": 4,
+            "total": 12,
+            "passed": 12,
             "failed": 0,
             "failed_cases": [],
             "selected_cases": [
                 "ambiguous_plate_place_reference_by_label",
+                "needs_reobserve_bowl_place_reference_target_not_visible",
+                "needs_reobserve_bowl_place_target_not_visible",
+                "needs_reobserve_cup_place_reference_low_confidence",
+                "needs_reobserve_cup_place_target_low_confidence",
+                "needs_reobserve_spoon_place_reference",
+                "needs_reobserve_spoon_place_target",
+                "tabletop_missing_reference_input_place_error",
                 "tabletop_missing_reference_place_error",
+                "tabletop_missing_target_input_place_error",
                 "tabletop_place_mug_right_of_plate",
                 "tabletop_unsupported_place_relation_error",
             ],
@@ -2293,11 +3350,47 @@ def test_run_evaluation_suite_summarizes_runtime_error_categories() -> None:
 
     assert suite["runtime_error_categories"] == [
         {
+            "category": "low_confidence",
+            "count": 3,
+            "cases": [
+                "needs_reobserve_cup_pick_low_confidence",
+                "needs_reobserve_cup_place_reference_low_confidence",
+                "needs_reobserve_cup_place_target_low_confidence",
+            ],
+        },
+        {
+            "category": "missing_label",
+            "count": 1,
+            "cases": ["tabletop_missing_label_pick_error"],
+        },
+        {
             "category": "missing_object",
             "count": 2,
             "cases": [
                 "tabletop_missing_object_pick_error",
                 "tabletop_missing_reference_place_error",
+            ],
+        },
+        {
+            "category": "missing_reference",
+            "count": 1,
+            "cases": ["tabletop_missing_reference_input_place_error"],
+        },
+        {
+            "category": "missing_target",
+            "count": 2,
+            "cases": [
+                "tabletop_missing_target_input_place_error",
+                "tabletop_missing_target_pick_error",
+            ],
+        },
+        {
+            "category": "target_not_visible",
+            "count": 3,
+            "cases": [
+                "needs_reobserve_bowl_pick_target_not_visible",
+                "needs_reobserve_bowl_place_reference_target_not_visible",
+                "needs_reobserve_bowl_place_target_not_visible",
             ],
         },
         {
@@ -2328,13 +3421,17 @@ def test_run_evaluation_suite_filters_by_question_type() -> None:
     room_suite = run_evaluation_suite(question_types=("object_room",))
 
     assert room_suite["summary"] == {
-        "total": 1,
-        "passed": 1,
+        "total": 2,
+        "passed": 2,
         "failed": 0,
         "failed_cases": [],
-        "selected_cases": ["multi_room_rearrangement_object_room_cereal_box"],
+        "selected_cases": [
+            "multi_room_rearrangement_object_room_cereal_box",
+            "multi_room_rearrangement_object_room_milk",
+        ],
     }
     assert room_suite["results"][0]["actual"]["answer"]["room_id"] == "pantry"
+    assert room_suite["results"][1]["actual"]["answer"]["room_id"] == "kitchen"
 
 
 def test_run_evaluation_suite_filters_case_names_by_tags_and_kinds() -> None:
@@ -2822,10 +3919,31 @@ def test_evaluation_report_summarizes_metrics_and_failure_reasons() -> None:
         }
         for result in suite["results"]
     ]
+    expected_case_selection = [
+        {
+            "case": result["case"],
+            "kind": result["kind"],
+            "question_type": result["question_type"],
+            "scene_fixture": result["scene_fixture"],
+            "tags": result["tags"],
+        }
+        for result in suite["results"]
+    ]
+    expected_case_selection_digest = hashlib.sha256(
+        json.dumps(
+            {
+                "case_count": len(expected_case_selection),
+                "case_selection": expected_case_selection,
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
 
     report = evaluation_report(suite)
 
     expected_report = {
+        "schema_version": "dsg-spatialqa-lab.evaluation-report.v1",
         "digest": suite["digest"],
         "summary": suite["summary"],
         "metrics": {
@@ -2963,6 +4081,8 @@ def test_evaluation_report_summarizes_metrics_and_failure_reasons() -> None:
                 },
             },
         },
+        "case_selection": expected_case_selection,
+        "case_selection_digest": expected_case_selection_digest,
         "case_digests": expected_case_digests,
         "failed_cases": [
             {
@@ -2978,6 +4098,13 @@ def test_evaluation_report_summarizes_metrics_and_failure_reasons() -> None:
             }
         ],
         "runtime_error_categories": [],
+        "runtime_error_metrics": {
+            "case_count": 2,
+            "cases_with_runtime_error_count": 0,
+            "cases_without_runtime_error_count": 2,
+            "runtime_error_rate": 0.0,
+            "by_category": {},
+        },
         "failure_reasons": [
             {
                 "reason": "value_mismatch",
@@ -3069,6 +4196,49 @@ def test_evaluation_report_groups_failure_categories_for_structural_mismatches()
     ]
 
 
+def test_evaluation_report_summarizes_runtime_error_metrics() -> None:
+    suite = run_evaluation_suite(tags=("vla", "error"))
+
+    report = evaluation_report(suite)
+
+    assert report["runtime_error_metrics"] == {
+        "case_count": 13,
+        "cases_with_runtime_error_count": 13,
+        "cases_without_runtime_error_count": 0,
+        "runtime_error_rate": 1.0,
+        "by_category": {
+            "low_confidence": {
+                "case_count": 3,
+                "case_rate": 3 / 13,
+            },
+            "missing_label": {
+                "case_count": 1,
+                "case_rate": 1 / 13,
+            },
+            "missing_object": {
+                "case_count": 2,
+                "case_rate": 2 / 13,
+            },
+            "missing_reference": {
+                "case_count": 1,
+                "case_rate": 1 / 13,
+            },
+            "missing_target": {
+                "case_count": 2,
+                "case_rate": 2 / 13,
+            },
+            "target_not_visible": {
+                "case_count": 3,
+                "case_rate": 3 / 13,
+            },
+            "unsupported_relation": {
+                "case_count": 1,
+                "case_rate": 1 / 13,
+            },
+        },
+    }
+
+
 def test_evaluation_report_json_is_stable_and_savable(tmp_path: Path) -> None:
     suite = run_evaluation_suite(names=("tabletop_object_location",))
     report = evaluation_report(suite)
@@ -3093,18 +4263,42 @@ def test_evaluation_report_includes_stable_report_digest_and_validates_tampering
     report_without_digest = {
         key: value for key, value in report.items() if key != "report_digest"
     }
+    expected_case_selection_digest = hashlib.sha256(
+        json.dumps(
+            {
+                "case_count": len(report["case_selection"]),
+                "case_selection": report["case_selection"],
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
     expected_report_digest = hashlib.sha256(
         json.dumps(report_without_digest, separators=(",", ":"), sort_keys=True).encode(
             "utf-8"
         )
     ).hexdigest()
 
+    assert report["case_selection_digest"] == expected_case_selection_digest
     assert report["report_digest"] == expected_report_digest
     assert lab.evaluation_report_digest(report) == expected_report_digest
     validation = lab.validate_evaluation_report(report)
     checks = {check["name"]: check for check in validation["checks"]}
     assert validation["digest"] == report["digest"]
+    assert validation["schema_version"] == "dsg-spatialqa-lab.evaluation-report.v1"
     assert validation["report_digest"] == expected_report_digest
+    assert checks["schema_version"] == {
+        "name": "schema_version",
+        "passed": True,
+        "expected": "dsg-spatialqa-lab.evaluation-report.v1",
+        "actual": "dsg-spatialqa-lab.evaluation-report.v1",
+    }
+    assert checks["case_selection_digest"] == {
+        "name": "case_selection_digest",
+        "passed": True,
+        "expected": expected_case_selection_digest,
+        "actual": expected_case_selection_digest,
+    }
     assert checks["report_digest"] == {
         "name": "report_digest",
         "passed": True,
@@ -3124,6 +4318,699 @@ def test_evaluation_report_includes_stable_report_digest_and_validates_tampering
         "expected": lab.evaluation_report_digest(tampered_report),
         "actual": expected_report_digest,
     }
+
+
+def test_evaluation_report_validation_checks_metrics_against_summary() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["metrics"]["case_count"] = 99
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    assert checks["metrics_match_summary"] == {
+        "name": "metrics_match_summary",
+        "passed": False,
+        "expected": report["metrics"],
+        "actual": tampered_report["metrics"],
+    }
+
+
+def test_evaluation_report_validation_checks_evidence_metrics_consistency() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["evidence_metrics"]["evidence_node_count"] = 99
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    assert checks["evidence_metrics_consistent"] == {
+        "name": "evidence_metrics_consistent",
+        "passed": False,
+        "expected": {
+            "average_evidence_item_count": 101.0,
+            "case_count": 1,
+            "cases_with_evidence_count": 1,
+            "cases_without_evidence_count": 0,
+            "command_evidence_count": 0,
+            "evidence_edge_count": 2,
+            "evidence_node_count": 99,
+            "total_evidence_item_count": 101,
+        },
+        "actual": {
+            "average_evidence_item_count": 4.0,
+            "case_count": 1,
+            "cases_with_evidence_count": 1,
+            "cases_without_evidence_count": 0,
+            "command_evidence_count": 0,
+            "evidence_edge_count": 2,
+            "evidence_node_count": 99,
+            "total_evidence_item_count": 4,
+        },
+    }
+
+
+def test_evaluation_report_validation_checks_evidence_metric_value_ranges() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["evidence_metrics"]["evidence_node_count"] = -1
+    tampered_report["evidence_metrics"]["total_evidence_item_count"] = 1
+    tampered_report["evidence_metrics"]["average_evidence_item_count"] = 1.0
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    assert checks["evidence_metrics_consistent"]["passed"] is True
+    assert checks["evidence_metric_groups_consistent"]["passed"] is True
+    assert checks["evidence_metric_values_valid"] == {
+        "name": "evidence_metric_values_valid",
+        "passed": False,
+        "differences": [
+            {
+                "path": "evidence_metrics.evidence_node_count",
+                "expected": "non-negative integer",
+                "actual": -1,
+            },
+        ],
+    }
+
+
+def test_evaluation_report_validation_checks_grouped_evidence_metrics_consistency() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["evidence_metrics"]["by_tag"]["qa"]["evidence_node_count"] = 99
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    grouped_check = checks["evidence_metric_groups_consistent"]
+    assert grouped_check["name"] == "evidence_metric_groups_consistent"
+    assert grouped_check["passed"] is False
+    assert grouped_check["differences"] == [
+        {
+            "path": "by_tag.qa.average_evidence_item_count",
+            "expected": 101.0,
+            "actual": 4.0,
+        },
+        {
+            "path": "by_tag.qa.total_evidence_item_count",
+            "expected": 101,
+            "actual": 4,
+        },
+    ]
+
+
+def test_evaluation_report_validation_checks_runtime_error_category_counts() -> None:
+    suite = run_evaluation_suite(tags=("vla", "error"))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["runtime_error_categories"][0]["count"] = 99
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    category_check = checks["runtime_error_categories_consistent"]
+    assert category_check["name"] == "runtime_error_categories_consistent"
+    assert category_check["passed"] is False
+    assert category_check["differences"] == [
+        {
+            "path": "low_confidence.count",
+            "expected": 3,
+            "actual": 99,
+        },
+    ]
+
+
+def test_evaluation_report_validation_checks_runtime_error_category_entry_shape() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["runtime_error_categories"] = [
+        {
+            "category": "ghost_runtime_error",
+            "count": 0,
+            "cases": [],
+        }
+    ]
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    assert checks["runtime_error_categories_consistent"]["passed"] is True
+    assert checks["runtime_error_category_entries_valid"] == {
+        "name": "runtime_error_category_entries_valid",
+        "passed": False,
+        "differences": [
+            {
+                "path": "runtime_error_categories[0].count",
+                "expected": "positive integer",
+                "actual": 0,
+            },
+        ],
+    }
+
+
+def test_evaluation_report_validation_checks_runtime_error_metrics() -> None:
+    suite = run_evaluation_suite(tags=("vla", "error"))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["runtime_error_metrics"]["cases_with_runtime_error_count"] = 0
+    tampered_report["runtime_error_metrics"]["runtime_error_rate"] = 0.0
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    metrics_check = checks["runtime_error_metrics_consistent"]
+    assert metrics_check["name"] == "runtime_error_metrics_consistent"
+    assert metrics_check["passed"] is False
+    assert metrics_check["differences"] == [
+        {
+            "path": "cases_with_runtime_error_count",
+            "expected": 13,
+            "actual": 0,
+        },
+        {
+            "path": "runtime_error_rate",
+            "expected": 1.0,
+            "actual": 0.0,
+        },
+    ]
+
+
+def test_evaluation_report_validation_checks_failure_diagnostic_aggregates() -> None:
+    failing_case = EvaluationCase(
+        name="custom_bad_expectation",
+        scene_fixture="tabletop",
+        kind="qa",
+        tags=("qa", "report"),
+        question={"type": "object_location", "object_id": "mug_1"},
+        expected={"answer": {"visible": False}, "error": None},
+    )
+    suite = run_evaluation_cases((failing_case,), tags=("qa", "report"))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["failure_categories"][0]["count"] = 99
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    diagnostics_check = checks["failure_diagnostics_consistent"]
+    assert diagnostics_check["name"] == "failure_diagnostics_consistent"
+    assert diagnostics_check["passed"] is False
+    assert diagnostics_check["differences"] == [
+        {
+            "path": "failure_categories.value_mismatch.count",
+            "expected": 1,
+            "actual": 99,
+        },
+    ]
+
+
+def test_evaluation_report_validation_checks_failed_cases_against_summary() -> None:
+    failing_case = EvaluationCase(
+        name="custom_bad_expectation",
+        scene_fixture="tabletop",
+        kind="qa",
+        tags=("qa", "report"),
+        question={"type": "object_location", "object_id": "mug_1"},
+        expected={"answer": {"visible": False}, "error": None},
+    )
+    suite = run_evaluation_cases((failing_case,), tags=("qa", "report"))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["summary"]["failed_cases"] = []
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    assert checks["failed_cases_match_summary"] == {
+        "name": "failed_cases_match_summary",
+        "passed": False,
+        "expected": [],
+        "actual": ["custom_bad_expectation"],
+    }
+
+
+def test_evaluation_report_validation_checks_failed_case_metadata_shape() -> None:
+    failing_case = EvaluationCase(
+        name="custom_bad_expectation",
+        scene_fixture="tabletop",
+        kind="qa",
+        tags=("qa", "report"),
+        question={"type": "object_location", "object_id": "mug_1"},
+        expected={"answer": {"visible": False}, "error": None},
+    )
+    suite = run_evaluation_cases((failing_case,), tags=("qa", "report"))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["failed_cases"][0]["kind"] = ""
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    assert checks["failed_cases_match_summary"]["passed"] is True
+    assert checks["failure_diagnostics_consistent"]["passed"] is True
+    assert checks["failed_case_entries_valid"] == {
+        "name": "failed_case_entries_valid",
+        "passed": False,
+        "differences": [
+            {
+                "path": "failed_cases[0].kind",
+                "expected": "non-empty string",
+                "actual": "",
+            },
+        ],
+    }
+
+
+def test_evaluation_report_validation_checks_summary_counts_against_case_lists() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["summary"]["total"] = 2
+    tampered_report["summary"]["passed"] = 2
+    tampered_report["metrics"]["case_count"] = 2
+    tampered_report["metrics"]["passed_case_count"] = 2
+    tampered_report["evidence_metrics"]["case_count"] = 2
+    tampered_report["evidence_metrics"]["cases_without_evidence_count"] = 1
+    tampered_report["evidence_metrics"]["average_evidence_item_count"] = 2.0
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    summary_check = checks["summary_counts_consistent"]
+    assert summary_check["name"] == "summary_counts_consistent"
+    assert summary_check["passed"] is False
+    assert summary_check["expected"] == {
+        "failed": 0,
+        "passed": 1,
+        "total": 1,
+    }
+    assert summary_check["actual"] == {
+        "failed": 0,
+        "passed": 2,
+        "total": 2,
+    }
+    assert summary_check["differences"] == [
+        {
+            "path": "passed",
+            "expected": 1,
+            "actual": 2,
+        },
+        {
+            "path": "total",
+            "expected": 1,
+            "actual": 2,
+        },
+    ]
+
+
+def test_evaluation_report_validation_checks_summary_failed_cases_are_selected() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["summary"]["failed_cases"] = ["ghost_failed_case"]
+    tampered_report["summary"]["failed"] = 1
+    tampered_report["summary"]["passed"] = 0
+    tampered_report["metrics"]["failed_case_count"] = 1
+    tampered_report["metrics"]["failure_rate"] = 1.0
+    tampered_report["metrics"]["passed_case_count"] = 0
+    tampered_report["metrics"]["pass_rate"] = 0.0
+    tampered_report["failed_cases"] = [
+        {
+            "case": "ghost_failed_case",
+            "kind": "qa",
+            "scene_fixture": "tabletop",
+            "tags": ["qa", "report"],
+            "mismatch_count": 1,
+            "mismatch_paths": ["answer.visible"],
+            "mismatch_reasons": ["value mismatch"],
+            "mismatch_categories": ["value_mismatch"],
+            "error": None,
+        }
+    ]
+    tampered_report["failure_reasons"] = [
+        {
+            "reason": "value mismatch",
+            "count": 1,
+            "cases": ["ghost_failed_case"],
+        }
+    ]
+    tampered_report["failure_categories"] = [
+        {
+            "category": "value_mismatch",
+            "count": 1,
+            "cases": ["ghost_failed_case"],
+        }
+    ]
+    tampered_report["failure_paths"] = [
+        {
+            "path": "answer.visible",
+            "count": 1,
+            "cases": ["ghost_failed_case"],
+        }
+    ]
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    assert checks["failed_cases_match_summary"]["passed"] is True
+    assert checks["failed_case_entries_valid"]["passed"] is True
+    assert checks["summary_counts_consistent"]["passed"] is True
+    assert checks["failure_diagnostics_consistent"]["passed"] is True
+    assert checks["summary_case_lists_valid"] == {
+        "name": "summary_case_lists_valid",
+        "passed": False,
+        "differences": [
+            {
+                "path": "summary.failed_cases[0]",
+                "expected": "case from summary.selected_cases",
+                "actual": "ghost_failed_case",
+            },
+        ],
+    }
+
+
+def test_evaluation_report_validation_checks_breakdown_counts_against_case_lists() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["breakdown"]["by_tag"]["qa"]["selected_cases"].append("ghost_case")
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    breakdown_check = checks["breakdown_counts_consistent"]
+    assert breakdown_check["name"] == "breakdown_counts_consistent"
+    assert breakdown_check["passed"] is False
+    assert breakdown_check["differences"] == [
+        {
+            "path": "by_tag.qa.passed",
+            "expected": 2,
+            "actual": 1,
+        },
+        {
+            "path": "by_tag.qa.total",
+            "expected": 2,
+            "actual": 1,
+        },
+    ]
+
+
+def test_evaluation_report_validation_checks_breakdown_case_lists_against_selection() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["breakdown"]["by_tag"]["qa"]["selected_cases"].append("ghost_case")
+    tampered_report["breakdown"]["by_tag"]["qa"]["total"] = 2
+    tampered_report["breakdown"]["by_tag"]["qa"]["passed"] = 2
+    tampered_report["metrics"]["by_tag"]["qa"]["case_count"] = 2
+    tampered_report["metrics"]["by_tag"]["qa"]["passed_case_count"] = 2
+    tampered_report["evidence_metrics"]["by_tag"]["qa"]["case_count"] = 2
+    tampered_report["evidence_metrics"]["by_tag"]["qa"]["cases_without_evidence_count"] = 1
+    tampered_report["evidence_metrics"]["by_tag"]["qa"][
+        "average_evidence_item_count"
+    ] = 2.0
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    assert checks["breakdown_counts_consistent"]["passed"] is True
+    assert checks["metrics_match_summary"]["passed"] is True
+    assert checks["evidence_metric_groups_consistent"]["passed"] is True
+    breakdown_check = checks["breakdown_case_lists_match_selection"]
+    assert breakdown_check["name"] == "breakdown_case_lists_match_selection"
+    assert breakdown_check["passed"] is False
+    assert breakdown_check["differences"] == [
+        {
+            "path": "by_tag.qa.selected_cases",
+            "expected": ["tabletop_object_location"],
+            "actual": ["tabletop_object_location", "ghost_case"],
+        },
+    ]
+
+
+def test_evaluation_report_validation_reports_tampered_schema_version() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["schema_version"] = "legacy-report"
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert validation["schema_version"] == "legacy-report"
+    assert checks["schema_version"] == {
+        "name": "schema_version",
+        "passed": False,
+        "expected": "dsg-spatialqa-lab.evaluation-report.v1",
+        "actual": "legacy-report",
+    }
+    assert checks["report_digest"]["passed"] is True
+
+
+def test_evaluation_report_validation_reports_tampered_case_selection_digest() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["case_selection_digest"] = "0" * 64
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["case_selection_digest"] == {
+        "name": "case_selection_digest",
+        "passed": False,
+        "expected": report["case_selection_digest"],
+        "actual": "0" * 64,
+    }
+
+
+def test_evaluation_report_validation_checks_case_selection_against_summary() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["case_selection"][0]["case"] = "tabletop_mug_pick"
+    tampered_report["case_selection_digest"] = hashlib.sha256(
+        json.dumps(
+            {
+                "case_count": len(tampered_report["case_selection"]),
+                "case_selection": tampered_report["case_selection"],
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["case_selection_digest"]["passed"] is True
+    assert checks["report_digest"]["passed"] is True
+    assert checks["case_selection_matches_summary"] == {
+        "name": "case_selection_matches_summary",
+        "passed": False,
+        "expected": ["tabletop_object_location"],
+        "actual": ["tabletop_mug_pick"],
+    }
+
+
+def test_evaluation_report_validation_checks_case_selection_metadata_shape() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["summary"]["selected_cases"] = [""]
+    tampered_report["case_selection"][0]["case"] = ""
+    tampered_report["case_digests"][0]["case"] = ""
+    for group in tampered_report["breakdown"].values():
+        for entry in group.values():
+            entry["selected_cases"] = [
+                "" if case_name == "tabletop_object_location" else case_name
+                for case_name in entry["selected_cases"]
+            ]
+    tampered_report["case_selection_digest"] = hashlib.sha256(
+        json.dumps(
+            {
+                "case_count": len(tampered_report["case_selection"]),
+                "case_selection": tampered_report["case_selection"],
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["case_selection_digest"]["passed"] is True
+    assert checks["report_digest"]["passed"] is True
+    assert checks["case_selection_entries_valid"] == {
+        "name": "case_selection_entries_valid",
+        "passed": False,
+        "differences": [
+            {
+                "path": "case_selection[0].case",
+                "expected": "non-empty string",
+                "actual": "",
+            },
+        ],
+    }
+
+
+def test_evaluation_report_validation_checks_case_digests_against_summary() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["case_digests"][0]["case"] = "tabletop_mug_pick"
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    assert checks["case_digests_match_summary"] == {
+        "name": "case_digests_match_summary",
+        "passed": False,
+        "expected": ["tabletop_object_location"],
+        "actual": ["tabletop_mug_pick"],
+    }
+
+
+def test_evaluation_report_validation_checks_case_digests_against_selection() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["case_digests"][0]["kind"] = "vla_pick"
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["case_digests_match_summary"]["passed"] is True
+    assert checks["report_digest"]["passed"] is True
+    assert checks["case_digests_match_selection"] == {
+        "name": "case_digests_match_selection",
+        "passed": False,
+        "expected": [
+            {
+                "case": "tabletop_object_location",
+                "kind": "qa",
+                "question_type": "object_location",
+                "scene_fixture": "tabletop",
+            }
+        ],
+        "actual": [
+            {
+                "case": "tabletop_object_location",
+                "kind": "vla_pick",
+                "question_type": "object_location",
+                "scene_fixture": "tabletop",
+            }
+        ],
+    }
+
+
+def test_evaluation_report_validation_checks_case_digest_status_against_summary() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["case_digests"][0]["passed"] = False
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    status_check = checks["case_digest_status_matches_summary"]
+    assert status_check["name"] == "case_digest_status_matches_summary"
+    assert status_check["passed"] is False
+    assert status_check["differences"] == [
+        {
+            "path": "tabletop_object_location.passed",
+            "expected": True,
+            "actual": False,
+        },
+    ]
+
+
+def test_evaluation_report_validation_checks_case_digest_formats() -> None:
+    suite = run_evaluation_suite(names=("tabletop_object_location",))
+    report = evaluation_report(suite)
+    tampered_report = json.loads(evaluation_report_json(report))
+    tampered_report["case_digests"][0]["digest"] = "not-a-sha256-digest"
+    tampered_report["report_digest"] = lab.evaluation_report_digest(tampered_report)
+
+    validation = lab.validate_evaluation_report(tampered_report)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert checks["report_digest"]["passed"] is True
+    format_check = checks["case_digest_formats"]
+    assert format_check["name"] == "case_digest_formats"
+    assert format_check["passed"] is False
+    assert format_check["differences"] == [
+        {
+            "path": "tabletop_object_location.digest",
+            "expected": "64 lowercase sha256 hex characters",
+            "actual": "not-a-sha256-digest",
+        },
+    ]
 
 
 def test_evaluation_report_loads_from_explicit_file_and_compares_current_run(
@@ -3173,6 +5060,12 @@ def test_evaluation_report_loads_from_explicit_file_and_compares_current_run(
                 "actual": report["evidence_metrics"],
             },
             {
+                "name": "case_selection_matches_current",
+                "passed": True,
+                "expected": report["case_selection"],
+                "actual": report["case_selection"],
+            },
+            {
                 "name": "case_digests_match_current",
                 "passed": True,
                 "expected": report["case_digests"],
@@ -3195,6 +5088,12 @@ def test_evaluation_report_loads_from_explicit_file_and_compares_current_run(
                 "passed": True,
                 "expected": report["runtime_error_categories"],
                 "actual": report["runtime_error_categories"],
+            },
+            {
+                "name": "runtime_error_metrics_match_current",
+                "passed": True,
+                "expected": report["runtime_error_metrics"],
+                "actual": report["runtime_error_metrics"],
             },
             {
                 "name": "failure_categories_match_current",
@@ -3385,6 +5284,42 @@ def test_evaluation_report_compare_reports_evidence_metric_path_drift() -> None:
     ]
 
 
+def test_evaluation_report_compare_reports_case_selection_drift() -> None:
+    report = evaluation_report(run_evaluation_suite(names=("tabletop_object_location",)))
+    drifted_report = json.loads(evaluation_report_json(report))
+    drifted_report["case_selection"][0]["tags"] = ["qa", "memory", "tampered"]
+    drifted_report["case_selection_digest"] = hashlib.sha256(
+        json.dumps(
+            {
+                "case_count": len(drifted_report["case_selection"]),
+                "case_selection": drifted_report["case_selection"],
+            },
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    drifted_report["report_digest"] = lab.evaluation_report_digest(drifted_report)
+
+    comparison = compare_evaluation_report(drifted_report)
+
+    selection_check = next(
+        check
+        for check in comparison["checks"]
+        if check["name"] == "case_selection_matches_current"
+    )
+    assert comparison["matches"] is False
+    assert [
+        check["name"] for check in comparison["checks"] if check["passed"] is False
+    ] == ["saved_report_valid", "case_selection_matches_current"]
+    assert selection_check["differences"] == [
+        {
+            "path": "tabletop_object_location.tags",
+            "expected": ["qa", "memory", "tampered"],
+            "actual": ["qa", "memory"],
+        }
+    ]
+
+
 def test_evaluation_report_compare_reports_case_digest_drift() -> None:
     report = evaluation_report(run_evaluation_suite(names=("tabletop_object_location",)))
     drifted_report = json.loads(evaluation_report_json(report))
@@ -3451,9 +5386,36 @@ def test_evaluation_report_compare_reports_runtime_error_category_drift() -> Non
     ] == ["saved_report_valid", "runtime_error_categories_match_current"]
     assert category_check["differences"] == [
         {
-            "path": "missing_object.count",
+            "path": "low_confidence.count",
             "expected": 99,
-            "actual": 2,
+            "actual": 3,
+        },
+    ]
+
+
+def test_evaluation_report_compare_reports_runtime_error_metric_drift() -> None:
+    report = evaluation_report(run_evaluation_suite(tags=("vla", "error")))
+    drifted_report = json.loads(evaluation_report_json(report))
+    drifted_report["runtime_error_metrics"]["by_category"]["missing_target"][
+        "case_rate"
+    ] = 0.0
+
+    comparison = compare_evaluation_report(drifted_report)
+
+    metrics_check = next(
+        check
+        for check in comparison["checks"]
+        if check["name"] == "runtime_error_metrics_match_current"
+    )
+    assert comparison["matches"] is False
+    assert [
+        check["name"] for check in comparison["checks"] if check["passed"] is False
+    ] == ["saved_report_valid", "runtime_error_metrics_match_current"]
+    assert metrics_check["differences"] == [
+        {
+            "path": "by_category.missing_target.case_rate",
+            "expected": 0.0,
+            "actual": 2 / 13,
         },
     ]
 
@@ -3739,6 +5701,7 @@ def test_evaluation_manifest_loads_from_explicit_file_and_validates(tmp_path: Pa
                 "expected": manifest["digest"],
                 "actual": manifest["digest"],
             },
+            {"name": "case_metadata_entries_valid", "passed": True},
             {
                 "name": "scene_fixture_manifest_covers_cases",
                 "passed": True,
@@ -3818,6 +5781,70 @@ def test_evaluation_manifest_validation_reports_tampered_coverage_paths() -> Non
     assert validation["checks"][-1]["differences"] == [
         {"path": "by_scene_fixture.tabletop", "expected": 2, "actual": 1},
         {"path": "by_tag.relations", "expected": 3, "actual": 2},
+    ]
+
+
+def test_evaluation_manifest_validation_reports_invalid_case_metadata() -> None:
+    manifest = evaluation_manifest(tags=("qa", "relations"))
+    tampered_manifest = json.loads(evaluation_manifest_json(manifest))
+    tampered_manifest["evaluation_cases"][0]["name"] = 123
+    tampered_manifest["digest"] = lab.evaluation_manifest_digest(tampered_manifest)
+
+    validation = validate_evaluation_manifest(tampered_manifest)
+
+    checks = {check["name"]: check for check in validation["checks"]}
+    assert validation["valid"] is False
+    assert checks["manifest_digest"]["passed"] is True
+    assert checks["coverage_matches_manifest"]["passed"] is True
+    assert checks["case_metadata_entries_valid"] == {
+        "name": "case_metadata_entries_valid",
+        "passed": False,
+        "differences": [
+            {
+                "path": "evaluation_cases[0].name",
+                "expected": "non-empty string",
+                "actual": 123,
+            },
+        ],
+    }
+
+
+def test_evaluation_manifest_validation_reports_scene_fixture_metadata_drift() -> None:
+    manifest = evaluation_manifest(tags=("qa", "relations"))
+    tampered_manifest = json.loads(evaluation_manifest_json(manifest))
+    fixture_name = "tabletop"
+    fixture = next(
+        scene_fixture
+        for scene_fixture in tampered_manifest["scene_fixtures"]
+        if scene_fixture["name"] == fixture_name
+    )
+    original_tags = next(
+        scene_fixture["tags"]
+        for scene_fixture in manifest["scene_fixtures"]
+        if scene_fixture["name"] == fixture_name
+    )
+    tampered_tags = [
+        tag
+        for tag in original_tags
+        if tag != "static"
+    ]
+    fixture["tags"] = tampered_tags
+    del tampered_manifest["coverage"]["by_scene_tag"]["static"]
+    tampered_manifest["digest"] = lab.evaluation_manifest_digest(tampered_manifest)
+
+    validation = validate_evaluation_manifest(tampered_manifest)
+
+    checks = {check["name"]: check for check in validation["checks"]}
+    assert validation["valid"] is False
+    assert checks["manifest_digest"]["passed"] is True
+    assert checks["coverage_matches_manifest"]["passed"] is True
+    assert checks["scene_fixture_manifest_covers_cases"]["passed"] is False
+    assert checks["scene_fixture_manifest_covers_cases"]["differences"] == [
+        {
+            "path": f"{fixture_name}.tags",
+            "expected": original_tags,
+            "actual": tampered_tags,
+        },
     ]
 
 
@@ -3963,23 +5990,25 @@ def test_evaluation_bundle_collects_report_manifests_and_suite() -> None:
     ]
     assert [case["name"] for case in bundle["evaluation_cases"]] == [
         "multi_room_rearrangement_reobserve_targets",
+        "needs_reobserve_spoon_label_candidates",
         "needs_reobserve_targets",
     ]
     assert bundle["coverage"] == {
-        "case_count": 2,
+        "case_count": 3,
         "scene_fixture_count": 2,
-        "by_kind": {"qa": 2},
-        "by_question_type": {"reobserve_targets": 2},
+        "by_kind": {"qa": 3},
+        "by_question_type": {"label_candidates": 1, "reobserve_targets": 2},
         "by_tag": {
+            "label": 1,
             "memory": 2,
             "multi_room": 1,
-            "occlusion": 1,
-            "qa": 2,
-            "reobserve": 2,
+            "occlusion": 2,
+            "qa": 3,
+            "reobserve": 3,
         },
         "by_scene_fixture": {
             "multi_room_rearrangement": 1,
-            "needs_reobserve": 1,
+            "needs_reobserve": 2,
         },
         "by_scene_tag": {
             "dynamic": 1,
@@ -3992,32 +6021,40 @@ def test_evaluation_bundle_collects_report_manifests_and_suite() -> None:
         },
     }
     assert bundle["suite"]["summary"] == {
-        "total": 2,
-        "passed": 2,
+        "total": 3,
+        "passed": 3,
         "failed": 0,
         "failed_cases": [],
         "selected_cases": [
             "multi_room_rearrangement_reobserve_targets",
+            "needs_reobserve_spoon_label_candidates",
             "needs_reobserve_targets",
         ],
     }
     assert bundle["report"]["digest"] == bundle["suite"]["digest"]
     assert bundle["report"]["metrics"] == {
-        "case_count": 2,
-        "passed_case_count": 2,
+        "case_count": 3,
+        "passed_case_count": 3,
         "failed_case_count": 0,
         "pass_rate": 1.0,
         "failure_rate": 0.0,
         "by_kind": {
             "qa": {
-                "case_count": 2,
-                "passed_case_count": 2,
+                "case_count": 3,
+                "passed_case_count": 3,
                 "failed_case_count": 0,
                 "pass_rate": 1.0,
                 "failure_rate": 0.0,
             }
         },
         "by_question_type": {
+            "label_candidates": {
+                "case_count": 1,
+                "passed_case_count": 1,
+                "failed_case_count": 0,
+                "pass_rate": 1.0,
+                "failure_rate": 0.0,
+            },
             "reobserve_targets": {
                 "case_count": 2,
                 "passed_case_count": 2,
@@ -4035,14 +6072,21 @@ def test_evaluation_bundle_collects_report_manifests_and_suite() -> None:
                 "failure_rate": 0.0,
             },
             "needs_reobserve": {
-                "case_count": 1,
-                "passed_case_count": 1,
+                "case_count": 2,
+                "passed_case_count": 2,
                 "failed_case_count": 0,
                 "pass_rate": 1.0,
                 "failure_rate": 0.0,
             },
         },
         "by_tag": {
+            "label": {
+                "case_count": 1,
+                "passed_case_count": 1,
+                "failed_case_count": 0,
+                "pass_rate": 1.0,
+                "failure_rate": 0.0,
+            },
             "memory": {
                 "case_count": 2,
                 "passed_case_count": 2,
@@ -4058,22 +6102,22 @@ def test_evaluation_bundle_collects_report_manifests_and_suite() -> None:
                 "failure_rate": 0.0,
             },
             "occlusion": {
-                "case_count": 1,
-                "passed_case_count": 1,
+                "case_count": 2,
+                "passed_case_count": 2,
                 "failed_case_count": 0,
                 "pass_rate": 1.0,
                 "failure_rate": 0.0,
             },
             "qa": {
-                "case_count": 2,
-                "passed_case_count": 2,
+                "case_count": 3,
+                "passed_case_count": 3,
                 "failed_case_count": 0,
                 "pass_rate": 1.0,
                 "failure_rate": 0.0,
             },
             "reobserve": {
-                "case_count": 2,
-                "passed_case_count": 2,
+                "case_count": 3,
+                "passed_case_count": 3,
                 "failed_case_count": 0,
                 "pass_rate": 1.0,
                 "failure_rate": 0.0,
@@ -4141,13 +6185,16 @@ def test_evaluation_bundle_loads_from_explicit_file_and_validates(tmp_path: Path
                 "passed": True,
                 "expected": [
                     "multi_room_rearrangement_reobserve_targets",
+                    "needs_reobserve_spoon_label_candidates",
                     "needs_reobserve_targets",
                 ],
                 "actual": [
                     "multi_room_rearrangement_reobserve_targets",
+                    "needs_reobserve_spoon_label_candidates",
                     "needs_reobserve_targets",
                 ],
             },
+            {"name": "case_metadata_entries_valid", "passed": True},
             {
                 "name": "scene_fixture_manifest_covers_cases",
                 "passed": True,
@@ -4248,7 +6295,7 @@ def test_evaluation_bundle_validation_reports_tampered_report_paths() -> None:
             "expected": 1.0,
             "actual": 0.5,
         },
-        {"path": "metrics.case_count", "expected": 2, "actual": 999},
+        {"path": "metrics.case_count", "expected": 3, "actual": 999},
     ]
 
 
@@ -4308,10 +6355,12 @@ def test_evaluation_bundle_validation_reports_case_manifest_metadata_drift() -> 
     ]
     tampered_bundle["evaluation_cases"][0]["tags"] = tampered_tags
     tampered_bundle["coverage"]["by_tag"] = {
+        "label": 1,
         "memory": 2,
         "multi_room": 1,
-        "qa": 2,
-        "reobserve": 2,
+        "occlusion": 1,
+        "qa": 3,
+        "reobserve": 3,
     }
 
     validation = validate_evaluation_bundle(tampered_bundle)
@@ -4336,6 +6385,32 @@ def test_evaluation_bundle_validation_reports_case_manifest_metadata_drift() -> 
             "actual": tampered_tags,
         },
     ]
+
+
+def test_evaluation_bundle_validation_reports_invalid_case_metadata_shape() -> None:
+    bundle = evaluation_bundle(tags=("qa", "reobserve"))
+    tampered_bundle = json.loads(evaluation_bundle_json(bundle))
+    tampered_bundle["evaluation_cases"][0]["question"] = ["not", "an", "object"]
+    tampered_bundle["bundle_digest"] = lab.evaluation_bundle_digest(tampered_bundle)
+
+    validation = validate_evaluation_bundle(tampered_bundle)
+
+    checks = {check["name"]: check for check in validation["checks"]}
+    assert validation["valid"] is False
+    assert checks["bundle_digest"]["passed"] is True
+    assert checks["case_manifest_matches_suite"]["passed"] is True
+    assert checks["coverage_matches_manifest"]["passed"] is True
+    assert checks["case_metadata_entries_valid"] == {
+        "name": "case_metadata_entries_valid",
+        "passed": False,
+        "differences": [
+            {
+                "path": "evaluation_cases[0].question",
+                "expected": "object",
+                "actual": ["not", "an", "object"],
+            },
+        ],
+    }
 
 
 def test_evaluation_bundle_validation_reports_scene_fixture_metadata_drift() -> None:
@@ -4399,7 +6474,7 @@ def test_evaluation_bundle_validation_reports_tampered_coverage() -> None:
     assert validation["checks"][-1]["actual"] == tampered_bundle["coverage"]
     assert validation["checks"][-1]["differences"] == [
         {"path": "by_tag.memory", "expected": 2, "actual": 1},
-        {"path": "case_count", "expected": 2, "actual": 999},
+        {"path": "case_count", "expected": 3, "actual": 999},
     ]
 
 
@@ -4446,10 +6521,12 @@ def test_evaluation_bundle_compare_matches_current_run() -> None:
                 "passed": True,
                 "expected": [
                     "multi_room_rearrangement_reobserve_targets",
+                    "needs_reobserve_spoon_label_candidates",
                     "needs_reobserve_targets",
                 ],
                 "actual": [
                     "multi_room_rearrangement_reobserve_targets",
+                    "needs_reobserve_spoon_label_candidates",
                     "needs_reobserve_targets",
                 ],
             },
@@ -4525,7 +6602,7 @@ def test_evaluation_bundle_compare_reports_report_path_drift() -> None:
 def test_evaluation_bundle_compare_reports_coverage_path_drift() -> None:
     bundle = evaluation_bundle(tags=("qa", "reobserve"))
     drifted_bundle = json.loads(evaluation_bundle_json(bundle))
-    drifted_bundle["coverage"]["by_scene_fixture"]["needs_reobserve"] = 2
+    drifted_bundle["coverage"]["by_scene_fixture"]["needs_reobserve"] = 1
     drifted_bundle["coverage"]["by_tag"]["memory"] = 1
 
     comparison = compare_evaluation_bundle(drifted_bundle)
@@ -4537,21 +6614,12 @@ def test_evaluation_bundle_compare_reports_coverage_path_drift() -> None:
     )
     assert comparison["matches"] is False
     assert coverage_check["differences"] == [
-        {"path": "by_scene_fixture.needs_reobserve", "expected": 2, "actual": 1},
+        {"path": "by_scene_fixture.needs_reobserve", "expected": 1, "actual": 2},
         {"path": "by_tag.memory", "expected": 1, "actual": 2},
     ]
 
 
-def test_vla_place_relative_evaluation_requires_reference_and_relation() -> None:
-    missing_reference = EvaluationCase(
-        name="custom_missing_reference",
-        scene_fixture="tabletop",
-        kind="vla_place_relative",
-        tags=("vla",),
-        target_object="mug_1",
-        relation="RIGHT_OF",
-        expected={},
-    )
+def test_vla_place_relative_evaluation_requires_relation() -> None:
     missing_relation = EvaluationCase(
         name="custom_missing_relation",
         scene_fixture="tabletop",
@@ -4562,29 +6630,8 @@ def test_vla_place_relative_evaluation_requires_reference_and_relation() -> None
         expected={},
     )
 
-    with pytest.raises(
-        SpatialQAError,
-        match="Evaluation case missing reference object or label: custom_missing_reference",
-    ):
-        run_evaluation_case_definition(missing_reference)
     with pytest.raises(SpatialQAError, match="Evaluation case missing relation: custom_missing_relation"):
         run_evaluation_case_definition(missing_relation)
-
-
-def test_vla_pick_evaluation_requires_target_object_or_label() -> None:
-    missing_target = EvaluationCase(
-        name="custom_missing_pick_target",
-        scene_fixture="tabletop",
-        kind="vla_pick",
-        tags=("vla",),
-        expected={},
-    )
-
-    with pytest.raises(
-        SpatialQAError,
-        match="Evaluation case missing target object or label: custom_missing_pick_target",
-    ):
-        run_evaluation_case_definition(missing_target)
 
 
 def test_unknown_evaluation_case_returns_clear_error() -> None:
@@ -4601,6 +6648,21 @@ def _build_custom_counter_scene() -> DynamicSceneGraph:
         Pose3D(0.25, -0.5, 0.4),
         BBox3D(center=Pose3D(0.25, -0.5, 0.4), size=(0.2, 0.2, 0.2)),
         confidence=0.82,
+        visible=True,
+        step=4,
+    )
+    return graph
+
+
+def _build_custom_low_confidence_scene() -> DynamicSceneGraph:
+    graph = DynamicSceneGraph()
+    graph.set_agent_pose("agent", Pose3D(0.0, 0.0, 0.0), step=4)
+    graph.upsert_object(
+        "cup_1",
+        "cup",
+        Pose3D(0.4, -0.2, 0.5),
+        BBox3D(center=Pose3D(0.4, -0.2, 0.5), size=(0.1, 0.1, 0.14)),
+        confidence=0.2,
         visible=True,
         step=4,
     )

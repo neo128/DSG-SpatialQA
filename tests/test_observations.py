@@ -167,6 +167,497 @@ def test_scene_observation_sequence_json_round_trip_and_save_loads_explicit_file
     assert json.loads(sequence_path.read_text(encoding="utf-8")) == payload
 
 
+def test_scene_observation_sequence_payload_validation_reports_digest_and_summary() -> None:
+    assert hasattr(lab, "validate_scene_observation_sequence_payload")
+    observations = (
+        SceneObservation(
+            step=1,
+            agent_pose=Pose3D(0.0, 0.0, 0.0),
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                ),
+            ),
+        ),
+        SceneObservation(
+            step=2,
+            objects=(
+                ObjectObservation(
+                    "spoon_1",
+                    "spoon",
+                    Pose3D(0.2, 1.2, 0.78),
+                    BBox3D(center=Pose3D(0.2, 1.2, 0.78), size=(0.2, 0.04, 0.02)),
+                    confidence=0.2,
+                    visible=False,
+                ),
+            ),
+        ),
+    )
+    payload = lab.scene_observation_sequence_to_dict(observations)
+
+    validation = lab.validate_scene_observation_sequence_payload(payload)
+
+    assert validation == {
+        "valid": True,
+        "schema_version": "dsg-spatialqa-lab.scene-observation-sequence.v1",
+        "digest": lab.scene_observation_sequence_digest(observations),
+        "summary": lab.scene_observation_sequence_summary(observations),
+        "checks": [
+            {
+                "name": "schema_version",
+                "passed": True,
+                "expected": "dsg-spatialqa-lab.scene-observation-sequence.v1",
+                "actual": "dsg-spatialqa-lab.scene-observation-sequence.v1",
+            },
+            {
+                "name": "observations_sequence_present",
+                "passed": True,
+                "expected": "sequence",
+                "actual": "sequence",
+            },
+            {
+                "name": "observation_count_matches_observations",
+                "passed": True,
+                "expected": 2,
+                "actual": 2,
+            },
+            {
+                "name": "steps_match_observations",
+                "passed": True,
+                "expected": [1, 2],
+                "actual": [1, 2],
+            },
+            {
+                "name": "sequence_loads",
+                "passed": True,
+            },
+        ],
+    }
+
+
+def test_scene_observation_sequence_payload_validation_reports_shape_errors() -> None:
+    payload = {
+        "schema_version": "dsg-spatialqa-lab.scene-observation-sequence.v1",
+        "observation_count": 2,
+        "steps": [1],
+        "observations": [
+            lab.scene_observation_to_dict(
+                SceneObservation(
+                    step=1,
+                    objects=(
+                        ObjectObservation(
+                            "mug_1",
+                            "mug",
+                            Pose3D(-0.4, 1.0, 0.78),
+                            BBox3D(
+                                center=Pose3D(-0.4, 1.0, 0.78),
+                                size=(0.12, 0.12, 0.16),
+                            ),
+                            confidence=0.95,
+                            visible=True,
+                        ),
+                    ),
+                )
+            ),
+        ],
+    }
+
+    validation = lab.validate_scene_observation_sequence_payload(payload)
+    checks = {check["name"]: check for check in validation["checks"]}
+
+    assert validation["valid"] is False
+    assert validation["digest"] is None
+    assert validation["summary"] is None
+    assert validation["error"] == "observation_count must match observations length"
+    assert checks["observation_count_matches_observations"] == {
+        "name": "observation_count_matches_observations",
+        "passed": False,
+        "expected": 2,
+        "actual": 1,
+    }
+    assert checks["sequence_loads"] == {
+        "name": "sequence_loads",
+        "passed": False,
+        "error": "observation_count must match observations length",
+    }
+
+
+def test_scene_observation_sequence_summary_is_deterministic_and_digestable() -> None:
+    assert hasattr(lab, "scene_observation_sequence_summary")
+    assert hasattr(lab, "scene_observation_sequence_summary_digest")
+    observations = (
+        SceneObservation(
+            step=3,
+            agent_pose=Pose3D(0.0, 0.0, 0.0),
+            rooms=(NodeObservation("kitchen", "Kitchen"),),
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                ),
+                ObjectObservation(
+                    "cup_1",
+                    "cup",
+                    Pose3D(0.0, 1.0, 0.78),
+                    BBox3D(center=Pose3D(0.0, 1.0, 0.78), size=(0.1, 0.1, 0.12)),
+                    confidence=0.2,
+                    visible=False,
+                ),
+            ),
+        ),
+        SceneObservation(
+            step=5,
+            regions=(NodeObservation("counter", "Counter"),),
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.2, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.2, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.8,
+                    visible=False,
+                ),
+                ObjectObservation(
+                    "plate_1",
+                    "plate",
+                    Pose3D(0.4, 1.0, 0.72),
+                    BBox3D(center=Pose3D(0.4, 1.0, 0.72), size=(0.26, 0.26, 0.04)),
+                    confidence=0.4,
+                    visible=True,
+                ),
+            ),
+        ),
+    )
+
+    summary = lab.scene_observation_sequence_summary(observations)
+    repeated_summary = lab.scene_observation_sequence_summary(observations)
+    expected_without_digest = {
+        "schema_version": "dsg-spatialqa-lab.scene-observation-sequence-summary.v1",
+        "sequence_digest": lab.scene_observation_sequence_digest(observations),
+        "low_confidence_threshold": 0.5,
+        "observation_count": 2,
+        "steps": [3, 5],
+        "first_step": 3,
+        "last_step": 5,
+        "agent_pose_count": 1,
+        "room_observation_count": 1,
+        "region_observation_count": 1,
+        "object_observation_count": 4,
+        "unique_object_count": 3,
+        "unique_object_ids": ["cup_1", "mug_1", "plate_1"],
+        "visible_object_observation_count": 2,
+        "hidden_object_observation_count": 2,
+        "low_confidence_object_observation_count": 2,
+        "reobserve_candidate_observation_count": 1,
+        "by_object_label": {
+            "cup": 1,
+            "mug": 2,
+            "plate": 1,
+        },
+        "by_step": [
+            {
+                "step": 3,
+                "agent_pose": True,
+                "room_count": 1,
+                "region_count": 0,
+                "object_count": 2,
+                "object_ids": ["cup_1", "mug_1"],
+                "visible_object_count": 1,
+                "hidden_object_count": 1,
+                "low_confidence_object_count": 1,
+                "reobserve_candidate_count": 1,
+            },
+            {
+                "step": 5,
+                "agent_pose": False,
+                "room_count": 0,
+                "region_count": 1,
+                "object_count": 2,
+                "object_ids": ["mug_1", "plate_1"],
+                "visible_object_count": 1,
+                "hidden_object_count": 1,
+                "low_confidence_object_count": 1,
+                "reobserve_candidate_count": 0,
+            },
+        ],
+    }
+    expected_digest = lab.scene_observation_sequence_summary_digest(
+        expected_without_digest
+    )
+
+    assert summary == {**expected_without_digest, "digest": expected_digest}
+    assert repeated_summary == summary
+    assert lab.scene_observation_sequence_summary_digest(summary) == expected_digest
+
+
+def test_scene_observation_sequence_summary_artifact_validates_and_compares(
+    tmp_path: Path,
+) -> None:
+    assert hasattr(lab, "scene_observation_sequence_summary_json")
+    assert hasattr(lab, "save_scene_observation_sequence_summary")
+    assert hasattr(lab, "load_scene_observation_sequence_summary")
+    assert hasattr(lab, "validate_scene_observation_sequence_summary")
+    assert hasattr(lab, "compare_scene_observation_sequence_summary")
+    observations = (
+        SceneObservation(
+            step=1,
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                ),
+            ),
+        ),
+        SceneObservation(
+            step=2,
+            objects=(
+                ObjectObservation(
+                    "spoon_1",
+                    "spoon",
+                    Pose3D(0.2, 1.2, 0.78),
+                    BBox3D(center=Pose3D(0.2, 1.2, 0.78), size=(0.2, 0.04, 0.02)),
+                    confidence=0.2,
+                    visible=False,
+                ),
+            ),
+        ),
+    )
+    sequence_path = tmp_path / "observations" / "mock-sequence.json"
+    summary_path = tmp_path / "reports" / "mock-sequence-summary.json"
+    lab.save_scene_observation_sequence(observations, sequence_path)
+    summary = {
+        "action": "summarize_observation_sequence",
+        "path": str(sequence_path),
+        "valid": True,
+        **lab.scene_observation_sequence_summary(observations),
+    }
+
+    payload = lab.scene_observation_sequence_summary_json(summary)
+    saved_path = lab.save_scene_observation_sequence_summary(summary, summary_path)
+    loaded_summary = lab.load_scene_observation_sequence_summary(summary_path)
+    validation = lab.validate_scene_observation_sequence_summary(loaded_summary)
+    comparison = lab.compare_scene_observation_sequence_summary(loaded_summary)
+
+    assert json.loads(payload) == summary
+    assert saved_path == summary_path
+    assert loaded_summary == summary
+    assert summary_path.read_text(encoding="utf-8").endswith("\n")
+    assert validation == {
+        "valid": True,
+        "schema_version": "dsg-spatialqa-lab.scene-observation-sequence-summary.v1",
+        "digest": summary["digest"],
+        "checks": [
+            {
+                "name": "schema_version",
+                "passed": True,
+                "expected": "dsg-spatialqa-lab.scene-observation-sequence-summary.v1",
+                "actual": "dsg-spatialqa-lab.scene-observation-sequence-summary.v1",
+            },
+            {
+                "name": "action",
+                "passed": True,
+                "expected": "summarize_observation_sequence",
+                "actual": "summarize_observation_sequence",
+            },
+            {
+                "name": "summary_valid",
+                "passed": True,
+                "expected": True,
+                "actual": True,
+            },
+            {
+                "name": "summary_digest",
+                "passed": True,
+                "expected": summary["digest"],
+                "actual": summary["digest"],
+            },
+            {
+                "name": "sequence_path_present",
+                "passed": True,
+                "expected": "non-empty explicit local path",
+                "actual": str(sequence_path),
+            },
+            {
+                "name": "sequence_digest_format",
+                "passed": True,
+                "expected": "64 lowercase sha256 hex characters",
+                "actual": lab.scene_observation_sequence_digest(observations),
+            },
+            {
+                "name": "by_step_entries_valid",
+                "passed": True,
+            },
+            {
+                "name": "observation_count_matches_by_step",
+                "passed": True,
+                "expected": 2,
+                "actual": 2,
+            },
+            {
+                "name": "steps_match_by_step",
+                "passed": True,
+                "expected": [1, 2],
+                "actual": [1, 2],
+            },
+            {
+                "name": "first_step_matches_steps",
+                "passed": True,
+                "expected": 1,
+                "actual": 1,
+            },
+            {
+                "name": "last_step_matches_steps",
+                "passed": True,
+                "expected": 2,
+                "actual": 2,
+            },
+            {
+                "name": "object_observation_count_matches_steps",
+                "passed": True,
+                "expected": 2,
+                "actual": 2,
+            },
+            {
+                "name": "visible_object_observation_count_matches_steps",
+                "passed": True,
+                "expected": 1,
+                "actual": 1,
+            },
+            {
+                "name": "hidden_object_observation_count_matches_steps",
+                "passed": True,
+                "expected": 1,
+                "actual": 1,
+            },
+            {
+                "name": "low_confidence_object_observation_count_matches_steps",
+                "passed": True,
+                "expected": 1,
+                "actual": 1,
+            },
+            {
+                "name": "reobserve_candidate_observation_count_matches_steps",
+                "passed": True,
+                "expected": 1,
+                "actual": 1,
+            },
+            {
+                "name": "unique_object_count_matches_ids",
+                "passed": True,
+                "expected": 2,
+                "actual": 2,
+            },
+            {
+                "name": "object_label_counts_valid",
+                "passed": True,
+            },
+        ],
+    }
+    assert comparison["matches"] is True
+    assert comparison["sequence_path"] == str(sequence_path)
+    assert comparison["saved_sequence_digest"] == lab.scene_observation_sequence_digest(
+        observations
+    )
+    assert comparison["current_sequence_digest"] == lab.scene_observation_sequence_digest(
+        observations
+    )
+    assert comparison["saved_digest"] == summary["digest"]
+    assert comparison["current_digest"] == summary["digest"]
+    assert [check["passed"] for check in comparison["checks"]] == [True, True, True]
+
+
+def test_scene_observation_sequence_summary_validation_and_compare_report_drift(
+    tmp_path: Path,
+) -> None:
+    observations = (
+        SceneObservation(
+            step=1,
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                ),
+            ),
+        ),
+    )
+    drifted_observations = (
+        SceneObservation(
+            step=1,
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                ),
+                ObjectObservation(
+                    "cup_1",
+                    "cup",
+                    Pose3D(0.1, 1.0, 0.78),
+                    BBox3D(center=Pose3D(0.1, 1.0, 0.78), size=(0.1, 0.1, 0.12)),
+                    confidence=0.9,
+                    visible=True,
+                ),
+            ),
+        ),
+    )
+    sequence_path = tmp_path / "observations" / "mock-sequence.json"
+    lab.save_scene_observation_sequence(observations, sequence_path)
+    summary = {
+        "action": "summarize_observation_sequence",
+        "path": str(sequence_path),
+        "valid": True,
+        **lab.scene_observation_sequence_summary(observations),
+    }
+    tampered_summary = json.loads(lab.scene_observation_sequence_summary_json(summary))
+    tampered_summary["digest"] = "0" * 64
+
+    validation = lab.validate_scene_observation_sequence_summary(tampered_summary)
+    checks = {check["name"]: check for check in validation["checks"]}
+    assert validation["valid"] is False
+    assert checks["summary_digest"] == {
+        "name": "summary_digest",
+        "passed": False,
+        "expected": summary["digest"],
+        "actual": "0" * 64,
+    }
+
+    lab.save_scene_observation_sequence(drifted_observations, sequence_path)
+    comparison = lab.compare_scene_observation_sequence_summary(summary)
+    compare_checks = {check["name"]: check for check in comparison["checks"]}
+    assert comparison["matches"] is False
+    assert compare_checks["sequence_digest_matches_current"]["passed"] is False
+    assert {
+        "path": "object_observation_count",
+        "expected": 1,
+        "actual": 2,
+    } in compare_checks["sequence_summary_matches_current"]["differences"]
+    assert {
+        "path": "unique_object_ids",
+        "expected": ["mug_1"],
+        "actual": ["cup_1", "mug_1"],
+    } in compare_checks["sequence_summary_matches_current"]["differences"]
+
+
 def test_observation_ingest_report_save_loads_explicit_file(
     tmp_path: Path,
 ) -> None:

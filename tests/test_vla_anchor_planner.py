@@ -188,6 +188,186 @@ def test_invisible_low_confidence_target_returns_needs_reobserve() -> None:
     assert result.needs_reobserve is True
 
 
+def test_place_relative_reference_needs_reobserve_reports_reference_details() -> None:
+    graph = build_pick_scene()
+    graph.upsert_object(
+        "spoon_1",
+        "spoon",
+        Pose3D(0.2, 0.8, 0.75),
+        BBox3D(center=Pose3D(0.2, 0.8, 0.75), size=(0.2, 0.04, 0.02)),
+        confidence=0.25,
+        visible=False,
+        step=2,
+    )
+    planner = VLAAnchorPlanner(GraphTool(graph, reobserve_confidence_threshold=0.5))
+
+    result = planner.plan_place_relative("mug_1", "spoon_1", "RIGHT_OF")
+
+    assert result.status == "needs_reobserve"
+    assert result.command is None
+    assert result.error == "needs_reobserve"
+    assert result.needs_reobserve is True
+    assert result.needs_replan is False
+    assert result.details == {
+        "reference_object": "spoon_1",
+        "visible": False,
+        "confidence": 0.25,
+        "min_confidence": 0.5,
+        "last_seen_step": None,
+        "current_step": 2,
+    }
+
+
+def test_place_relative_reference_not_visible_reports_reference_details() -> None:
+    graph = build_pick_scene()
+    graph.upsert_object(
+        "bowl_1",
+        "bowl",
+        Pose3D(0.6, 0.8, 0.75),
+        BBox3D(center=Pose3D(0.6, 0.8, 0.75), size=(0.3, 0.3, 0.12)),
+        confidence=0.75,
+        visible=False,
+        step=2,
+    )
+    planner = VLAAnchorPlanner(GraphTool(graph, reobserve_confidence_threshold=0.5))
+
+    result = planner.plan_place_relative("mug_1", "bowl_1", "RIGHT_OF")
+
+    assert result.status == "needs_replan"
+    assert result.command is None
+    assert result.error == "target_not_visible"
+    assert result.needs_reobserve is False
+    assert result.needs_replan is True
+    assert result.details == {
+        "reference_object": "bowl_1",
+        "visible": False,
+        "confidence": 0.75,
+        "min_confidence": 0.5,
+        "last_seen_step": None,
+        "current_step": 2,
+    }
+
+
+def test_place_relative_reference_low_confidence_reports_reference_details() -> None:
+    graph = build_pick_scene()
+    graph.upsert_object(
+        "cup_1",
+        "cup",
+        Pose3D(0.8, 0.75, 0.78),
+        BBox3D(center=Pose3D(0.8, 0.75, 0.78), size=(0.1, 0.1, 0.14)),
+        confidence=0.2,
+        visible=True,
+        step=2,
+    )
+    planner = VLAAnchorPlanner(GraphTool(graph, reobserve_confidence_threshold=0.5))
+
+    result = planner.plan_place_relative("mug_1", "cup_1", "RIGHT_OF")
+
+    assert result.status == "needs_replan"
+    assert result.command is None
+    assert result.error == "low_confidence"
+    assert result.needs_reobserve is False
+    assert result.needs_replan is True
+    assert result.details == {
+        "reference_object": "cup_1",
+        "visible": True,
+        "confidence": 0.2,
+        "min_confidence": 0.5,
+        "last_seen_step": 2,
+        "current_step": 2,
+    }
+
+
+def test_place_relative_target_needs_reobserve_reports_target_details() -> None:
+    graph = build_pick_scene()
+    graph.upsert_object(
+        "spoon_1",
+        "spoon",
+        Pose3D(0.2, 0.8, 0.75),
+        BBox3D(center=Pose3D(0.2, 0.8, 0.75), size=(0.2, 0.04, 0.02)),
+        confidence=0.25,
+        visible=False,
+        step=2,
+    )
+    planner = VLAAnchorPlanner(GraphTool(graph, reobserve_confidence_threshold=0.5))
+
+    result = planner.plan_place_relative("spoon_1", "plate_1", "RIGHT_OF")
+
+    assert result.status == "needs_reobserve"
+    assert result.command is None
+    assert result.error == "needs_reobserve"
+    assert result.needs_reobserve is True
+    assert result.needs_replan is False
+    assert result.details == {
+        "target_object": "spoon_1",
+        "visible": False,
+        "confidence": 0.25,
+        "min_confidence": 0.5,
+        "last_seen_step": None,
+        "current_step": 2,
+    }
+
+
+def test_place_relative_target_not_visible_reports_target_details() -> None:
+    graph = build_pick_scene()
+    graph.upsert_object(
+        "bowl_1",
+        "bowl",
+        Pose3D(0.6, 0.8, 0.75),
+        BBox3D(center=Pose3D(0.6, 0.8, 0.75), size=(0.3, 0.3, 0.12)),
+        confidence=0.75,
+        visible=False,
+        step=2,
+    )
+    planner = VLAAnchorPlanner(GraphTool(graph, reobserve_confidence_threshold=0.5))
+
+    result = planner.plan_place_relative("bowl_1", "plate_1", "RIGHT_OF")
+
+    assert result.status == "needs_replan"
+    assert result.command is None
+    assert result.error == "target_not_visible"
+    assert result.needs_reobserve is False
+    assert result.needs_replan is True
+    assert result.details == {
+        "target_object": "bowl_1",
+        "visible": False,
+        "confidence": 0.75,
+        "min_confidence": 0.5,
+        "last_seen_step": None,
+        "current_step": 2,
+    }
+
+
+def test_place_relative_target_low_confidence_reports_target_details() -> None:
+    graph = build_pick_scene()
+    graph.upsert_object(
+        "cup_1",
+        "cup",
+        Pose3D(0.8, 0.75, 0.78),
+        BBox3D(center=Pose3D(0.8, 0.75, 0.78), size=(0.1, 0.1, 0.14)),
+        confidence=0.2,
+        visible=True,
+        step=2,
+    )
+    planner = VLAAnchorPlanner(GraphTool(graph, reobserve_confidence_threshold=0.5))
+
+    result = planner.plan_place_relative("cup_1", "plate_1", "RIGHT_OF")
+
+    assert result.status == "needs_replan"
+    assert result.command is None
+    assert result.error == "low_confidence"
+    assert result.needs_reobserve is False
+    assert result.needs_replan is True
+    assert result.details == {
+        "target_object": "cup_1",
+        "visible": True,
+        "confidence": 0.2,
+        "min_confidence": 0.5,
+        "last_seen_step": 2,
+        "current_step": 2,
+    }
+
+
 def test_ambiguous_label_does_not_choose_arbitrarily() -> None:
     graph = build_pick_scene()
     graph.upsert_object(

@@ -228,6 +228,15 @@ def build_needs_reobserve_scene() -> DynamicSceneGraph:
         visible=False,
         step=2,
     )
+    graph.upsert_object(
+        "cup_1",
+        "cup",
+        Pose3D(0.8, 0.75, 0.78),
+        BBox3D(center=Pose3D(0.8, 0.75, 0.78), size=(0.1, 0.1, 0.14)),
+        confidence=0.2,
+        visible=True,
+        step=2,
+    )
     return graph
 
 
@@ -327,7 +336,7 @@ _SCENE_FIXTURES: dict[str, tuple[SceneFixture, Callable[[], DynamicSceneGraph]]]
         SceneFixture(
             name="needs_reobserve",
             description=(
-                "Tabletop scene with one invisible low-confidence spoon requiring re-observation."
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
             ),
             tags=("static", "tabletop", "reobserve"),
         ),

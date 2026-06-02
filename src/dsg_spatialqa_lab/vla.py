@@ -70,7 +70,10 @@ class VLAAnchorPlanner:
             target_failure = self._target_precondition_failure(resolved_target)
             if target_failure is not None:
                 return target_failure
-            reference_failure = self._target_precondition_failure(resolved_reference)
+            reference_failure = self._target_precondition_failure(
+                resolved_reference,
+                detail_object_key="reference_object",
+            )
             if reference_failure is not None:
                 return reference_failure
 
@@ -120,7 +123,10 @@ class VLAAnchorPlanner:
             target_failure = self._target_precondition_failure(command.target_object)
             if target_failure is not None:
                 return target_failure
-            reference_failure = self._target_precondition_failure(reference_object)
+            reference_failure = self._target_precondition_failure(
+                reference_object,
+                detail_object_key="reference_object",
+            )
             if reference_failure is not None:
                 return reference_failure
 
@@ -216,35 +222,54 @@ class VLAAnchorPlanner:
             "needs_reobserve": self.graph_tool.needs_reobserve(object_id),
         }
 
-    def _target_precondition_failure(self, object_id: str) -> PlannerResult | None:
+    def _target_precondition_failure(
+        self,
+        object_id: str,
+        *,
+        detail_object_key: str = "target_object",
+    ) -> PlannerResult | None:
         state = self.graph_tool.get_object(object_id)
         if self.graph_tool.needs_reobserve(object_id):
             return PlannerResult(
                 status="needs_reobserve",
                 error="needs_reobserve",
                 needs_reobserve=True,
-                details=self._precondition_details(object_id),
+                details=self._precondition_details(
+                    object_id,
+                    object_key=detail_object_key,
+                ),
             )
         if not state.visible:
             return PlannerResult(
                 status="needs_replan",
                 error="target_not_visible",
                 needs_replan=True,
-                details=self._precondition_details(object_id),
+                details=self._precondition_details(
+                    object_id,
+                    object_key=detail_object_key,
+                ),
             )
         if state.confidence < self.graph_tool.reobserve_confidence_threshold:
             return PlannerResult(
                 status="needs_replan",
                 error="low_confidence",
                 needs_replan=True,
-                details=self._precondition_details(object_id),
+                details=self._precondition_details(
+                    object_id,
+                    object_key=detail_object_key,
+                ),
             )
         return None
 
-    def _precondition_details(self, object_id: str) -> dict[str, object]:
+    def _precondition_details(
+        self,
+        object_id: str,
+        *,
+        object_key: str = "target_object",
+    ) -> dict[str, object]:
         state = self.graph_tool.get_object(object_id)
         return {
-            "target_object": object_id,
+            object_key: object_id,
             "visible": state.visible,
             "confidence": state.confidence,
             "min_confidence": self.graph_tool.reobserve_confidence_threshold,

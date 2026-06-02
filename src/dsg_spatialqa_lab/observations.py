@@ -26,6 +26,10 @@ SCENE_OBSERVATION_SEQUENCE_SCHEMA_VERSION = (
 OBSERVATION_INGEST_REPORT_SCHEMA_VERSION = (
     "dsg-spatialqa-lab.observation-ingest-report.v1"
 )
+SCENE_OBSERVATION_SEQUENCE_SUMMARY_SCHEMA_VERSION = (
+    "dsg-spatialqa-lab.scene-observation-sequence-summary.v1"
+)
+OBSERVATION_SEQUENCE_LOW_CONFIDENCE_THRESHOLD = 0.5
 
 
 @dataclass(frozen=True)
@@ -190,6 +194,343 @@ def scene_observation_sequence_digest(observations: Sequence[SceneObservation]) 
     return hashlib.sha256(
         scene_observation_sequence_to_json(observations).encode("utf-8")
     ).hexdigest()
+
+
+def validate_scene_observation_sequence_payload(
+    payload: Mapping[str, Any],
+) -> dict[str, Any]:
+    schema_version = payload.get("schema_version")
+    observations_value = payload.get("observations")
+    observations_count = (
+        len(observations_value)
+        if isinstance(observations_value, Sequence)
+        and not isinstance(observations_value, str)
+        else None
+    )
+    observation_steps = _observation_steps_from_payload(observations_value)
+    load_error: str | None = None
+    observations: tuple[SceneObservation, ...] | None = None
+    try:
+        observations = scene_observation_sequence_from_dict(payload)
+    except SpatialQAError as exc:
+        load_error = str(exc)
+
+    digest = (
+        scene_observation_sequence_digest(observations)
+        if observations is not None
+        else None
+    )
+    summary = (
+        scene_observation_sequence_summary(observations)
+        if observations is not None
+        else None
+    )
+    sequence_load_check: dict[str, Any] = {
+        "name": "sequence_loads",
+        "passed": observations is not None,
+    }
+    if load_error is not None:
+        sequence_load_check["error"] = load_error
+    checks = [
+        {
+            "name": "schema_version",
+            "passed": schema_version == SCENE_OBSERVATION_SEQUENCE_SCHEMA_VERSION,
+            "expected": SCENE_OBSERVATION_SEQUENCE_SCHEMA_VERSION,
+            "actual": schema_version,
+        },
+        {
+            "name": "observations_sequence_present",
+            "passed": observations_count is not None,
+            "expected": "sequence",
+            "actual": "sequence" if observations_count is not None else type(observations_value).__name__,
+        },
+        {
+            "name": "observation_count_matches_observations",
+            "passed": payload.get("observation_count") == observations_count,
+            "expected": payload.get("observation_count"),
+            "actual": observations_count,
+        },
+        {
+            "name": "steps_match_observations",
+            "passed": payload.get("steps") == observation_steps,
+            "expected": payload.get("steps"),
+            "actual": observation_steps,
+        },
+        sequence_load_check,
+    ]
+    validation: dict[str, Any] = {
+        "valid": all(check["passed"] is True for check in checks),
+        "schema_version": schema_version,
+        "digest": digest,
+        "summary": summary,
+        "checks": checks,
+    }
+    if load_error is not None:
+        validation["error"] = load_error
+    return validation
+
+
+def scene_observation_sequence_summary(
+    observations: Sequence[SceneObservation],
+    *,
+    low_confidence_threshold: float = OBSERVATION_SEQUENCE_LOW_CONFIDENCE_THRESHOLD,
+) -> dict[str, Any]:
+    threshold = _number_from_value(low_confidence_threshold, "low_confidence_threshold")
+    steps = [observation.step for observation in observations]
+    objects = [obj for observation in observations for obj in observation.objects]
+    summary: dict[str, Any] = {
+        "schema_version": SCENE_OBSERVATION_SEQUENCE_SUMMARY_SCHEMA_VERSION,
+        "sequence_digest": scene_observation_sequence_digest(observations),
+        "low_confidence_threshold": threshold,
+        "observation_count": len(observations),
+        "steps": steps,
+        "first_step": steps[0] if steps else None,
+        "last_step": steps[-1] if steps else None,
+        "agent_pose_count": sum(
+            1 for observation in observations if observation.agent_pose is not None
+        ),
+        "room_observation_count": sum(len(observation.rooms) for observation in observations),
+        "region_observation_count": sum(
+            len(observation.regions) for observation in observations
+        ),
+        "object_observation_count": len(objects),
+        "unique_object_count": len({obj.object_id for obj in objects}),
+        "unique_object_ids": sorted({obj.object_id for obj in objects}),
+        "visible_object_observation_count": sum(1 for obj in objects if obj.visible),
+        "hidden_object_observation_count": sum(1 for obj in objects if not obj.visible),
+        "low_confidence_object_observation_count": sum(
+            1 for obj in objects if obj.confidence < threshold
+        ),
+        "reobserve_candidate_observation_count": sum(
+            1 for obj in objects if not obj.visible and obj.confidence < threshold
+        ),
+        "by_object_label": _sorted_counts(obj.label for obj in objects),
+        "by_step": [
+            _scene_observation_step_summary(observation, threshold)
+            for observation in observations
+        ],
+    }
+    summary["digest"] = scene_observation_sequence_summary_digest(summary)
+    return summary
+
+
+def scene_observation_sequence_summary_digest(summary: Mapping[str, Any]) -> str:
+    payload = {
+        key: value
+        for key, value in _sequence_summary_projection(summary).items()
+        if key != "digest"
+    }
+    return hashlib.sha256(
+        json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    ).hexdigest()
+
+
+def scene_observation_sequence_summary_json(summary: Mapping[str, Any]) -> str:
+    return json.dumps(summary, indent=2, sort_keys=True) + "\n"
+
+
+def save_scene_observation_sequence_summary(
+    summary: Mapping[str, Any],
+    path: str | Path,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(scene_observation_sequence_summary_json(summary), encoding="utf-8")
+    return output_path
+
+
+def load_scene_observation_sequence_summary(path: str | Path) -> dict[str, Any]:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise SpatialQAError("Scene observation sequence summary JSON must be an object")
+    return cast(dict[str, Any], payload)
+
+
+def validate_scene_observation_sequence_summary(
+    summary: Mapping[str, Any],
+) -> dict[str, Any]:
+    schema_version = summary.get("schema_version")
+    action = summary.get("action")
+    valid = summary.get("valid")
+    digest = summary.get("digest")
+    expected_digest = scene_observation_sequence_summary_digest(summary)
+    sequence_path = summary.get("path")
+    sequence_digest = summary.get("sequence_digest")
+    step_entries = _summary_step_entries(summary)
+    step_values = _summary_step_values(step_entries)
+    steps = _summary_steps(summary)
+    first_step = steps[0] if steps else None
+    last_step = steps[-1] if steps else None
+    unique_object_ids = _summary_unique_object_ids(summary)
+    checks = [
+        {
+            "name": "schema_version",
+            "passed": schema_version == SCENE_OBSERVATION_SEQUENCE_SUMMARY_SCHEMA_VERSION,
+            "expected": SCENE_OBSERVATION_SEQUENCE_SUMMARY_SCHEMA_VERSION,
+            "actual": schema_version,
+        },
+        {
+            "name": "action",
+            "passed": action == "summarize_observation_sequence",
+            "expected": "summarize_observation_sequence",
+            "actual": action,
+        },
+        {
+            "name": "summary_valid",
+            "passed": valid is True,
+            "expected": True,
+            "actual": valid,
+        },
+        {
+            "name": "summary_digest",
+            "passed": digest == expected_digest,
+            "expected": expected_digest,
+            "actual": digest,
+        },
+        {
+            "name": "sequence_path_present",
+            "passed": _is_non_empty_string(sequence_path),
+            "expected": "non-empty explicit local path",
+            "actual": sequence_path,
+        },
+        {
+            "name": "sequence_digest_format",
+            "passed": _is_sha256_hexdigest(sequence_digest),
+            "expected": "64 lowercase sha256 hex characters",
+            "actual": sequence_digest,
+        },
+        {
+            "name": "by_step_entries_valid",
+            "passed": step_entries is not None,
+        },
+        {
+            "name": "observation_count_matches_by_step",
+            "passed": summary.get("observation_count")
+            == (len(step_entries) if step_entries is not None else None),
+            "expected": summary.get("observation_count"),
+            "actual": len(step_entries) if step_entries is not None else None,
+        },
+        {
+            "name": "steps_match_by_step",
+            "passed": steps == step_values,
+            "expected": steps,
+            "actual": step_values,
+        },
+        {
+            "name": "first_step_matches_steps",
+            "passed": summary.get("first_step") == first_step,
+            "expected": summary.get("first_step"),
+            "actual": first_step,
+        },
+        {
+            "name": "last_step_matches_steps",
+            "passed": summary.get("last_step") == last_step,
+            "expected": summary.get("last_step"),
+            "actual": last_step,
+        },
+        _summary_step_count_check(
+            summary,
+            step_entries,
+            "object_observation_count",
+            "object_count",
+            "object_observation_count_matches_steps",
+        ),
+        _summary_step_count_check(
+            summary,
+            step_entries,
+            "visible_object_observation_count",
+            "visible_object_count",
+            "visible_object_observation_count_matches_steps",
+        ),
+        _summary_step_count_check(
+            summary,
+            step_entries,
+            "hidden_object_observation_count",
+            "hidden_object_count",
+            "hidden_object_observation_count_matches_steps",
+        ),
+        _summary_step_count_check(
+            summary,
+            step_entries,
+            "low_confidence_object_observation_count",
+            "low_confidence_object_count",
+            "low_confidence_object_observation_count_matches_steps",
+        ),
+        _summary_step_count_check(
+            summary,
+            step_entries,
+            "reobserve_candidate_observation_count",
+            "reobserve_candidate_count",
+            "reobserve_candidate_observation_count_matches_steps",
+        ),
+        {
+            "name": "unique_object_count_matches_ids",
+            "passed": summary.get("unique_object_count")
+            == (len(unique_object_ids) if unique_object_ids is not None else None),
+            "expected": summary.get("unique_object_count"),
+            "actual": len(unique_object_ids) if unique_object_ids is not None else None,
+        },
+        {
+            "name": "object_label_counts_valid",
+            "passed": _summary_label_counts_valid(summary.get("by_object_label")),
+        },
+    ]
+    return {
+        "valid": all(check["passed"] is True for check in checks),
+        "schema_version": schema_version,
+        "digest": digest,
+        "checks": checks,
+    }
+
+
+def compare_scene_observation_sequence_summary(
+    summary: Mapping[str, Any],
+) -> dict[str, Any]:
+    sequence_path = _required_str(summary, "path")
+    low_confidence_threshold = _number_from_value(
+        summary.get("low_confidence_threshold"),
+        "low_confidence_threshold",
+    )
+    observations = load_scene_observation_sequence(sequence_path)
+    current_summary = scene_observation_sequence_summary(
+        observations,
+        low_confidence_threshold=low_confidence_threshold,
+    )
+    saved_summary = _sequence_summary_projection(summary)
+    saved_sequence_digest = saved_summary.get("sequence_digest")
+    current_sequence_digest = current_summary["sequence_digest"]
+    saved_digest = saved_summary.get("digest")
+    current_digest = current_summary["digest"]
+    summary_differences = _nested_differences(saved_summary, current_summary)
+    checks = [
+        {
+            "name": "saved_summary_valid",
+            "passed": validate_scene_observation_sequence_summary(summary)["valid"] is True,
+        },
+        {
+            "name": "sequence_digest_matches_current",
+            "passed": saved_sequence_digest == current_sequence_digest,
+            "expected": saved_sequence_digest,
+            "actual": current_sequence_digest,
+        },
+        {
+            "name": "sequence_summary_matches_current",
+            "passed": saved_summary == current_summary,
+            "expected": saved_summary,
+            "actual": current_summary,
+        },
+    ]
+    if summary_differences:
+        checks[2]["differences"] = summary_differences
+    return {
+        "matches": all(check["passed"] is True for check in checks),
+        "sequence_path": sequence_path,
+        "saved_sequence_digest": saved_sequence_digest,
+        "current_sequence_digest": current_sequence_digest,
+        "saved_digest": saved_digest,
+        "current_digest": current_digest,
+        "checks": checks,
+    }
 
 
 def scene_observation_sequence_from_json(payload: str) -> tuple[SceneObservation, ...]:
@@ -625,6 +966,135 @@ def _ingest_result_to_dict(result: IngestResult) -> dict[str, Any]:
         "state_edge_ids": list(result.state_edge_ids),
         "inferred_edge_ids": list(result.inferred_edge_ids),
     }
+
+
+def _scene_observation_step_summary(
+    observation: SceneObservation,
+    low_confidence_threshold: float,
+) -> dict[str, Any]:
+    return {
+        "step": observation.step,
+        "agent_pose": observation.agent_pose is not None,
+        "room_count": len(observation.rooms),
+        "region_count": len(observation.regions),
+        "object_count": len(observation.objects),
+        "object_ids": sorted(obj.object_id for obj in observation.objects),
+        "visible_object_count": sum(1 for obj in observation.objects if obj.visible),
+        "hidden_object_count": sum(1 for obj in observation.objects if not obj.visible),
+        "low_confidence_object_count": sum(
+            1 for obj in observation.objects if obj.confidence < low_confidence_threshold
+        ),
+        "reobserve_candidate_count": sum(
+            1
+            for obj in observation.objects
+            if not obj.visible and obj.confidence < low_confidence_threshold
+        ),
+    }
+
+
+def _observation_steps_from_payload(observations_value: object) -> list[Any] | None:
+    if not isinstance(observations_value, Sequence) or isinstance(observations_value, str):
+        return None
+    steps: list[Any] = []
+    for item in observations_value:
+        if not isinstance(item, Mapping):
+            return None
+        steps.append(item.get("step"))
+    return steps
+
+
+def _sorted_counts(values: Iterable[str]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for value in values:
+        counts[value] = counts.get(value, 0) + 1
+    return {key: counts[key] for key in sorted(counts)}
+
+
+def _sequence_summary_projection(summary: Mapping[str, Any]) -> dict[str, Any]:
+    return {
+        key: value
+        for key, value in summary.items()
+        if key not in {"action", "path", "valid"}
+    }
+
+
+def _summary_step_entries(
+    summary: Mapping[str, Any],
+) -> list[Mapping[str, Any]] | None:
+    by_step = summary.get("by_step")
+    if not isinstance(by_step, Sequence) or isinstance(by_step, str):
+        return None
+    entries: list[Mapping[str, Any]] = []
+    for item in by_step:
+        if not isinstance(item, Mapping):
+            return None
+        entries.append(cast(Mapping[str, Any], item))
+    return entries
+
+
+def _summary_steps(summary: Mapping[str, Any]) -> list[Any] | None:
+    steps = summary.get("steps")
+    if not isinstance(steps, Sequence) or isinstance(steps, str):
+        return None
+    return list(steps)
+
+
+def _summary_step_values(entries: list[Mapping[str, Any]] | None) -> list[Any] | None:
+    if entries is None:
+        return None
+    return [entry.get("step") for entry in entries]
+
+
+def _summary_unique_object_ids(summary: Mapping[str, Any]) -> list[str] | None:
+    object_ids = summary.get("unique_object_ids")
+    if not isinstance(object_ids, Sequence) or isinstance(object_ids, str):
+        return None
+    if not all(isinstance(item, str) for item in object_ids):
+        return None
+    return list(object_ids)
+
+
+def _summary_step_count_check(
+    summary: Mapping[str, Any],
+    entries: list[Mapping[str, Any]] | None,
+    summary_field: str,
+    step_field: str,
+    check_name: str,
+) -> dict[str, Any]:
+    actual = _summary_step_int_sum(entries, step_field)
+    return {
+        "name": check_name,
+        "passed": summary.get(summary_field) == actual,
+        "expected": summary.get(summary_field),
+        "actual": actual,
+    }
+
+
+def _summary_step_int_sum(
+    entries: list[Mapping[str, Any]] | None,
+    field_name: str,
+) -> int | None:
+    if entries is None:
+        return None
+    total = 0
+    for entry in entries:
+        value = entry.get(field_name)
+        if not isinstance(value, int) or isinstance(value, bool) or value < 0:
+            return None
+        total += value
+    return total
+
+
+def _summary_label_counts_valid(value: object) -> bool:
+    if not isinstance(value, Mapping):
+        return False
+    return all(
+        isinstance(label, str)
+        and isinstance(count, int)
+        and not isinstance(count, bool)
+        and count >= 0
+        for label, count in value.items()
+    )
 
 
 def _node_observation_to_dict(observation: NodeObservation) -> dict[str, Any]:

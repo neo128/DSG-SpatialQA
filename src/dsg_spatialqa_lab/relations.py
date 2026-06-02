@@ -22,7 +22,7 @@ class RelationEngine:
     """
 
     _EGOCENTRIC_RELATIONS = {"LEFT_OF", "RIGHT_OF", "FRONT_OF", "BEHIND", "NEAR"}
-    _WORLD_RELATIONS = {"ABOVE", "ON", "NEAR"}
+    _WORLD_RELATIONS = {"ABOVE", "ON", "INSIDE", "SUPPORTS", "NEAR"}
 
     def __init__(self, config: RelationConfig | None = None) -> None:
         self.config = config or RelationConfig()
@@ -80,6 +80,10 @@ class RelationEngine:
             return src.min_z >= dst.max_z - self.config.margin
         if relation == "ON":
             return self._is_on(src, dst)
+        if relation == "INSIDE":
+            return self._is_inside(src, dst)
+        if relation == "SUPPORTS":
+            return self._is_on(dst, src)
         raise SpatialQAError(f"Unsupported world-frame relation: {relation}")
 
     def _is_on(self, src: BBox3D, dst: BBox3D) -> bool:
@@ -87,6 +91,15 @@ class RelationEngine:
         support_area = src.xy_overlap_area(dst, margin=self.config.margin)
         required_area = src.xy_area() * self.config.support_overlap_ratio
         return vertical_touch and support_area >= required_area
+
+    def _is_inside(self, src: BBox3D, dst: BBox3D) -> bool:
+        center = src.center
+        margin = self.config.margin
+        return (
+            dst.min_x - margin <= center.x <= dst.max_x + margin
+            and dst.min_y - margin <= center.y <= dst.max_y + margin
+            and dst.min_z - margin <= center.z <= dst.max_z + margin
+        )
 
     @staticmethod
     def _to_agent_xy(pose: Pose3D, agent_pose: Pose3D) -> tuple[float, float]:

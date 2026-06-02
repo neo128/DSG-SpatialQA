@@ -159,8 +159,12 @@ def test_evaluate_cli_writes_report_to_explicit_path(
     assert saved_report == stdout_report
     assert saved_report["summary"]["selected_cases"] == [
         "ambiguous_mug_pick_by_label",
+        "needs_reobserve_bowl_pick_target_not_visible",
+        "needs_reobserve_cup_pick_low_confidence",
         "needs_reobserve_spoon_pick",
+        "tabletop_missing_label_pick_error",
         "tabletop_missing_object_pick_error",
+        "tabletop_missing_target_pick_error",
         "tabletop_mug_pick",
     ]
 
@@ -178,7 +182,8 @@ def test_evaluate_cli_lists_case_metadata_without_suite_execution(
         tags=("qa",),
         question_types=("object_room",),
     )
-    assert listing["case_count"] == 1
+    assert listing["schema_version"] == "dsg-spatialqa-lab.evaluation-case-listing.v1"
+    assert listing["case_count"] == 2
     assert listing["evaluation_cases"] == list(
         list_evaluation_case_metadata(
             tags=("qa",),
@@ -204,8 +209,9 @@ def test_evaluate_cli_validates_explicit_case_listing_file(
 
     validation = json.loads(capsys.readouterr().out)
     assert validation["valid"] is True
+    assert validation["schema_version"] == "dsg-spatialqa-lab.evaluation-case-listing.v1"
     assert validation["digest"] == listing["digest"]
-    assert validation["checks"][0]["name"] == "listing_digest"
+    assert validation["checks"][1]["name"] == "listing_digest"
 
 
 def test_evaluate_cli_rejects_tampered_case_listing_count(
@@ -224,7 +230,12 @@ def test_evaluate_cli_rejects_tampered_case_listing_count(
 
     validation = json.loads(capsys.readouterr().out)
     assert validation["valid"] is False
-    assert validation["checks"][1]["name"] == "case_count_matches_listing"
+    case_count_check = next(
+        check
+        for check in validation["checks"]
+        if check["name"] == "case_count_matches_listing"
+    )
+    assert case_count_check["passed"] is False
 
 
 def test_evaluate_cli_compares_case_listing_with_current_metadata(
@@ -295,12 +306,36 @@ def test_evaluate_cli_filters_vla_error_cases(capsys: CaptureFixture[str]) -> No
 
     report = json.loads(capsys.readouterr().out)
     assert report["summary"]["selected_cases"] == [
+        "needs_reobserve_bowl_pick_target_not_visible",
+        "needs_reobserve_bowl_place_reference_target_not_visible",
+        "needs_reobserve_bowl_place_target_not_visible",
+        "needs_reobserve_cup_pick_low_confidence",
+        "needs_reobserve_cup_place_reference_low_confidence",
+        "needs_reobserve_cup_place_target_low_confidence",
+        "tabletop_missing_label_pick_error",
         "tabletop_missing_object_pick_error",
+        "tabletop_missing_reference_input_place_error",
         "tabletop_missing_reference_place_error",
+        "tabletop_missing_target_input_place_error",
+        "tabletop_missing_target_pick_error",
         "tabletop_unsupported_place_relation_error",
     ]
-    assert report["summary"]["passed"] == 3
+    assert report["summary"]["passed"] == 13
     assert report["runtime_error_categories"] == [
+        {
+            "category": "low_confidence",
+            "count": 3,
+            "cases": [
+                "needs_reobserve_cup_pick_low_confidence",
+                "needs_reobserve_cup_place_reference_low_confidence",
+                "needs_reobserve_cup_place_target_low_confidence",
+            ],
+        },
+        {
+            "category": "missing_label",
+            "count": 1,
+            "cases": ["tabletop_missing_label_pick_error"],
+        },
         {
             "category": "missing_object",
             "count": 2,
@@ -310,11 +345,69 @@ def test_evaluate_cli_filters_vla_error_cases(capsys: CaptureFixture[str]) -> No
             ],
         },
         {
+            "category": "missing_reference",
+            "count": 1,
+            "cases": ["tabletop_missing_reference_input_place_error"],
+        },
+        {
+            "category": "missing_target",
+            "count": 2,
+            "cases": [
+                "tabletop_missing_target_input_place_error",
+                "tabletop_missing_target_pick_error",
+            ],
+        },
+        {
+            "category": "target_not_visible",
+            "count": 3,
+            "cases": [
+                "needs_reobserve_bowl_pick_target_not_visible",
+                "needs_reobserve_bowl_place_reference_target_not_visible",
+                "needs_reobserve_bowl_place_target_not_visible",
+            ],
+        },
+        {
             "category": "unsupported_relation",
             "count": 1,
             "cases": ["tabletop_unsupported_place_relation_error"],
         },
     ]
+    assert report["runtime_error_metrics"] == {
+        "case_count": 13,
+        "cases_with_runtime_error_count": 13,
+        "cases_without_runtime_error_count": 0,
+        "runtime_error_rate": 1.0,
+        "by_category": {
+            "low_confidence": {
+                "case_count": 3,
+                "case_rate": 3 / 13,
+            },
+            "missing_label": {
+                "case_count": 1,
+                "case_rate": 1 / 13,
+            },
+            "missing_object": {
+                "case_count": 2,
+                "case_rate": 2 / 13,
+            },
+            "missing_reference": {
+                "case_count": 1,
+                "case_rate": 1 / 13,
+            },
+            "missing_target": {
+                "case_count": 2,
+                "case_rate": 2 / 13,
+            },
+            "target_not_visible": {
+                "case_count": 3,
+                "case_rate": 3 / 13,
+            },
+            "unsupported_relation": {
+                "case_count": 1,
+                "case_rate": 1 / 13,
+            },
+        },
+    }
 
 
 def test_evaluate_cli_compares_report_with_current_run(
@@ -350,7 +443,9 @@ def test_evaluate_cli_validates_explicit_report_file(
 
     validation = json.loads(capsys.readouterr().out)
     assert validation["valid"] is True
+    assert validation["schema_version"] == "dsg-spatialqa-lab.evaluation-report.v1"
     assert validation["digest"] == report["digest"]
+    assert validation["case_selection_digest"] == report["case_selection_digest"]
     assert validation["report_digest"] == report["report_digest"]
 
 
@@ -418,9 +513,10 @@ def test_evaluate_cli_prints_benchmark_bundle_json(
     }
     assert [case["name"] for case in bundle["evaluation_cases"]] == [
         "multi_room_rearrangement_reobserve_targets",
+        "needs_reobserve_spoon_label_candidates",
         "needs_reobserve_targets",
     ]
-    assert bundle["report"]["summary"]["passed"] == 2
+    assert bundle["report"]["summary"]["passed"] == 3
 
 
 def test_evaluate_cli_prints_filtered_manifest_without_suite_execution(
@@ -723,7 +819,7 @@ def test_evaluate_cli_rejects_tampered_bundle_report_with_differences(
     )
     assert validation["valid"] is False
     assert report_check["differences"] == [
-        {"path": "metrics.case_count", "expected": 2, "actual": 999}
+        {"path": "metrics.case_count", "expected": 3, "actual": 999}
     ]
 
 
@@ -746,7 +842,7 @@ def test_evaluate_cli_rejects_tampered_bundle_coverage(
     assert validation["checks"][-1]["name"] == "coverage_matches_manifest"
     assert validation["checks"][-1]["passed"] is False
     assert validation["checks"][-1]["differences"] == [
-        {"path": "case_count", "expected": 2, "actual": 999}
+        {"path": "case_count", "expected": 3, "actual": 999}
     ]
 
 

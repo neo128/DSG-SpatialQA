@@ -396,13 +396,14 @@ def test_graph_report_to_file_compare_reports_graph_json_drift(tmp_path: Path) -
 def test_graph_summary_reports_visibility_and_reobserve_counts() -> None:
     summary = graph_summary(load_scene_fixture("needs_reobserve"))
 
-    assert summary["object_count"] == 5
-    assert summary["visible_object_count"] == 3
+    assert summary["object_count"] == 6
+    assert summary["visible_object_count"] == 4
     assert summary["hidden_object_count"] == 2
-    assert summary["low_confidence_object_count"] == 1
+    assert summary["low_confidence_object_count"] == 2
     assert summary["reobserve_candidate_count"] == 1
     assert summary["by_object_label"] == {
         "bowl": 1,
+        "cup": 1,
         "mug": 1,
         "plate": 1,
         "spoon": 1,
@@ -539,7 +540,7 @@ def test_scene_fixture_metadata_manifest_is_deterministic_and_filterable() -> No
         {
             "name": "needs_reobserve",
             "description": (
-                "Tabletop scene with one invisible low-confidence spoon requiring re-observation."
+                "Tabletop scene with invisible and low-confidence objects for re-observation checks."
             ),
             "tags": ["static", "tabletop", "reobserve"],
         },
@@ -607,7 +608,7 @@ def test_scene_fixture_manifest_includes_schema_filters_and_digest() -> None:
             {
                 "name": "needs_reobserve",
                 "description": (
-                    "Tabletop scene with one invisible low-confidence spoon requiring re-observation."
+                    "Tabletop scene with invisible and low-confidence objects for re-observation checks."
                 ),
                 "tags": ["static", "tabletop", "reobserve"],
             },
@@ -784,9 +785,11 @@ def test_needs_reobserve_fixture_supports_qa_regression() -> None:
     assert fixture.name == "needs_reobserve"
     assert fixture.tags == ("static", "tabletop", "reobserve")
     assert fixture.description == (
-        "Tabletop scene with one invisible low-confidence spoon requiring re-observation."
+        "Tabletop scene with invisible and low-confidence objects for re-observation checks."
     )
     assert [state.object_id for state in GraphTool(graph).reobserve_targets()] == ["spoon_1"]
+    assert graph.get_object_state("cup_1").visible is True
+    assert graph.get_object_state("cup_1").confidence == 0.2
     assert loaded is not graph
     assert response.error is None
     assert response.answer["count"] == 1

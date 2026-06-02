@@ -11,6 +11,9 @@ requires-python = ">=3.11"
 dependencies = []
 
 [project.optional-dependencies]
+ai2thor = [
+  "ai2thor",
+]
 dev = [
   "build>=1.2",
   "mypy>=1.10",

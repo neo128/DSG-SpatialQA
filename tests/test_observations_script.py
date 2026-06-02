@@ -22,6 +22,7 @@ from dsg_spatialqa_lab import (
     save_scene_observation_sequence,
     save_graph_json,
     scene_observation_sequence_digest,
+    scene_observation_sequence_summary,
 )
 
 
@@ -44,6 +45,277 @@ def load_observations_script() -> ModuleType:
     sys.modules[spec.name] = module
     spec.loader.exec_module(module)
     return module
+
+
+def test_observations_cli_summarizes_explicit_sequence_without_graph_ingest(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_observations_script()
+    main = cast(MainFn, getattr(module, "main"))
+    sequence_path = tmp_path / "observations" / "mock-sequence.json"
+    summary_path = tmp_path / "reports" / "mock-sequence-summary.json"
+    graph_path = tmp_path / "graphs" / "unused-graph.json"
+    observations = (
+        SceneObservation(
+            step=1,
+            agent_pose=Pose3D(0.0, 0.0, 0.0),
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                ),
+            ),
+        ),
+        SceneObservation(
+            step=2,
+            objects=(
+                ObjectObservation(
+                    "spoon_1",
+                    "spoon",
+                    Pose3D(0.2, 1.2, 0.78),
+                    BBox3D(center=Pose3D(0.2, 1.2, 0.78), size=(0.2, 0.04, 0.02)),
+                    confidence=0.2,
+                    visible=False,
+                ),
+            ),
+        ),
+    )
+    save_scene_observation_sequence(observations, sequence_path)
+
+    assert (
+        main(
+            [
+                "--summarize-sequence",
+                str(sequence_path),
+                "--report",
+                str(summary_path),
+            ]
+        )
+        == 0
+    )
+
+    stdout_summary = json.loads(capsys.readouterr().out)
+    saved_summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    assert saved_summary == stdout_summary
+    assert stdout_summary == {
+        "action": "summarize_observation_sequence",
+        "path": str(sequence_path),
+        "valid": True,
+        **scene_observation_sequence_summary(observations),
+    }
+    assert not graph_path.exists()
+
+
+def test_observations_cli_validates_explicit_sequence_without_graph_ingest(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_observations_script()
+    main = cast(MainFn, getattr(module, "main"))
+    sequence_path = tmp_path / "observations" / "mock-sequence.json"
+    validation_path = tmp_path / "reports" / "mock-sequence-validation.json"
+    graph_path = tmp_path / "graphs" / "unused-graph.json"
+    observations = (
+        SceneObservation(
+            step=1,
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                ),
+            ),
+        ),
+    )
+    save_scene_observation_sequence(observations, sequence_path)
+
+    assert (
+        main(
+            [
+                "--validate-sequence",
+                str(sequence_path),
+                "--report",
+                str(validation_path),
+            ]
+        )
+        == 0
+    )
+
+    stdout_validation = json.loads(capsys.readouterr().out)
+    saved_validation = json.loads(validation_path.read_text(encoding="utf-8"))
+    assert saved_validation == stdout_validation
+    assert stdout_validation["action"] == "validate_observation_sequence"
+    assert stdout_validation["path"] == str(sequence_path)
+    assert stdout_validation["valid"] is True
+    assert stdout_validation["digest"] == scene_observation_sequence_digest(observations)
+    assert stdout_validation["summary"] == scene_observation_sequence_summary(observations)
+    assert [check["passed"] for check in stdout_validation["checks"]] == [True] * 5
+    assert not graph_path.exists()
+
+
+def test_observations_cli_returns_nonzero_for_invalid_sequence_validation(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_observations_script()
+    main = cast(MainFn, getattr(module, "main"))
+    sequence_path = tmp_path / "invalid-sequence.json"
+    sequence_path.write_text('{"schema_version": "invalid"}\n', encoding="utf-8")
+
+    assert main(["--validate-sequence", str(sequence_path)]) == 1
+
+    validation = json.loads(capsys.readouterr().out)
+    assert validation["action"] == "validate_observation_sequence"
+    assert validation["path"] == str(sequence_path)
+    assert validation["valid"] is False
+    assert validation["schema_version"] == "invalid"
+    assert validation["digest"] is None
+    assert validation["summary"] is None
+    assert validation["error"] == "Unsupported scene observation sequence schema version: invalid"
+
+
+def test_observations_cli_validates_and_compares_sequence_summary(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_observations_script()
+    main = cast(MainFn, getattr(module, "main"))
+    sequence_path = tmp_path / "observations" / "mock-sequence.json"
+    summary_path = tmp_path / "reports" / "mock-sequence-summary.json"
+    observations = (
+        SceneObservation(
+            step=1,
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                ),
+            ),
+        ),
+    )
+    save_scene_observation_sequence(observations, sequence_path)
+    assert (
+        main(
+            [
+                "--summarize-sequence",
+                str(sequence_path),
+                "--report",
+                str(summary_path),
+            ]
+        )
+        == 0
+    )
+    capsys.readouterr()
+
+    assert main(["--validate-sequence-summary", str(summary_path)]) == 0
+
+    validation = json.loads(capsys.readouterr().out)
+    assert validation["action"] == "validate_observation_sequence_summary"
+    assert validation["path"] == str(summary_path)
+    assert validation["valid"] is True
+    assert [check["passed"] for check in validation["checks"]] == [True] * 18
+
+    assert main(["--compare-sequence-summary", str(summary_path)]) == 0
+
+    comparison = json.loads(capsys.readouterr().out)
+    assert comparison["action"] == "compare_observation_sequence_summary"
+    assert comparison["path"] == str(summary_path)
+    assert comparison["matches"] is True
+    assert comparison["sequence_path"] == str(sequence_path)
+    assert comparison["saved_sequence_digest"] == scene_observation_sequence_digest(
+        observations
+    )
+    assert comparison["current_sequence_digest"] == scene_observation_sequence_digest(
+        observations
+    )
+    assert [check["passed"] for check in comparison["checks"]] == [True, True, True]
+
+
+def test_observations_cli_returns_nonzero_for_sequence_summary_drift(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_observations_script()
+    main = cast(MainFn, getattr(module, "main"))
+    sequence_path = tmp_path / "observations" / "mock-sequence.json"
+    summary_path = tmp_path / "reports" / "mock-sequence-summary.json"
+    first_sequence = (
+        SceneObservation(
+            step=1,
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                ),
+            ),
+        ),
+    )
+    drifted_sequence = (
+        SceneObservation(
+            step=1,
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                ),
+                ObjectObservation(
+                    "cup_1",
+                    "cup",
+                    Pose3D(0.1, 1.0, 0.78),
+                    BBox3D(center=Pose3D(0.1, 1.0, 0.78), size=(0.1, 0.1, 0.12)),
+                    confidence=0.9,
+                    visible=True,
+                ),
+            ),
+        ),
+    )
+    save_scene_observation_sequence(first_sequence, sequence_path)
+    assert (
+        main(
+            [
+                "--summarize-sequence",
+                str(sequence_path),
+                "--report",
+                str(summary_path),
+            ]
+        )
+        == 0
+    )
+    capsys.readouterr()
+    save_scene_observation_sequence(drifted_sequence, sequence_path)
+
+    assert main(["--compare-sequence-summary", str(summary_path)]) == 1
+
+    comparison = json.loads(capsys.readouterr().out)
+    checks = {check["name"]: check for check in comparison["checks"]}
+    assert comparison["action"] == "compare_observation_sequence_summary"
+    assert comparison["matches"] is False
+    assert checks["sequence_digest_matches_current"]["passed"] is False
+    assert {
+        "path": "unique_object_ids",
+        "expected": ["mug_1"],
+        "actual": ["cup_1", "mug_1"],
+    } in checks["sequence_summary_matches_current"]["differences"]
 
 
 def test_observations_cli_ingests_explicit_sequence_to_graph_json_and_report(

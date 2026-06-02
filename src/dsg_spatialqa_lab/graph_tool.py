@@ -23,7 +23,7 @@ from dsg_spatialqa_lab.schema import (
 
 class GraphTool:
     _AGENT_RELATIONS = frozenset({"LEFT_OF", "RIGHT_OF", "FRONT_OF", "BEHIND", "NEAR"})
-    _WORLD_RELATIONS = frozenset({"ABOVE", "ON", "NEAR"})
+    _WORLD_RELATIONS = frozenset({"ABOVE", "ON", "INSIDE", "SUPPORTS", "NEAR"})
 
     def __init__(
         self,
@@ -189,6 +189,19 @@ class GraphTool:
             }
             for state, distance in self._nearest_candidate_states(src, candidates)
         ]
+
+    def compute_distance(self, src: str, dst: str) -> dict[str, Any]:
+        src_pose = self._pose_for_node(src)
+        dst_pose = self._pose_for_node(dst)
+        return {
+            "src": src,
+            "dst": dst,
+            "distance": round(src_pose.distance_to(dst_pose), 6),
+            "src_pose": src_pose.to_dict(),
+            "dst_pose": dst_pose.to_dict(),
+            "relation": "DISTANCE",
+            "reference_frame": "world",
+        }
 
     def _nearest_candidate_states(
         self,
@@ -883,6 +896,12 @@ class GraphTool:
         return value
 
     @staticmethod
+    def _float_value(value: Any, key: str) -> float:
+        if not isinstance(value, (int, float)) or isinstance(value, bool):
+            raise SpatialQAError(f"{key} must be a number")
+        return float(value)
+
+    @staticmethod
     def _node_matches_query(node: Node, normalized_query: str) -> bool:
         searchable = " ".join(
             [
@@ -999,6 +1018,13 @@ class GraphTool:
             return None
         if isinstance(pose, Pose3D):
             return pose
+        if isinstance(pose, Mapping):
+            return Pose3D(
+                x=GraphTool._float_value(pose.get("x"), "target_pose.x"),
+                y=GraphTool._float_value(pose.get("y"), "target_pose.y"),
+                z=GraphTool._float_value(pose.get("z"), "target_pose.z"),
+                yaw=GraphTool._float_value(pose.get("yaw", 0.0), "target_pose.yaw"),
+            )
         raise SpatialQAError("Action target_pose must be Pose3D")
 
     @staticmethod

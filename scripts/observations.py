@@ -1,25 +1,32 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 from typing import Any
 
 from dsg_spatialqa_lab import (
     SpatialQAError,
     compare_observation_ingest_report,
+    compare_scene_observation_sequence_summary,
     ingest_scene_observation_sequence,
     load_observation_ingest_report,
     load_scene_observation_sequence,
+    load_scene_observation_sequence_summary,
     observation_ingest_report,
     observation_ingest_report_json,
     save_graph_json,
     scene_observation_sequence_digest,
+    scene_observation_sequence_summary,
+    validate_scene_observation_sequence_payload,
+    validate_scene_observation_sequence_summary,
     validate_observation_ingest_report,
 )
 
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
+        allow_abbrev=False,
         description=(
             "Ingest deterministic DSG-SpatialQA SceneObservation sequence JSON "
             "from an explicit local file and export graph JSON."
@@ -65,7 +72,124 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         help="Compare an explicit local observation ingest report with a current local re-ingest.",
     )
+    parser.add_argument(
+        "--summarize-sequence",
+        type=Path,
+        help=(
+            "Summarize an explicit local SceneObservation sequence JSON file "
+            "without ingesting it into a graph."
+        ),
+    )
+    parser.add_argument(
+        "--validate-sequence",
+        type=Path,
+        help=(
+            "Validate an explicit local SceneObservation sequence JSON file "
+            "without ingesting it into a graph."
+        ),
+    )
+    parser.add_argument(
+        "--validate-sequence-summary",
+        type=Path,
+        help="Validate an explicit local SceneObservation sequence summary JSON file.",
+    )
+    parser.add_argument(
+        "--compare-sequence-summary",
+        type=Path,
+        help=(
+            "Compare an explicit local SceneObservation sequence summary "
+            "with its recorded sequence file."
+        ),
+    )
     args = parser.parse_args(argv)
+
+    if args.summarize_sequence is not None:
+        try:
+            observations = load_scene_observation_sequence(args.summarize_sequence)
+            payload = {
+                "action": "summarize_observation_sequence",
+                "path": str(args.summarize_sequence),
+                "valid": True,
+                **scene_observation_sequence_summary(observations),
+            }
+        except (OSError, SpatialQAError, ValueError) as exc:
+            payload = _error_report(
+                args.summarize_sequence,
+                None,
+                exc,
+                action="summarize_observation_sequence",
+            )
+            _emit_json_payload(payload, args.report)
+            return 1
+        _emit_json_payload(payload, args.report)
+        return 0
+
+    if args.validate_sequence is not None:
+        try:
+            validation = validate_scene_observation_sequence_payload(
+                _load_json_object(args.validate_sequence, "scene_observation_sequence")
+            )
+        except (OSError, SpatialQAError, ValueError) as exc:
+            payload = _error_report(
+                args.validate_sequence,
+                None,
+                exc,
+                action="validate_observation_sequence",
+            )
+            _emit_json_payload(payload, args.report)
+            return 1
+        payload = {
+            "action": "validate_observation_sequence",
+            "path": str(args.validate_sequence),
+            **validation,
+        }
+        _emit_json_payload(payload, args.report)
+        return 0 if validation["valid"] is True else 1
+
+    if args.validate_sequence_summary is not None:
+        try:
+            validation = validate_scene_observation_sequence_summary(
+                load_scene_observation_sequence_summary(args.validate_sequence_summary)
+            )
+        except (OSError, SpatialQAError, ValueError) as exc:
+            payload = _error_report(
+                args.validate_sequence_summary,
+                None,
+                exc,
+                action="validate_observation_sequence_summary",
+            )
+            _emit_json_payload(payload, args.report)
+            return 1
+        payload = {
+            "action": "validate_observation_sequence_summary",
+            "path": str(args.validate_sequence_summary),
+            **validation,
+        }
+        _emit_json_payload(payload, args.report)
+        return 0 if validation["valid"] is True else 1
+
+    if args.compare_sequence_summary is not None:
+        try:
+            comparison = compare_scene_observation_sequence_summary(
+                load_scene_observation_sequence_summary(args.compare_sequence_summary)
+            )
+        except (OSError, SpatialQAError, ValueError) as exc:
+            payload = _error_report(
+                args.compare_sequence_summary,
+                None,
+                exc,
+                action="compare_observation_sequence_summary",
+                matches=False,
+            )
+            _emit_json_payload(payload, args.report)
+            return 1
+        payload = {
+            "action": "compare_observation_sequence_summary",
+            "path": str(args.compare_sequence_summary),
+            **comparison,
+        }
+        _emit_json_payload(payload, args.report)
+        return 0 if comparison["matches"] is True else 1
 
     if args.validate_report is not None:
         try:
@@ -173,6 +297,13 @@ def _emit_json_payload(payload: dict[str, Any], report_path: Path | None = None)
         report_path.parent.mkdir(parents=True, exist_ok=True)
         report_path.write_text(payload_json, encoding="utf-8")
     print(payload_json, end="")
+
+
+def _load_json_object(path: Path, label: str) -> dict[str, Any]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise SpatialQAError(f"{label} JSON must be an object")
+    return payload
 
 
 if __name__ == "__main__":

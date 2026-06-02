@@ -159,6 +159,101 @@ def test_structured_graph_query_accepts_mapping_and_is_deterministically_limited
     assert [edge.id for edge in result["edges"]] == ["agent-VISIBLE_FROM-mug_1-2"]
 
 
+def test_compute_distance_returns_stable_metric_evidence() -> None:
+    tool = GraphTool(build_scene())
+
+    assert tool.compute_distance("mug_1", "plate_1") == {
+        "src": "mug_1",
+        "dst": "plate_1",
+        "distance": 0.752396,
+        "src_pose": {"x": -0.4, "y": 1.0, "z": 0.78, "yaw": 0.0},
+        "dst_pose": {"x": 0.35, "y": 1.0, "z": 0.72, "yaw": 0.0},
+        "relation": "DISTANCE",
+        "reference_frame": "world",
+    }
+
+    with pytest.raises(SpatialQAError, match="Node pose not found: missing"):
+        tool.compute_distance("mug_1", "missing")
+
+
+def test_update_spatial_relations_infers_inside_and_supports_relations() -> None:
+    graph = build_scene()
+    graph.upsert_object(
+        "cabinet_1",
+        "cabinet",
+        Pose3D(-0.4, 1.0, 0.9),
+        BBox3D(center=Pose3D(-0.4, 1.0, 0.9), size=(0.3, 0.3, 0.24)),
+        confidence=0.9,
+        visible=True,
+        step=1,
+    )
+    tool = GraphTool(
+        graph,
+        relation_engine=RelationEngine(RelationConfig(margin=0.0, on_vertical_margin=0.02)),
+    )
+
+    edges = tool.update_spatial_relations(
+        step=3,
+        object_ids=("mug_1", "table_1", "cabinet_1"),
+        relations=("INSIDE", "SUPPORTS"),
+        reference_frames=("world",),
+        evidence=("relation-test",),
+    )
+
+    assert [(edge.src, edge.relation, edge.dst, edge.reference_frame) for edge in edges] == [
+        ("mug_1", "INSIDE", "cabinet_1", "world"),
+        ("table_1", "SUPPORTS", "mug_1", "world"),
+    ]
+    assert all(edge.attributes == {"inferred": True} for edge in edges)
+    assert all(edge.evidence == ["relation-test"] for edge in edges)
+
+
+def test_explicit_placeholder_relations_query_image_and_object_frames() -> None:
+    graph = build_scene()
+    graph.add_edge(
+        "mug_1",
+        "OCCLUDES",
+        "plate_1",
+        "image",
+        0.8,
+        step=2,
+        evidence=["segmentation:0002"],
+    )
+    graph.add_edge(
+        "agent",
+        "REACHABLE_FROM",
+        "mug_1",
+        "object:mug_1",
+        0.7,
+        step=2,
+        evidence=["mock-navigation"],
+    )
+    tool = GraphTool(graph)
+
+    image_result = tool.query_graph(
+        GraphQuery(relations=("OCCLUDES",), reference_frame="image", max_edges=5)
+    )
+    object_result = tool.query_graph(
+        GraphQuery(relations=("REACHABLE_FROM",), reference_frame="object:mug_1", max_edges=5)
+    )
+
+    assert [edge.id for edge in image_result["edges"]] == ["mug_1-OCCLUDES-plate_1-2"]
+    assert [edge.evidence for edge in image_result["edges"]] == [["segmentation:0002"]]
+    assert [edge.id for edge in object_result["edges"]] == [
+        "agent-REACHABLE_FROM-mug_1-2"
+    ]
+
+
+def test_update_spatial_relations_rejects_unsupported_computed_reference_frame() -> None:
+    with pytest.raises(SpatialQAError, match="Unsupported reference frame: camera"):
+        GraphTool(build_scene()).update_spatial_relations(
+            step=3,
+            object_ids=("mug_1", "plate_1"),
+            relations=("NEAR",),
+            reference_frames=("camera",),
+        )
+
+
 def test_structured_graph_query_rejects_invalid_limits() -> None:
     tool = GraphTool(build_scene())
 
