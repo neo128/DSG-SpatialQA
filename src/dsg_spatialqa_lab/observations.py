@@ -913,7 +913,7 @@ class ObservationIngestor:
                 confidence=obj.confidence,
                 visible=obj.visible,
                 step=observation.step,
-                attributes=dict(obj.attributes),
+                attributes=_prediction_source_attributes(obj.attributes),
             )
             object_ids.append(obj.object_id)
             node_ids.add(obj.object_id)
@@ -929,6 +929,7 @@ class ObservationIngestor:
                 agent_id=observation.agent_id,
                 confidence=relation_confidence,
                 evidence=relation_evidence,
+                attributes={"source": "geometry_inference"},
             )
             inferred_edge_ids = tuple(edge.id for edge in inferred_edges)
 
@@ -1174,6 +1175,21 @@ def _bbox_from_mapping(payload: Mapping[str, Any]) -> BBox3D:
 
 def _attributes_from_mapping(payload: Mapping[str, Any]) -> dict[str, Any]:
     return dict(_as_mapping(payload.get("attributes", {}), "attributes"))
+
+
+def _prediction_source_attributes(attributes: Mapping[str, Any]) -> dict[str, Any]:
+    normalized = dict(attributes)
+    if _source_value(normalized) is not None:
+        normalized["source"] = _source_value(normalized)
+    return normalized
+
+
+def _source_value(attributes: Mapping[str, Any]) -> str | None:
+    for key in ("source", "source_name", "source_kind"):
+        value = attributes.get(key)
+        if isinstance(value, str) and value:
+            return value
+    return None
 
 
 def _stable_attributes(attributes: Mapping[str, Any]) -> dict[str, Any]:

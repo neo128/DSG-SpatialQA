@@ -895,6 +895,54 @@ def test_scene_observation_ingestion_updates_graph_and_infers_relations() -> Non
     assert "mug_1-ON-table_1-7" in result.inferred_edge_ids
 
 
+def test_scene_observation_ingestion_marks_prediction_sources() -> None:
+    graph = DynamicSceneGraph()
+    ingestor = ObservationIngestor(graph)
+
+    ingestor.ingest(
+        SceneObservation(
+            step=3,
+            agent_pose=Pose3D(0.0, 0.0, 0.0),
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                    attributes={"source": "depth_detector", "source_kind": "rgbd"},
+                ),
+                ObjectObservation(
+                    "plate_1",
+                    "plate",
+                    Pose3D(0.35, 1.0, 0.72),
+                    BBox3D(center=Pose3D(0.35, 1.0, 0.72), size=(0.26, 0.26, 0.04)),
+                    confidence=0.9,
+                    visible=True,
+                    attributes={
+                        "source_name": "caption_memory_import",
+                        "source_kind": "caption_memory",
+                    },
+                ),
+            ),
+        ),
+        infer_relations=("LEFT_OF", "RIGHT_OF", "NEAR"),
+        reference_frames=("agent",),
+        relation_evidence=("mock_observation:3",),
+    )
+
+    assert graph.nodes["mug_1"].attributes["source"] == "depth_detector"
+    assert graph.nodes["mug_1"].attributes["source_kind"] == "rgbd"
+    assert graph.nodes["plate_1"].attributes["source"] == "caption_memory_import"
+    assert graph.nodes["plate_1"].attributes["source_kind"] == "caption_memory"
+    assert {
+        edge.attributes["source"]
+        for edge in graph.edges
+        if edge.attributes.get("inferred") is True
+    } == {"geometry_inference"}
+
+
 def test_scene_observation_ingestion_preserves_last_seen_for_invisible_object() -> None:
     graph = DynamicSceneGraph()
     ingestor = ObservationIngestor(graph)

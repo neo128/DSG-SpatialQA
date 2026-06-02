@@ -11,17 +11,35 @@ from dsg_spatialqa_lab.benchmark.qa_generator import (
     save_qa_dataset,
     validate_qa_dataset,
 )
+from dsg_spatialqa_lab.benchmark.manifest import (
+    BENCHMARK_MANIFEST_SCHEMA_VERSION as BENCHMARK_MANIFEST_SCHEMA_VERSION,
+    benchmark_manifest_digest as benchmark_manifest_digest,
+    benchmark_manifest_json as benchmark_manifest_json,
+    build_benchmark_artifacts as build_benchmark_artifacts,
+    compare_benchmark_manifest as compare_benchmark_manifest,
+    load_benchmark_manifest as load_benchmark_manifest,
+    save_benchmark_manifest as save_benchmark_manifest,
+    validate_benchmark_manifest as validate_benchmark_manifest,
+)
 
 __all__ = [
+    "BENCHMARK_MANIFEST_SCHEMA_VERSION",
     "QACase",
+    "benchmark_manifest_digest",
+    "benchmark_manifest_json",
+    "build_benchmark_artifacts",
+    "compare_benchmark_manifest",
     "compare_qa_dataset",
     "generate_qa_cases",
+    "load_benchmark_manifest",
     "load_qa_dataset",
     "qa_case_from_dict",
     "qa_case_to_dict",
     "qa_dataset_digest",
     "qa_dataset_jsonl",
     "qa_dataset_summary",
+    "save_benchmark_manifest",
     "save_qa_dataset",
+    "validate_benchmark_manifest",
     "validate_qa_dataset",
 ]

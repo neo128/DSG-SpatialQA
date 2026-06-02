@@ -70,6 +70,11 @@
   Non-mock collection fails closed in the default local environment with
   structured JSON containing the missing optional dependency message, so default
   verification never imports or calls a simulator.
+- Use `python scripts/collect_habitat.py --mock --scene apartment_0 --episode-id habitat_mock_001 --step 1 --step 2 --action reset --action turn_left --output mock-habitat.jsonl`
+  when a handoff needs a Habitat-shaped mock episode without launching Habitat.
+  The adapter follows the same explicit-step boundary as AI2-THOR: mock
+  collection emits oracle-builder-compatible episode JSONL, and non-mock
+  collection fails closed with a structured missing optional dependency message.
 - Use `python scripts/build_oracle_graph.py --input mock-episode.jsonl --output-graph oracle-graph.json --report oracle-report.json`
   when a mock episode metadata handoff needs an oracle `DynamicSceneGraph`
   artifact. The builder consumes only explicit episode JSONL metadata for rooms,
@@ -90,6 +95,115 @@
   `python scripts/generate_qa.py --compare qa.jsonl --graph oracle-graph.json`
   to replay saved questions through the current `SpatialQAEngine` and detect
   answer, evidence, or graph-digest drift.
+- Use `python scripts/run_qa_eval.py --gold qa.jsonl --pred predictions.jsonl --report qa-eval-report.json`
+  when a handoff needs to score deterministic QA predictions against gold QA
+  cases. Prediction JSONL records contain only explicit local answer/evidence
+  payloads; no model provider is called. Reports include exact match,
+  multiple-choice accuracy, numeric MAE, evidence node/edge recall,
+  answer-graph consistency, and breakdowns by question type, tag, and reference
+  frame. Use `python scripts/run_qa_eval.py --validate-report qa-eval-report.json`
+  before accepting a saved report, and
+  `python scripts/run_qa_eval.py --compare-report qa-eval-report.json` to reload
+  the report's recorded gold/prediction paths and detect current-file drift.
+- Use `python scripts/run_baselines.py --list-baselines` to discover local
+  baseline names and enabled states without running QA cases. Use
+  `python scripts/run_baselines.py --baseline graph_tool --graph oracle-graph.json --qa qa.jsonl --pred predictions.jsonl`
+  when a handoff needs deterministic `QAPrediction` JSONL from the local
+  `SpatialQAEngine`/`GraphTool` path. The `majority` baseline is a deterministic
+  first-choice strategy for choice-style cases, `graph_text` is a graph-summary
+  placeholder, and `caption_memory` is a disabled interface placeholder that
+  emits `baseline_disabled` errors by default. No baseline calls a model,
+  simulator, robot, or network service.
+- Use `python scripts/import_predictions.py --qa qa.jsonl --input offline-predictions.jsonl --source-name vlm_fixture --source-kind vlm --metadata prompt_id=spatial-qa-v1 --pred vlm-predictions.jsonl --report vlm-import-report.json`
+  when a handoff has local external prediction records and needs standard
+  `QAPrediction` JSONL for QA eval, attribution, or dashboard review. The
+  importer reads only explicit local files, records source metadata, skips
+  unknown case IDs with diagnostics, records missing gold cases, and writes a
+  stable import report. Use
+  `python scripts/import_predictions.py --validate-report vlm-import-report.json`
+  before accepting the report, and
+  `python scripts/import_predictions.py --compare-report vlm-import-report.json`
+  to reload the report's recorded QA/input/prediction paths and detect drift.
+- Use `python scripts/evaluate_graphs.py --oracle oracle-graph.json --predicted predicted-graph.json --report graph-eval-report.json`
+  when a handoff needs oracle-vs-predicted graph metrics from explicit local
+  graph JSON files. Default matching uses exact object IDs and exact relation
+  edge keys. Use `--matching label_center --center-distance-threshold 0.25`
+  when predicted object IDs can drift but same-label object centers are close;
+  relation edges are remapped through matched object pairs in that mode. Use
+  `--matching label_center_room` when changed-ID matches must also agree on the
+  object's current room. The report includes object precision/recall, object
+  label accuracy, relation precision/recall/F1, confidence-weighted
+  object/relation precision, recall, and F1, matched-object state accuracy, bbox
+  center error, saved matching settings, duplicate-track / ID-fragmentation
+  diagnostics, and breakdowns by object label, relation, and prediction source.
+  Use
+  `python scripts/evaluate_graphs.py --validate-report graph-eval-report.json`
+  before accepting a saved graph eval report, and
+  `python scripts/evaluate_graphs.py --compare-report graph-eval-report.json`
+  to reload the report's recorded oracle/predicted graph paths, replay the
+  saved matching settings, and detect current-file drift.
+- Use `python scripts/attribute_errors.py --gold qa.jsonl --oracle-graph oracle-graph.json --predicted-graph predicted-graph.json --predictions predictions.jsonl --report error-attribution.json`
+  when a handoff needs to explain QA failures across oracle graph answers,
+  predicted graph answers, model/baseline predictions, and required evidence.
+  Attribution classifies oracle-tool drift as `benchmark_or_engine_error`,
+  missing required predicted-graph evidence as `evidence_missing`, predicted
+  graph answer drift as `graph_construction`, and model/baseline failures after
+  a correct predicted graph answer as `reasoning_or_tool_use`. Case rows record
+  predicted evidence sources, and the summary groups errors by those sources
+  for source-level graph QA diagnostics. Use
+  `python scripts/attribute_errors.py --validate-report error-attribution.json`
+  before accepting a saved attribution report, and
+  `python scripts/attribute_errors.py --compare-report error-attribution.json`
+  to reload the report's recorded QA, prediction, oracle graph, and predicted
+  graph files and detect current-file drift.
+- Use `python scripts/build_benchmark.py --episodes mock-ai2thor.jsonl --episodes mock-habitat.jsonl --dataset-name mock_benchmark --output-dir data/benchmark --max-qa-per-episode 100 --manifest benchmark-manifest.json`
+  when a handoff needs a deterministic benchmark-scale artifact manifest from
+  explicit episode JSONL files. The builder writes oracle graph JSON and QA
+  JSONL artifacts under the explicit output directory, then records graph
+  digests, QA dataset digests, summary counts, and coverage by scene, episode,
+  question type, reference frame, tag, dynamic/static split, and
+  oracle/predicted source. Use
+  `python scripts/build_benchmark.py --validate-manifest benchmark-manifest.json`
+  before accepting a saved manifest, and
+  `python scripts/build_benchmark.py --compare-manifest benchmark-manifest.json`
+  to detect current graph/QA artifact digest or coverage drift.
+- Use `python scripts/export_dashboard.py --qa qa.jsonl --pred predictions.jsonl --eval-report qa-eval-report.json --graph oracle-graph.json --error-attribution error-attribution.json --active-task-report active-report.json --output dashboard/`
+  when a handoff needs a static per-case review artifact. The exporter reads
+  only explicit local files, writes `dashboard.json` and `index.html` under the
+  explicit output directory, and includes QA case data, prediction records,
+  eval rows, optional attribution rows, evidence subgraphs, frame paths when
+  present, graph summary, predicted-evidence source summaries, optional
+  active-task review panels with transcripts and required/observed evidence
+  IDs, action evidence snapshots, active-task budget analysis, and a stable
+  bundle digest. Omit `--error-attribution` or
+  `--active-task-report` only when those reports have not been generated yet.
+- Use `python scripts/run_active_tasks.py --tasks active-tasks.jsonl --graph oracle-graph.json --policy direct_answer --report active-report.json`
+  when a handoff needs deterministic mock active EQA scoring. Active task JSONL
+  records carry the question, gold answer, success conditions, max-action
+  budget, and required evidence IDs. The CLI reads only explicit local task and
+  graph files, runs a local active policy against `MockActiveEnvironment`, and
+  writes a stable report with task success, answer accuracy, action count,
+  evidence coverage, answer-graph consistency, action evidence snapshots, and
+  budget-vs-success analysis. Use `--policy next_best_view` when the handoff
+  needs a deterministic missing-required-evidence action target without real
+  navigation. Use
+  `python scripts/run_active_tasks.py --validate-report active-report.json`
+  before accepting a saved report.
+- Use `python scripts/build_predicted_graph.py --mock --input mock-episode.jsonl --output-graph predicted-graph.json --report predicted-report.json`
+  when a handoff needs a predicted DSG skeleton from deterministic mock
+  perception. The builder consumes only `EpisodeFrame.metadata["mock_detections"]`
+  from the explicit episode JSONL file, projects detections to 3D instances,
+  preserves caller-supplied object IDs across frames, marks missed prior
+  objects hidden with low confidence, and infers local graph relations without
+  real perception dependencies. Detection `source`, `source_name`, or
+  `source_kind` metadata is propagated to graph object nodes, inferred relation
+  edges are marked as `geometry_inference`, and reports summarize detections by
+  source. Use
+  `python scripts/build_predicted_graph.py --validate-report predicted-report.json`
+  before accepting a saved predicted graph report, and
+  `python scripts/build_predicted_graph.py --compare-report predicted-report.json`
+  to rebuild from the recorded episode path and detect current graph/report or
+  exported graph-file drift.
 - Use `scene_observation_to_json()`, `scene_observation_from_json()`,
   `save_scene_observation(path)`, or `load_scene_observation(path)` when a
   mock perception handoff needs stable offline `SceneObservation` input files.

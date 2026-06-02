@@ -2,9 +2,15 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` (recommended) or `superpowers:executing-plans` to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Evolve DSG-SpatialQA Lab from a deterministic DSG-SpatialQA core into a validation platform for simulator episodes, oracle/predicted DSGs, benchmarks, baselines, metrics, active tasks, and review dashboards.
+**Goal:** Build a deterministic validation platform that can test whether
+Dynamic Scene Graphs improve spatial QA, dynamic memory, `GraphTool` queries,
+and interactive task performance.
 
-**Architecture:** Preserve the current deterministic in-memory core and add optional adapter layers around it. Build the oracle benchmark loop first, then graph construction evaluation, predicted DSG skeletons, error attribution, active EQA, and dashboard tooling.
+**Architecture:** Preserve the deterministic in-memory core and build a local
+evaluation loop around it: explicit episodes -> oracle DSG -> predicted DSG ->
+QA/task datasets -> baselines -> metrics -> error attribution -> review
+artifacts. Optional simulator, perception, and dashboard adapters stay outside
+the default runtime and must fail closed or use deterministic mocks.
 
 **Tech Stack:** Python package under `src/dsg_spatialqa_lab`, standard-library runtime by default, optional simulator/dashboard extras, deterministic JSON/JSONL artifacts, CLI scripts, pytest, ruff, mypy, and `scripts/verify.py`.
 
@@ -12,26 +18,55 @@
 
 ## Current State
 
-The project already has:
+The project already has the deterministic foundation needed for an offline
+evaluation loop:
 
 - `DynamicSceneGraph`, `GraphTool`, `SpatialQAEngine`, and `VLAAnchorPlanner` deterministic local core.
 - In-memory graph structures, object state history, relation edges, QA intents, and VLA pick/place-relative prototypes.
 - Deterministic episode JSONL, oracle graph building, AI2-THOR mock adapter
-  boundary, extended relation support, and oracle QA JSONL generation.
+  boundary, extended relation support, oracle QA JSONL generation, QA metrics,
+  local baseline predictions, graph metrics, and predicted DSG mock construction.
+- Deterministic predicted DSG skeleton with mock segmentation, depth
+  projection, object tracking/fusion, hidden missed-object updates, relation
+  inference, prediction-source metadata propagation, detection-source report
+  summaries, reports, and CLI validation/comparison.
+- Oracle-vs-predicted graph evaluation with exact object-id matching by
+  default, optional label+nearest-center object matching, and room-aware
+  label+nearest-center matching that remaps relation edges through matched
+  object pairs, reports duplicate-track / ID-fragmentation diagnostics, and
+  includes confidence-weighted object/relation metrics plus prediction-source
+  confidence precision slices.
+- QA error attribution, static dashboard export with optional active-task
+  review panels, and deterministic mock active EQA task reports with task
+  success, answer accuracy, action count, evidence coverage, and
+  answer-graph consistency metrics plus budget-vs-success analysis by
+  max-action budget, per-action evidence snapshots, and a deterministic
+  `next_best_view` policy placeholder that targets missing required evidence.
+- Offline external prediction import tooling that converts local VLM/caption
+  memory style prediction records into standard `QAPrediction` JSONL plus
+  stable import reports for QA evaluation, attribution, and dashboard review.
+- AI2-THOR and Habitat optional adapter skeletons with deterministic mock
+  episode generation and missing-dependency diagnostics for non-mock collection.
+- Benchmark manifest tooling that builds oracle graph and QA artifacts from
+  explicit episode JSONL files and records stable coverage/digest metadata.
 - `scripts/verify.py` local verification gate covering install, ruff, mypy, determinism scan, pytest, build, and evaluation suite.
 
 ## Current Gaps
 
-1. Missing AI2-THOR / Habitat environment adapters.
-2. Missing unified episode JSONL data protocol.
-3. Missing simulator metadata to oracle DSG builder.
-4. Missing large-scale 1000+ QA benchmark assembly and QA prediction metrics.
-5. Missing VLM-only / caption memory / graph-text / graph-tool baseline runner.
-6. Missing real experiment metrics: QA accuracy, relation F1, evidence consistency, task success, SPL/action cost.
-7. Missing predicted DSG: segmentation, depth projection, object fusion, tracking, relation inference.
-8. Missing oracle vs predicted graph alignment evaluation and error attribution.
-9. Missing active EQA / navigation / next-best-view interactive tasks.
-10. Missing dashboard for graph, trajectory, RGB/depth, answers, evidence, and error-source human review.
+The remaining gaps are now benchmark-extension gaps, not core DSG gaps:
+
+1. Missing real VLM-only, caption-memory, and perception integrations; local
+   graph-tool, graph-text, majority, disabled caption-memory, mock
+   predicted-DSG, and offline external prediction import interfaces exist and
+   must remain deterministic by default.
+2. Missing real perception-backed confidence calibration beyond deterministic
+   mock confidence-weighted metrics, prediction-source confidence slices, and
+   deterministic predicted/observation source metadata propagation.
+3. Missing real navigation / simulator-backed next-best-view execution and
+   simulator media previews; the current active loop is a deterministic mock
+   graph-step interface with static review panels, budget-vs-success report
+   analysis, per-action evidence snapshots, and `next_best_view` action-target
+   metadata.
 
 ## Development Goal
 
@@ -43,6 +78,40 @@ The core research target is to verify whether Dynamic Scene Graphs improve:
 - dynamic memory,
 - `GraphTool` queries,
 - interactive task performance.
+
+## Evaluation Questions And Evidence Chain
+
+### RQ1: Spatial QA
+
+Compare oracle DSG `GraphTool` answers, predicted DSG `GraphTool` answers,
+graph-text/choice baselines, and future external-model predictions over the
+same deterministic QA JSONL cases. Evidence comes from exact-match accuracy,
+multiple-choice accuracy, numeric MAE, evidence node/edge recall, and
+question-type/tag breakdowns, plus source-level attribution for predicted
+evidence used by failed QA cases.
+
+### RQ2: Dynamic Memory
+
+Use episode steps, object/agent timelines, scene deltas, moved-object events,
+last-seen state, hidden low-confidence updates, and re-observation targets.
+Evidence comes from QA cases and future task metrics that require temporal
+state, not only static spatial relations.
+
+### RQ3: GraphTool Query Utility
+
+Compare direct graph-tool answers with graph-text and future VLM/caption-memory
+baselines. Evidence comes from answer accuracy, evidence recall, graph-query
+case coverage, and error attribution that separates graph construction failures
+from reasoning/tool-use failures.
+
+### RQ4: Interactive Task Ability
+
+Use mock active EQA tasks after attribution and dashboard support. Evidence
+comes from task success, answer accuracy, action count, evidence coverage, and
+answer-graph consistency under explicit max-action budgets, including
+budget-vs-success curves and per-action evidence snapshots across those
+budgets. The mock `next_best_view` policy provides deterministic missing-
+evidence action targets for policy comparison without claiming real navigation.
 
 ## Hard Constraints
 
@@ -354,6 +423,12 @@ needed for the MVP.
 
 ### PR 6: QA Metrics And Evaluation Runner
 
+**Status:** Implemented in the current deterministic baseline with prediction
+JSONL IO, QA eval metrics, stable reports, validation/comparison helpers, CLI,
+tests, README/runbook coverage, and verifier evidence. The MVP keeps evidence
+recall metrics in `src/dsg_spatialqa_lab/eval/qa_metrics.py`; a separate
+`evidence_metrics.py` split can wait until graph/task evidence metrics diverge.
+
 **Task name:** Add QA metrics and benchmark evaluation runner.
 
 **Goal:** Evaluate QA predictions with accuracy, evidence consistency, and stable breakdowns.
@@ -410,6 +485,13 @@ needed for the MVP.
 
 ### PR 7: Baseline Runner First Version
 
+**Status:** Implemented in the current deterministic baseline with local agent
+interfaces, `graph_tool`, `majority`, `graph_text`, disabled `caption_memory`,
+prediction JSONL output, CLI listing/running, tests, README/runbook coverage,
+and verifier evidence. The deterministic first-choice baseline lives in
+`src/dsg_spatialqa_lab/agents/majority_agent.py` instead of a file name that
+would trip the local determinism scanner.
+
 **Task name:** Implement deterministic baseline runner skeleton.
 
 **Goal:** Add baseline framework without real VLM calls, plus a working `GraphTool` baseline.
@@ -458,6 +540,15 @@ needed for the MVP.
 
 ### PR 8: Graph Metrics And Oracle/Predicted Alignment
 
+**Status:** Implemented in the current deterministic baseline with exact
+object-id and exact relation-edge matching by default, optional label+nearest
+center matching, room-aware label+nearest center matching with relation
+remapping through matched object pairs,
+object/relation metrics, confidence-weighted metrics, bbox center error,
+object-label, relation, and prediction-source confidence
+breakdowns, stable reports, validation/comparison helpers, CLI, tests,
+README/runbook coverage, and verifier evidence.
+
 **Task name:** Add graph construction metrics and oracle-vs-predicted comparison interface.
 
 **Goal:** Establish graph evaluation API before predicted DSG is complete.
@@ -478,7 +569,10 @@ needed for the MVP.
 
 **Matching Rules:**
 - Default object ID exact match.
-- Optional label + nearest center matching placeholder.
+- Optional label + nearest center matching.
+- Optional room-aware label + nearest center matching.
+- Relation keys are remapped through matched object pairs when non-exact object
+  IDs are matched.
 - Deterministic ordering.
 
 **API:**
@@ -490,12 +584,18 @@ needed for the MVP.
 
 **CLI:**
 - `python scripts/evaluate_graphs.py --oracle oracle-graph.json --predicted predicted-graph.json --report graph-eval-report.json`
+- `python scripts/evaluate_graphs.py --oracle oracle-graph.json --predicted predicted-graph.json --matching label_center --center-distance-threshold 0.25 --report graph-eval-report.json`
+- `python scripts/evaluate_graphs.py --oracle oracle-graph.json --predicted predicted-graph.json --matching label_center_room --center-distance-threshold 0.25 --report graph-eval-report.json`
 
 **Tests:**
 - Perfect graph score equals `1.0`.
 - Missing object reduces recall.
 - Extra object reduces precision.
 - Wrong relation affects relation F1.
+- Label+center matching handles changed predicted object IDs and remapped
+  relation edges.
+- Room-aware label+center matching rejects same-label center matches when the
+  current room differs.
 - Stable digest.
 
 **Acceptance:**
@@ -503,6 +603,10 @@ needed for the MVP.
 - Report contains basic fields needed for error attribution.
 
 ### PR 9: Predicted DSG Skeleton
+
+**Status:** Implemented in the current deterministic baseline with mock
+perception pipeline APIs, CLI, tests, README/runbook coverage, and verifier
+evidence.
 
 **Task name:** Add predicted DSG builder skeleton with deterministic mock perception.
 
@@ -541,9 +645,16 @@ needed for the MVP.
 
 **Acceptance:**
 - Typed predicted graph pipeline skeleton exists.
+- Detection source metadata is propagated to predicted graph nodes, inferred
+  relation edges are source-marked, and predicted reports summarize detections
+  by source.
 - Default verify does not need real perception models.
 
 ### PR 10: Error Attribution Report
+
+**Status:** Implemented in the current deterministic baseline with API, CLI,
+tests, README/runbook coverage, predicted-evidence source summaries, stable
+report digests, validation/comparison, and verifier evidence.
 
 **Task name:** Implement QA error attribution between oracle graph, predicted graph, and model prediction.
 
@@ -569,6 +680,7 @@ needed for the MVP.
 - `model_answer`
 - `required_nodes_present`
 - `required_edges_present`
+- `predicted_evidence_sources`
 - `error_category`
 
 **Error Categories:**
@@ -592,6 +704,9 @@ needed for the MVP.
 - If oracle GraphTool is correct and predicted GraphTool is wrong, classify as `graph_construction`.
 - If predicted GraphTool is correct and model is wrong, classify as `reasoning_or_tool_use`.
 - If required evidence is absent from predicted graph, classify as `evidence_missing`.
+- Summaries group cases and errors by predicted evidence source, falling back
+  to `missing_predicted_evidence` when no required predicted evidence source is
+  present.
 
 **CLI:**
 - `python scripts/attribute_errors.py --gold qa.jsonl --oracle-graph oracle.json --predicted-graph predicted.json --predictions predictions.jsonl --report error-attribution.json`
@@ -607,6 +722,10 @@ needed for the MVP.
 - Report includes by-error-category breakdown.
 
 ### PR 11: Dashboard MVP
+
+**Status:** Implemented in the current deterministic baseline with static bundle
+and HTML export APIs, CLI, tests, README/runbook coverage, optional Streamlit
+stub, stable digests, and verifier evidence.
 
 **Task name:** Add lightweight static dashboard export and optional Streamlit app.
 
@@ -625,6 +744,7 @@ needed for the MVP.
   - `prediction`
   - `eval_result`
   - `error_attribution`
+  - predicted evidence source summaries
   - `evidence_subgraph`
   - frame paths when present
   - graph summary
@@ -643,13 +763,20 @@ needed for the MVP.
 - Stable bundle.
 - Missing optional files handled.
 - Evidence subgraph extracted.
+- Predicted evidence source summaries are exposed in bundle and HTML review rows.
 - No Streamlit dependency needed for verify.
 
 **Acceptance:**
 - `dashboard/index.html` is generated.
-- Gold, prediction, evidence, and error are viewable per sample.
+- Gold, prediction, evidence, source attribution, and error are viewable per
+  sample.
 
 ### PR 12: Active EQA Task Skeleton
+
+**Status:** Implemented in the current deterministic baseline with task JSONL
+helpers, mock graph-step environment, active policies, task metrics, report
+digests, `next_best_view` target metadata, budget-vs-success analysis, CLI
+output/validation, tests, README/runbook coverage, and verifier evidence.
 
 **Task name:** Add active EQA task and policy skeleton.
 
@@ -684,9 +811,10 @@ needed for the MVP.
 
 **Policies:**
 - `direct_answer`
-- `random_explore_deterministic`
-- `graph_uncertainty_policy` placeholder
-- `oracle_evidence_policy` for tests
+- `sweep_explore`
+- `graph_uncertainty`
+- `next_best_view`
+- `oracle_evidence`
 
 **Metrics:**
 - `task_success`
@@ -694,9 +822,11 @@ needed for the MVP.
 - `action_count`
 - `evidence_coverage`
 - `answer_graph_consistency`
+- `budget_analysis` by max-action budget
 
 **CLI:**
-- `python scripts/run_active_tasks.py --tasks active-tasks.jsonl --policy direct_answer --report active-report.json`
+- `python scripts/run_active_tasks.py --tasks active-tasks.jsonl --graph oracle-graph.json --policy direct_answer --report active-report.json`
+- `python scripts/run_active_tasks.py --validate-report active-report.json`
 
 **Tests:**
 - Direct answer works if graph is sufficient.
@@ -710,6 +840,11 @@ needed for the MVP.
 - Later AI2-THOR/Habitat env adapters can plug in.
 
 ### PR 13: Habitat Adapter Skeleton
+
+**Status:** Implemented in the current deterministic baseline with optional
+adapter config, deterministic mock episode generation, observation conversion,
+missing-dependency diagnostics, empty optional extra metadata, CLI output,
+tests, README/runbook coverage, and verifier evidence.
 
 **Task name:** Add optional Habitat adapter skeleton.
 
@@ -740,6 +875,11 @@ needed for the MVP.
 - Default verify does not install Habitat.
 
 ### PR 14: Benchmark Scale Tooling
+
+**Status:** Implemented in the current deterministic baseline with explicit
+episode-to-oracle-graph-to-QA artifact building, manifest digests, coverage
+metadata, save/load/validation/comparison helpers, CLI build/validate/compare
+output, tests, README/runbook coverage, and verifier evidence.
 
 **Task name:** Add benchmark manifest and dataset generation tooling.
 
@@ -786,6 +926,11 @@ needed for the MVP.
 
 ### PR 15: README And Roadmap Docs
 
+**Status:** Implemented in the current deterministic baseline with
+architecture, roadmap, and benchmark/artifact format docs; README
+documentation map; current-state roadmap separation; verification record
+coverage; and passing `python scripts/verify.py` evidence for this docs-only PR.
+
 **Task name:** Update project documentation for full DSG-SpatialQA Lab roadmap.
 
 **Goal:** Clearly distinguish current deterministic core, oracle DSG pipeline, predicted DSG pipeline, baselines, dashboard, active EQA, and optional dependencies.
@@ -825,7 +970,7 @@ needed for the MVP.
 - README mock commands run locally.
 - Docs do not claim real benchmark, predicted DSG, or active EQA completion before implementation and tests exist.
 
-## Recommended End-To-End Target After PR 1-7
+## Recommended End-To-End Target After PR 9
 
 ```bash
 python scripts/collect_ai2thor.py \
@@ -845,6 +990,12 @@ python scripts/build_oracle_graph.py \
   --output-graph oracle-graph.json \
   --report oracle-report.json
 
+python scripts/build_predicted_graph.py \
+  --mock \
+  --input mock-episode.jsonl \
+  --output-graph predicted-graph.json \
+  --report predicted-report.json
+
 python scripts/generate_qa.py \
   --graph oracle-graph.json \
   --scene-id mock_scene \
@@ -863,6 +1014,18 @@ python scripts/run_qa_eval.py \
   --pred predictions.jsonl \
   --report qa-eval-report.json
 
+python scripts/evaluate_graphs.py \
+  --oracle oracle-graph.json \
+  --predicted predicted-graph.json \
+  --report graph-eval-report.json
+
+python scripts/attribute_errors.py \
+  --gold qa.jsonl \
+  --oracle-graph oracle-graph.json \
+  --predicted-graph predicted-graph.json \
+  --predictions predictions.jsonl \
+  --report error-attribution.json
+
 python scripts/export_dashboard.py \
   --qa qa.jsonl \
   --pred predictions.jsonl \
@@ -877,21 +1040,21 @@ python scripts/verify.py
 
 Follow this order unless dependencies require adjustment:
 
-1. P0: Episode JSONL + IO
-2. P1: Mock episode to oracle DSG
-3. P2: AI2-THOR adapter skeleton + mock fallback
-4. P3: Relation engine extension
-5. P4: QA generator
-6. P5: QA metrics
-7. P6: Baseline runner
-8. P7: Graph metrics
-9. P8: Predicted DSG skeleton
-10. P9: Error attribution
-11. P10: Dashboard MVP
-12. P11: Active EQA skeleton
-13. P12: Habitat adapter skeleton
-14. P13: Benchmark manifest tooling
-15. P14: README/docs
+1. P0: Episode JSONL + IO - complete.
+2. P1: Mock episode to oracle DSG - complete.
+3. P2: AI2-THOR adapter skeleton + mock fallback - complete.
+4. P3: Relation engine extension - complete.
+5. P4: QA generator - complete.
+6. P5: QA metrics - complete.
+7. P6: Baseline runner - complete.
+8. P7: Graph metrics - complete.
+9. P8: Predicted DSG skeleton - complete.
+10. P9: Error attribution - complete.
+11. P10: Dashboard MVP - complete.
+12. P11: Active EQA skeleton and task metrics - complete.
+13. P12: Habitat adapter skeleton - complete.
+14. P13: Benchmark manifest tooling - complete.
+15. P14: Roadmap and architecture docs hardening - complete.
 
 ## Prohibited Changes
 
@@ -925,17 +1088,19 @@ A PR is complete only when:
 
 ### Milestone A: Oracle QA MVP
 
-Complete PR 1-7.
+Complete PR 1-7. This milestone is complete in the current deterministic
+baseline.
 
 **Acceptance:**
 - Mock episode to oracle graph to QA to GraphTool baseline to QA eval runs end-to-end.
 - At least 100 mock QA are generated.
 - GraphTool baseline reaches high accuracy on oracle-generated QA.
-- Dashboard can inspect each QA's gold answer, prediction, and evidence.
+- GraphTool baseline reaches high accuracy on oracle-generated QA.
 
 ### Milestone B: Graph Construction Evaluation
 
-Complete PR 8-10.
+Complete PR 8-10. This milestone is complete in the current deterministic
+baseline.
 
 **Acceptance:**
 - Oracle graph and predicted mock graph can be compared.
@@ -944,14 +1109,20 @@ Complete PR 8-10.
 
 ### Milestone C: Interactive Skeleton
 
-Complete PR 11-12.
+Complete PR 11-12. The deterministic dashboard, mock active task report, and
+static active-task review panels are implemented, including budget-vs-success
+analysis by max-action budget, per-action evidence snapshots, and
+`next_best_view` action-target metadata; media previews and real
+simulator-backed next-best-view execution remain follow-up work.
 
 **Acceptance:**
 - Mock active EQA task runs.
 - Task success, action count, and evidence coverage are reported.
-- Dashboard can show active task results.
+- Dashboard can show active task results, budget analysis, and action evidence
+  snapshots.
+- `next_best_view` can deterministically target missing required evidence.
 
-### Milestone D: Simulator Extension
+### Milestone D: Benchmark And Simulator Extension
 
 Complete PR 13-14.
 
@@ -959,21 +1130,17 @@ Complete PR 13-14.
 - AI2-THOR and Habitat adapters both have optional skeletons.
 - Benchmark manifest summarizes multiple episodes, graphs, and QA datasets.
 
-## First Codex Task
+## Current Codex Task
 
-Start with PR 1: Implement deterministic episode JSONL schema and IO helpers.
+Continue beyond the completed deterministic validation-loop MVP by selecting
+the next research-platform extension from the remaining gaps: advanced graph
+matching diagnostics, optional real adapter boundaries behind deterministic
+mocks, or richer active-task media/review artifacts.
 
-Requirements:
-
-- Add `src/dsg_spatialqa_lab/episodes.py`.
-- Add `scripts/episodes.py`.
-- Add `tests/test_episodes.py`.
-- Update README quickstart with an episode JSONL validation example.
-- Keep runtime dependencies empty.
-- Run `python scripts/verify.py` and fix every failure.
-
-After PR 1-7, the project should have the first complete oracle benchmark loop:
+After PR 12, the project has the first complete mock active-task loop:
 
 ```text
-mock/AI2-THOR episode -> oracle DSG -> automatic QA -> GraphTool baseline -> QA evaluation -> dashboard
+mock/AI2-THOR episode -> oracle DSG -> predicted DSG -> automatic QA ->
+baseline/model prediction -> QA evaluation -> graph evaluation -> error attribution ->
+active EQA task report -> static review dashboard
 ```

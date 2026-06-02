@@ -7,6 +7,20 @@ scene graph retrieval, temporal state audits, and VLA anchor planning
 reproducible without calling live AI services, robot stacks, simulators, clocks,
 or random sources.
 
+## Documentation
+
+- [Architecture](docs/architecture.md) explains the validation loop, research
+  questions, implemented components, and deterministic boundaries.
+- [Benchmark And Artifact Formats](docs/benchmark_format.md) summarizes episode
+  JSONL, graph JSON, QA JSONL, prediction JSONL, reports, dashboard bundles,
+  active task artifacts, and benchmark manifests.
+- [Roadmap](docs/roadmap.md) separates the completed deterministic MVP from
+  future optional simulator, perception, VLM, and active-task extensions.
+- [AI Runbook](docs/AI_RUNBOOK.md) lists handoff commands and operational
+  guardrails for agentic development.
+- [Verification Record](docs/VERIFICATION.md) records the local verification
+  gates, current command results, and known limits.
+
 ## Quickstart
 
 Install the package with development tools:
@@ -84,6 +98,25 @@ The adapter CLI requires explicit caller-supplied steps. In the default local
 environment, non-mock collection returns non-zero structured JSON with the
 missing optional dependency message instead of importing or calling a simulator.
 
+Generate a deterministic mock Habitat episode JSONL artifact without launching
+Habitat:
+
+```bash
+python scripts/collect_habitat.py \
+  --mock \
+  --scene apartment_0 \
+  --episode-id habitat_mock_001 \
+  --step 1 \
+  --step 2 \
+  --action reset \
+  --action turn_left \
+  --output mock-habitat.jsonl
+```
+
+The Habitat adapter follows the same deterministic boundary: explicit steps,
+local mock metadata, oracle-builder-compatible episode JSONL, and structured
+missing optional dependency diagnostics for non-mock collection.
+
 Build a deterministic oracle DSG from mock episode metadata:
 
 ```bash
@@ -120,6 +153,197 @@ oracle answers, evidence node IDs, evidence edge IDs, choices, tags, and
 question types. Validation checks dataset shape and stable digests; comparison
 replays each case through the current `SpatialQAEngine` against the supplied
 graph and reports answer/evidence drift.
+
+Evaluate deterministic QA prediction JSONL artifacts against a gold QA dataset:
+
+```bash
+python scripts/run_qa_eval.py \
+  --gold qa.jsonl \
+  --pred predictions.jsonl \
+  --report qa-eval-report.json
+python scripts/run_qa_eval.py --validate-report qa-eval-report.json
+python scripts/run_qa_eval.py --compare-report qa-eval-report.json
+```
+
+QA evaluation reads only explicit local gold and prediction files. Reports
+include exact match, multiple-choice accuracy, numeric MAE, evidence node/edge
+recall, answer-graph consistency, question-type/tag/reference-frame breakdowns,
+stable report digests, and current-file comparison.
+
+Run deterministic local baselines over a QA dataset:
+
+```bash
+python scripts/run_baselines.py --list-baselines
+python scripts/run_baselines.py \
+  --baseline graph_tool \
+  --graph oracle-graph.json \
+  --qa qa.jsonl \
+  --pred predictions.jsonl
+python scripts/run_qa_eval.py \
+  --gold qa.jsonl \
+  --pred predictions.jsonl \
+  --report graph-tool-qa-eval-report.json
+```
+
+The `graph_tool` baseline replays questions through the local
+`SpatialQAEngine`; `majority` is a deterministic first-choice baseline for
+choice-style cases; `graph_text` and `caption_memory` provide stable offline
+interface placeholders. No baseline calls an external model or service.
+
+Import offline external prediction records into the standard QA prediction
+JSONL format:
+
+```bash
+python scripts/import_predictions.py \
+  --qa qa.jsonl \
+  --input offline-predictions.jsonl \
+  --source-name vlm_fixture \
+  --source-kind vlm \
+  --metadata prompt_id=spatial-qa-v1 \
+  --pred vlm-predictions.jsonl \
+  --report vlm-import-report.json
+python scripts/import_predictions.py --validate-report vlm-import-report.json
+python scripts/import_predictions.py --compare-report vlm-import-report.json
+python scripts/run_qa_eval.py \
+  --gold qa.jsonl \
+  --pred vlm-predictions.jsonl \
+  --report vlm-qa-eval-report.json
+```
+
+Offline import reads only local JSONL records, skips unknown case IDs with
+report diagnostics, records missing gold cases, preserves source metadata, and
+writes deterministic `QAPrediction` JSONL for the existing QA evaluation,
+attribution, and dashboard pipeline.
+
+Build a deterministic predicted DSG from mock perception detections in episode
+metadata:
+
+```bash
+python scripts/build_predicted_graph.py \
+  --mock \
+  --input mock-episode.jsonl \
+  --output-graph predicted-graph.json \
+  --report predicted-report.json
+python scripts/build_predicted_graph.py --validate-report predicted-report.json
+python scripts/build_predicted_graph.py --compare-report predicted-report.json
+```
+
+Predicted graph building reads only `EpisodeFrame.metadata["mock_detections"]`
+from the explicit episode JSONL file. The mock pipeline defines segmentation,
+depth projection, object tracking, object fusion, missing-detection hidden
+state updates, and deterministic relation inference without importing real
+perception models. Detection `attributes.source`, `source_name`, or
+`source_kind` are propagated to object nodes, inferred relations are marked as
+`geometry_inference`, and predicted reports summarize detections by source.
+
+Compare two deterministic graph JSON artifacts:
+
+```bash
+python scripts/evaluate_graphs.py \
+  --oracle oracle-graph.json \
+  --predicted predicted-graph.json \
+  --report graph-eval-report.json
+python scripts/evaluate_graphs.py \
+  --oracle oracle-graph.json \
+  --predicted predicted-graph.json \
+  --matching label_center \
+  --center-distance-threshold 0.25 \
+  --report graph-eval-label-center-report.json
+python scripts/evaluate_graphs.py --validate-report graph-eval-report.json
+python scripts/evaluate_graphs.py --compare-report graph-eval-report.json
+```
+
+Graph evaluation uses exact object-id and exact relation-edge keys by default.
+The optional `label_center` mode matches same-label objects by nearest bbox
+center under the supplied threshold and remaps relation edges through matched
+object pairs. Use `label_center_room` when same-label, nearby predictions must
+also share the oracle object's current room. Reports include object
+precision/recall, object label accuracy, relation precision/recall/F1,
+confidence-weighted object/relation precision, recall, and F1, matched-object
+state accuracy, bbox center error, object-label, relation, and prediction-source
+confidence breakdowns,
+duplicate-track / ID-fragmentation diagnostics for label+center matching,
+stable report digests, saved matching settings, and current-file comparison.
+
+Attribute QA errors across oracle graphs, predicted graphs, and prediction
+JSONL artifacts:
+
+```bash
+python scripts/attribute_errors.py \
+  --gold qa.jsonl \
+  --oracle-graph oracle-graph.json \
+  --predicted-graph predicted-graph.json \
+  --predictions predictions.jsonl \
+  --report error-attribution.json
+python scripts/attribute_errors.py --validate-report error-attribution.json
+python scripts/attribute_errors.py --compare-report error-attribution.json
+```
+
+Error attribution replays each QA case through the oracle graph and predicted
+graph, compares model/baseline predictions with gold answers, checks required
+evidence nodes and edges in the predicted graph, and reports stable categories
+such as `benchmark_or_engine_error`, `evidence_missing`, `graph_construction`,
+and `reasoning_or_tool_use`. Each case also records predicted evidence sources,
+and the summary groups errors by predicted evidence source so graph-source
+quality can be connected to QA failures.
+
+Build a deterministic benchmark manifest from explicit episode JSONL files:
+
+```bash
+python scripts/build_benchmark.py \
+  --episodes mock-ai2thor.jsonl \
+  --episodes mock-habitat.jsonl \
+  --dataset-name mock_benchmark \
+  --output-dir data/benchmark \
+  --max-qa-per-episode 100 \
+  --manifest benchmark-manifest.json
+python scripts/build_benchmark.py --validate-manifest benchmark-manifest.json
+python scripts/build_benchmark.py --compare-manifest benchmark-manifest.json
+```
+
+Benchmark building turns each explicit episode into an oracle graph JSON and QA
+JSONL artifact, then writes a manifest with graph digests, QA dataset digests,
+summary counts, and coverage by scene, episode, question type, reference frame,
+tag, dynamic/static split, and oracle/predicted source.
+
+Export a deterministic static dashboard for per-sample review:
+
+```bash
+python scripts/export_dashboard.py \
+  --qa qa.jsonl \
+  --pred predictions.jsonl \
+  --eval-report qa-eval-report.json \
+  --graph oracle-graph.json \
+  --error-attribution error-attribution.json \
+  --active-task-report active-report.json \
+  --output dashboard/
+```
+
+Dashboard export writes `dashboard/dashboard.json` and `dashboard/index.html`
+from explicit local artifacts. The bundle contains QA cases, predictions,
+per-case QA eval results, optional error attribution rows, evidence subgraphs,
+predicted evidence source summaries, frame paths when present, graph summary,
+optional active-task review panels with task transcripts, action evidence
+snapshots, evidence coverage, budget analysis, and a stable bundle digest. The
+HTML table includes an Evidence Source column when attribution data is present.
+
+Run deterministic mock active EQA tasks against an explicit graph artifact:
+
+```bash
+python scripts/run_active_tasks.py \
+  --tasks active-tasks.jsonl \
+  --graph oracle-graph.json \
+  --policy direct_answer \
+  --report active-report.json
+python scripts/run_active_tasks.py --validate-report active-report.json
+```
+
+Active task reports score task success, answer accuracy, action count, evidence
+coverage, answer-graph consistency, per-action evidence snapshots, and
+budget-vs-success analysis under explicit max-action budgets. The
+`next_best_view` policy deterministically targets missing required evidence in
+the local mock loop. The mock environment only switches between caller-supplied
+graph steps; it does not launch a simulator or navigation stack.
 
 Export and validate a deterministic scene fixture graph from the shell:
 
@@ -216,11 +440,38 @@ python scripts/verify.py --skip-install
   failure diagnostics, and SHA-256 digests for experiment records.
 - Deterministic oracle QA JSONL generation from explicit graph artifacts,
   including answer/evidence replay validation and current-graph comparison.
+- Deterministic QA prediction JSONL evaluation with stable accuracy, evidence,
+  breakdown, validation, and comparison reports.
+- Deterministic local baseline runner with `graph_tool`, `majority`,
+  `graph_text`, and disabled `caption_memory` interfaces that emit prediction
+  JSONL without external calls.
+- Deterministic offline prediction import tooling for local VLM/caption-memory
+  style outputs, with source metadata, unknown/missing case diagnostics, stable
+  prediction JSONL, and import report validation/comparison.
+- Deterministic oracle-vs-predicted graph metrics with explicit graph JSON
+  inputs, stable digest reports, validation, and current-file comparison.
+- Deterministic predicted DSG builder skeleton with mock perception detections,
+  depth projection, stable object IDs, hidden low-confidence updates, relation
+  inference, graph/report digests, and explicit-path validation/comparison.
+- Deterministic QA error attribution across oracle graph answers, predicted
+  graph answers, model/baseline predictions, and required evidence presence.
+- Static dashboard export for per-sample QA, prediction, evaluation,
+  attribution, predicted-evidence source, graph-summary, and evidence-subgraph
+  review without default dashboard dependencies.
+- Deterministic active EQA task schema, mock environment, local active
+  `GraphTool` policies, task metrics, action evidence snapshots, and
+  budget-vs-success analysis for explicit graph-step handoffs, including a
+  deterministic `next_best_view` missing-evidence policy placeholder.
+- Deterministic benchmark manifest tooling that builds oracle graph and QA
+  artifacts from explicit episodes and records stable coverage/digest metadata.
 - Offline evaluation report, manifest, and bundle CLI entrypoints with
   structured invalid-file diagnostics for reproducible handoffs.
 - Deterministic episode JSONL schema and CLI validation for simulator/mock
   collection handoffs without connecting to a simulator.
 - Optional AI2-THOR adapter boundary with deterministic mock episode generation,
+  explicit-step collection config, and structured missing-dependency diagnostics
+  for non-mock collection.
+- Optional Habitat adapter boundary with deterministic mock episode generation,
   explicit-step collection config, and structured missing-dependency diagnostics
   for non-mock collection.
 - Deterministic oracle DSG builder for episode metadata, including room/region
@@ -476,6 +727,9 @@ fixture_comparison = compare_graph_file_to_fixture("tabletop-scene.json", "table
 ```
 
 ## Roadmap
+
+See [docs/roadmap.md](docs/roadmap.md) for the maintained roadmap and milestone
+status.
 
 - Keep CI and local verification aligned as new benchmark gates are added.
 - Add optional deterministic dataset import adapters once real experiment
@@ -1320,7 +1574,9 @@ offers the same build, validation, and comparison flow from the shell.
 callers provide explicit `SceneObservation.step`, optional agent pose, room/region
 nodes, object observations, and optional relation inference settings. It writes
 only in-memory graph state and never calls models, clocks, random sources, or
-network services. `scene_observation_to_dict()`, `scene_observation_to_json()`,
+network services. Object observation `source`, `source_name`, or `source_kind`
+metadata is normalized onto object nodes, and inferred relation edges are marked
+as `geometry_inference`. `scene_observation_to_dict()`, `scene_observation_to_json()`,
 `scene_observation_from_dict()`, `scene_observation_from_json()`,
 `save_scene_observation()`, and `load_scene_observation()` provide stable JSON
 round-trips and explicit-path local files for offline mock perception handoffs.

@@ -1,0 +1,111 @@
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+from typing import Any
+
+from dsg_spatialqa_lab import (
+    dashboard_bundle,
+    export_dashboard,
+    load_error_attribution_report,
+    load_active_task_report,
+    load_graph_json,
+    load_qa_dataset,
+    load_qa_eval_report,
+    load_qa_predictions,
+    validate_dashboard_bundle,
+)
+from dsg_spatialqa_lab.schema import SpatialQAError
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        allow_abbrev=False,
+        description="Export a deterministic static dashboard bundle for SpatialQA review.",
+    )
+    parser.add_argument("--qa", type=Path, required=True, help="Explicit local QA JSONL path.")
+    parser.add_argument(
+        "--pred",
+        type=Path,
+        required=True,
+        help="Explicit local QA prediction JSONL path.",
+    )
+    parser.add_argument(
+        "--eval-report",
+        type=Path,
+        required=True,
+        help="Explicit local QA eval report JSON path.",
+    )
+    parser.add_argument("--graph", type=Path, required=True, help="Explicit local graph JSON path.")
+    parser.add_argument(
+        "--error-attribution",
+        type=Path,
+        help="Optional explicit local error attribution report JSON path.",
+    )
+    parser.add_argument(
+        "--active-task-report",
+        type=Path,
+        help="Optional explicit local active task report JSON path.",
+    )
+    parser.add_argument(
+        "--output",
+        type=Path,
+        required=True,
+        help="Explicit local dashboard output directory.",
+    )
+    args = parser.parse_args(argv)
+
+    try:
+        attribution_report = (
+            load_error_attribution_report(args.error_attribution)
+            if args.error_attribution is not None
+            else None
+        )
+        active_task_report = (
+            load_active_task_report(args.active_task_report)
+            if args.active_task_report is not None
+            else None
+        )
+        bundle = dashboard_bundle(
+            load_qa_dataset(args.qa),
+            predictions=load_qa_predictions(args.pred),
+            qa_eval_report=load_qa_eval_report(args.eval_report),
+            graph=load_graph_json(args.graph),
+            error_attribution_report=attribution_report,
+            active_task_report=active_task_report,
+        )
+        export_result = export_dashboard(bundle, args.output)
+        validation = validate_dashboard_bundle(bundle)
+    except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
+        _emit_json(_error_payload("export_dashboard", args.output, exc))
+        return 1
+
+    payload = {
+        "action": "export_dashboard",
+        "path": str(args.output),
+        "valid": validation["valid"],
+        "digest": export_result["digest"],
+        "summary": export_result["summary"],
+        "bundle_path": export_result["bundle_path"],
+        "index_path": export_result["index_path"],
+    }
+    _emit_json(payload)
+    return 0 if validation["valid"] is True else 1
+
+
+def _error_payload(action: str, path: Path, error: Exception) -> dict[str, Any]:
+    return {
+        "action": action,
+        "path": str(path),
+        "valid": False,
+        "error": str(error),
+    }
+
+
+def _emit_json(payload: dict[str, Any]) -> None:
+    print(json.dumps(payload, sort_keys=True))
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -119,6 +119,7 @@ class GraphTool:
         agent_id: str = "agent",
         confidence: float = 1.0,
         evidence: Sequence[str] | None = None,
+        attributes: Mapping[str, Any] | None = None,
     ) -> list[Edge]:
         if not isinstance(step, int) or isinstance(step, bool):
             raise SpatialQAError("step must be an integer")
@@ -137,6 +138,8 @@ class GraphTool:
 
         added: list[Edge] = []
         evidence_list = list(evidence or [])
+        inferred_attributes = {"inferred": True}
+        inferred_attributes.update(attributes or {})
         for reference_frame in frames:
             allowed_relations = self._relations_for_frame(reference_frame)
             for src_id in ids:
@@ -165,7 +168,7 @@ class GraphTool:
                                 confidence,
                                 step=step,
                                 evidence=evidence_list,
-                                attributes={"inferred": True},
+                                attributes=inferred_attributes,
                             )
                         )
         return sorted(added, key=self._edge_sort_key)

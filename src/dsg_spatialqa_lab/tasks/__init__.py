@@ -1,0 +1,31 @@
+from dsg_spatialqa_lab.tasks.active_eqa import (
+    ACTIVE_EQA_TASK_SCHEMA_VERSION as ACTIVE_EQA_TASK_SCHEMA_VERSION,
+    ActiveAction as ActiveAction,
+    ActiveEQATask as ActiveEQATask,
+    ActiveObservation as ActiveObservation,
+    MockActiveEnvironment as MockActiveEnvironment,
+    active_eqa_task_from_dict as active_eqa_task_from_dict,
+    active_eqa_task_to_dict as active_eqa_task_to_dict,
+    active_eqa_tasks_digest as active_eqa_tasks_digest,
+    active_eqa_tasks_from_jsonl as active_eqa_tasks_from_jsonl,
+    active_eqa_tasks_jsonl as active_eqa_tasks_jsonl,
+    load_active_eqa_tasks as load_active_eqa_tasks,
+    save_active_eqa_tasks as save_active_eqa_tasks,
+    validate_active_eqa_tasks as validate_active_eqa_tasks,
+)
+
+__all__ = [
+    "ACTIVE_EQA_TASK_SCHEMA_VERSION",
+    "ActiveAction",
+    "ActiveEQATask",
+    "ActiveObservation",
+    "MockActiveEnvironment",
+    "active_eqa_task_from_dict",
+    "active_eqa_task_to_dict",
+    "active_eqa_tasks_digest",
+    "active_eqa_tasks_from_jsonl",
+    "active_eqa_tasks_jsonl",
+    "load_active_eqa_tasks",
+    "save_active_eqa_tasks",
+    "validate_active_eqa_tasks",
+]
