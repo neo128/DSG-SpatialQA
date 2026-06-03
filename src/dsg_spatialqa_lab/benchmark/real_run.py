@@ -1642,6 +1642,11 @@ def _manifest_path(value: str, base_dir: Path) -> Path:
     path = Path(value)
     if path.is_absolute():
         return path
+    try:
+        path.relative_to(base_dir)
+        return path
+    except ValueError:
+        pass
     return base_dir / path
 
 

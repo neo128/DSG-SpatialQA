@@ -1,0 +1,237 @@
+{
+  "duplicate_case_ids": [],
+  "input_digest": "a8a454797fa3c0a793ab785cf9e8e4b65cb3dd885e777deb3ae8717d35378d07",
+  "input_format": "qa_prediction",
+  "input_path": "handoffs/ai2thor-real-small/inputs/offline-controls/multi_frame_vlm.jsonl",
+  "missing_case_ids": [],
+  "prediction_digest": "a8a454797fa3c0a793ab785cf9e8e4b65cb3dd885e777deb3ae8717d35378d07",
+  "prediction_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/multi_frame_vlm/predictions.jsonl",
+  "qa_digest": "efc49743646421513100076326c366f392a06c0429f97c4fd8302e58a33bc4c8",
+  "qa_path": "handoffs/ai2thor-real-small/inputs/qa.jsonl",
+  "records": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48",
+      "error": null,
+      "imported": true,
+      "line_number": 1
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62",
+      "error": null,
+      "imported": true,
+      "line_number": 2
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54",
+      "error": null,
+      "imported": true,
+      "line_number": 3
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75",
+      "error": null,
+      "imported": true,
+      "line_number": 4
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03",
+      "error": null,
+      "imported": true,
+      "line_number": 5
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46",
+      "error": null,
+      "imported": true,
+      "line_number": 6
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20",
+      "error": null,
+      "imported": true,
+      "line_number": 7
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46",
+      "error": null,
+      "imported": true,
+      "line_number": 8
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0131:relative_relation:coffeemachine_01_98_00_90_00_19_ON_countertop_01_87_00_95_01_21",
+      "error": null,
+      "imported": true,
+      "line_number": 9
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0157:relation_timeline:coffeemachine_01_98_00_90_00_19_ON_countertop_01_87_00_95_01_21",
+      "error": null,
+      "imported": true,
+      "line_number": 10
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98",
+      "error": null,
+      "imported": true,
+      "line_number": 11
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02",
+      "error": null,
+      "imported": true,
+      "line_number": 12
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17",
+      "error": null,
+      "imported": true,
+      "line_number": 13
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79",
+      "error": null,
+      "imported": true,
+      "line_number": 14
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43",
+      "error": null,
+      "imported": true,
+      "line_number": 15
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43",
+      "error": null,
+      "imported": true,
+      "line_number": 16
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04",
+      "error": null,
+      "imported": true,
+      "line_number": 17
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84",
+      "error": null,
+      "imported": true,
+      "line_number": 18
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0090:relative_relation:sofa_02_40_00_00_03_42_ON_floor_00_00_00_38_00_00",
+      "error": null,
+      "imported": true,
+      "line_number": 19
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0137:relation_timeline:sofa_02_40_00_00_03_42_ON_floor_00_00_00_38_00_00",
+      "error": null,
+      "imported": true,
+      "line_number": 20
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47",
+      "error": null,
+      "imported": true,
+      "line_number": 21
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82",
+      "error": null,
+      "imported": true,
+      "line_number": 22
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24",
+      "error": null,
+      "imported": true,
+      "line_number": 23
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87",
+      "error": null,
+      "imported": true,
+      "line_number": 24
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44",
+      "error": null,
+      "imported": true,
+      "line_number": 25
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18",
+      "error": null,
+      "imported": true,
+      "line_number": 26
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34",
+      "error": null,
+      "imported": true,
+      "line_number": 27
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21",
+      "error": null,
+      "imported": true,
+      "line_number": 28
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0086:nearest_object:basketball_00_24_00_13_01_24",
+      "error": null,
+      "imported": true,
+      "line_number": 29
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0087:reobserve_targets:all",
+      "error": null,
+      "imported": true,
+      "line_number": 30
+    }
+  ],
+  "report_digest": "309a36d7320a666dc3f441e5d7aae3632eb90f317c6acdcb93d39aa3943ef792",
+  "schema_version": "dsg-spatialqa-lab.offline-prediction-import-report.v1",
+  "source": {
+    "kind": "multi_frame_vlm",
+    "metadata": {
+      "capabilities": [
+        "spatial_qa",
+        "dynamic_memory"
+      ],
+      "dataset_id": "ai2thor_real_small",
+      "model_id": "external-multi_frame_vlm",
+      "prompt_id": "multi_frame_vlm-spatial-qa"
+    },
+    "name": "multi_frame_vlm_real_control"
+  },
+  "source_profile": {
+    "adapter": "multi_frame_vlm",
+    "capability_axes": [
+      "dynamic_memory",
+      "spatial_qa"
+    ],
+    "dataset_id": "ai2thor_real_small",
+    "kind": "multi_frame_vlm",
+    "metadata_keys": [
+      "capabilities",
+      "dataset_id",
+      "model_id",
+      "prompt_id"
+    ],
+    "model_id": "external-multi_frame_vlm",
+    "name": "multi_frame_vlm_real_control",
+    "prompt_id": "multi_frame_vlm-spatial-qa",
+    "source_key": "multi_frame_vlm:multi_frame_vlm_real_control"
+  },
+  "summary": {
+    "duplicate_case_count": 0,
+    "error_prediction_count": 0,
+    "gold_case_count": 30,
+    "imported_prediction_count": 30,
+    "missing_case_count": 0,
+    "record_count": 30,
+    "unknown_case_count": 0
+  },
+  "unknown_case_ids": []
+}

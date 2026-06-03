@@ -1,0 +1,1693 @@
+{
+  "action": "real_experiment_run_ledger",
+  "dataset_name": "ai2thor_real_small",
+  "execution_approval": {
+    "approved_execution_packet_path": null,
+    "approved_run_manifest_path": "handoffs/ai2thor-real-small/real-experiment-run-manifest.json",
+    "execution_packet_digest": null,
+    "manifest_matches": null,
+    "ready": true,
+    "ready_to_execute": null,
+    "required": false,
+    "status": "not_required",
+    "validation_valid": null
+  },
+  "ledger_digest": "bf7caf107abd8b86e21ff565a5db0d7a6d50606509e32c1317aac1f4b53e4e4d",
+  "ready": true,
+  "run_action": "run_real_experiment_manifest",
+  "run_manifest_digest": "0598a870ae39618845f8b8c32a4ca0f599d6b51a5eef8be8a745dc64eb37bf6d",
+  "run_manifest_path": "handoffs/ai2thor-real-small/real-experiment-run-manifest.json",
+  "run_result": {
+    "action": "run_real_experiment_manifest",
+    "dataset_name": "ai2thor_real_small",
+    "execution_approval": {
+      "approved_execution_packet_path": null,
+      "approved_run_manifest_path": "handoffs/ai2thor-real-small/real-experiment-run-manifest.json",
+      "execution_packet_digest": null,
+      "manifest_matches": null,
+      "ready": true,
+      "ready_to_execute": null,
+      "required": false,
+      "status": "not_required",
+      "validation_valid": null
+    },
+    "generated_detector_import_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-import-report.json",
+    "generated_observation_sequence_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations.json",
+    "generated_offline_control_import_run_ledger_path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-import-run-ledger.json",
+    "generated_offline_control_matrix_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-matrix.json",
+    "generated_offline_control_result_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-result.json",
+    "generated_offline_control_source_kinds": [
+      "caption_memory",
+      "graph_text",
+      "multi_frame_vlm",
+      "vlm"
+    ],
+    "generated_offline_prediction_import_report_paths": [
+      "handoffs/ai2thor-real-small/outputs/offline-controls/imports/caption_memory/import-report.json",
+      "handoffs/ai2thor-real-small/outputs/offline-controls/imports/graph_text/import-report.json",
+      "handoffs/ai2thor-real-small/outputs/offline-controls/imports/multi_frame_vlm/import-report.json",
+      "handoffs/ai2thor-real-small/outputs/offline-controls/imports/vlm/import-report.json"
+    ],
+    "generated_predicted_dsg_detector_run_ledger_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-detector-run-ledger.json",
+    "generated_predicted_dsg_evidence_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-evidence.json",
+    "generated_predicted_graph_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph.json",
+    "generated_predicted_graph_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-report.json",
+    "generated_qa_eval_delta_report_paths": [
+      "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
+      "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
+      "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
+      "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-vlm_vlm_real_control.json"
+    ],
+    "generated_qa_eval_report_paths": [
+      "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
+      "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/caption_memory_caption_memory_real_control/qa-eval.json",
+      "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/graph_text_graph_text_real_control/qa-eval.json",
+      "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/multi_frame_vlm_multi_frame_vlm_real_control/qa-eval.json",
+      "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/vlm_vlm_real_control/qa-eval.json"
+    ],
+    "manifest_digest": "88f20975983ddc87a686dd6f7427e96981e5df80e3795dbf59d9c16dbc0037e8",
+    "manifest_path": "handoffs/ai2thor-real-small/outputs/benchmark-manifest.json",
+    "offline_control_import": {
+      "action": "run_offline_control_import_manifest",
+      "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
+      "manifest_digest": "84f4ffcedc1e15937a769089afb332a44470799ac980d958d7032d2924c59a20",
+      "manifest_path": "handoffs/ai2thor-real-small/offline-control-import-manifest.json",
+      "manifest_schema_version": "dsg-spatialqa-lab.offline-control-import-manifest.v1",
+      "manifest_summary": {
+        "has_candidate_prediction": true,
+        "source_count": 4
+      },
+      "matrix_readiness": {
+        "failed_check_count": 0,
+        "failed_checks": [],
+        "ready": true
+      },
+      "matrix_report_digest": "194835ea14e00e99a165b19f0be839c43bcb5897f8d0d7473566a30ced5534cd",
+      "matrix_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-matrix.json",
+      "offline_control_result_readiness": {
+        "failed_check_count": 0,
+        "failed_checks": [],
+        "ready": true
+      },
+      "offline_control_result_report_digest": "202e44f6b5739df3b469aa60627b73d4d1d3545a9f956e8cd5ea60ed5982cc06",
+      "offline_control_result_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-result.json",
+      "output_dir": "handoffs/ai2thor-real-small/outputs/offline-controls/imports",
+      "qa_digest": "efc49743646421513100076326c366f392a06c0429f97c4fd8302e58a33bc4c8",
+      "qa_eval_delta_report_paths": {
+        "caption_memory:caption_memory_real_control": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
+        "graph_text:graph_text_real_control": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
+        "multi_frame_vlm:multi_frame_vlm_real_control": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
+        "vlm:vlm_real_control": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-vlm_vlm_real_control.json"
+      },
+      "qa_eval_delta_reports": [
+        {
+          "baseline_name": "caption_memory",
+          "baseline_qa_eval_report_digest": "450223acd8ee415ef927131b4fc2319fb45ab6b3b5830e1be196fe9c05107d6b",
+          "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/caption_memory_caption_memory_real_control/qa-eval.json",
+          "qa_eval_delta_report_digest": "b2a009ba1664e1adf74f2a483f2f36041204c2cc805e65953a11390d7e74cffc",
+          "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
+          "source_key": "caption_memory:caption_memory_real_control",
+          "source_kind": "caption_memory",
+          "source_name": "caption_memory_real_control"
+        },
+        {
+          "baseline_name": "graph_text",
+          "baseline_qa_eval_report_digest": "c93ec04cd9c233b853b340d421f5d9ce776dcb82315956a469cada0db9b4434c",
+          "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/graph_text_graph_text_real_control/qa-eval.json",
+          "qa_eval_delta_report_digest": "e84bdba168b5cab1c0f4361d7c541206525ee612c1b37036e223186c1693b04c",
+          "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
+          "source_key": "graph_text:graph_text_real_control",
+          "source_kind": "graph_text",
+          "source_name": "graph_text_real_control"
+        },
+        {
+          "baseline_name": "multi_frame_vlm",
+          "baseline_qa_eval_report_digest": "7ce7d0b73851f0770d58c595b38c9a28410bd68641727e6e664fe9c4fb5ba520",
+          "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/multi_frame_vlm_multi_frame_vlm_real_control/qa-eval.json",
+          "qa_eval_delta_report_digest": "7a278c93ef93df3838ea6c792d97781c1c260f2e7df571ee3406182e8dfcc27c",
+          "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
+          "source_key": "multi_frame_vlm:multi_frame_vlm_real_control",
+          "source_kind": "multi_frame_vlm",
+          "source_name": "multi_frame_vlm_real_control"
+        },
+        {
+          "baseline_name": "vlm",
+          "baseline_qa_eval_report_digest": "fd258c62a069124f3991f96c539b5a3824cce49aa2daafbcbfb8a9c451300a41",
+          "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/vlm_vlm_real_control/qa-eval.json",
+          "qa_eval_delta_report_digest": "5ff518d3b429bf35012dc248542f74edd7afe4e03a460b177415a8ed9fdb0e0f",
+          "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-vlm_vlm_real_control.json",
+          "source_key": "vlm:vlm_real_control",
+          "source_kind": "vlm",
+          "source_name": "vlm_real_control"
+        }
+      ],
+      "qa_eval_handoff": {
+        "baseline_qa_eval_report_paths": {
+          "caption_memory:caption_memory_real_control": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/caption_memory_caption_memory_real_control/qa-eval.json",
+          "graph_text:graph_text_real_control": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/graph_text_graph_text_real_control/qa-eval.json",
+          "multi_frame_vlm:multi_frame_vlm_real_control": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/multi_frame_vlm_multi_frame_vlm_real_control/qa-eval.json",
+          "vlm:vlm_real_control": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/vlm_vlm_real_control/qa-eval.json"
+        },
+        "candidate_name": "predicted_graph_tool",
+        "candidate_prediction_path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool.jsonl",
+        "candidate_qa_eval_report_digest": "659f81e09355208b2db5cb724c29447d1d77cd6a7c1b9ff68f83d5fe8d6a26ec",
+        "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
+        "qa_eval_delta_report_paths": {
+          "caption_memory:caption_memory_real_control": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
+          "graph_text:graph_text_real_control": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
+          "multi_frame_vlm:multi_frame_vlm_real_control": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
+          "vlm:vlm_real_control": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-vlm_vlm_real_control.json"
+        },
+        "qa_eval_delta_reports": [
+          {
+            "baseline_name": "caption_memory",
+            "baseline_qa_eval_report_digest": "450223acd8ee415ef927131b4fc2319fb45ab6b3b5830e1be196fe9c05107d6b",
+            "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/caption_memory_caption_memory_real_control/qa-eval.json",
+            "qa_eval_delta_report_digest": "b2a009ba1664e1adf74f2a483f2f36041204c2cc805e65953a11390d7e74cffc",
+            "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
+            "source_key": "caption_memory:caption_memory_real_control",
+            "source_kind": "caption_memory",
+            "source_name": "caption_memory_real_control"
+          },
+          {
+            "baseline_name": "graph_text",
+            "baseline_qa_eval_report_digest": "c93ec04cd9c233b853b340d421f5d9ce776dcb82315956a469cada0db9b4434c",
+            "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/graph_text_graph_text_real_control/qa-eval.json",
+            "qa_eval_delta_report_digest": "e84bdba168b5cab1c0f4361d7c541206525ee612c1b37036e223186c1693b04c",
+            "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
+            "source_key": "graph_text:graph_text_real_control",
+            "source_kind": "graph_text",
+            "source_name": "graph_text_real_control"
+          },
+          {
+            "baseline_name": "multi_frame_vlm",
+            "baseline_qa_eval_report_digest": "7ce7d0b73851f0770d58c595b38c9a28410bd68641727e6e664fe9c4fb5ba520",
+            "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/multi_frame_vlm_multi_frame_vlm_real_control/qa-eval.json",
+            "qa_eval_delta_report_digest": "7a278c93ef93df3838ea6c792d97781c1c260f2e7df571ee3406182e8dfcc27c",
+            "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
+            "source_key": "multi_frame_vlm:multi_frame_vlm_real_control",
+            "source_kind": "multi_frame_vlm",
+            "source_name": "multi_frame_vlm_real_control"
+          },
+          {
+            "baseline_name": "vlm",
+            "baseline_qa_eval_report_digest": "fd258c62a069124f3991f96c539b5a3824cce49aa2daafbcbfb8a9c451300a41",
+            "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/vlm_vlm_real_control/qa-eval.json",
+            "qa_eval_delta_report_digest": "5ff518d3b429bf35012dc248542f74edd7afe4e03a460b177415a8ed9fdb0e0f",
+            "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-vlm_vlm_real_control.json",
+            "source_key": "vlm:vlm_real_control",
+            "source_kind": "vlm",
+            "source_name": "vlm_real_control"
+          }
+        ],
+        "ready": true,
+        "requested": true,
+        "summary": {
+          "baseline_report_count": 4,
+          "delta_report_count": 4
+        }
+      },
+      "qa_path": "handoffs/ai2thor-real-small/inputs/qa.jsonl",
+      "readiness": {
+        "failed_check_count": 0,
+        "failed_checks": [],
+        "ready": true
+      },
+      "ready": true,
+      "required_source_kinds": [
+        "caption_memory",
+        "graph_text",
+        "multi_frame_vlm",
+        "vlm"
+      ],
+      "run_ledger_digest": "e167e3bcda3d43b1ad055f9e5f6b904a27a6abb83342aec77686e80ad1e1cc4f",
+      "run_ledger_path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-import-run-ledger.json",
+      "schema_version": "dsg-spatialqa-lab.offline-control-import-run.v1",
+      "source_count": 4,
+      "source_metadata_checks": [
+        {
+          "actual": [],
+          "name": "real_source_metadata_present",
+          "passed": true
+        },
+        {
+          "actual": [],
+          "name": "no_placeholder_source_identity",
+          "passed": true
+        }
+      ],
+      "source_metadata_summary": {
+        "missing_metadata_source_keys": [],
+        "placeholder_source_keys": []
+      },
+      "sources": [
+        {
+          "dataset_id": "ai2thor_real_small",
+          "import_report_digest": "f5188c14d159ec3bb3d688f19b809b5b0901c8a5b1cc2b42956dfb738858a476",
+          "import_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/caption_memory/import-report.json",
+          "input_format": "qa_prediction",
+          "input_path": "handoffs/ai2thor-real-small/inputs/offline-controls/caption_memory.jsonl",
+          "model_id": "external-caption_memory",
+          "prediction_digest": "c7afce50848c96b358a6dceae9e1e1dafe3c58259e55eeaaa8f1e192a539572b",
+          "prediction_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/caption_memory/predictions.jsonl",
+          "prompt_id": "caption_memory-spatial-qa",
+          "source_key": "caption_memory:caption_memory_real_control",
+          "source_kind": "caption_memory",
+          "source_name": "caption_memory_real_control",
+          "summary": {
+            "duplicate_case_count": 0,
+            "error_prediction_count": 0,
+            "gold_case_count": 30,
+            "imported_prediction_count": 30,
+            "missing_case_count": 0,
+            "record_count": 30,
+            "unknown_case_count": 0
+          }
+        },
+        {
+          "dataset_id": "ai2thor_real_small",
+          "import_report_digest": "7b44d758ce068dd6aabd49bc3c893447aa4dbe24bb037c96335b4a385f5ece9d",
+          "import_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/graph_text/import-report.json",
+          "input_format": "qa_prediction",
+          "input_path": "handoffs/ai2thor-real-small/inputs/offline-controls/graph_text.jsonl",
+          "model_id": "external-graph_text",
+          "prediction_digest": "69fa0562d52e741a4dae35fca870b26b4ebafe3ac484cb01fcdee845773d609e",
+          "prediction_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/graph_text/predictions.jsonl",
+          "prompt_id": "graph_text-spatial-qa",
+          "source_key": "graph_text:graph_text_real_control",
+          "source_kind": "graph_text",
+          "source_name": "graph_text_real_control",
+          "summary": {
+            "duplicate_case_count": 0,
+            "error_prediction_count": 0,
+            "gold_case_count": 30,
+            "imported_prediction_count": 30,
+            "missing_case_count": 0,
+            "record_count": 30,
+            "unknown_case_count": 0
+          }
+        },
+        {
+          "dataset_id": "ai2thor_real_small",
+          "import_report_digest": "309a36d7320a666dc3f441e5d7aae3632eb90f317c6acdcb93d39aa3943ef792",
+          "import_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/multi_frame_vlm/import-report.json",
+          "input_format": "qa_prediction",
+          "input_path": "handoffs/ai2thor-real-small/inputs/offline-controls/multi_frame_vlm.jsonl",
+          "model_id": "external-multi_frame_vlm",
+          "prediction_digest": "a8a454797fa3c0a793ab785cf9e8e4b65cb3dd885e777deb3ae8717d35378d07",
+          "prediction_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/multi_frame_vlm/predictions.jsonl",
+          "prompt_id": "multi_frame_vlm-spatial-qa",
+          "source_key": "multi_frame_vlm:multi_frame_vlm_real_control",
+          "source_kind": "multi_frame_vlm",
+          "source_name": "multi_frame_vlm_real_control",
+          "summary": {
+            "duplicate_case_count": 0,
+            "error_prediction_count": 0,
+            "gold_case_count": 30,
+            "imported_prediction_count": 30,
+            "missing_case_count": 0,
+            "record_count": 30,
+            "unknown_case_count": 0
+          }
+        },
+        {
+          "dataset_id": "ai2thor_real_small",
+          "import_report_digest": "4aac7ebddf5315de2fa94db0f96add8e52bc3eedf0a39e55c07759c7274d9d09",
+          "import_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/vlm/import-report.json",
+          "input_format": "qa_prediction",
+          "input_path": "handoffs/ai2thor-real-small/inputs/offline-controls/vlm.jsonl",
+          "model_id": "external-vlm",
+          "prediction_digest": "6860e44d72111fbf1b742830c22151025743f9dbbfaa42aa1e4079ad0a0722a5",
+          "prediction_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/vlm/predictions.jsonl",
+          "prompt_id": "vlm-spatial-qa",
+          "source_key": "vlm:vlm_real_control",
+          "source_kind": "vlm",
+          "source_name": "vlm_real_control",
+          "summary": {
+            "duplicate_case_count": 0,
+            "error_prediction_count": 0,
+            "gold_case_count": 30,
+            "imported_prediction_count": 30,
+            "missing_case_count": 0,
+            "record_count": 30,
+            "unknown_case_count": 0
+          }
+        }
+      ],
+      "summary": {
+        "complete_source_count": 4,
+        "diagnostic_source_keys": [],
+        "incomplete_source_keys": [],
+        "missing_required_source_kinds": [],
+        "required_source_kind_count": 4,
+        "source_count": 4,
+        "source_kind_count": 4,
+        "source_kinds": [
+          "caption_memory",
+          "graph_text",
+          "multi_frame_vlm",
+          "vlm"
+        ],
+        "total_imported_prediction_count": 120
+      }
+    },
+    "offline_control_import_manifest_digest": "84f4ffcedc1e15937a769089afb332a44470799ac980d958d7032d2924c59a20",
+    "offline_control_import_manifest_path": "handoffs/ai2thor-real-small/offline-control-import-manifest.json",
+    "offline_control_import_ready": true,
+    "offline_control_import_run_ledger_digest": "e167e3bcda3d43b1ad055f9e5f6b904a27a6abb83342aec77686e80ad1e1cc4f",
+    "predicted_dsg_detector_run": {
+      "action": "run_predicted_dsg_detector_run_manifest",
+      "detector_import_report_digest": "2b0a390bbd61c180ce41978c274d6c0362dd7902e43dd2f0fe8f5acf74605755",
+      "detector_import_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-import-report.json",
+      "detector_jsonl_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd.jsonl",
+      "graph_digest": "f8b0c32b740ab1b2b71b07c4e861772f80fa3e822490bedd837a21c385bded91",
+      "graph_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph.json",
+      "input_digest": "ad6dadf93340d54519f8e937a6bff2631e083c300a12fd760e6181374a76acca",
+      "manifest_digest": "55c144151a94bf7dfde322682d07941bc76b1943846004256efd32a025a5f4c2",
+      "manifest_path": "handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json",
+      "manifest_schema_version": "dsg-spatialqa-lab.predicted-dsg-detector-run-manifest.v1",
+      "observation_sequence_digest": "c798ede566c1e844bbe2866e54ea93a7ee685c06addf9fc76b6ff41a754a5cff",
+      "observation_sequence_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations.json",
+      "predicted_dsg_evidence_report_digest": "f3d30985b5e07748ec37d8b5086f2d4a79e80d98162fc2def9e4538d59d40600",
+      "predicted_dsg_evidence_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-evidence.json",
+      "predicted_graph_report_digest": "2f8edf7b4e7525c5e768d12737b4e0629cf45691d9f39dd3907030dffd1e9af4",
+      "predicted_graph_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-report.json",
+      "readiness": {
+        "failed_check_count": 0,
+        "failed_checks": [],
+        "ready": true
+      },
+      "ready": true,
+      "run_ledger_digest": "c1191750a9b0ac7c4f635568ba9e6cfb682c40b387358e926a53e0f2b76fdaf6",
+      "run_ledger_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-detector-run-ledger.json",
+      "schema_version": "dsg-spatialqa-lab.predicted-dsg-detector-run.v1",
+      "summary": {
+        "detector_import_summary": {
+          "agent_pose_count": 30,
+          "by_object_label": {
+            "apple": 2,
+            "bread": 2,
+            "butterknife": 1,
+            "cabinet": 5,
+            "chair": 4,
+            "coffeemachine": 3,
+            "countertop": 4,
+            "diningtable": 2,
+            "drawer": 8,
+            "floor": 18,
+            "fridge": 7,
+            "garbagecan": 3,
+            "lightswitch": 1,
+            "mirror": 2,
+            "newspaper": 2,
+            "pen": 1,
+            "pencil": 2,
+            "plate": 2,
+            "sofa": 8,
+            "toaster": 3
+          },
+          "by_step": [
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 4,
+              "object_ids": [
+                "cabinet_01_85_02_02_00_38",
+                "coffeemachine_01_98_00_90_00_19",
+                "fridge_02_10_00_00_01_07",
+                "toaster_01_84_00_90_00_13"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 1,
+              "visible_object_count": 4
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "fridge_02_10_00_00_01_07"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 2,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 2,
+              "object_ids": [
+                "fridge_02_10_00_00_01_07",
+                "garbagecan_01_94_00_00_02_03"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 3,
+              "visible_object_count": 2
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 0,
+              "object_ids": [],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 4,
+              "visible_object_count": 0
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "fridge_02_10_00_00_01_07"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 5,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 2,
+              "object_ids": [
+                "fridge_02_10_00_00_01_07",
+                "garbagecan_01_94_00_00_02_03"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 6,
+              "visible_object_count": 2
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "fridge_02_10_00_00_01_07"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 7,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "fridge_02_10_00_00_01_07"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 8,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 13,
+              "object_ids": [
+                "apple_00_47_01_15_00_48",
+                "bread_00_52_01_17_00_03",
+                "cabinet_01_55_00_50_00_38",
+                "cabinet_01_85_02_02_00_38",
+                "coffeemachine_01_98_00_90_00_19",
+                "countertop_00_08_01_15_00_00",
+                "countertop_01_87_00_95_01_21",
+                "drawer_01_56_00_33_00_20",
+                "drawer_01_56_00_66_00_20",
+                "drawer_01_56_00_84_00_20",
+                "drawer_01_56_00_84_00_20_dup2",
+                "floor_00_00_00_00_00_00",
+                "toaster_01_84_00_90_00_13"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 9,
+              "visible_object_count": 13
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 14,
+              "object_ids": [
+                "apple_00_47_01_15_00_48",
+                "bread_00_52_01_17_00_03",
+                "butterknife_00_41_01_11_00_46",
+                "cabinet_01_55_00_50_00_38",
+                "cabinet_01_85_02_02_00_38",
+                "coffeemachine_01_98_00_90_00_19",
+                "countertop_00_08_01_15_00_00",
+                "countertop_01_87_00_95_01_21",
+                "drawer_01_56_00_33_00_20",
+                "drawer_01_56_00_66_00_20",
+                "drawer_01_56_00_84_00_20",
+                "drawer_01_56_00_84_00_20_dup2",
+                "floor_00_00_00_00_00_00",
+                "toaster_01_84_00_90_00_13"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 10,
+              "visible_object_count": 14
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 2,
+              "object_ids": [
+                "floor_00_00_00_38_00_00",
+                "sofa_02_40_00_00_03_42"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 11,
+              "visible_object_count": 2
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 2,
+              "object_ids": [
+                "floor_00_00_00_38_00_00",
+                "sofa_02_40_00_00_03_42"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 12,
+              "visible_object_count": 2
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 9,
+              "object_ids": [
+                "chair_02_51_00_02_00_99",
+                "chair_02_52_00_02_01_88",
+                "diningtable_02_27_00_02_01_42",
+                "floor_00_00_00_38_00_00",
+                "newspaper_02_76_00_68_01_18",
+                "pen_03_00_00_69_01_46",
+                "pencil_02_83_00_68_01_51",
+                "plate_02_40_00_68_01_68",
+                "sofa_02_40_00_00_03_42"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 13,
+              "visible_object_count": 9
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 8,
+              "object_ids": [
+                "chair_02_51_00_02_00_99",
+                "chair_02_52_00_02_01_88",
+                "diningtable_02_27_00_02_01_42",
+                "floor_00_00_00_38_00_00",
+                "newspaper_02_76_00_68_01_18",
+                "pencil_02_83_00_68_01_51",
+                "plate_02_40_00_68_01_68",
+                "sofa_02_40_00_00_03_42"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 14,
+              "visible_object_count": 8
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 2,
+              "object_ids": [
+                "floor_00_00_00_38_00_00",
+                "sofa_02_40_00_00_03_42"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 15,
+              "visible_object_count": 2
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 2,
+              "object_ids": [
+                "floor_00_00_00_38_00_00",
+                "sofa_02_40_00_00_03_42"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 16,
+              "visible_object_count": 2
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 2,
+              "object_ids": [
+                "floor_00_00_00_38_00_00",
+                "sofa_02_40_00_00_03_42"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 17,
+              "visible_object_count": 2
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 2,
+              "object_ids": [
+                "floor_00_00_00_38_00_00",
+                "sofa_02_40_00_00_03_42"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 18,
+              "visible_object_count": 2
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "garbagecan_04_86_00_00_00_27"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 19,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 0,
+              "object_ids": [],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 20,
+              "visible_object_count": 0
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "floor_00_00_00_00_00_00"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 21,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "floor_00_00_00_00_00_00"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 22,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 2,
+              "object_ids": [
+                "lightswitch_02_66_01_28_01_90",
+                "mirror_01_99_01_38_01_88"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 23,
+              "visible_object_count": 2
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "mirror_01_99_01_38_01_88"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 24,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "floor_00_00_00_00_00_00"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 25,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "floor_00_00_00_00_00_00"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 26,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "floor_00_00_00_00_00_00"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 27,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "floor_00_00_00_00_00_00"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 28,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "floor_00_00_00_00_00_00"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 29,
+              "visible_object_count": 1
+            },
+            {
+              "agent_pose": true,
+              "hidden_object_count": 0,
+              "low_confidence_object_count": 0,
+              "object_count": 1,
+              "object_ids": [
+                "floor_00_00_00_00_00_00"
+              ],
+              "region_count": 2,
+              "reobserve_candidate_count": 0,
+              "room_count": 1,
+              "step": 30,
+              "visible_object_count": 1
+            }
+          ],
+          "digest": "739248c1109093657dcdd0f5a2f2f8fbb431142ff5af9ad5aaeded3854dca436",
+          "first_step": 1,
+          "hidden_object_observation_count": 0,
+          "last_step": 30,
+          "low_confidence_object_observation_count": 0,
+          "low_confidence_threshold": 0.5,
+          "object_observation_count": 80,
+          "observation_count": 30,
+          "region_observation_count": 60,
+          "reobserve_candidate_observation_count": 0,
+          "room_observation_count": 30,
+          "schema_version": "dsg-spatialqa-lab.scene-observation-sequence-summary.v1",
+          "sequence_digest": "c798ede566c1e844bbe2866e54ea93a7ee685c06addf9fc76b6ff41a754a5cff",
+          "steps": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30
+          ],
+          "unique_object_count": 28,
+          "unique_object_ids": [
+            "apple_00_47_01_15_00_48",
+            "bread_00_52_01_17_00_03",
+            "butterknife_00_41_01_11_00_46",
+            "cabinet_01_55_00_50_00_38",
+            "cabinet_01_85_02_02_00_38",
+            "chair_02_51_00_02_00_99",
+            "chair_02_52_00_02_01_88",
+            "coffeemachine_01_98_00_90_00_19",
+            "countertop_00_08_01_15_00_00",
+            "countertop_01_87_00_95_01_21",
+            "diningtable_02_27_00_02_01_42",
+            "drawer_01_56_00_33_00_20",
+            "drawer_01_56_00_66_00_20",
+            "drawer_01_56_00_84_00_20",
+            "drawer_01_56_00_84_00_20_dup2",
+            "floor_00_00_00_00_00_00",
+            "floor_00_00_00_38_00_00",
+            "fridge_02_10_00_00_01_07",
+            "garbagecan_01_94_00_00_02_03",
+            "garbagecan_04_86_00_00_00_27",
+            "lightswitch_02_66_01_28_01_90",
+            "mirror_01_99_01_38_01_88",
+            "newspaper_02_76_00_68_01_18",
+            "pen_03_00_00_69_01_46",
+            "pencil_02_83_00_68_01_51",
+            "plate_02_40_00_68_01_68",
+            "sofa_02_40_00_00_03_42",
+            "toaster_01_84_00_90_00_13"
+          ],
+          "visible_object_observation_count": 80
+        },
+        "evidence_summary": {
+          "detector_names": [
+            "ai2thor_metadata_visible_objects"
+          ],
+          "evidence_kind_counts": {
+            "depth": 80,
+            "detector": 80,
+            "rgb": 80
+          },
+          "hidden_object_observation_count": 0,
+          "input_kind": "observation_sequence",
+          "object_observation_count": 80,
+          "observation_count": 30,
+          "observation_sequence_digest": "c798ede566c1e844bbe2866e54ea93a7ee685c06addf9fc76b6ff41a754a5cff",
+          "source_counts": {
+            "ai2thor": 80
+          },
+          "visible_object_observation_count": 80
+        },
+        "predicted_graph_summary": {
+          "graph_summary": {
+            "agent_count": 1,
+            "agent_history_count": 30,
+            "by_current_location": {},
+            "by_current_room": {},
+            "by_edge_relation": {
+              "NEAR": 400,
+              "STATE_CHANGED": 110
+            },
+            "by_node_type": {
+              "agent": 1,
+              "object": 28,
+              "region": 2,
+              "room": 1,
+              "state": 110
+            },
+            "by_object_label": {
+              "apple": 1,
+              "bread": 1,
+              "butterknife": 1,
+              "cabinet": 2,
+              "chair": 2,
+              "coffeemachine": 1,
+              "countertop": 2,
+              "diningtable": 1,
+              "drawer": 4,
+              "floor": 2,
+              "fridge": 1,
+              "garbagecan": 2,
+              "lightswitch": 1,
+              "mirror": 1,
+              "newspaper": 1,
+              "pen": 1,
+              "pencil": 1,
+              "plate": 1,
+              "sofa": 1,
+              "toaster": 1
+            },
+            "edge_count": 510,
+            "hidden_object_count": 0,
+            "low_confidence_object_count": 0,
+            "node_count": 142,
+            "object_count": 28,
+            "object_history_count": 80,
+            "reobserve_candidate_count": 0,
+            "schema_version": 1,
+            "unlocated_object_count": 28,
+            "unroomed_object_count": 28,
+            "visible_object_count": 28
+          },
+          "observation_summary": {
+            "agent_pose_count": 30,
+            "by_object_label": {
+              "apple": 2,
+              "bread": 2,
+              "butterknife": 1,
+              "cabinet": 5,
+              "chair": 4,
+              "coffeemachine": 3,
+              "countertop": 4,
+              "diningtable": 2,
+              "drawer": 8,
+              "floor": 18,
+              "fridge": 7,
+              "garbagecan": 3,
+              "lightswitch": 1,
+              "mirror": 2,
+              "newspaper": 2,
+              "pen": 1,
+              "pencil": 2,
+              "plate": 2,
+              "sofa": 8,
+              "toaster": 3
+            },
+            "by_step": [
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 4,
+                "object_ids": [
+                  "cabinet_01_85_02_02_00_38",
+                  "coffeemachine_01_98_00_90_00_19",
+                  "fridge_02_10_00_00_01_07",
+                  "toaster_01_84_00_90_00_13"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 1,
+                "visible_object_count": 4
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "fridge_02_10_00_00_01_07"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 2,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 2,
+                "object_ids": [
+                  "fridge_02_10_00_00_01_07",
+                  "garbagecan_01_94_00_00_02_03"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 3,
+                "visible_object_count": 2
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 0,
+                "object_ids": [],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 4,
+                "visible_object_count": 0
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "fridge_02_10_00_00_01_07"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 5,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 2,
+                "object_ids": [
+                  "fridge_02_10_00_00_01_07",
+                  "garbagecan_01_94_00_00_02_03"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 6,
+                "visible_object_count": 2
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "fridge_02_10_00_00_01_07"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 7,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "fridge_02_10_00_00_01_07"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 8,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 13,
+                "object_ids": [
+                  "apple_00_47_01_15_00_48",
+                  "bread_00_52_01_17_00_03",
+                  "cabinet_01_55_00_50_00_38",
+                  "cabinet_01_85_02_02_00_38",
+                  "coffeemachine_01_98_00_90_00_19",
+                  "countertop_00_08_01_15_00_00",
+                  "countertop_01_87_00_95_01_21",
+                  "drawer_01_56_00_33_00_20",
+                  "drawer_01_56_00_66_00_20",
+                  "drawer_01_56_00_84_00_20",
+                  "drawer_01_56_00_84_00_20_dup2",
+                  "floor_00_00_00_00_00_00",
+                  "toaster_01_84_00_90_00_13"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 9,
+                "visible_object_count": 13
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 14,
+                "object_ids": [
+                  "apple_00_47_01_15_00_48",
+                  "bread_00_52_01_17_00_03",
+                  "butterknife_00_41_01_11_00_46",
+                  "cabinet_01_55_00_50_00_38",
+                  "cabinet_01_85_02_02_00_38",
+                  "coffeemachine_01_98_00_90_00_19",
+                  "countertop_00_08_01_15_00_00",
+                  "countertop_01_87_00_95_01_21",
+                  "drawer_01_56_00_33_00_20",
+                  "drawer_01_56_00_66_00_20",
+                  "drawer_01_56_00_84_00_20",
+                  "drawer_01_56_00_84_00_20_dup2",
+                  "floor_00_00_00_00_00_00",
+                  "toaster_01_84_00_90_00_13"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 10,
+                "visible_object_count": 14
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 2,
+                "object_ids": [
+                  "floor_00_00_00_38_00_00",
+                  "sofa_02_40_00_00_03_42"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 11,
+                "visible_object_count": 2
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 2,
+                "object_ids": [
+                  "floor_00_00_00_38_00_00",
+                  "sofa_02_40_00_00_03_42"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 12,
+                "visible_object_count": 2
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 9,
+                "object_ids": [
+                  "chair_02_51_00_02_00_99",
+                  "chair_02_52_00_02_01_88",
+                  "diningtable_02_27_00_02_01_42",
+                  "floor_00_00_00_38_00_00",
+                  "newspaper_02_76_00_68_01_18",
+                  "pen_03_00_00_69_01_46",
+                  "pencil_02_83_00_68_01_51",
+                  "plate_02_40_00_68_01_68",
+                  "sofa_02_40_00_00_03_42"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 13,
+                "visible_object_count": 9
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 8,
+                "object_ids": [
+                  "chair_02_51_00_02_00_99",
+                  "chair_02_52_00_02_01_88",
+                  "diningtable_02_27_00_02_01_42",
+                  "floor_00_00_00_38_00_00",
+                  "newspaper_02_76_00_68_01_18",
+                  "pencil_02_83_00_68_01_51",
+                  "plate_02_40_00_68_01_68",
+                  "sofa_02_40_00_00_03_42"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 14,
+                "visible_object_count": 8
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 2,
+                "object_ids": [
+                  "floor_00_00_00_38_00_00",
+                  "sofa_02_40_00_00_03_42"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 15,
+                "visible_object_count": 2
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 2,
+                "object_ids": [
+                  "floor_00_00_00_38_00_00",
+                  "sofa_02_40_00_00_03_42"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 16,
+                "visible_object_count": 2
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 2,
+                "object_ids": [
+                  "floor_00_00_00_38_00_00",
+                  "sofa_02_40_00_00_03_42"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 17,
+                "visible_object_count": 2
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 2,
+                "object_ids": [
+                  "floor_00_00_00_38_00_00",
+                  "sofa_02_40_00_00_03_42"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 18,
+                "visible_object_count": 2
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "garbagecan_04_86_00_00_00_27"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 19,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 0,
+                "object_ids": [],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 20,
+                "visible_object_count": 0
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "floor_00_00_00_00_00_00"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 21,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "floor_00_00_00_00_00_00"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 22,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 2,
+                "object_ids": [
+                  "lightswitch_02_66_01_28_01_90",
+                  "mirror_01_99_01_38_01_88"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 23,
+                "visible_object_count": 2
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "mirror_01_99_01_38_01_88"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 24,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "floor_00_00_00_00_00_00"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 25,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "floor_00_00_00_00_00_00"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 26,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "floor_00_00_00_00_00_00"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 27,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "floor_00_00_00_00_00_00"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 28,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "floor_00_00_00_00_00_00"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 29,
+                "visible_object_count": 1
+              },
+              {
+                "agent_pose": true,
+                "hidden_object_count": 0,
+                "low_confidence_object_count": 0,
+                "object_count": 1,
+                "object_ids": [
+                  "floor_00_00_00_00_00_00"
+                ],
+                "region_count": 2,
+                "reobserve_candidate_count": 0,
+                "room_count": 1,
+                "step": 30,
+                "visible_object_count": 1
+              }
+            ],
+            "digest": "739248c1109093657dcdd0f5a2f2f8fbb431142ff5af9ad5aaeded3854dca436",
+            "first_step": 1,
+            "hidden_object_observation_count": 0,
+            "last_step": 30,
+            "low_confidence_object_observation_count": 0,
+            "low_confidence_threshold": 0.5,
+            "object_observation_count": 80,
+            "observation_count": 30,
+            "region_observation_count": 60,
+            "reobserve_candidate_observation_count": 0,
+            "room_observation_count": 30,
+            "schema_version": "dsg-spatialqa-lab.scene-observation-sequence-summary.v1",
+            "sequence_digest": "c798ede566c1e844bbe2866e54ea93a7ee685c06addf9fc76b6ff41a754a5cff",
+            "steps": [
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              20,
+              21,
+              22,
+              23,
+              24,
+              25,
+              26,
+              27,
+              28,
+              29,
+              30
+            ],
+            "unique_object_count": 28,
+            "unique_object_ids": [
+              "apple_00_47_01_15_00_48",
+              "bread_00_52_01_17_00_03",
+              "butterknife_00_41_01_11_00_46",
+              "cabinet_01_55_00_50_00_38",
+              "cabinet_01_85_02_02_00_38",
+              "chair_02_51_00_02_00_99",
+              "chair_02_52_00_02_01_88",
+              "coffeemachine_01_98_00_90_00_19",
+              "countertop_00_08_01_15_00_00",
+              "countertop_01_87_00_95_01_21",
+              "diningtable_02_27_00_02_01_42",
+              "drawer_01_56_00_33_00_20",
+              "drawer_01_56_00_66_00_20",
+              "drawer_01_56_00_84_00_20",
+              "drawer_01_56_00_84_00_20_dup2",
+              "floor_00_00_00_00_00_00",
+              "floor_00_00_00_38_00_00",
+              "fridge_02_10_00_00_01_07",
+              "garbagecan_01_94_00_00_02_03",
+              "garbagecan_04_86_00_00_00_27",
+              "lightswitch_02_66_01_28_01_90",
+              "mirror_01_99_01_38_01_88",
+              "newspaper_02_76_00_68_01_18",
+              "pen_03_00_00_69_01_46",
+              "pencil_02_83_00_68_01_51",
+              "plate_02_40_00_68_01_68",
+              "sofa_02_40_00_00_03_42",
+              "toaster_01_84_00_90_00_13"
+            ],
+            "visible_object_observation_count": 80
+          },
+          "predicted_summary": {
+            "by_object_label": {
+              "apple": 2,
+              "bread": 2,
+              "butterknife": 1,
+              "cabinet": 5,
+              "chair": 4,
+              "coffeemachine": 3,
+              "countertop": 4,
+              "diningtable": 2,
+              "drawer": 8,
+              "floor": 18,
+              "fridge": 7,
+              "garbagecan": 3,
+              "lightswitch": 1,
+              "mirror": 2,
+              "newspaper": 2,
+              "pen": 1,
+              "pencil": 2,
+              "plate": 2,
+              "sofa": 8,
+              "toaster": 3
+            },
+            "by_observation_source": {
+              "ai2thor": 80
+            },
+            "hidden_object_observation_count": 0,
+            "inferred_relation_count": 400,
+            "input_kind": "observation_sequence",
+            "object_observation_count": 80,
+            "observation_count": 30,
+            "visible_object_observation_count": 80
+          }
+        }
+      }
+    },
+    "predicted_dsg_detector_run_ledger_digest": "c1191750a9b0ac7c4f635568ba9e6cfb682c40b387358e926a53e0f2b76fdaf6",
+    "predicted_dsg_detector_run_manifest_digest": "55c144151a94bf7dfde322682d07941bc76b1943846004256efd32a025a5f4c2",
+    "predicted_dsg_detector_run_manifest_path": "handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json",
+    "predicted_dsg_detector_run_ready": true,
+    "readiness": {
+      "failed_checks": [],
+      "failed_count": 0,
+      "missing_groups": [],
+      "passed_count": 47,
+      "ready": true
+    },
+    "readiness_report_digest": "3ce782fdef3481c54a6a6587d610c74314cbcc164705df2ffe1d525600608014",
+    "readiness_report_path": "handoffs/ai2thor-real-small/outputs/real-experiment-readiness.json",
+    "readiness_status": "ready",
+    "ready": true,
+    "real_package_status": "ready",
+    "record_digest": "c47d525969979389679dd0a9fca6a2bba9960c1249a889adad29fecb15d8fff9",
+    "record_path": "handoffs/ai2thor-real-small/outputs/experiment-record.json",
+    "run_manifest_digest": "0598a870ae39618845f8b8c32a4ca0f599d6b51a5eef8be8a745dc64eb37bf6d",
+    "run_manifest_path": "handoffs/ai2thor-real-small/real-experiment-run-manifest.json",
+    "run_manifest_schema_version": "dsg-spatialqa-lab.real-experiment-run-manifest.v1",
+    "schema_version": "dsg-spatialqa-lab.real-experiment-run.v1",
+    "summary": {
+      "active_task_delta_report_count": 1,
+      "available_research_question_count": 4,
+      "error_attribution_diagnostic_count": 1,
+      "failure_linkage_diagnostic_count": 1,
+      "graph_construction_diagnostic_count": 1,
+      "qa_diagnostic_slice_count": 88,
+      "qa_eval_delta_report_count": 4,
+      "readiness_status": "ready",
+      "research_question_count": 4,
+      "source_artifact_count": 22,
+      "source_profile_count": 4,
+      "verdict_counts": {
+        "improved": 2,
+        "inconclusive": 0,
+        "regressed": 0,
+        "unchanged": 2
+      }
+    },
+    "summary_report_digest": "ff317e2e352cfd08d394ffe637380beb4339ae57c4f1dea81bb416df07cdad97",
+    "summary_report_path": "handoffs/ai2thor-real-small/outputs/experiment-summary.json",
+    "verdict_counts": {
+      "improved": 2,
+      "inconclusive": 0,
+      "regressed": 0,
+      "unchanged": 2
+    }
+  },
+  "run_schema_version": "dsg-spatialqa-lab.real-experiment-run.v1",
+  "schema_version": "dsg-spatialqa-lab.real-experiment-run-ledger.v1",
+  "summary": {
+    "approved_execution_packet_path": null,
+    "execution_approval_ready": true,
+    "execution_approval_required": false,
+    "ready": true
+  }
+}

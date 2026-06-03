@@ -1,0 +1,103 @@
+{
+  "action": "real_experiment_primary_evidence_return_progress_report",
+  "next_missing_return": {
+    "missing_return_artifact_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+    "next_return_command": "python scripts/check_real_collection.py --dataset-name ai2thor_real_small --source-kind ai2thor --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl --report handoffs/ai2thor-real-small/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30 --required-frame-evidence depth --required-frame-evidence rgb --required-frame-evidence segmentation",
+    "next_return_command_key": "collection_report",
+    "return_status": "missing",
+    "track": "real_data"
+  },
+  "report_digest": "e576f522b088851cccd4098dff4b174af74205d7adf51c732f9489a71694db44",
+  "return_checklist_digest": "96e5efbad2b09f229ba722aaa8695269fe0d8a8bc9dee2ed435e8ef5475d3217",
+  "return_checklist_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-checklist.json",
+  "return_checklist_validation": {
+    "checklist_digest": "96e5efbad2b09f229ba722aaa8695269fe0d8a8bc9dee2ed435e8ef5475d3217",
+    "valid": true
+  },
+  "schema_version": "dsg-spatialqa-lab.real-experiment-primary-evidence-return-progress-report.v1",
+  "summary": {
+    "actionable_return_track_count": 2,
+    "all_return_artifacts_present": false,
+    "blocked_return_track_count": 1,
+    "complete_return_track_count": 0,
+    "missing_return_artifact_count": 6,
+    "present_return_artifact_count": 0,
+    "ready_for_launch_refresh": false,
+    "return_artifact_count": 6,
+    "track_count": 3
+  },
+  "track_order": [
+    "real_data",
+    "real_controls",
+    "predicted_dsg"
+  ],
+  "tracks": [
+    {
+      "checklist_status": "actionable",
+      "error": null,
+      "error_type": null,
+      "expected_return_artifact_paths": [
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl",
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl",
+        "handoffs/ai2thor-real-small/inputs/real-collection-report.json"
+      ],
+      "missing_return_artifact_count": 4,
+      "missing_return_artifact_paths": [
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl",
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl",
+        "handoffs/ai2thor-real-small/inputs/real-collection-report.json"
+      ],
+      "next_return_command": "python scripts/check_real_collection.py --dataset-name ai2thor_real_small --source-kind ai2thor --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl --report handoffs/ai2thor-real-small/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30 --required-frame-evidence depth --required-frame-evidence rgb --required-frame-evidence segmentation",
+      "next_return_command_key": "collection_report",
+      "present_return_artifact_count": 0,
+      "present_return_artifact_paths": [],
+      "receipt_artifact_path": "handoffs/ai2thor-real-small/inputs/real-collection-report.json",
+      "request_bundle_path": "handoffs/ai2thor-real-small/real-collection-request-bundle.json",
+      "return_artifact_count": 4,
+      "return_status": "missing",
+      "track": "real_data"
+    },
+    {
+      "checklist_status": "blocked",
+      "error": "[Errno 2] No such file or directory: 'handoffs/ai2thor-real-small/inputs/qa.jsonl'",
+      "error_type": "FileNotFoundError",
+      "expected_return_artifact_paths": [],
+      "missing_return_artifact_count": 0,
+      "missing_return_artifact_paths": [],
+      "next_return_command": "python scripts/run_offline_controls.py --prediction-request-bundle handoffs/ai2thor-real-small/offline-control-import-manifest.json --request-bundle-output handoffs/ai2thor-real-small/offline-control-prediction-request-bundle.json",
+      "next_return_command_key": "request_bundle",
+      "present_return_artifact_count": 0,
+      "present_return_artifact_paths": [],
+      "receipt_artifact_path": null,
+      "request_bundle_path": "handoffs/ai2thor-real-small/offline-control-prediction-request-bundle.json",
+      "return_artifact_count": 0,
+      "return_status": "blocked",
+      "track": "real_controls"
+    },
+    {
+      "checklist_status": "actionable",
+      "error": null,
+      "error_type": null,
+      "expected_return_artifact_paths": [
+        "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd.jsonl",
+        "handoffs/ai2thor-real-small/predicted-dsg-detector-receipt-bundle.json"
+      ],
+      "missing_return_artifact_count": 2,
+      "missing_return_artifact_paths": [
+        "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd.jsonl",
+        "handoffs/ai2thor-real-small/predicted-dsg-detector-receipt-bundle.json"
+      ],
+      "next_return_command": "python scripts/run_predicted_dsg.py --detector-receipt-bundle handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json --receipt-bundle-output handoffs/ai2thor-real-small/predicted-dsg-detector-receipt-bundle.json",
+      "next_return_command_key": "detector_receipt_bundle",
+      "present_return_artifact_count": 0,
+      "present_return_artifact_paths": [],
+      "receipt_artifact_path": "handoffs/ai2thor-real-small/predicted-dsg-detector-receipt-bundle.json",
+      "request_bundle_path": "handoffs/ai2thor-real-small/predicted-dsg-detector-request-bundle.json",
+      "return_artifact_count": 2,
+      "return_status": "missing",
+      "track": "predicted_dsg"
+    }
+  ]
+}

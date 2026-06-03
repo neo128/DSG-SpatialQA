@@ -41,6 +41,28 @@ QUESTION_RELATION_EXCLUDES = frozenset(
         "STATE_CHANGED",
     }
 )
+COVERAGE_LIMIT_MIN_CASES = 8
+GRAPH_TOOL_COVERAGE_QUESTION_TYPES = frozenset(
+    {
+        "graph_query",
+        "nearest_object",
+        "relation_timeline",
+        "relative_relation",
+        "retrieve_subgraph",
+    }
+)
+DYNAMIC_COVERAGE_QUESTION_TYPES = frozenset(
+    {
+        "agent_history",
+        "agent_timeline",
+        "object_history",
+        "object_timeline",
+        "recent_events",
+        "relation_timeline",
+        "reobserve_targets",
+        "scene_delta",
+    }
+)
 
 
 @dataclass
@@ -84,9 +106,6 @@ def generate_qa_cases(
     extra_tags = _unique_strings(tags)
     cases: list[QACase] = []
 
-    def is_full() -> bool:
-        return max_cases is not None and len(cases) >= max_cases
-
     def add_case(
         question: Mapping[str, Any],
         *,
@@ -98,8 +117,6 @@ def generate_qa_cases(
         answer_type: str | None = None,
         difficulty: str = "easy",
     ) -> None:
-        if is_full():
-            return
         response = qa.answer(question)
         if response.error is not None:
             raise SpatialQAError(response.error)
@@ -132,8 +149,6 @@ def generate_qa_cases(
             slug=state.object_id,
             step=state.step,
         )
-    if is_full():
-        return cases
 
     if _has_place_nodes(graph):
         for state in _room_question_objects(tool):
@@ -143,8 +158,6 @@ def generate_qa_cases(
                 slug=state.object_id,
                 step=state.step,
             )
-            if is_full():
-                return cases
 
     for edge in _question_relation_edges(graph):
         add_case(
@@ -161,8 +174,6 @@ def generate_qa_cases(
             reference_frame=edge.reference_frame,
             answer_type="boolean",
         )
-        if is_full():
-            return cases
 
     for state in tool.find_objects():
         choices = tuple(
@@ -184,8 +195,6 @@ def generate_qa_cases(
             choices=choices,
         )
         break
-    if is_full():
-        return cases
 
     timeline_edge = next(iter(_question_relation_edges(graph)), None)
     if timeline_edge is not None:
@@ -202,8 +211,6 @@ def generate_qa_cases(
             step=timeline_edge.step,
             reference_frame=timeline_edge.reference_frame,
         )
-    if is_full():
-        return cases
 
     add_case(
         {"type": "reobserve_targets"},
@@ -211,8 +218,6 @@ def generate_qa_cases(
         slug="all",
         step=_max_graph_step(graph),
     )
-    if is_full():
-        return cases
 
     action_state = next((state for state in tool.find_objects() if state.visible), None)
     if action_state is not None:
@@ -233,8 +238,6 @@ def generate_qa_cases(
             slug=action_state.object_id,
             step=action_state.step,
         )
-    if is_full():
-        return cases
 
     steps = _graph_steps(graph)
     if steps and min(steps) < max(steps):
@@ -245,7 +248,59 @@ def generate_qa_cases(
             step=max(steps),
         )
 
-    return cases
+    return _limit_cases_for_coverage(cases, max_cases)
+
+
+def _limit_cases_for_coverage(cases: Sequence[QACase], max_cases: int | None) -> list[QACase]:
+    if max_cases is None or len(cases) <= max_cases:
+        return list(cases)
+    selected = list(cases[:max_cases])
+    if max_cases < COVERAGE_LIMIT_MIN_CASES:
+        return selected
+
+    _ensure_coverage_case(
+        selected,
+        cases,
+        question_types=GRAPH_TOOL_COVERAGE_QUESTION_TYPES,
+    )
+    _ensure_coverage_case(
+        selected,
+        cases,
+        question_types=DYNAMIC_COVERAGE_QUESTION_TYPES,
+    )
+    selected_ids = {case.id for case in selected}
+    return [case for case in cases if case.id in selected_ids]
+
+
+def _ensure_coverage_case(
+    selected: list[QACase],
+    cases: Sequence[QACase],
+    *,
+    question_types: frozenset[str],
+) -> None:
+    if any(case.question_type in question_types for case in selected):
+        return
+    selected_ids = {case.id for case in selected}
+    candidate = next(
+        (
+            case
+            for case in cases
+            if case.id not in selected_ids and case.question_type in question_types
+        ),
+        None,
+    )
+    if candidate is None:
+        return
+    selected[_coverage_replacement_index(selected)] = candidate
+
+
+def _coverage_replacement_index(selected: Sequence[QACase]) -> int:
+    if len(selected) <= 1:
+        return 0
+    for index in range(len(selected) - 1, -1, -1):
+        if selected[index].question_type == "object_location":
+            return index
+    return len(selected) - 1
 
 
 def qa_case_to_dict(case: QACase) -> dict[str, Any]:

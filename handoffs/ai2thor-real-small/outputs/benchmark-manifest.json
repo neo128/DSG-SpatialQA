@@ -1,0 +1,267 @@
+{
+  "artifacts": [
+    {
+      "episode_id": "ai2thor-real-small-episode-001",
+      "episode_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+      "episode_step_count": 10,
+      "graph_digest": "0b482fffcbb1f02e7cdf301bce950f7f06dd5c51b5b4bc35c804f6cba4f87a6f",
+      "graph_path": "handoffs/ai2thor-real-small/outputs/benchmark/graphs/ai2thor-real-small-episode-001-oracle-graph.json",
+      "qa_count": 10,
+      "qa_dataset_digest": "b7a2b196f4cbf433df55e2839e2658b2e3cf8a850bf186b1cccdcfdeb93ef916",
+      "qa_path": "handoffs/ai2thor-real-small/outputs/benchmark/qa/ai2thor-real-small-episode-001-qa.jsonl",
+      "scene_id": "FloorPlan1",
+      "source": "oracle"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-002",
+      "episode_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl",
+      "episode_step_count": 10,
+      "graph_digest": "1dd53c4fe3c3dcf9d7375a2e748100ad149b3b253cb76c4d53b281713c62694c",
+      "graph_path": "handoffs/ai2thor-real-small/outputs/benchmark/graphs/ai2thor-real-small-episode-002-oracle-graph.json",
+      "qa_count": 10,
+      "qa_dataset_digest": "ea061b632d94c192be7181d147ce0dff05972371f74077b6be3cc8b6cca3c41a",
+      "qa_path": "handoffs/ai2thor-real-small/outputs/benchmark/qa/ai2thor-real-small-episode-002-qa.jsonl",
+      "scene_id": "FloorPlan201",
+      "source": "oracle"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-003",
+      "episode_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl",
+      "episode_step_count": 10,
+      "graph_digest": "4f081341e1e63deabc8c6fb90ab333a22769af5955a061e984195b6fd69dcf2f",
+      "graph_path": "handoffs/ai2thor-real-small/outputs/benchmark/graphs/ai2thor-real-small-episode-003-oracle-graph.json",
+      "qa_count": 10,
+      "qa_dataset_digest": "6c037208edb3942c11637401d315eb8bf13cbc1ba2dff5a03e03c3be58c5324e",
+      "qa_path": "handoffs/ai2thor-real-small/outputs/benchmark/qa/ai2thor-real-small-episode-003-qa.jsonl",
+      "scene_id": "FloorPlan301",
+      "source": "oracle"
+    }
+  ],
+  "coverage": {
+    "by_episode": {
+      "ai2thor-real-small-episode-001": 10,
+      "ai2thor-real-small-episode-002": 10,
+      "ai2thor-real-small-episode-003": 10
+    },
+    "by_question_type": {
+      "nearest_object": 1,
+      "object_location": 24,
+      "relation_timeline": 2,
+      "relative_relation": 2,
+      "reobserve_targets": 1
+    },
+    "by_reference_frame": {
+      "none": 26,
+      "world": 4
+    },
+    "by_scene": {
+      "FloorPlan1": 10,
+      "FloorPlan201": 10,
+      "FloorPlan301": 10
+    },
+    "by_tag": {
+      "benchmark": 30,
+      "generated": 30,
+      "nearest_object": 1,
+      "object_location": 24,
+      "qa": 30,
+      "real": 30,
+      "relation_timeline": 2,
+      "relative_relation": 2,
+      "reobserve_targets": 1
+    },
+    "dynamic_static": {
+      "dynamic": 3,
+      "static": 27
+    },
+    "oracle_predicted": {
+      "oracle": 3,
+      "predicted": 0
+    }
+  },
+  "dataset_name": "ai2thor_real_small",
+  "episode_count": 3,
+  "experiment_artifact_digests": {
+    "active_task_delta_report:active-task-delta.json": "0942e6d67f449cfd409f6e60a4f199fae365350036b403dcf65e177dd22c9121",
+    "dashboard_bundle:dashboard.json": "2bee3e33b218bc351b3698c675723f0ae6f7f721f3f9e326c0fe31f535fc1d95",
+    "error_attribution_report:error-attribution.json": "e25c1364287fdcf5cfb1caee2f7ae5a7cb0c83b1e175d180776fe85a2bde78f5",
+    "graph_eval_report:graph-eval.json": "f1125cf336a4d4cec3c2912df3b520b0f031e71fbed918d64e378b4e6e00c0c3",
+    "offline_control_matrix_report:offline-control-matrix.json": "194835ea14e00e99a165b19f0be839c43bcb5897f8d0d7473566a30ced5534cd",
+    "offline_control_result_report:offline-control-result.json": "202e44f6b5739df3b469aa60627b73d4d1d3545a9f956e8cd5ea60ed5982cc06",
+    "offline_prediction_import_report:import-report.json": "4aac7ebddf5315de2fa94db0f96add8e52bc3eedf0a39e55c07759c7274d9d09",
+    "predicted_dsg_evidence_report:predicted-dsg-evidence.json": "f3d30985b5e07748ec37d8b5086f2d4a79e80d98162fc2def9e4538d59d40600",
+    "predicted_graph_report:predicted-graph-report.json": "2f8edf7b4e7525c5e768d12737b4e0629cf45691d9f39dd3907030dffd1e9af4",
+    "qa_eval_delta_report:predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json": "b2a009ba1664e1adf74f2a483f2f36041204c2cc805e65953a11390d7e74cffc",
+    "qa_eval_delta_report:predicted_graph_tool-vs-graph_text_graph_text_real_control.json": "e84bdba168b5cab1c0f4361d7c541206525ee612c1b37036e223186c1693b04c",
+    "qa_eval_delta_report:predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json": "7a278c93ef93df3838ea6c792d97781c1c260f2e7df571ee3406182e8dfcc27c",
+    "qa_eval_delta_report:predicted_graph_tool-vs-vlm_vlm_real_control.json": "5ff518d3b429bf35012dc248542f74edd7afe4e03a460b177415a8ed9fdb0e0f",
+    "qa_eval_report:qa-eval.json": "659f81e09355208b2db5cb724c29447d1d77cd6a7c1b9ff68f83d5fe8d6a26ec",
+    "real_collection_report:real-collection-report.json": "e1d7a16bf1c0c96026331636a51bcfbde4395ded09ddc2bc0709915b145d6426"
+  },
+  "experiment_artifacts": [
+    {
+      "artifact_type": "active_task_delta_report",
+      "digest": "0942e6d67f449cfd409f6e60a4f199fae365350036b403dcf65e177dd22c9121",
+      "path": "handoffs/ai2thor-real-small/inputs/review/active-task-delta.json",
+      "schema_version": "dsg-spatialqa-lab.active-task-delta-report.v1"
+    },
+    {
+      "artifact_type": "dashboard_bundle",
+      "digest": "2bee3e33b218bc351b3698c675723f0ae6f7f721f3f9e326c0fe31f535fc1d95",
+      "path": "handoffs/ai2thor-real-small/inputs/review/dashboard.json",
+      "schema_version": "dsg-spatialqa-lab.dashboard-bundle.v1"
+    },
+    {
+      "artifact_type": "error_attribution_report",
+      "digest": "e25c1364287fdcf5cfb1caee2f7ae5a7cb0c83b1e175d180776fe85a2bde78f5",
+      "path": "handoffs/ai2thor-real-small/inputs/review/error-attribution.json",
+      "schema_version": "dsg-spatialqa-lab.error-attribution-report.v1"
+    },
+    {
+      "artifact_type": "graph_eval_report",
+      "digest": "f1125cf336a4d4cec3c2912df3b520b0f031e71fbed918d64e378b4e6e00c0c3",
+      "path": "handoffs/ai2thor-real-small/inputs/review/graph-eval.json",
+      "schema_version": "dsg-spatialqa-lab.graph-eval-report.v1"
+    },
+    {
+      "artifact_type": "offline_control_matrix_report",
+      "digest": "194835ea14e00e99a165b19f0be839c43bcb5897f8d0d7473566a30ced5534cd",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-matrix.json",
+      "schema_version": "dsg-spatialqa-lab.offline-control-matrix-report.v1"
+    },
+    {
+      "artifact_type": "offline_control_result_report",
+      "digest": "202e44f6b5739df3b469aa60627b73d4d1d3545a9f956e8cd5ea60ed5982cc06",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-result.json",
+      "schema_version": "dsg-spatialqa-lab.offline-control-result-report.v1"
+    },
+    {
+      "artifact_type": "offline_prediction_import_report",
+      "digest": "f5188c14d159ec3bb3d688f19b809b5b0901c8a5b1cc2b42956dfb738858a476",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/caption_memory/import-report.json",
+      "schema_version": "dsg-spatialqa-lab.offline-prediction-import-report.v1"
+    },
+    {
+      "artifact_type": "offline_prediction_import_report",
+      "digest": "7b44d758ce068dd6aabd49bc3c893447aa4dbe24bb037c96335b4a385f5ece9d",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/graph_text/import-report.json",
+      "schema_version": "dsg-spatialqa-lab.offline-prediction-import-report.v1"
+    },
+    {
+      "artifact_type": "offline_prediction_import_report",
+      "digest": "309a36d7320a666dc3f441e5d7aae3632eb90f317c6acdcb93d39aa3943ef792",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/multi_frame_vlm/import-report.json",
+      "schema_version": "dsg-spatialqa-lab.offline-prediction-import-report.v1"
+    },
+    {
+      "artifact_type": "offline_prediction_import_report",
+      "digest": "4aac7ebddf5315de2fa94db0f96add8e52bc3eedf0a39e55c07759c7274d9d09",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/vlm/import-report.json",
+      "schema_version": "dsg-spatialqa-lab.offline-prediction-import-report.v1"
+    },
+    {
+      "artifact_type": "predicted_dsg_evidence_report",
+      "digest": "f3d30985b5e07748ec37d8b5086f2d4a79e80d98162fc2def9e4538d59d40600",
+      "path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-evidence.json",
+      "schema_version": "dsg-spatialqa-lab.predicted-dsg-evidence-report.v1"
+    },
+    {
+      "artifact_type": "predicted_graph_report",
+      "digest": "2f8edf7b4e7525c5e768d12737b4e0629cf45691d9f39dd3907030dffd1e9af4",
+      "path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-report.json",
+      "schema_version": "dsg-spatialqa-lab.predicted-graph-report.v1"
+    },
+    {
+      "artifact_type": "qa_eval_delta_report",
+      "digest": "b2a009ba1664e1adf74f2a483f2f36041204c2cc805e65953a11390d7e74cffc",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
+      "schema_version": "dsg-spatialqa-lab.qa-eval-delta-report.v1"
+    },
+    {
+      "artifact_type": "qa_eval_delta_report",
+      "digest": "e84bdba168b5cab1c0f4361d7c541206525ee612c1b37036e223186c1693b04c",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
+      "schema_version": "dsg-spatialqa-lab.qa-eval-delta-report.v1"
+    },
+    {
+      "artifact_type": "qa_eval_delta_report",
+      "digest": "7a278c93ef93df3838ea6c792d97781c1c260f2e7df571ee3406182e8dfcc27c",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
+      "schema_version": "dsg-spatialqa-lab.qa-eval-delta-report.v1"
+    },
+    {
+      "artifact_type": "qa_eval_delta_report",
+      "digest": "5ff518d3b429bf35012dc248542f74edd7afe4e03a460b177415a8ed9fdb0e0f",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-vlm_vlm_real_control.json",
+      "schema_version": "dsg-spatialqa-lab.qa-eval-delta-report.v1"
+    },
+    {
+      "artifact_type": "qa_eval_report",
+      "digest": "450223acd8ee415ef927131b4fc2319fb45ab6b3b5830e1be196fe9c05107d6b",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/caption_memory_caption_memory_real_control/qa-eval.json",
+      "schema_version": "dsg-spatialqa-lab.qa-eval-report.v1"
+    },
+    {
+      "artifact_type": "qa_eval_report",
+      "digest": "c93ec04cd9c233b853b340d421f5d9ce776dcb82315956a469cada0db9b4434c",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/graph_text_graph_text_real_control/qa-eval.json",
+      "schema_version": "dsg-spatialqa-lab.qa-eval-report.v1"
+    },
+    {
+      "artifact_type": "qa_eval_report",
+      "digest": "7ce7d0b73851f0770d58c595b38c9a28410bd68641727e6e664fe9c4fb5ba520",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/multi_frame_vlm_multi_frame_vlm_real_control/qa-eval.json",
+      "schema_version": "dsg-spatialqa-lab.qa-eval-report.v1"
+    },
+    {
+      "artifact_type": "qa_eval_report",
+      "digest": "fd258c62a069124f3991f96c539b5a3824cce49aa2daafbcbfb8a9c451300a41",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/vlm_vlm_real_control/qa-eval.json",
+      "schema_version": "dsg-spatialqa-lab.qa-eval-report.v1"
+    },
+    {
+      "artifact_type": "qa_eval_report",
+      "digest": "659f81e09355208b2db5cb724c29447d1d77cd6a7c1b9ff68f83d5fe8d6a26ec",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
+      "schema_version": "dsg-spatialqa-lab.qa-eval-report.v1"
+    },
+    {
+      "artifact_type": "real_collection_report",
+      "digest": "e1d7a16bf1c0c96026331636a51bcfbde4395ded09ddc2bc0709915b145d6426",
+      "path": "handoffs/ai2thor-real-small/inputs/real-collection-report.json",
+      "schema_version": "dsg-spatialqa-lab.real-collection-report.v1"
+    }
+  ],
+  "filters": {
+    "max_qa_per_episode": 10,
+    "source": "oracle",
+    "tags": [
+      "benchmark",
+      "real"
+    ]
+  },
+  "graph_digests": {
+    "ai2thor-real-small-episode-001": "0b482fffcbb1f02e7cdf301bce950f7f06dd5c51b5b4bc35c804f6cba4f87a6f",
+    "ai2thor-real-small-episode-002": "1dd53c4fe3c3dcf9d7375a2e748100ad149b3b253cb76c4d53b281713c62694c",
+    "ai2thor-real-small-episode-003": "4f081341e1e63deabc8c6fb90ab333a22769af5955a061e984195b6fd69dcf2f"
+  },
+  "manifest_digest": "88f20975983ddc87a686dd6f7427e96981e5df80e3795dbf59d9c16dbc0037e8",
+  "qa_count": 30,
+  "qa_dataset_digests": {
+    "ai2thor-real-small-episode-001": "b7a2b196f4cbf433df55e2839e2658b2e3cf8a850bf186b1cccdcfdeb93ef916",
+    "ai2thor-real-small-episode-002": "ea061b632d94c192be7181d147ce0dff05972371f74077b6be3cc8b6cca3c41a",
+    "ai2thor-real-small-episode-003": "6c037208edb3942c11637401d315eb8bf13cbc1ba2dff5a03e03c3be58c5324e"
+  },
+  "qa_digest": "efc49743646421513100076326c366f392a06c0429f97c4fd8302e58a33bc4c8",
+  "scene_count": 3,
+  "schema_version": "dsg-spatialqa-lab.benchmark-manifest.v1",
+  "summary": {
+    "dataset_name": "ai2thor_real_small",
+    "episode_count": 3,
+    "experiment_artifact_count": 22,
+    "qa_count": 30,
+    "scene_count": 3,
+    "task_count": 0
+  },
+  "task_count": 0
+}

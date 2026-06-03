@@ -119,6 +119,13 @@ better than VLM-only without real small-scale experiments:
    not run detectors, depth estimators, or simulator collection inside the
    default runtime.
 
+The current pilot handoff root is `handoffs/ai2thor-real-smoke/`. It now
+contains the real-data, real-control, and predicted-DSG child manifests plus
+ready request bundles for AI2-THOR real collection and detector/RGB-D predicted
+DSG intake. Real controls remain intentionally blocked until the same handoff
+receives the gold QA JSONL, candidate DSG prediction JSONL, and four external
+offline prediction files.
+
 ## Development Goal
 
 Keep the deterministic core stable while shifting the next phase from building
@@ -2686,6 +2693,33 @@ important remaining tracks are:
    matching writer-command fragments, so a recomputed-digest artifact that
    drops `--required-predicted-input-kind observation_sequence` from the scoped
    expansion command is rejected.
+   The completed P35ah slice binds the sibling next handoff to its full
+   offline-control kind set. `next_handoff_plan.required_control_kinds` now
+   records the source control kinds, and claim-readiness validation checks that
+   the next-handoff offline-control slots and writer-command fragments still
+   preserve every required control, so a recomputed-digest artifact that drops
+   `graph_text` from the next expansion plan is rejected.
+   The completed P35ai slice binds the sibling next handoff to deterministic
+   external artifact slot paths. Claim-readiness validation now checks that the
+   next-handoff candidate GraphTool prediction, detector/RGB-D JSONL,
+   offline-control prediction paths, and track order remain under the saved
+   `next-claim-ready-handoff` root, so a recomputed-digest artifact that
+   redirects the detector input to a different JSONL file is rejected.
+   The completed P35aj slice binds the sibling next handoff's after-write
+   intake plan to deterministic artifact paths and command fragments.
+   Claim-readiness validation now checks that the next-handoff launch-audit,
+   primary-evidence, request-bundle, receipt-bundle, and real-collection
+   commands still point at the saved `next-claim-ready-handoff` root, so a
+   recomputed-digest artifact that redirects the launch-report output path is
+   rejected.
+   The completed P36a pilot slice creates
+   `handoffs/ai2thor-real-smoke/` as the concrete next experiment handoff and
+   fixes relative handoff-root path anchoring in top-level launch/preflight
+   helpers. Launch reports now keep child manifest and planned-output paths
+   under the saved handoff root instead of duplicating
+   `handoffs/ai2thor-real-smoke/`, so the real-data and predicted-DSG request
+   bundles can be handed to external collectors/producers without phantom
+   missing-file blockers.
    The completed P33u slice tightens the same launch gate for real data:
    top-level `collection_report_receipt` now records `digest_valid` and
    `validation_valid`, and `real_data_collection_intake_plan.ready` remains

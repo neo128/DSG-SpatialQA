@@ -1171,6 +1171,14 @@ support a full-scale benchmark claim.
 `claim_scope_handoff_plan` turns that action into a deterministic
 `next-full-scale-claim-handoff` command plan and operator checklist without
 changing the legacy `next_handoff_plan` meaning for claim-ready reports.
+The legacy `next_handoff_plan` records its required offline-control kinds and
+validation checks that both the deterministic offline-control slots and writer
+command preserve those kinds.
+Its candidate, detector/RGB-D, offline-control prediction, and track-order slots
+must also match the deterministic paths under the saved next-handoff root.
+Its after-write intake plan must keep the deterministic launch-audit,
+primary-evidence, request-bundle, receipt-bundle, and real-collection artifact
+paths and command fragments under that same root.
 Validation checks the scoped writer command against the saved handoff root,
 episode plan, artifact slots, and default claim thresholds.
 It also checks the scoped episode plan against the default episode deficit and

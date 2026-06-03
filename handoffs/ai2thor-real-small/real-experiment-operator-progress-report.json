@@ -1,0 +1,637 @@
+{
+  "action": "real_experiment_operator_progress_report",
+  "next_missing_step": {
+    "key": "write_primary_evidence_request_bundles",
+    "order": 12,
+    "phase": "primary_evidence_request",
+    "target_path": "handoffs/ai2thor-real-small/real-collection-request-bundle.json",
+    "track": "primary_evidence"
+  },
+  "next_not_ready_step": {
+    "key": "write_primary_evidence_request_bundles",
+    "order": 12,
+    "phase": "primary_evidence_request",
+    "target_path": "handoffs/ai2thor-real-small/real-collection-request-bundle.json",
+    "target_status": "missing",
+    "track": "primary_evidence"
+  },
+  "operator_checklist_digest": "3c64ecfc318704cdb9ad53013ad5c4950238dd2f1607da81c952a6894d6af379",
+  "operator_checklist_path": "handoffs/ai2thor-real-small/real-experiment-operator-checklist.json",
+  "operator_checklist_validation": {
+    "operator_checklist_digest": "3c64ecfc318704cdb9ad53013ad5c4950238dd2f1607da81c952a6894d6af379",
+    "valid": true
+  },
+  "report_digest": "8931b2208e207204a24a34f5d3986ad647e3223948a8dc7b27896624a67e8ae0",
+  "schema_version": "dsg-spatialqa-lab.real-experiment-operator-progress-report.v1",
+  "steps": [
+    {
+      "command": "python scripts/run_real_experiment.py --validate-external-artifact-contracts handoffs/ai2thor-real-small/real-experiment-external-artifact-contracts.json",
+      "key": "validate_external_artifact_contracts",
+      "order": 1,
+      "phase": "handoff_manifests",
+      "target_audit": {
+        "action": "validate_real_experiment_external_artifact_contracts",
+        "checked": true,
+        "valid": true
+      },
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-external-artifact-contracts.json",
+      "target_ready": true,
+      "target_status": "ready",
+      "track": "launch_audit"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-external-artifact-contracts handoffs/ai2thor-real-small/real-experiment-external-artifact-contracts.json",
+      "key": "compare_external_artifact_contracts",
+      "order": 2,
+      "phase": "handoff_manifests",
+      "target_audit": {
+        "action": "compare_real_experiment_external_artifact_contracts",
+        "checked": true,
+        "matches": true
+      },
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-external-artifact-contracts.json",
+      "target_ready": true,
+      "target_status": "ready",
+      "track": "launch_audit"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --external-artifact-launch-report handoffs/ai2thor-real-small/real-experiment-external-artifact-contracts.json --launch-report-output handoffs/ai2thor-real-small/real-experiment-external-artifact-launch-report.json",
+      "key": "external_artifact_launch_report",
+      "order": 3,
+      "phase": "launch_audit",
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-external-artifact-launch-report.json",
+      "target_ready": true,
+      "target_status": "present",
+      "track": "launch_audit"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-external-artifact-launch-report handoffs/ai2thor-real-small/real-experiment-external-artifact-launch-report.json",
+      "key": "validate_external_artifact_launch_report",
+      "order": 4,
+      "phase": "launch_audit",
+      "target_audit": {
+        "action": "validate_real_experiment_external_artifact_launch_report",
+        "checked": true,
+        "valid": true
+      },
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-external-artifact-launch-report.json",
+      "target_ready": true,
+      "target_status": "ready",
+      "track": "launch_audit"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-external-artifact-launch-report handoffs/ai2thor-real-small/real-experiment-external-artifact-launch-report.json",
+      "key": "compare_external_artifact_launch_report",
+      "order": 5,
+      "phase": "launch_audit",
+      "target_audit": {
+        "action": "compare_real_experiment_external_artifact_launch_report",
+        "checked": true,
+        "matches": true
+      },
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-external-artifact-launch-report.json",
+      "target_ready": true,
+      "target_status": "ready",
+      "track": "launch_audit"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --primary-evidence-status handoffs/ai2thor-real-small/real-experiment-external-artifact-launch-report.json --primary-evidence-status-output handoffs/ai2thor-real-small/real-experiment-primary-evidence-status.json",
+      "key": "primary_evidence_status",
+      "order": 6,
+      "phase": "primary_evidence_request",
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-status.json",
+      "target_ready": true,
+      "target_status": "present",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-primary-evidence-status handoffs/ai2thor-real-small/real-experiment-primary-evidence-status.json",
+      "key": "validate_primary_evidence_status",
+      "order": 7,
+      "phase": "primary_evidence_request",
+      "target_audit": {
+        "action": "validate_real_experiment_primary_evidence_status",
+        "checked": true,
+        "valid": true
+      },
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-status.json",
+      "target_ready": true,
+      "target_status": "ready",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-primary-evidence-status handoffs/ai2thor-real-small/real-experiment-primary-evidence-status.json",
+      "key": "compare_primary_evidence_status",
+      "order": 8,
+      "phase": "primary_evidence_request",
+      "target_audit": {
+        "action": "compare_real_experiment_primary_evidence_status",
+        "checked": true,
+        "matches": true
+      },
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-status.json",
+      "target_ready": true,
+      "target_status": "ready",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --primary-evidence-request-package handoffs/ai2thor-real-small/real-experiment-external-artifact-launch-report.json --primary-evidence-request-package-output handoffs/ai2thor-real-small/real-experiment-primary-evidence-request-package.json",
+      "key": "primary_evidence_request_package",
+      "order": 9,
+      "phase": "primary_evidence_request",
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-request-package.json",
+      "target_ready": true,
+      "target_status": "present",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-primary-evidence-request-package handoffs/ai2thor-real-small/real-experiment-primary-evidence-request-package.json",
+      "key": "validate_primary_evidence_request_package",
+      "order": 10,
+      "phase": "primary_evidence_request",
+      "target_audit": {
+        "action": "validate_real_experiment_primary_evidence_request_package",
+        "checked": true,
+        "valid": true
+      },
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-request-package.json",
+      "target_ready": true,
+      "target_status": "ready",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-primary-evidence-request-package handoffs/ai2thor-real-small/real-experiment-primary-evidence-request-package.json",
+      "key": "compare_primary_evidence_request_package",
+      "order": 11,
+      "phase": "primary_evidence_request",
+      "target_audit": {
+        "action": "compare_real_experiment_primary_evidence_request_package",
+        "checked": true,
+        "matches": true
+      },
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-request-package.json",
+      "target_ready": true,
+      "target_status": "ready",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --write-primary-evidence-request-bundles handoffs/ai2thor-real-small/real-experiment-primary-evidence-request-package.json",
+      "key": "write_primary_evidence_request_bundles",
+      "order": 12,
+      "phase": "primary_evidence_request",
+      "target_audit": {
+        "action": "validate_real_experiment_primary_evidence_request_bundles",
+        "checked": true,
+        "track_statuses": {
+          "predicted_dsg": "ready",
+          "real_controls": "missing",
+          "real_data": "ready"
+        },
+        "valid": false
+      },
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-collection-request-bundle.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --primary-evidence-return-checklist handoffs/ai2thor-real-small/real-experiment-primary-evidence-request-package.json --primary-evidence-return-checklist-output handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-checklist.json",
+      "key": "primary_evidence_return_checklist",
+      "order": 13,
+      "phase": "primary_evidence_request",
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-checklist.json",
+      "target_ready": true,
+      "target_status": "present",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-primary-evidence-return-checklist handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-checklist.json",
+      "key": "validate_primary_evidence_return_checklist",
+      "order": 14,
+      "phase": "primary_evidence_request",
+      "target_audit": {
+        "action": "validate_real_experiment_primary_evidence_return_checklist",
+        "checked": true,
+        "valid": true
+      },
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-checklist.json",
+      "target_ready": true,
+      "target_status": "ready",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-primary-evidence-return-checklist handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-checklist.json",
+      "key": "compare_primary_evidence_return_checklist",
+      "order": 15,
+      "phase": "primary_evidence_request",
+      "target_audit": {
+        "action": "compare_real_experiment_primary_evidence_return_checklist",
+        "checked": true,
+        "matches": true
+      },
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-checklist.json",
+      "target_ready": true,
+      "target_status": "ready",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/check_real_collection.py --dataset-name ai2thor_real_small --source-kind ai2thor --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl --report handoffs/ai2thor-real-small/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+      "key": "real_collection_report",
+      "order": 16,
+      "phase": "external_receipts",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/inputs/real-collection-report.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "real_data"
+    },
+    {
+      "command": "python scripts/run_offline_controls.py --prediction-receipt-bundle handoffs/ai2thor-real-small/offline-control-import-manifest.json --receipt-bundle-output handoffs/ai2thor-real-small/offline-control-prediction-receipt-bundle.json",
+      "key": "offline_control_prediction_receipt_bundle",
+      "order": 17,
+      "phase": "external_receipts",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/offline-control-prediction-receipt-bundle.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "real_controls"
+    },
+    {
+      "command": "python scripts/run_predicted_dsg.py --detector-receipt-bundle handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json --receipt-bundle-output handoffs/ai2thor-real-small/predicted-dsg-detector-receipt-bundle.json",
+      "key": "predicted_dsg_detector_receipt_bundle",
+      "order": 18,
+      "phase": "external_receipts",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/predicted-dsg-detector-receipt-bundle.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "predicted_dsg"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --primary-evidence-return-progress-report handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-checklist.json --primary-evidence-return-progress-output handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-progress.json",
+      "key": "primary_evidence_return_progress_report",
+      "order": 19,
+      "phase": "primary_evidence_return",
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-progress.json",
+      "target_ready": true,
+      "target_status": "present",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-primary-evidence-return-progress-report handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-progress.json",
+      "key": "validate_primary_evidence_return_progress_report",
+      "order": 20,
+      "phase": "primary_evidence_return",
+      "target_audit": {
+        "action": "validate_real_experiment_primary_evidence_return_progress_report",
+        "checked": true,
+        "valid": true
+      },
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-progress.json",
+      "target_ready": true,
+      "target_status": "ready",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-primary-evidence-return-progress-report handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-progress.json",
+      "key": "compare_primary_evidence_return_progress_report",
+      "order": 21,
+      "phase": "primary_evidence_return",
+      "target_audit": {
+        "action": "compare_real_experiment_primary_evidence_return_progress_report",
+        "checked": true,
+        "matches": true
+      },
+      "target_exists": true,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-progress.json",
+      "target_ready": true,
+      "target_status": "ready",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --primary-evidence-acceptance-report handoffs/ai2thor-real-small/real-experiment-primary-evidence-return-progress.json --primary-evidence-acceptance-output handoffs/ai2thor-real-small/real-experiment-primary-evidence-acceptance-report.json",
+      "key": "primary_evidence_acceptance_report",
+      "order": 22,
+      "phase": "primary_evidence_acceptance",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-acceptance-report.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-primary-evidence-acceptance-report handoffs/ai2thor-real-small/real-experiment-primary-evidence-acceptance-report.json",
+      "key": "validate_primary_evidence_acceptance_report",
+      "order": 23,
+      "phase": "primary_evidence_acceptance",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-acceptance-report.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-primary-evidence-acceptance-report handoffs/ai2thor-real-small/real-experiment-primary-evidence-acceptance-report.json",
+      "key": "compare_primary_evidence_acceptance_report",
+      "order": 24,
+      "phase": "primary_evidence_acceptance",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-acceptance-report.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "primary_evidence"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --execution-packet handoffs/ai2thor-real-small/real-experiment-external-artifact-launch-report.json --execution-packet-primary-evidence-acceptance-report handoffs/ai2thor-real-small/real-experiment-primary-evidence-acceptance-report.json --execution-packet-output handoffs/ai2thor-real-small/real-experiment-execution-packet.json",
+      "key": "execution_packet",
+      "order": 25,
+      "phase": "execution_packet",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-execution-packet.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-execution-packet handoffs/ai2thor-real-small/real-experiment-execution-packet.json",
+      "key": "validate_execution_packet",
+      "order": 26,
+      "phase": "execution_packet",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-execution-packet.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-execution-packet handoffs/ai2thor-real-small/real-experiment-execution-packet.json",
+      "key": "compare_execution_packet",
+      "order": 27,
+      "phase": "execution_packet",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-execution-packet.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --smoke-run-checklist handoffs/ai2thor-real-small/real-experiment-execution-packet.json --smoke-run-checklist-output handoffs/ai2thor-real-small/real-experiment-smoke-run-checklist.json --smoke-run-checklist-receipt-output handoffs/ai2thor-real-small/real-experiment-execution-receipt.json",
+      "key": "smoke_run_checklist",
+      "order": 28,
+      "phase": "smoke_run",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-smoke-run-checklist.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-smoke-run-checklist handoffs/ai2thor-real-small/real-experiment-smoke-run-checklist.json",
+      "key": "validate_smoke_run_checklist",
+      "order": 29,
+      "phase": "smoke_run",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-smoke-run-checklist.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-smoke-run-checklist handoffs/ai2thor-real-small/real-experiment-smoke-run-checklist.json",
+      "key": "compare_smoke_run_checklist",
+      "order": 30,
+      "phase": "smoke_run",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-smoke-run-checklist.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --smoke-run-runbook handoffs/ai2thor-real-small/real-experiment-smoke-run-checklist.json --smoke-run-runbook-output handoffs/ai2thor-real-small/real-experiment-smoke-run-runbook.json",
+      "key": "smoke_run_runbook",
+      "order": 31,
+      "phase": "smoke_run",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-smoke-run-runbook.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-smoke-run-runbook handoffs/ai2thor-real-small/real-experiment-smoke-run-runbook.json",
+      "key": "validate_smoke_run_runbook",
+      "order": 32,
+      "phase": "smoke_run",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-smoke-run-runbook.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-smoke-run-runbook handoffs/ai2thor-real-small/real-experiment-smoke-run-runbook.json",
+      "key": "compare_smoke_run_runbook",
+      "order": 33,
+      "phase": "smoke_run",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-smoke-run-runbook.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-run-ledger handoffs/ai2thor-real-small/outputs/real-experiment-run-ledger.json",
+      "key": "validate_run_ledger",
+      "order": 34,
+      "phase": "post_run_receipt",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/outputs/real-experiment-run-ledger.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-run-ledger handoffs/ai2thor-real-small/outputs/real-experiment-run-ledger.json",
+      "key": "compare_run_ledger",
+      "order": 35,
+      "phase": "post_run_receipt",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/outputs/real-experiment-run-ledger.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --execution-receipt handoffs/ai2thor-real-small/real-experiment-execution-packet.json --execution-receipt-output handoffs/ai2thor-real-small/real-experiment-execution-receipt.json",
+      "key": "execution_receipt",
+      "order": 36,
+      "phase": "post_run_receipt",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-execution-receipt.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-execution-receipt handoffs/ai2thor-real-small/real-experiment-execution-receipt.json",
+      "key": "validate_execution_receipt",
+      "order": 37,
+      "phase": "post_run_receipt",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-execution-receipt.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-execution-receipt handoffs/ai2thor-real-small/real-experiment-execution-receipt.json",
+      "key": "compare_execution_receipt",
+      "order": 38,
+      "phase": "post_run_receipt",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-execution-receipt.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --research-review handoffs/ai2thor-real-small/real-experiment-execution-receipt.json --research-review-output handoffs/ai2thor-real-small/real-experiment-research-review.json",
+      "key": "research_review",
+      "order": 39,
+      "phase": "research_review",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-research-review.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-research-review handoffs/ai2thor-real-small/real-experiment-research-review.json",
+      "key": "validate_research_review",
+      "order": 40,
+      "phase": "research_review",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-research-review.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-research-review handoffs/ai2thor-real-small/real-experiment-research-review.json",
+      "key": "compare_research_review",
+      "order": 41,
+      "phase": "research_review",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-research-review.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --claim-readiness handoffs/ai2thor-real-small/real-experiment-research-review.json --claim-readiness-output handoffs/ai2thor-real-small/real-experiment-claim-readiness.json --claim-min-episode-count 3 --claim-min-scene-count 1 --claim-min-qa-count 30 --claim-min-dynamic-qa-count 1",
+      "key": "claim_readiness",
+      "order": 42,
+      "phase": "claim_recheck",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-claim-readiness.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --validate-claim-readiness handoffs/ai2thor-real-small/real-experiment-claim-readiness.json",
+      "key": "validate_claim_readiness",
+      "order": 43,
+      "phase": "claim_recheck",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-claim-readiness.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    },
+    {
+      "command": "python scripts/run_real_experiment.py --compare-claim-readiness handoffs/ai2thor-real-small/real-experiment-claim-readiness.json",
+      "key": "compare_claim_readiness",
+      "order": 44,
+      "phase": "claim_recheck",
+      "target_exists": false,
+      "target_path": "handoffs/ai2thor-real-small/real-experiment-claim-readiness.json",
+      "target_ready": false,
+      "target_status": "missing",
+      "track": "run_review"
+    }
+  ],
+  "summary": {
+    "all_targets_present": false,
+    "all_targets_ready": false,
+    "missing_target_step_count": 27,
+    "not_ready_target_step_count": 27,
+    "phase_count": 11,
+    "present_target_step_count": 17,
+    "ready_target_step_count": 17,
+    "step_count": 44,
+    "track_count": 6
+  },
+  "track_summary": {
+    "launch_audit": {
+      "missing_target_step_count": 0,
+      "not_ready_target_step_count": 0,
+      "present_target_step_count": 5,
+      "ready_target_step_count": 5,
+      "step_count": 5
+    },
+    "predicted_dsg": {
+      "missing_target_step_count": 1,
+      "not_ready_target_step_count": 1,
+      "present_target_step_count": 0,
+      "ready_target_step_count": 0,
+      "step_count": 1
+    },
+    "primary_evidence": {
+      "missing_target_step_count": 4,
+      "not_ready_target_step_count": 4,
+      "present_target_step_count": 12,
+      "ready_target_step_count": 12,
+      "step_count": 16
+    },
+    "real_controls": {
+      "missing_target_step_count": 1,
+      "not_ready_target_step_count": 1,
+      "present_target_step_count": 0,
+      "ready_target_step_count": 0,
+      "step_count": 1
+    },
+    "real_data": {
+      "missing_target_step_count": 1,
+      "not_ready_target_step_count": 1,
+      "present_target_step_count": 0,
+      "ready_target_step_count": 0,
+      "step_count": 1
+    },
+    "run_review": {
+      "missing_target_step_count": 20,
+      "not_ready_target_step_count": 20,
+      "present_target_step_count": 0,
+      "ready_target_step_count": 0,
+      "step_count": 20
+    }
+  }
+}

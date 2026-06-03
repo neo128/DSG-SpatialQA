@@ -111,6 +111,41 @@ def test_generate_qa_cases_respects_max_cases_and_nearest_margin() -> None:
     assert nearest_cases[0].choices == ("plate_1", "table_1")
 
 
+def test_generate_qa_cases_keeps_coverage_when_many_location_questions_are_available() -> None:
+    graph = lab.DynamicSceneGraph()
+    graph.set_agent_pose("agent", lab.Pose3D(0.0, 0.0, 0.0), step=1)
+    graph.add_region("counter_1", "Counter", step=1)
+    for index in range(12):
+        object_id = f"item_{index:02d}"
+        graph.upsert_object(
+            object_id,
+            "item",
+            lab.Pose3D(float(index), 1.0, 0.5),
+            lab.BBox3D(
+                center=lab.Pose3D(float(index), 1.0, 0.5),
+                size=(0.1, 0.1, 0.1),
+            ),
+            confidence=0.9,
+            visible=True,
+            step=1,
+        )
+        graph.add_edge(object_id, "ON", "counter_1", "world", 1.0, step=1)
+    graph.add_edge("item_00", "LEFT_OF", "item_01", "agent", 1.0, step=1)
+    graph.set_agent_pose("agent", lab.Pose3D(0.5, 0.0, 0.0), step=2)
+
+    cases = lab.generate_qa_cases(
+        graph,
+        scene_id="crowded_scene",
+        episode_id="episode_001",
+        max_cases=10,
+    )
+    question_types = {case.question_type for case in cases}
+
+    assert len(cases) == 10
+    assert question_types & {"nearest_object", "relative_relation"}
+    assert question_types & {"relation_timeline", "reobserve_targets", "scene_delta"}
+
+
 def test_qa_dataset_jsonl_digest_validate_and_compare_current_graph(tmp_path: Path) -> None:
     assert hasattr(lab, "qa_case_to_dict")
     assert hasattr(lab, "qa_case_from_dict")

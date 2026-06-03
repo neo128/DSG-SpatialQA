@@ -1,0 +1,582 @@
+{
+  "artifact_summary": {
+    "active_delta_baseline_names": [
+      "predicted_graph_tool"
+    ],
+    "active_delta_candidate_names": [
+      "oracle_graph_tool"
+    ],
+    "active_delta_not_ready_paths": [],
+    "active_delta_placeholder_name_paths": [],
+    "active_delta_ready": true,
+    "active_delta_stale_paths": [],
+    "active_delta_task_mismatch_paths": [],
+    "artifact_counts": {
+      "active_task_delta_report": 1,
+      "dashboard_bundle": 1,
+      "error_attribution_report": 1,
+      "graph_eval_report": 1,
+      "offline_control_matrix_report": 1,
+      "offline_control_result_report": 1,
+      "offline_prediction_import_report": 4,
+      "predicted_dsg_evidence_report": 1,
+      "predicted_graph_report": 1,
+      "qa_eval_delta_report": 4,
+      "qa_eval_report": 5,
+      "real_collection_report": 1
+    },
+    "benchmark_manifest_artifact_digest_invalid_paths": [],
+    "benchmark_manifest_artifact_digest_mismatch_paths": [],
+    "benchmark_manifest_artifact_digests_current": true,
+    "dashboard_bundle_digests": [
+      "2bee3e33b218bc351b3698c675723f0ae6f7f721f3f9e326c0fe31f535fc1d95"
+    ],
+    "dashboard_bundle_not_ready_paths": [],
+    "dashboard_bundle_ready": true,
+    "dashboard_bundle_stale_paths": [],
+    "dashboard_case_counts": [
+      30
+    ],
+    "error_attribution_gold_digests": [
+      "efc49743646421513100076326c366f392a06c0429f97c4fd8302e58a33bc4c8"
+    ],
+    "error_attribution_not_ready_paths": [],
+    "error_attribution_oracle_graph_digests": [
+      "1a2bcb62cac4d920f7da7ba75ab862d2d8509fb7349ec702d9ba13b08c3d710d"
+    ],
+    "error_attribution_predicted_graph_digests": [
+      "f8b0c32b740ab1b2b71b07c4e861772f80fa3e822490bedd837a21c385bded91"
+    ],
+    "error_attribution_prediction_digests": [
+      "5ef0210e0d9b9a911021d8017c4ef71ae9c692d711eb2222dc9f155caea6cbed"
+    ],
+    "error_attribution_ready": true,
+    "error_attribution_stale_paths": [],
+    "graph_eval_not_ready_paths": [],
+    "graph_eval_oracle_digests": [
+      "1a2bcb62cac4d920f7da7ba75ab862d2d8509fb7349ec702d9ba13b08c3d710d"
+    ],
+    "graph_eval_predicted_digests": [
+      "f8b0c32b740ab1b2b71b07c4e861772f80fa3e822490bedd837a21c385bded91"
+    ],
+    "graph_eval_ready": true,
+    "graph_eval_stale_paths": [],
+    "manifest_qa_digest": "efc49743646421513100076326c366f392a06c0429f97c4fd8302e58a33bc4c8",
+    "offline_control_diagnostic_source_keys": [],
+    "offline_control_incomplete_source_keys": [],
+    "offline_control_invalid_source_keys": [],
+    "offline_control_kinds": [
+      "caption_memory",
+      "graph_text",
+      "multi_frame_vlm",
+      "vlm"
+    ],
+    "offline_control_matrix_not_ready_paths": [],
+    "offline_control_matrix_ready": true,
+    "offline_control_matrix_required_kinds": [
+      "caption_memory",
+      "graph_text",
+      "multi_frame_vlm",
+      "vlm"
+    ],
+    "offline_control_matrix_stale_paths": [],
+    "offline_control_missing_metadata_source_keys": [],
+    "offline_control_placeholder_source_keys": [],
+    "offline_control_qa_digests": [
+      "efc49743646421513100076326c366f392a06c0429f97c4fd8302e58a33bc4c8"
+    ],
+    "offline_control_result_candidate_names": [
+      "predicted_graph_tool"
+    ],
+    "offline_control_result_not_ready_paths": [],
+    "offline_control_result_ready": true,
+    "offline_control_result_source_kinds": [
+      "caption_memory",
+      "graph_text",
+      "multi_frame_vlm",
+      "vlm"
+    ],
+    "offline_control_result_stale_paths": [],
+    "offline_control_stale_source_keys": [],
+    "predicted_dsg_evidence_not_ready_paths": [],
+    "predicted_dsg_evidence_predicted_report_digests": [
+      "2f8edf7b4e7525c5e768d12737b4e0629cf45691d9f39dd3907030dffd1e9af4"
+    ],
+    "predicted_dsg_evidence_ready": true,
+    "predicted_graph_graph_digests": [
+      "f8b0c32b740ab1b2b71b07c4e861772f80fa3e822490bedd837a21c385bded91"
+    ],
+    "predicted_graph_not_ready_paths": [],
+    "predicted_graph_ready": true,
+    "predicted_graph_report_digests": [
+      "2f8edf7b4e7525c5e768d12737b4e0629cf45691d9f39dd3907030dffd1e9af4"
+    ],
+    "predicted_graph_stale_paths": [],
+    "predicted_input_kinds": [
+      "observation_sequence"
+    ],
+    "qa_delta_baseline_names": [
+      "caption_memory",
+      "graph_text",
+      "multi_frame_vlm",
+      "vlm"
+    ],
+    "qa_delta_candidate_names": [
+      "predicted_graph_tool"
+    ],
+    "qa_delta_case_mismatch_paths": [],
+    "qa_delta_not_ready_paths": [],
+    "qa_delta_placeholder_name_paths": [],
+    "qa_delta_ready": true,
+    "qa_delta_stale_paths": [],
+    "question_type_counts": {
+      "nearest_object": 1,
+      "object_location": 24,
+      "relation_timeline": 2,
+      "relative_relation": 2,
+      "reobserve_targets": 1
+    },
+    "real_collection_not_ready_paths": [],
+    "real_collection_ready": true,
+    "real_collection_source_kinds": [
+      "ai2thor"
+    ],
+    "real_collection_stale_paths": []
+  },
+  "checks": [
+    {
+      "actual": [],
+      "expected": [],
+      "group": "manifest",
+      "invalid_paths": [],
+      "mismatch_paths": [],
+      "name": "benchmark_manifest_artifact_digests_current",
+      "passed": true
+    },
+    {
+      "actual": 3,
+      "expected": 3,
+      "group": "real_data",
+      "name": "episode_count_minimum",
+      "passed": true
+    },
+    {
+      "actual": 3,
+      "expected": 1,
+      "group": "real_data",
+      "name": "scene_count_minimum",
+      "passed": true
+    },
+    {
+      "actual": 30,
+      "expected": 30,
+      "group": "real_data",
+      "name": "qa_count_minimum",
+      "passed": true
+    },
+    {
+      "actual": "real",
+      "expected": "real",
+      "group": "real_data",
+      "name": "data_source_kind_real",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": "at least one real_collection_report",
+      "group": "real_data",
+      "name": "real_collection_report_present",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "group": "real_data",
+      "name": "real_collection_ready",
+      "not_ready_paths": [],
+      "passed": true
+    },
+    {
+      "actual": 27,
+      "expected": "at least one matching QA case",
+      "group": "real_data",
+      "name": "spatial_qa_coverage",
+      "passed": true
+    },
+    {
+      "actual": 3,
+      "expected": "at least one dynamic QA case",
+      "group": "real_data",
+      "name": "dynamic_memory_coverage",
+      "passed": true
+    },
+    {
+      "actual": 5,
+      "expected": "at least one matching QA case",
+      "group": "real_data",
+      "name": "graph_tool_query_coverage",
+      "passed": true
+    },
+    {
+      "actual": 4,
+      "expected": "at least one qa_eval_delta_report",
+      "group": "real_controls",
+      "name": "qa_delta_report_present",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "group": "real_controls",
+      "name": "qa_delta_reports_ready",
+      "not_ready_paths": [],
+      "passed": true
+    },
+    {
+      "actual": [
+        "caption_memory",
+        "graph_text",
+        "multi_frame_vlm",
+        "vlm"
+      ],
+      "expected": [
+        "caption_memory",
+        "graph_text",
+        "multi_frame_vlm",
+        "vlm"
+      ],
+      "group": "real_controls",
+      "missing": [],
+      "name": "qa_delta_baselines_cover_controls",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "group": "real_controls",
+      "name": "qa_delta_case_counts_match",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "group": "real_controls",
+      "name": "qa_delta_non_placeholder_names",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": "at least one offline_control_matrix_report",
+      "group": "real_controls",
+      "name": "offline_control_matrix_report_present",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "group": "real_controls",
+      "name": "offline_control_matrix_ready",
+      "not_ready_paths": [],
+      "passed": true
+    },
+    {
+      "actual": [
+        "caption_memory",
+        "graph_text",
+        "multi_frame_vlm",
+        "vlm"
+      ],
+      "expected": [
+        "caption_memory",
+        "graph_text",
+        "multi_frame_vlm",
+        "vlm"
+      ],
+      "group": "real_controls",
+      "missing": [],
+      "name": "offline_control_matrix_required_kinds_cover_controls",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": "at least one offline_control_result_report",
+      "group": "real_controls",
+      "name": "offline_control_result_report_present",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "group": "real_controls",
+      "name": "offline_control_result_ready",
+      "not_ready_paths": [],
+      "passed": true
+    },
+    {
+      "actual": [
+        "caption_memory",
+        "graph_text",
+        "multi_frame_vlm",
+        "vlm"
+      ],
+      "expected": [
+        "caption_memory",
+        "graph_text",
+        "multi_frame_vlm",
+        "vlm"
+      ],
+      "group": "real_controls",
+      "missing": [],
+      "name": "offline_control_result_deltas_cover_controls",
+      "passed": true
+    },
+    {
+      "actual": [
+        "caption_memory",
+        "graph_text",
+        "multi_frame_vlm",
+        "vlm"
+      ],
+      "expected": [
+        "caption_memory",
+        "graph_text",
+        "multi_frame_vlm",
+        "vlm"
+      ],
+      "group": "real_controls",
+      "missing": [],
+      "name": "offline_controls_present",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "group": "real_controls",
+      "name": "offline_control_import_reports_valid",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "group": "real_controls",
+      "name": "offline_control_complete_prediction_coverage",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "group": "real_controls",
+      "name": "offline_control_clean_import_diagnostics",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "group": "real_controls",
+      "name": "offline_control_metadata_present",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "group": "real_controls",
+      "name": "offline_control_no_placeholder_sources",
+      "passed": true
+    },
+    {
+      "actual": [
+        "efc49743646421513100076326c366f392a06c0429f97c4fd8302e58a33bc4c8"
+      ],
+      "expected": "efc49743646421513100076326c366f392a06c0429f97c4fd8302e58a33bc4c8",
+      "group": "real_controls",
+      "name": "offline_control_qa_digest_matches_manifest",
+      "passed": true
+    },
+    {
+      "actual": [
+        "observation_sequence"
+      ],
+      "expected": [
+        "observation_sequence"
+      ],
+      "group": "real_predicted_dsg",
+      "missing": [],
+      "name": "predicted_observation_graph_present",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": "at least one predicted_graph_report",
+      "group": "real_predicted_dsg",
+      "name": "predicted_graph_report_present",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "group": "real_predicted_dsg",
+      "name": "predicted_graph_reports_ready",
+      "not_ready_paths": [],
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": "at least one predicted_dsg_evidence_report",
+      "group": "real_predicted_dsg",
+      "name": "predicted_dsg_evidence_report_present",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "group": "real_predicted_dsg",
+      "name": "predicted_dsg_evidence_ready",
+      "not_ready_paths": [],
+      "passed": true
+    },
+    {
+      "actual": [
+        "2f8edf7b4e7525c5e768d12737b4e0629cf45691d9f39dd3907030dffd1e9af4"
+      ],
+      "expected": [
+        "2f8edf7b4e7525c5e768d12737b4e0629cf45691d9f39dd3907030dffd1e9af4"
+      ],
+      "group": "real_predicted_dsg",
+      "name": "predicted_dsg_evidence_report_digest_alignment",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": "at least one graph_eval_report",
+      "group": "real_predicted_dsg",
+      "name": "graph_eval_report_present",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "group": "real_predicted_dsg",
+      "name": "graph_eval_reports_ready",
+      "not_ready_paths": [],
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": "at least one error_attribution_report",
+      "group": "real_predicted_dsg",
+      "name": "error_attribution_report_present",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "group": "real_predicted_dsg",
+      "name": "error_attribution_reports_ready",
+      "not_ready_paths": [],
+      "passed": true
+    },
+    {
+      "actual": [
+        "f8b0c32b740ab1b2b71b07c4e861772f80fa3e822490bedd837a21c385bded91"
+      ],
+      "expected": [
+        "f8b0c32b740ab1b2b71b07c4e861772f80fa3e822490bedd837a21c385bded91"
+      ],
+      "group": "real_predicted_dsg",
+      "name": "graph_error_predicted_digest_alignment",
+      "passed": true
+    },
+    {
+      "actual": [
+        "f8b0c32b740ab1b2b71b07c4e861772f80fa3e822490bedd837a21c385bded91"
+      ],
+      "expected": [
+        "f8b0c32b740ab1b2b71b07c4e861772f80fa3e822490bedd837a21c385bded91"
+      ],
+      "group": "real_predicted_dsg",
+      "name": "predicted_graph_eval_digest_alignment",
+      "passed": true
+    },
+    {
+      "actual": [
+        "f8b0c32b740ab1b2b71b07c4e861772f80fa3e822490bedd837a21c385bded91"
+      ],
+      "expected": [
+        "f8b0c32b740ab1b2b71b07c4e861772f80fa3e822490bedd837a21c385bded91"
+      ],
+      "group": "real_predicted_dsg",
+      "name": "predicted_graph_error_digest_alignment",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": "at least one active_task_delta_report",
+      "group": "review_artifacts",
+      "name": "active_task_delta_report_present",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "group": "review_artifacts",
+      "name": "active_delta_reports_ready",
+      "not_ready_paths": [],
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "group": "review_artifacts",
+      "name": "active_delta_task_counts_match",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "expected": [],
+      "group": "review_artifacts",
+      "name": "active_delta_non_placeholder_names",
+      "passed": true
+    },
+    {
+      "actual": 1,
+      "expected": "at least one dashboard_bundle",
+      "group": "review_artifacts",
+      "name": "dashboard_bundle_present",
+      "passed": true
+    },
+    {
+      "actual": true,
+      "expected": true,
+      "group": "review_artifacts",
+      "name": "dashboard_bundle_ready",
+      "not_ready_paths": [],
+      "passed": true
+    }
+  ],
+  "declared_data_source_kind": "real",
+  "manifest_digest": "88f20975983ddc87a686dd6f7427e96981e5df80e3795dbf59d9c16dbc0037e8",
+  "manifest_path": "handoffs/ai2thor-real-small/outputs/benchmark-manifest.json",
+  "readiness": {
+    "failed_checks": [],
+    "failed_count": 0,
+    "missing_groups": [],
+    "passed_count": 47,
+    "ready": true
+  },
+  "report_digest": "3ce782fdef3481c54a6a6587d610c74314cbcc164705df2ffe1d525600608014",
+  "required_control_kinds": [
+    "caption_memory",
+    "graph_text",
+    "multi_frame_vlm",
+    "vlm"
+  ],
+  "required_predicted_input_kinds": [
+    "observation_sequence"
+  ],
+  "schema_version": "dsg-spatialqa-lab.real-experiment-readiness.v1",
+  "thresholds": {
+    "min_episode_count": 3,
+    "min_qa_count": 30,
+    "min_scene_count": 1
+  }
+}

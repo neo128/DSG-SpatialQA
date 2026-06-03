@@ -1,0 +1,1064 @@
+{
+  "action": "real_experiment_external_artifact_launch_report",
+  "actionable_blockers": {
+    "predicted_dsg": {
+      "blocking_roles": [
+        "detector_jsonl"
+      ],
+      "child_launch_gate": {
+        "artifact_contract_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json",
+        "artifact_launch_report_command": "python scripts/run_predicted_dsg.py --artifact-launch-report handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json --manifest handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+        "detector_receipt_bundle_command": "python scripts/run_predicted_dsg.py --detector-receipt-bundle handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --receipt-bundle-output handoffs/ai2thor-real-smoke/predicted-dsg-detector-receipt-bundle.json",
+        "detector_receipt_bundle_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-receipt-bundle.json",
+        "detector_request_bundle_command": "python scripts/run_predicted_dsg.py --detector-request-bundle handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --request-bundle-output handoffs/ai2thor-real-smoke/predicted-dsg-detector-request-bundle.json",
+        "detector_request_bundle_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-request-bundle.json",
+        "manifest_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+        "preflight_contract_command": "python scripts/run_predicted_dsg.py --preflight-manifest handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --artifact-contract handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json",
+        "track": "predicted_dsg"
+      },
+      "invalid_input_count": 0,
+      "invalid_inputs": [],
+      "missing_input_count": 1,
+      "missing_inputs": [
+        {
+          "group": "predicted_dsg",
+          "path": "handoffs/ai2thor-real-smoke/inputs/predicted-dsg/detector-rgbd.jsonl",
+          "role": "detector_jsonl"
+        }
+      ],
+      "missing_requirement_count": 0,
+      "missing_requirements": [],
+      "track": "predicted_dsg"
+    },
+    "real_controls": {
+      "blocking_roles": [
+        "candidate_prediction",
+        "gold_qa",
+        "offline_control_source_input"
+      ],
+      "child_launch_gate": {
+        "artifact_contract_path": "handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json",
+        "artifact_launch_report_command": "python scripts/check_offline_controls.py --artifact-launch-report handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json --manifest handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+        "manifest_path": "handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+        "prediction_receipt_bundle_command": "python scripts/run_offline_controls.py --prediction-receipt-bundle handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --receipt-bundle-output handoffs/ai2thor-real-smoke/offline-control-prediction-receipt-bundle.json",
+        "prediction_receipt_bundle_path": "handoffs/ai2thor-real-smoke/offline-control-prediction-receipt-bundle.json",
+        "prediction_request_bundle_command": "python scripts/run_offline_controls.py --prediction-request-bundle handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --request-bundle-output handoffs/ai2thor-real-smoke/offline-control-prediction-request-bundle.json",
+        "prediction_request_bundle_path": "handoffs/ai2thor-real-smoke/offline-control-prediction-request-bundle.json",
+        "preflight_contract_command": "python scripts/run_offline_controls.py --preflight-manifest handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --artifact-contracts handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json",
+        "track": "real_controls"
+      },
+      "invalid_input_count": 0,
+      "invalid_inputs": [],
+      "missing_input_count": 6,
+      "missing_inputs": [
+        {
+          "group": "offline_controls",
+          "path": "handoffs/ai2thor-real-smoke/inputs/candidate/predicted-graph-tool.jsonl",
+          "role": "candidate_prediction"
+        },
+        {
+          "group": "offline_controls",
+          "path": "handoffs/ai2thor-real-smoke/inputs/qa.jsonl",
+          "role": "gold_qa"
+        },
+        {
+          "group": "offline_controls",
+          "metadata": {
+            "source_kind": "caption_memory",
+            "source_name": "caption_memory_real_control"
+          },
+          "path": "handoffs/ai2thor-real-smoke/inputs/offline-controls/caption_memory.jsonl",
+          "role": "offline_control_source_input"
+        },
+        {
+          "group": "offline_controls",
+          "metadata": {
+            "source_kind": "graph_text",
+            "source_name": "graph_text_real_control"
+          },
+          "path": "handoffs/ai2thor-real-smoke/inputs/offline-controls/graph_text.jsonl",
+          "role": "offline_control_source_input"
+        },
+        {
+          "group": "offline_controls",
+          "metadata": {
+            "source_kind": "multi_frame_vlm",
+            "source_name": "multi_frame_vlm_real_control"
+          },
+          "path": "handoffs/ai2thor-real-smoke/inputs/offline-controls/multi_frame_vlm.jsonl",
+          "role": "offline_control_source_input"
+        },
+        {
+          "group": "offline_controls",
+          "metadata": {
+            "source_kind": "vlm",
+            "source_name": "vlm_real_control"
+          },
+          "path": "handoffs/ai2thor-real-smoke/inputs/offline-controls/vlm.jsonl",
+          "role": "offline_control_source_input"
+        }
+      ],
+      "missing_requirement_count": 0,
+      "missing_requirements": [],
+      "track": "real_controls"
+    },
+    "real_data": {
+      "blocking_roles": [
+        "episode",
+        "real_collection_report"
+      ],
+      "child_launch_gate": {
+        "collection_report_command": "python scripts/check_real_collection.py --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl --report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+        "compare_report_command": "python scripts/check_real_collection.py --compare-report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+        "episode_paths": [
+          "handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl"
+        ],
+        "real_collection_report_path": "handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+        "request_bundle_command": "python scripts/check_real_collection.py --request-bundle handoffs/ai2thor-real-smoke/real-collection-request-bundle.json --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl --report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+        "request_bundle_path": "handoffs/ai2thor-real-smoke/real-collection-request-bundle.json",
+        "source_kind": "ai2thor",
+        "track": "real_data",
+        "validate_report_command": "python scripts/check_real_collection.py --validate-report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json"
+      },
+      "invalid_input_count": 0,
+      "invalid_inputs": [],
+      "missing_input_count": 2,
+      "missing_inputs": [
+        {
+          "group": "real_collection",
+          "path": "handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl",
+          "role": "episode"
+        },
+        {
+          "group": "real_collection",
+          "path": "handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+          "role": "real_collection_report"
+        }
+      ],
+      "missing_requirement_count": 0,
+      "missing_requirements": [],
+      "track": "real_data"
+    },
+    "review_artifacts": {
+      "blocking_roles": [
+        "active_task_delta_report",
+        "dashboard_bundle",
+        "error_attribution_report",
+        "graph_eval_report"
+      ],
+      "child_launch_gate": {
+        "active_task_delta_report_commands": [
+          {
+            "compare_command": "python scripts/run_active_tasks.py --compare-delta-report handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json",
+            "path": "handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json",
+            "validate_command": "python scripts/run_active_tasks.py --validate-delta-report handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json"
+          }
+        ],
+        "active_task_delta_report_paths": [
+          "handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json"
+        ],
+        "dashboard_bundle_commands": [
+          {
+            "path": "handoffs/ai2thor-real-smoke/inputs/review/dashboard.json",
+            "validate_command": "python scripts/export_dashboard.py --validate-bundle handoffs/ai2thor-real-smoke/inputs/review/dashboard.json"
+          }
+        ],
+        "dashboard_bundle_paths": [
+          "handoffs/ai2thor-real-smoke/inputs/review/dashboard.json"
+        ],
+        "error_attribution_report_commands": [
+          {
+            "compare_command": "python scripts/attribute_errors.py --compare-report handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json",
+            "path": "handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json",
+            "validate_command": "python scripts/attribute_errors.py --validate-report handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json"
+          }
+        ],
+        "error_attribution_report_paths": [
+          "handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json"
+        ],
+        "graph_eval_report_commands": [
+          {
+            "compare_command": "python scripts/evaluate_graphs.py --compare-report handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json",
+            "path": "handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json",
+            "validate_command": "python scripts/evaluate_graphs.py --validate-report handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json"
+          }
+        ],
+        "graph_eval_report_paths": [
+          "handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json"
+        ],
+        "track": "review_artifacts"
+      },
+      "invalid_input_count": 0,
+      "invalid_inputs": [],
+      "missing_input_count": 4,
+      "missing_inputs": [
+        {
+          "group": "review_artifacts",
+          "path": "handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json",
+          "role": "active_task_delta_report"
+        },
+        {
+          "group": "review_artifacts",
+          "path": "handoffs/ai2thor-real-smoke/inputs/review/dashboard.json",
+          "role": "dashboard_bundle"
+        },
+        {
+          "group": "review_artifacts",
+          "path": "handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json",
+          "role": "error_attribution_report"
+        },
+        {
+          "group": "review_artifacts",
+          "path": "handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json",
+          "role": "graph_eval_report"
+        }
+      ],
+      "missing_requirement_count": 0,
+      "missing_requirements": [],
+      "track": "review_artifacts"
+    }
+  },
+  "child_launch_gates": {
+    "offline_controls": {
+      "artifact_contract_path": "handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json",
+      "artifact_launch_report_command": "python scripts/check_offline_controls.py --artifact-launch-report handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json --manifest handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+      "manifest_path": "handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+      "prediction_receipt_bundle_command": "python scripts/run_offline_controls.py --prediction-receipt-bundle handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --receipt-bundle-output handoffs/ai2thor-real-smoke/offline-control-prediction-receipt-bundle.json",
+      "prediction_receipt_bundle_path": "handoffs/ai2thor-real-smoke/offline-control-prediction-receipt-bundle.json",
+      "prediction_request_bundle_command": "python scripts/run_offline_controls.py --prediction-request-bundle handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --request-bundle-output handoffs/ai2thor-real-smoke/offline-control-prediction-request-bundle.json",
+      "prediction_request_bundle_path": "handoffs/ai2thor-real-smoke/offline-control-prediction-request-bundle.json",
+      "preflight_contract_command": "python scripts/run_offline_controls.py --preflight-manifest handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --artifact-contracts handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json",
+      "track": "real_controls"
+    },
+    "predicted_dsg": {
+      "artifact_contract_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json",
+      "artifact_launch_report_command": "python scripts/run_predicted_dsg.py --artifact-launch-report handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json --manifest handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+      "detector_receipt_bundle_command": "python scripts/run_predicted_dsg.py --detector-receipt-bundle handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --receipt-bundle-output handoffs/ai2thor-real-smoke/predicted-dsg-detector-receipt-bundle.json",
+      "detector_receipt_bundle_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-receipt-bundle.json",
+      "detector_request_bundle_command": "python scripts/run_predicted_dsg.py --detector-request-bundle handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --request-bundle-output handoffs/ai2thor-real-smoke/predicted-dsg-detector-request-bundle.json",
+      "detector_request_bundle_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-request-bundle.json",
+      "manifest_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+      "preflight_contract_command": "python scripts/run_predicted_dsg.py --preflight-manifest handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --artifact-contract handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json",
+      "track": "predicted_dsg"
+    },
+    "real_data": {
+      "collection_report_command": "python scripts/check_real_collection.py --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl --report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+      "compare_report_command": "python scripts/check_real_collection.py --compare-report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+      "episode_paths": [
+        "handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl"
+      ],
+      "real_collection_report_path": "handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+      "request_bundle_command": "python scripts/check_real_collection.py --request-bundle handoffs/ai2thor-real-smoke/real-collection-request-bundle.json --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl --report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+      "request_bundle_path": "handoffs/ai2thor-real-smoke/real-collection-request-bundle.json",
+      "source_kind": "ai2thor",
+      "track": "real_data",
+      "validate_report_command": "python scripts/check_real_collection.py --validate-report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json"
+    },
+    "review_artifacts": {
+      "active_task_delta_report_commands": [
+        {
+          "compare_command": "python scripts/run_active_tasks.py --compare-delta-report handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json",
+          "path": "handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json",
+          "validate_command": "python scripts/run_active_tasks.py --validate-delta-report handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json"
+        }
+      ],
+      "active_task_delta_report_paths": [
+        "handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json"
+      ],
+      "dashboard_bundle_commands": [
+        {
+          "path": "handoffs/ai2thor-real-smoke/inputs/review/dashboard.json",
+          "validate_command": "python scripts/export_dashboard.py --validate-bundle handoffs/ai2thor-real-smoke/inputs/review/dashboard.json"
+        }
+      ],
+      "dashboard_bundle_paths": [
+        "handoffs/ai2thor-real-smoke/inputs/review/dashboard.json"
+      ],
+      "error_attribution_report_commands": [
+        {
+          "compare_command": "python scripts/attribute_errors.py --compare-report handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json",
+          "path": "handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json",
+          "validate_command": "python scripts/attribute_errors.py --validate-report handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json"
+        }
+      ],
+      "error_attribution_report_paths": [
+        "handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json"
+      ],
+      "graph_eval_report_commands": [
+        {
+          "compare_command": "python scripts/evaluate_graphs.py --compare-report handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json",
+          "path": "handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json",
+          "validate_command": "python scripts/evaluate_graphs.py --validate-report handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json"
+        }
+      ],
+      "graph_eval_report_paths": [
+        "handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json"
+      ],
+      "track": "review_artifacts"
+    }
+  },
+  "comparison": {
+    "current_digest": "d00e0c85244b3682795be7e5ae6bce275e81fc41895a51465eba9257ed053da7",
+    "matches": true,
+    "saved_digest": "d00e0c85244b3682795be7e5ae6bce275e81fc41895a51465eba9257ed053da7"
+  },
+  "contracts_digest": "d00e0c85244b3682795be7e5ae6bce275e81fc41895a51465eba9257ed053da7",
+  "contracts_path": "handoffs/ai2thor-real-smoke/real-experiment-external-artifact-contracts.json",
+  "external_artifact_intake_plan": {
+    "blocked_track_count": 4,
+    "final_commands": {
+      "compare_external_artifact_contracts": "python scripts/run_real_experiment.py --compare-external-artifact-contracts handoffs/ai2thor-real-smoke/real-experiment-external-artifact-contracts.json",
+      "preflight": "python scripts/run_real_experiment.py --preflight-run-manifest handoffs/ai2thor-real-smoke/real-experiment-run-manifest.json",
+      "run": "python scripts/run_real_experiment.py --run-manifest handoffs/ai2thor-real-smoke/real-experiment-run-manifest.json --run-ledger-output handoffs/ai2thor-real-smoke/outputs/real-experiment-run-ledger.json",
+      "validate_external_artifact_contracts": "python scripts/run_real_experiment.py --validate-external-artifact-contracts handoffs/ai2thor-real-smoke/real-experiment-external-artifact-contracts.json"
+    },
+    "ready_track_count": 1,
+    "ready_tracks": [
+      "run_outputs"
+    ],
+    "steps": [
+      {
+        "blocking_roles": [
+          "episode",
+          "real_collection_report"
+        ],
+        "child_launch_gate": {
+          "collection_report_command": "python scripts/check_real_collection.py --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl --report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+          "compare_report_command": "python scripts/check_real_collection.py --compare-report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+          "episode_paths": [
+            "handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl"
+          ],
+          "real_collection_report_path": "handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+          "request_bundle_command": "python scripts/check_real_collection.py --request-bundle handoffs/ai2thor-real-smoke/real-collection-request-bundle.json --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl --report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+          "request_bundle_path": "handoffs/ai2thor-real-smoke/real-collection-request-bundle.json",
+          "source_kind": "ai2thor",
+          "track": "real_data",
+          "validate_report_command": "python scripts/check_real_collection.py --validate-report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json"
+        },
+        "order": 1,
+        "recommended_command_keys": [
+          "collection_report_command",
+          "request_bundle_command",
+          "validate_report_command",
+          "compare_report_command"
+        ],
+        "track": "real_data"
+      },
+      {
+        "blocking_roles": [
+          "candidate_prediction",
+          "gold_qa",
+          "offline_control_source_input"
+        ],
+        "child_launch_gate": {
+          "artifact_contract_path": "handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json",
+          "artifact_launch_report_command": "python scripts/check_offline_controls.py --artifact-launch-report handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json --manifest handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+          "manifest_path": "handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+          "prediction_receipt_bundle_command": "python scripts/run_offline_controls.py --prediction-receipt-bundle handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --receipt-bundle-output handoffs/ai2thor-real-smoke/offline-control-prediction-receipt-bundle.json",
+          "prediction_receipt_bundle_path": "handoffs/ai2thor-real-smoke/offline-control-prediction-receipt-bundle.json",
+          "prediction_request_bundle_command": "python scripts/run_offline_controls.py --prediction-request-bundle handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --request-bundle-output handoffs/ai2thor-real-smoke/offline-control-prediction-request-bundle.json",
+          "prediction_request_bundle_path": "handoffs/ai2thor-real-smoke/offline-control-prediction-request-bundle.json",
+          "preflight_contract_command": "python scripts/run_offline_controls.py --preflight-manifest handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --artifact-contracts handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json",
+          "track": "real_controls"
+        },
+        "order": 2,
+        "recommended_command_keys": [
+          "prediction_request_bundle_command",
+          "prediction_receipt_bundle_command",
+          "preflight_contract_command",
+          "artifact_launch_report_command"
+        ],
+        "track": "real_controls"
+      },
+      {
+        "blocking_roles": [
+          "detector_jsonl"
+        ],
+        "child_launch_gate": {
+          "artifact_contract_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json",
+          "artifact_launch_report_command": "python scripts/run_predicted_dsg.py --artifact-launch-report handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json --manifest handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+          "detector_receipt_bundle_command": "python scripts/run_predicted_dsg.py --detector-receipt-bundle handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --receipt-bundle-output handoffs/ai2thor-real-smoke/predicted-dsg-detector-receipt-bundle.json",
+          "detector_receipt_bundle_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-receipt-bundle.json",
+          "detector_request_bundle_command": "python scripts/run_predicted_dsg.py --detector-request-bundle handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --request-bundle-output handoffs/ai2thor-real-smoke/predicted-dsg-detector-request-bundle.json",
+          "detector_request_bundle_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-request-bundle.json",
+          "manifest_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+          "preflight_contract_command": "python scripts/run_predicted_dsg.py --preflight-manifest handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --artifact-contract handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json",
+          "track": "predicted_dsg"
+        },
+        "order": 3,
+        "recommended_command_keys": [
+          "detector_request_bundle_command",
+          "detector_receipt_bundle_command",
+          "preflight_contract_command",
+          "artifact_launch_report_command"
+        ],
+        "track": "predicted_dsg"
+      },
+      {
+        "blocking_roles": [
+          "active_task_delta_report",
+          "dashboard_bundle",
+          "error_attribution_report",
+          "graph_eval_report"
+        ],
+        "child_launch_gate": {
+          "active_task_delta_report_commands": [
+            {
+              "compare_command": "python scripts/run_active_tasks.py --compare-delta-report handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json",
+              "path": "handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json",
+              "validate_command": "python scripts/run_active_tasks.py --validate-delta-report handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json"
+            }
+          ],
+          "active_task_delta_report_paths": [
+            "handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json"
+          ],
+          "dashboard_bundle_commands": [
+            {
+              "path": "handoffs/ai2thor-real-smoke/inputs/review/dashboard.json",
+              "validate_command": "python scripts/export_dashboard.py --validate-bundle handoffs/ai2thor-real-smoke/inputs/review/dashboard.json"
+            }
+          ],
+          "dashboard_bundle_paths": [
+            "handoffs/ai2thor-real-smoke/inputs/review/dashboard.json"
+          ],
+          "error_attribution_report_commands": [
+            {
+              "compare_command": "python scripts/attribute_errors.py --compare-report handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json",
+              "path": "handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json",
+              "validate_command": "python scripts/attribute_errors.py --validate-report handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json"
+            }
+          ],
+          "error_attribution_report_paths": [
+            "handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json"
+          ],
+          "graph_eval_report_commands": [
+            {
+              "compare_command": "python scripts/evaluate_graphs.py --compare-report handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json",
+              "path": "handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json",
+              "validate_command": "python scripts/evaluate_graphs.py --validate-report handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json"
+            }
+          ],
+          "graph_eval_report_paths": [
+            "handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json"
+          ],
+          "track": "review_artifacts"
+        },
+        "order": 4,
+        "recommended_command_keys": [
+          "active_task_delta_report_commands",
+          "dashboard_bundle_commands",
+          "error_attribution_report_commands",
+          "graph_eval_report_commands"
+        ],
+        "track": "review_artifacts"
+      }
+    ],
+    "track_order": [
+      "real_data",
+      "real_controls",
+      "predicted_dsg",
+      "review_artifacts",
+      "run_outputs"
+    ]
+  },
+  "next_commands": {
+    "compare_external_artifact_contracts": "python scripts/run_real_experiment.py --compare-external-artifact-contracts handoffs/ai2thor-real-smoke/real-experiment-external-artifact-contracts.json",
+    "preflight": "python scripts/run_real_experiment.py --preflight-run-manifest handoffs/ai2thor-real-smoke/real-experiment-run-manifest.json",
+    "run": "python scripts/run_real_experiment.py --run-manifest handoffs/ai2thor-real-smoke/real-experiment-run-manifest.json --run-ledger-output handoffs/ai2thor-real-smoke/outputs/real-experiment-run-ledger.json",
+    "validate_external_artifact_contracts": "python scripts/run_real_experiment.py --validate-external-artifact-contracts handoffs/ai2thor-real-smoke/real-experiment-external-artifact-contracts.json"
+  },
+  "predicted_dsg_detector_intake_plan": {
+    "artifact_contract_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json",
+    "artifact_contract_receipt": {
+      "actionable_blockers": null,
+      "external_detector_intake_plan": null,
+      "manifest_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+      "path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json",
+      "ready_to_build": false,
+      "report_digest": null,
+      "status": "missing",
+      "summary": null
+    },
+    "blocked": true,
+    "blocking_roles": [
+      "detector_jsonl"
+    ],
+    "commands": {
+      "artifact_launch_report": "python scripts/run_predicted_dsg.py --artifact-launch-report handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json --manifest handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+      "detector_receipt_bundle": "python scripts/run_predicted_dsg.py --detector-receipt-bundle handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --receipt-bundle-output handoffs/ai2thor-real-smoke/predicted-dsg-detector-receipt-bundle.json",
+      "detector_request_bundle": "python scripts/run_predicted_dsg.py --detector-request-bundle handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --request-bundle-output handoffs/ai2thor-real-smoke/predicted-dsg-detector-request-bundle.json",
+      "preflight_contract": "python scripts/run_predicted_dsg.py --preflight-manifest handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --artifact-contract handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json"
+    },
+    "detector_receipt_bundle": {
+      "digest_valid": false,
+      "manifest_matches": false,
+      "manifest_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+      "path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-receipt-bundle.json",
+      "ready_to_build": false,
+      "receipt_bundle_digest": null,
+      "status": "missing",
+      "summary": null,
+      "validation_valid": false
+    },
+    "invalid_inputs": [],
+    "manifest_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+    "missing_inputs": [
+      {
+        "group": "predicted_dsg",
+        "path": "handoffs/ai2thor-real-smoke/inputs/predicted-dsg/detector-rgbd.jsonl",
+        "role": "detector_jsonl"
+      }
+    ],
+    "ready": false,
+    "track": "predicted_dsg"
+  },
+  "preflight_ready_to_run": false,
+  "primary_evidence_intake_plan": {
+    "blocked_track_count": 3,
+    "final_commands": {
+      "compare_external_artifact_contracts": "python scripts/run_real_experiment.py --compare-external-artifact-contracts handoffs/ai2thor-real-smoke/real-experiment-external-artifact-contracts.json",
+      "preflight": "python scripts/run_real_experiment.py --preflight-run-manifest handoffs/ai2thor-real-smoke/real-experiment-run-manifest.json",
+      "run": "python scripts/run_real_experiment.py --run-manifest handoffs/ai2thor-real-smoke/real-experiment-run-manifest.json --run-ledger-output handoffs/ai2thor-real-smoke/outputs/real-experiment-run-ledger.json",
+      "validate_external_artifact_contracts": "python scripts/run_real_experiment.py --validate-external-artifact-contracts handoffs/ai2thor-real-smoke/real-experiment-external-artifact-contracts.json"
+    },
+    "ready": false,
+    "ready_track_count": 0,
+    "steps": [
+      {
+        "artifact_goal": "real_collection",
+        "blocking_roles": [
+          "episode",
+          "real_collection_report"
+        ],
+        "child_launch_gate": {
+          "collection_report_command": "python scripts/check_real_collection.py --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl --report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+          "compare_report_command": "python scripts/check_real_collection.py --compare-report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+          "episode_paths": [
+            "handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl"
+          ],
+          "real_collection_report_path": "handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+          "request_bundle_command": "python scripts/check_real_collection.py --request-bundle handoffs/ai2thor-real-smoke/real-collection-request-bundle.json --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl --report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+          "request_bundle_path": "handoffs/ai2thor-real-smoke/real-collection-request-bundle.json",
+          "source_kind": "ai2thor",
+          "track": "real_data",
+          "validate_report_command": "python scripts/check_real_collection.py --validate-report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json"
+        },
+        "order": 1,
+        "ready": false,
+        "recommended_command_keys": [
+          "collection_report_command",
+          "request_bundle_command",
+          "validate_report_command",
+          "compare_report_command"
+        ],
+        "track": "real_data"
+      },
+      {
+        "artifact_goal": "offline_control_predictions",
+        "blocking_roles": [
+          "candidate_prediction",
+          "gold_qa",
+          "offline_control_source_input"
+        ],
+        "child_launch_gate": {
+          "artifact_contract_path": "handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json",
+          "artifact_launch_report_command": "python scripts/check_offline_controls.py --artifact-launch-report handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json --manifest handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+          "manifest_path": "handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+          "prediction_receipt_bundle_command": "python scripts/run_offline_controls.py --prediction-receipt-bundle handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --receipt-bundle-output handoffs/ai2thor-real-smoke/offline-control-prediction-receipt-bundle.json",
+          "prediction_receipt_bundle_path": "handoffs/ai2thor-real-smoke/offline-control-prediction-receipt-bundle.json",
+          "prediction_request_bundle_command": "python scripts/run_offline_controls.py --prediction-request-bundle handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --request-bundle-output handoffs/ai2thor-real-smoke/offline-control-prediction-request-bundle.json",
+          "prediction_request_bundle_path": "handoffs/ai2thor-real-smoke/offline-control-prediction-request-bundle.json",
+          "preflight_contract_command": "python scripts/run_offline_controls.py --preflight-manifest handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --artifact-contracts handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json",
+          "track": "real_controls"
+        },
+        "order": 2,
+        "ready": false,
+        "recommended_command_keys": [
+          "prediction_request_bundle_command",
+          "prediction_receipt_bundle_command",
+          "preflight_contract_command",
+          "artifact_launch_report_command"
+        ],
+        "track": "real_controls"
+      },
+      {
+        "artifact_goal": "predicted_dsg_detector_inputs",
+        "blocking_roles": [
+          "detector_jsonl"
+        ],
+        "child_launch_gate": {
+          "artifact_contract_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json",
+          "artifact_launch_report_command": "python scripts/run_predicted_dsg.py --artifact-launch-report handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json --manifest handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+          "detector_receipt_bundle_command": "python scripts/run_predicted_dsg.py --detector-receipt-bundle handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --receipt-bundle-output handoffs/ai2thor-real-smoke/predicted-dsg-detector-receipt-bundle.json",
+          "detector_receipt_bundle_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-receipt-bundle.json",
+          "detector_request_bundle_command": "python scripts/run_predicted_dsg.py --detector-request-bundle handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --request-bundle-output handoffs/ai2thor-real-smoke/predicted-dsg-detector-request-bundle.json",
+          "detector_request_bundle_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-request-bundle.json",
+          "manifest_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+          "preflight_contract_command": "python scripts/run_predicted_dsg.py --preflight-manifest handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json --artifact-contract handoffs/ai2thor-real-smoke/predicted-dsg-detector-artifact-contract.json",
+          "track": "predicted_dsg"
+        },
+        "order": 3,
+        "ready": false,
+        "recommended_command_keys": [
+          "detector_request_bundle_command",
+          "detector_receipt_bundle_command",
+          "preflight_contract_command",
+          "artifact_launch_report_command"
+        ],
+        "track": "predicted_dsg"
+      }
+    ],
+    "track": "primary_evidence",
+    "track_order": [
+      "real_data",
+      "real_controls",
+      "predicted_dsg"
+    ]
+  },
+  "primary_evidence_receipt_gate": {
+    "blocked_track_count": 3,
+    "blocked_tracks": [
+      {
+        "blocking_roles": [
+          "episode",
+          "real_collection_report"
+        ],
+        "intake_plan_key": "real_data_collection_intake_plan",
+        "receipt_status": "missing",
+        "track": "real_data"
+      },
+      {
+        "blocking_roles": [
+          "candidate_prediction",
+          "gold_qa",
+          "offline_control_source_input"
+        ],
+        "intake_plan_key": "real_controls_prediction_intake_plan",
+        "receipt_status": "missing",
+        "track": "real_controls"
+      },
+      {
+        "blocking_roles": [
+          "detector_jsonl"
+        ],
+        "intake_plan_key": "predicted_dsg_detector_intake_plan",
+        "receipt_status": "missing",
+        "track": "predicted_dsg"
+      }
+    ],
+    "ready": false,
+    "ready_track_count": 0,
+    "ready_tracks": [],
+    "track": "primary_evidence",
+    "track_order": [
+      "real_data",
+      "real_controls",
+      "predicted_dsg"
+    ]
+  },
+  "ready_to_run": false,
+  "real_controls_prediction_intake_plan": {
+    "artifact_contract_path": "handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json",
+    "artifact_contract_receipt": {
+      "actionable_blockers": null,
+      "external_prediction_intake_plan": null,
+      "manifest_path": "handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+      "path": "handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json",
+      "ready_to_import": false,
+      "report_digest": null,
+      "status": "missing",
+      "summary": null
+    },
+    "blocked": true,
+    "blocking_roles": [
+      "candidate_prediction",
+      "gold_qa",
+      "offline_control_source_input"
+    ],
+    "commands": {
+      "artifact_launch_report": "python scripts/check_offline_controls.py --artifact-launch-report handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json --manifest handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+      "prediction_receipt_bundle": "python scripts/run_offline_controls.py --prediction-receipt-bundle handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --receipt-bundle-output handoffs/ai2thor-real-smoke/offline-control-prediction-receipt-bundle.json",
+      "prediction_request_bundle": "python scripts/run_offline_controls.py --prediction-request-bundle handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --request-bundle-output handoffs/ai2thor-real-smoke/offline-control-prediction-request-bundle.json",
+      "preflight_contract": "python scripts/run_offline_controls.py --preflight-manifest handoffs/ai2thor-real-smoke/offline-control-import-manifest.json --artifact-contracts handoffs/ai2thor-real-smoke/offline-control-artifact-contracts.json"
+    },
+    "invalid_inputs": [],
+    "manifest_path": "handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+    "missing_inputs": [
+      {
+        "group": "offline_controls",
+        "path": "handoffs/ai2thor-real-smoke/inputs/candidate/predicted-graph-tool.jsonl",
+        "role": "candidate_prediction"
+      },
+      {
+        "group": "offline_controls",
+        "path": "handoffs/ai2thor-real-smoke/inputs/qa.jsonl",
+        "role": "gold_qa"
+      },
+      {
+        "group": "offline_controls",
+        "metadata": {
+          "source_kind": "caption_memory",
+          "source_name": "caption_memory_real_control"
+        },
+        "path": "handoffs/ai2thor-real-smoke/inputs/offline-controls/caption_memory.jsonl",
+        "role": "offline_control_source_input"
+      },
+      {
+        "group": "offline_controls",
+        "metadata": {
+          "source_kind": "graph_text",
+          "source_name": "graph_text_real_control"
+        },
+        "path": "handoffs/ai2thor-real-smoke/inputs/offline-controls/graph_text.jsonl",
+        "role": "offline_control_source_input"
+      },
+      {
+        "group": "offline_controls",
+        "metadata": {
+          "source_kind": "multi_frame_vlm",
+          "source_name": "multi_frame_vlm_real_control"
+        },
+        "path": "handoffs/ai2thor-real-smoke/inputs/offline-controls/multi_frame_vlm.jsonl",
+        "role": "offline_control_source_input"
+      },
+      {
+        "group": "offline_controls",
+        "metadata": {
+          "source_kind": "vlm",
+          "source_name": "vlm_real_control"
+        },
+        "path": "handoffs/ai2thor-real-smoke/inputs/offline-controls/vlm.jsonl",
+        "role": "offline_control_source_input"
+      }
+    ],
+    "prediction_receipt_bundle": {
+      "digest_valid": false,
+      "manifest_matches": false,
+      "manifest_path": "handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+      "path": "handoffs/ai2thor-real-smoke/offline-control-prediction-receipt-bundle.json",
+      "ready_to_import": false,
+      "receipt_bundle_digest": null,
+      "status": "missing",
+      "summary": null,
+      "validation_valid": false
+    },
+    "ready": false,
+    "track": "real_controls"
+  },
+  "real_data_collection_intake_plan": {
+    "blocked": true,
+    "blocking_roles": [
+      "episode",
+      "real_collection_report"
+    ],
+    "collection_report_receipt": {
+      "asset_summary": null,
+      "digest_valid": false,
+      "failed_checks": [
+        "real_collection_report_missing"
+      ],
+      "path": "handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+      "readiness": null,
+      "ready": false,
+      "report_digest": null,
+      "status": "missing",
+      "validation_valid": false
+    },
+    "commands": {
+      "collection_report": "python scripts/check_real_collection.py --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl --report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+      "compare_report": "python scripts/check_real_collection.py --compare-report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+      "request_bundle": "python scripts/check_real_collection.py --request-bundle handoffs/ai2thor-real-smoke/real-collection-request-bundle.json --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl --report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+      "validate_report": "python scripts/check_real_collection.py --validate-report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json"
+    },
+    "dataset_name": "ai2thor_real_smoke",
+    "episode_paths": [
+      "handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl"
+    ],
+    "invalid_inputs": [],
+    "missing_inputs": [
+      {
+        "group": "real_collection",
+        "path": "handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl",
+        "role": "episode"
+      },
+      {
+        "group": "real_collection",
+        "path": "handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+        "role": "real_collection_report"
+      }
+    ],
+    "ready": false,
+    "real_collection_report_path": "handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+    "source_kind": "ai2thor",
+    "thresholds": {
+      "min_episode_count": 3,
+      "min_frame_count": 30,
+      "min_qa_count": 30,
+      "min_scene_count": 1
+    },
+    "track": "real_data"
+  },
+  "report_digest": "c4a4a4e367d3743cd87d81388b19791baf6acbdb8a6e3ef00d2aa20e54317860",
+  "run_manifest_path": "handoffs/ai2thor-real-smoke/real-experiment-run-manifest.json",
+  "schema_version": "dsg-spatialqa-lab.real-experiment-launch-report.v1",
+  "summary": {
+    "blocked_track_count": 4,
+    "invalid_input_count": 0,
+    "missing_input_count": 13,
+    "missing_requirement_count": 0,
+    "planned_output_count": 25,
+    "ready_track_count": 1,
+    "required_input_count": 15,
+    "track_count": 5
+  },
+  "tracks": {
+    "predicted_dsg": {
+      "blocking_roles": [
+        "detector_jsonl"
+      ],
+      "groups": [
+        "predicted_dsg"
+      ],
+      "invalid_input_count": 0,
+      "invalid_inputs": [],
+      "missing_input_count": 1,
+      "missing_inputs": [
+        {
+          "group": "predicted_dsg",
+          "path": "handoffs/ai2thor-real-smoke/inputs/predicted-dsg/detector-rgbd.jsonl",
+          "role": "detector_jsonl"
+        }
+      ],
+      "missing_requirement_count": 0,
+      "missing_requirements": [],
+      "planned_output_count": 6,
+      "present_input_count": 1,
+      "ready": false,
+      "required_input_count": 2
+    },
+    "real_controls": {
+      "blocking_roles": [
+        "candidate_prediction",
+        "gold_qa",
+        "offline_control_source_input"
+      ],
+      "groups": [
+        "offline_controls"
+      ],
+      "invalid_input_count": 0,
+      "invalid_inputs": [],
+      "missing_input_count": 6,
+      "missing_inputs": [
+        {
+          "group": "offline_controls",
+          "path": "handoffs/ai2thor-real-smoke/inputs/candidate/predicted-graph-tool.jsonl",
+          "role": "candidate_prediction"
+        },
+        {
+          "group": "offline_controls",
+          "path": "handoffs/ai2thor-real-smoke/inputs/qa.jsonl",
+          "role": "gold_qa"
+        },
+        {
+          "group": "offline_controls",
+          "metadata": {
+            "source_kind": "caption_memory",
+            "source_name": "caption_memory_real_control"
+          },
+          "path": "handoffs/ai2thor-real-smoke/inputs/offline-controls/caption_memory.jsonl",
+          "role": "offline_control_source_input"
+        },
+        {
+          "group": "offline_controls",
+          "metadata": {
+            "source_kind": "graph_text",
+            "source_name": "graph_text_real_control"
+          },
+          "path": "handoffs/ai2thor-real-smoke/inputs/offline-controls/graph_text.jsonl",
+          "role": "offline_control_source_input"
+        },
+        {
+          "group": "offline_controls",
+          "metadata": {
+            "source_kind": "multi_frame_vlm",
+            "source_name": "multi_frame_vlm_real_control"
+          },
+          "path": "handoffs/ai2thor-real-smoke/inputs/offline-controls/multi_frame_vlm.jsonl",
+          "role": "offline_control_source_input"
+        },
+        {
+          "group": "offline_controls",
+          "metadata": {
+            "source_kind": "vlm",
+            "source_name": "vlm_real_control"
+          },
+          "path": "handoffs/ai2thor-real-smoke/inputs/offline-controls/vlm.jsonl",
+          "role": "offline_control_source_input"
+        }
+      ],
+      "missing_requirement_count": 0,
+      "missing_requirements": [],
+      "planned_output_count": 13,
+      "present_input_count": 1,
+      "ready": false,
+      "required_input_count": 7
+    },
+    "real_data": {
+      "blocking_roles": [
+        "episode",
+        "real_collection_report"
+      ],
+      "groups": [
+        "real_collection"
+      ],
+      "invalid_input_count": 0,
+      "invalid_inputs": [],
+      "missing_input_count": 2,
+      "missing_inputs": [
+        {
+          "group": "real_collection",
+          "path": "handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl",
+          "role": "episode"
+        },
+        {
+          "group": "real_collection",
+          "path": "handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+          "role": "real_collection_report"
+        }
+      ],
+      "missing_requirement_count": 0,
+      "missing_requirements": [],
+      "planned_output_count": 0,
+      "present_input_count": 0,
+      "ready": false,
+      "required_input_count": 2
+    },
+    "review_artifacts": {
+      "blocking_roles": [
+        "active_task_delta_report",
+        "dashboard_bundle",
+        "error_attribution_report",
+        "graph_eval_report"
+      ],
+      "groups": [
+        "review_artifacts"
+      ],
+      "invalid_input_count": 0,
+      "invalid_inputs": [],
+      "missing_input_count": 4,
+      "missing_inputs": [
+        {
+          "group": "review_artifacts",
+          "path": "handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json",
+          "role": "active_task_delta_report"
+        },
+        {
+          "group": "review_artifacts",
+          "path": "handoffs/ai2thor-real-smoke/inputs/review/dashboard.json",
+          "role": "dashboard_bundle"
+        },
+        {
+          "group": "review_artifacts",
+          "path": "handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json",
+          "role": "error_attribution_report"
+        },
+        {
+          "group": "review_artifacts",
+          "path": "handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json",
+          "role": "graph_eval_report"
+        }
+      ],
+      "missing_requirement_count": 0,
+      "missing_requirements": [],
+      "planned_output_count": 0,
+      "present_input_count": 0,
+      "ready": false,
+      "required_input_count": 4
+    },
+    "run_outputs": {
+      "blocking_roles": [],
+      "groups": [
+        "real_run",
+        "run_outputs"
+      ],
+      "invalid_input_count": 0,
+      "invalid_inputs": [],
+      "missing_input_count": 0,
+      "missing_inputs": [],
+      "missing_requirement_count": 0,
+      "missing_requirements": [],
+      "planned_output_count": 6,
+      "present_input_count": 0,
+      "ready": true,
+      "required_input_count": 0
+    }
+  },
+  "validation": {
+    "action": "validate_real_experiment_external_artifact_contracts",
+    "checks": [
+      {
+        "actual": "dsg-spatialqa-lab.real-experiment-external-artifact-contracts.v1",
+        "expected": "dsg-spatialqa-lab.real-experiment-external-artifact-contracts.v1",
+        "name": "schema_version",
+        "passed": true
+      },
+      {
+        "actual": "d00e0c85244b3682795be7e5ae6bce275e81fc41895a51465eba9257ed053da7",
+        "expected": "d00e0c85244b3682795be7e5ae6bce275e81fc41895a51465eba9257ed053da7",
+        "name": "contracts_digest",
+        "passed": true
+      },
+      {
+        "actual": [
+          "predicted_dsg",
+          "real_controls",
+          "real_data",
+          "review_artifacts",
+          "run_outputs"
+        ],
+        "expected": [
+          "predicted_dsg",
+          "real_controls",
+          "real_data",
+          "review_artifacts",
+          "run_outputs"
+        ],
+        "name": "required_tracks_present",
+        "passed": true
+      },
+      {
+        "actual": 5,
+        "expected": 5,
+        "name": "track_count",
+        "passed": true
+      },
+      {
+        "actual": 4,
+        "expected": 4,
+        "name": "real_control_source_count",
+        "passed": true
+      },
+      {
+        "actual": 8,
+        "expected": 8,
+        "name": "required_input_artifact_count",
+        "passed": true
+      },
+      {
+        "actual": 8,
+        "expected": 8,
+        "name": "missing_input_artifact_count",
+        "passed": true
+      },
+      {
+        "actual": 6,
+        "expected": 6,
+        "name": "planned_output_artifact_count",
+        "passed": true
+      }
+    ],
+    "contracts_digest": "d00e0c85244b3682795be7e5ae6bce275e81fc41895a51465eba9257ed053da7",
+    "schema_version": "dsg-spatialqa-lab.real-experiment-external-artifact-contracts.v1",
+    "valid": true
+  }
+}

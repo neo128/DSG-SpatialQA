@@ -1044,6 +1044,12 @@ def test_run_real_experiment_manifest_runs_complete_local_handoff(
         },
         "track_order": ["real_controls", "predicted_dsg"],
     }
+    assert next_handoff_plan["required_control_kinds"] == [
+        "caption_memory",
+        "graph_text",
+        "multi_frame_vlm",
+        "vlm",
+    ]
     assert next_handoff_plan["required_predicted_input_kinds"] == [
         "observation_sequence"
     ]
@@ -1306,6 +1312,53 @@ def test_run_real_experiment_manifest_runs_complete_local_handoff(
             "launch_audit",
         ],
     }
+    drifted_next_handoff_intake_claim_readiness = json.loads(
+        json.dumps(default_claim)
+    )
+    drifted_next_handoff_intake_plan = (
+        drifted_next_handoff_intake_claim_readiness["next_handoff_plan"]
+    )
+    drifted_after_write_intake_plan = drifted_next_handoff_intake_plan[
+        "after_write_intake_plan"
+    ]
+    original_next_handoff_launch_report_path = drifted_after_write_intake_plan[
+        "artifact_paths"
+    ]["external_artifact_launch_report_path"]
+    tampered_next_handoff_launch_report_path = str(
+        expected_handoff_root / "real-experiment-external-artifact-launch-drift.json"
+    )
+    drifted_after_write_intake_plan["artifact_paths"][
+        "external_artifact_launch_report_path"
+    ] = tampered_next_handoff_launch_report_path
+    drifted_after_write_intake_plan["commands"] = {
+        key: command.replace(
+            original_next_handoff_launch_report_path,
+            tampered_next_handoff_launch_report_path,
+        )
+        for key, command in drifted_after_write_intake_plan["commands"].items()
+    }
+    for step in drifted_next_handoff_intake_plan["operator_checklist"]["steps"]:
+        step["command"] = step["command"].replace(
+            original_next_handoff_launch_report_path,
+            tampered_next_handoff_launch_report_path,
+        )
+    drifted_next_handoff_intake_claim_readiness["claim_readiness_digest"] = (
+        lab.real_experiment_claim_readiness_digest(
+            drifted_next_handoff_intake_claim_readiness
+        )
+    )
+    drifted_next_handoff_intake_validation = (
+        lab.validate_real_experiment_claim_readiness(
+            drifted_next_handoff_intake_claim_readiness
+        )
+    )
+    assert drifted_next_handoff_intake_validation["valid"] is False
+    drifted_next_handoff_intake_check = next(
+        check
+        for check in drifted_next_handoff_intake_validation["checks"]
+        if check["name"] == "next_handoff_after_write_intake_plan"
+    )
+    assert drifted_next_handoff_intake_check["passed"] is False
     expected_next_execution_packet_path = (
         expected_handoff_root / "real-experiment-execution-packet.json"
     )
@@ -1477,6 +1530,88 @@ def test_run_real_experiment_manifest_runs_complete_local_handoff(
         "--required-control-kind vlm "
         "--required-predicted-input-kind observation_sequence"
     )
+    drifted_next_handoff_controls_claim_readiness = json.loads(
+        json.dumps(default_claim)
+    )
+    drifted_next_handoff_controls_plan = (
+        drifted_next_handoff_controls_claim_readiness["next_handoff_plan"]
+    )
+    del drifted_next_handoff_controls_plan["external_artifact_slots"][
+        "offline_control_prediction_paths"
+    ]["graph_text"]
+    drifted_next_handoff_controls_command = drifted_next_handoff_controls_plan[
+        "commands"
+    ]["write_handoff_manifests"].replace(
+        " --required-control-kind graph_text",
+        "",
+    )
+    drifted_next_handoff_controls_plan["commands"][
+        "write_handoff_manifests"
+    ] = drifted_next_handoff_controls_command
+    drifted_next_handoff_controls_plan["operator_checklist"]["steps"][0][
+        "command"
+    ] = drifted_next_handoff_controls_command
+    drifted_next_handoff_controls_claim_readiness["claim_readiness_digest"] = (
+        lab.real_experiment_claim_readiness_digest(
+            drifted_next_handoff_controls_claim_readiness
+        )
+    )
+    drifted_next_handoff_controls_validation = (
+        lab.validate_real_experiment_claim_readiness(
+            drifted_next_handoff_controls_claim_readiness
+        )
+    )
+    assert drifted_next_handoff_controls_validation["valid"] is False
+    drifted_next_handoff_controls_check = next(
+        check
+        for check in drifted_next_handoff_controls_validation["checks"]
+        if check["name"] == "next_handoff_plan"
+    )
+    assert drifted_next_handoff_controls_check["passed"] is False
+    drifted_next_handoff_detector_claim_readiness = json.loads(
+        json.dumps(default_claim)
+    )
+    drifted_next_handoff_detector_plan = (
+        drifted_next_handoff_detector_claim_readiness["next_handoff_plan"]
+    )
+    original_next_handoff_detector_path = drifted_next_handoff_detector_plan[
+        "external_artifact_slots"
+    ]["detector_jsonl_path"]
+    tampered_next_handoff_detector_path = str(
+        expected_handoff_root / "inputs/predicted-dsg/other-detector-rgbd.jsonl"
+    )
+    drifted_next_handoff_detector_plan["external_artifact_slots"][
+        "detector_jsonl_path"
+    ] = tampered_next_handoff_detector_path
+    drifted_next_handoff_detector_command = drifted_next_handoff_detector_plan[
+        "commands"
+    ]["write_handoff_manifests"].replace(
+        original_next_handoff_detector_path,
+        tampered_next_handoff_detector_path,
+    )
+    drifted_next_handoff_detector_plan["commands"][
+        "write_handoff_manifests"
+    ] = drifted_next_handoff_detector_command
+    drifted_next_handoff_detector_plan["operator_checklist"]["steps"][0][
+        "command"
+    ] = drifted_next_handoff_detector_command
+    drifted_next_handoff_detector_claim_readiness["claim_readiness_digest"] = (
+        lab.real_experiment_claim_readiness_digest(
+            drifted_next_handoff_detector_claim_readiness
+        )
+    )
+    drifted_next_handoff_detector_validation = (
+        lab.validate_real_experiment_claim_readiness(
+            drifted_next_handoff_detector_claim_readiness
+        )
+    )
+    assert drifted_next_handoff_detector_validation["valid"] is False
+    drifted_next_handoff_detector_check = next(
+        check
+        for check in drifted_next_handoff_detector_validation["checks"]
+        if check["name"] == "next_handoff_external_artifact_slots"
+    )
+    assert drifted_next_handoff_detector_check["passed"] is False
     operator_checklist = next_handoff_plan["operator_checklist"]
     expected_operator_keys = [
         "write_handoff_manifests",
@@ -3183,6 +3318,11 @@ def test_write_real_experiment_handoff_manifests_creates_preflightable_package(
     assert launch_report["tracks"]["predicted_dsg"]["blocking_roles"] == [
         "detector_jsonl"
     ]
+    assert (
+        f"--run-ledger-output {root / 'outputs/real-experiment-run-ledger.json'}"
+        in launch_report["next_commands"]["run"]
+    )
+    assert f"{root}/{root}" not in launch_report["next_commands"]["run"]
     assert launch_report["tracks"]["review_artifacts"]["blocking_roles"] == [
         "active_task_delta_report",
         "dashboard_bundle",
@@ -3352,6 +3492,52 @@ def test_write_real_experiment_handoff_manifests_creates_preflightable_package(
             "track": "review_artifacts",
         },
     }
+
+
+def test_launch_report_child_gates_handle_relative_handoff_root(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+) -> None:
+    monkeypatch.chdir(tmp_path)
+    root = Path("handoffs/ai2thor-real-smoke")
+    handoff = lab.write_real_experiment_handoff_manifests(
+        root=root,
+        dataset_name="ai2thor_real_smoke",
+        episode_paths=(Path("inputs/episodes/FloorPlan1.jsonl"),),
+        min_episode_count=1,
+        min_scene_count=1,
+        min_frame_count=1,
+        min_qa_count=8,
+    )
+    contracts_path = Path(
+        handoff["manifest_paths"]["real_experiment_external_artifact_contracts"]
+    )
+    run_manifest_path = Path(handoff["manifest_paths"]["real_experiment_run_manifest"])
+    contracts = lab.load_real_experiment_external_artifact_contracts(
+        contracts_path
+    )
+
+    launch_report = lab.real_experiment_external_artifact_launch_report(
+        contracts,
+        contracts_path=contracts_path,
+    )
+
+    offline_manifest_path = root / "offline-control-import-manifest.json"
+    predicted_manifest_path = root / "predicted-dsg-detector-run-manifest.json"
+    assert launch_report["child_launch_gates"]["offline_controls"][
+        "manifest_path"
+    ] == str(offline_manifest_path)
+    assert launch_report["child_launch_gates"]["predicted_dsg"][
+        "manifest_path"
+    ] == str(predicted_manifest_path)
+    assert launch_report["tracks"]["real_controls"]["blocking_roles"] == [
+        "candidate_prediction",
+        "gold_qa",
+        "offline_control_source_input",
+    ]
+    assert launch_report["tracks"]["predicted_dsg"]["blocking_roles"] == [
+        "detector_jsonl"
+    ]
     assert set(launch_report["actionable_blockers"]) == {
         "predicted_dsg",
         "real_controls",
@@ -3381,196 +3567,6 @@ def test_write_real_experiment_handoff_manifests_creates_preflightable_package(
         "error_attribution_report",
         "graph_eval_report",
     ]
-    assert launch_report["real_data_collection_intake_plan"] == {
-        "track": "real_data",
-        "blocked": True,
-        "blocking_roles": ["episode", "real_collection_report"],
-        "commands": {
-            "collection_report": launch_report["child_launch_gates"]["real_data"][
-                "collection_report_command"
-            ],
-            "compare_report": launch_report["child_launch_gates"]["real_data"][
-                "compare_report_command"
-            ],
-            "request_bundle": launch_report["child_launch_gates"]["real_data"][
-                "request_bundle_command"
-            ],
-            "validate_report": launch_report["child_launch_gates"]["real_data"][
-                "validate_report_command"
-            ],
-        },
-        "dataset_name": "ai2thor_real_smoke",
-        "episode_paths": [str(episode_path)],
-        "invalid_inputs": [],
-        "missing_inputs": launch_report["tracks"]["real_data"]["missing_inputs"],
-        "collection_report_receipt": {
-            "asset_summary": None,
-            "digest_valid": False,
-            "failed_checks": ["real_collection_report_missing"],
-            "path": str(real_collection_report_path),
-            "readiness": None,
-            "ready": False,
-            "report_digest": None,
-            "status": "missing",
-            "validation_valid": False,
-        },
-        "real_collection_report_path": str(real_collection_report_path),
-        "ready": False,
-        "source_kind": "ai2thor",
-        "thresholds": {
-            "min_episode_count": 1,
-            "min_frame_count": 30,
-            "min_qa_count": 8,
-            "min_scene_count": 1,
-        },
-    }
-    assert launch_report["primary_evidence_intake_plan"] == {
-        "track": "primary_evidence",
-        "ready": False,
-        "blocked_track_count": 3,
-        "ready_track_count": 0,
-        "final_commands": launch_report["next_commands"],
-        "steps": [
-            {
-                "artifact_goal": "real_collection",
-                "blocking_roles": ["episode", "real_collection_report"],
-                "child_launch_gate": launch_report["child_launch_gates"][
-                    "real_data"
-                ],
-                "order": 1,
-                "ready": False,
-                "recommended_command_keys": [
-                    "collection_report_command",
-                    "request_bundle_command",
-                    "validate_report_command",
-                    "compare_report_command",
-                ],
-                "track": "real_data",
-            },
-            {
-                "artifact_goal": "offline_control_predictions",
-                "blocking_roles": [
-                    "candidate_prediction",
-                    "gold_qa",
-                    "offline_control_source_input",
-                ],
-                "child_launch_gate": launch_report["child_launch_gates"][
-                    "offline_controls"
-                ],
-                "order": 2,
-                "ready": False,
-                "recommended_command_keys": [
-                    "prediction_request_bundle_command",
-                    "prediction_receipt_bundle_command",
-                    "preflight_contract_command",
-                    "artifact_launch_report_command",
-                ],
-                "track": "real_controls",
-            },
-            {
-                "artifact_goal": "predicted_dsg_detector_inputs",
-                "blocking_roles": ["detector_jsonl"],
-                "child_launch_gate": launch_report["child_launch_gates"][
-                    "predicted_dsg"
-                ],
-                "order": 3,
-                "ready": False,
-                "recommended_command_keys": [
-                    "detector_request_bundle_command",
-                    "detector_receipt_bundle_command",
-                    "preflight_contract_command",
-                    "artifact_launch_report_command",
-                ],
-                "track": "predicted_dsg",
-            },
-        ],
-        "track_order": [
-            "real_data",
-            "real_controls",
-            "predicted_dsg",
-        ],
-    }
-    intake_plan = launch_report["external_artifact_intake_plan"]
-    assert intake_plan == {
-        "blocked_track_count": 4,
-        "final_commands": launch_report["next_commands"],
-        "ready_track_count": 1,
-        "ready_tracks": ["run_outputs"],
-        "steps": [
-            {
-                "blocking_roles": ["episode", "real_collection_report"],
-                "child_launch_gate": launch_report["child_launch_gates"][
-                    "real_data"
-                ],
-                "order": 1,
-                "recommended_command_keys": [
-                    "collection_report_command",
-                    "request_bundle_command",
-                    "validate_report_command",
-                    "compare_report_command",
-                ],
-                "track": "real_data",
-            },
-            {
-                "blocking_roles": [
-                    "candidate_prediction",
-                    "gold_qa",
-                    "offline_control_source_input",
-                ],
-                "child_launch_gate": launch_report["child_launch_gates"][
-                    "offline_controls"
-                ],
-                "order": 2,
-                "recommended_command_keys": [
-                    "prediction_request_bundle_command",
-                    "prediction_receipt_bundle_command",
-                    "preflight_contract_command",
-                    "artifact_launch_report_command",
-                ],
-                "track": "real_controls",
-            },
-            {
-                "blocking_roles": ["detector_jsonl"],
-                "child_launch_gate": launch_report["child_launch_gates"][
-                    "predicted_dsg"
-                ],
-                "order": 3,
-                "recommended_command_keys": [
-                    "detector_request_bundle_command",
-                    "detector_receipt_bundle_command",
-                    "preflight_contract_command",
-                    "artifact_launch_report_command",
-                ],
-                "track": "predicted_dsg",
-            },
-            {
-                "blocking_roles": [
-                    "active_task_delta_report",
-                    "dashboard_bundle",
-                    "error_attribution_report",
-                    "graph_eval_report",
-                ],
-                "child_launch_gate": launch_report["child_launch_gates"][
-                    "review_artifacts"
-                ],
-                "order": 4,
-                "recommended_command_keys": [
-                    "active_task_delta_report_commands",
-                    "dashboard_bundle_commands",
-                    "error_attribution_report_commands",
-                    "graph_eval_report_commands",
-                ],
-                "track": "review_artifacts",
-            },
-        ],
-        "track_order": [
-            "real_data",
-            "real_controls",
-            "predicted_dsg",
-            "review_artifacts",
-            "run_outputs",
-        ],
-    }
     assert launch_report["next_commands"] == {
         "compare_external_artifact_contracts": (
             "python scripts/run_real_experiment.py "
@@ -3590,180 +3586,7 @@ def test_write_real_experiment_handoff_manifests_creates_preflightable_package(
             f"--validate-external-artifact-contracts {contracts_path}"
         ),
     }
-    assert launch_report["report_digest"] == (
-        lab.real_experiment_external_artifact_launch_report_digest(launch_report)
-    )
-    launch_report_path = root / "real-experiment-external-artifact-launch-report.json"
-    saved_launch_report_path = (
-        lab.save_real_experiment_external_artifact_launch_report(
-            launch_report,
-            launch_report_path,
-        )
-    )
-    loaded_launch_report = lab.load_real_experiment_external_artifact_launch_report(
-        launch_report_path
-    )
-    launch_report_validation = (
-        lab.validate_real_experiment_external_artifact_launch_report(
-            loaded_launch_report
-        )
-    )
-    launch_report_comparison = (
-        lab.compare_real_experiment_external_artifact_launch_report(
-            loaded_launch_report
-        )
-    )
-    assert saved_launch_report_path == launch_report_path
-    assert loaded_launch_report == launch_report
-    assert launch_report_validation["valid"] is True
-    assert launch_report_validation["report_digest"] == launch_report["report_digest"]
-    assert launch_report_comparison["matches"] is True
-    assert launch_report_comparison["saved_digest"] == launch_report["report_digest"]
-    assert launch_report_comparison["current_digest"] == launch_report["report_digest"]
-    assert contracts["tracks"]["real_data"] == {
-        "dataset_name": "ai2thor_real_smoke",
-        "episode_paths": ["inputs/episodes/FloorPlan1.jsonl"],
-        "min_episode_count": 1,
-        "min_frame_count": 30,
-        "min_qa_count": 8,
-        "min_scene_count": 1,
-        "real_collection_report_paths": ["inputs/real-collection-report.json"],
-        "source_kind": "ai2thor",
-    }
-    assert contracts["tracks"]["real_controls"]["qa_path"] == "inputs/qa.jsonl"
-    assert contracts["tracks"]["real_controls"]["candidate_prediction_path"] == (
-        "inputs/candidate/predicted-graph-tool.jsonl"
-    )
-    assert [
-        source["source_kind"]
-        for source in contracts["tracks"]["real_controls"]["sources"]
-    ] == ["vlm", "multi_frame_vlm", "caption_memory", "graph_text"]
-    assert {
-        source["expected_input_format"]
-        for source in contracts["tracks"]["real_controls"]["sources"]
-    } == {"qa_prediction"}
-    assert contracts["tracks"]["predicted_dsg"]["detector_jsonl_path"] == (
-        "inputs/predicted-dsg/detector-rgbd.jsonl"
-    )
-    assert contracts["tracks"]["predicted_dsg"]["required_evidence_kinds"] == [
-        "depth",
-        "detector",
-        "rgb",
-    ]
-    assert contracts["tracks"]["review_artifacts"] == {
-        "active_task_delta_report_paths": ["inputs/review/active-task-delta.json"],
-        "dashboard_bundle_paths": ["inputs/review/dashboard.json"],
-        "error_attribution_report_paths": ["inputs/review/error-attribution.json"],
-        "graph_eval_report_paths": ["inputs/review/graph-eval.json"],
-    }
-    assert contracts["tracks"]["run_outputs"]["record_path"] == (
-        "outputs/experiment-record.json"
-    )
-    assert contracts["tracks"]["run_outputs"][
-        "real_experiment_run_ledger_path"
-    ] == "outputs/real-experiment-run-ledger.json"
-    input_rows = checklist["input_artifacts"]
-    planned_rows = checklist["planned_output_artifacts"]
-    assert len(input_rows) == 15
-    assert len(planned_rows) == 25
-    assert {
-        (row["track"], row["group"], row["role"])
-        for row in input_rows
-        if row["status"] == "missing"
-    } >= {
-        ("real_data", "real_collection", "episode"),
-        ("real_controls", "offline_controls", "gold_qa"),
-        ("real_controls", "offline_controls", "offline_control_source_input"),
-        ("predicted_dsg", "predicted_dsg", "detector_jsonl"),
-        ("review_artifacts", "review_artifacts", "dashboard_bundle"),
-    }
-    assert {
-        (row["track"], row["group"], row["role"]) for row in planned_rows
-    } >= {
-        ("real_controls", "offline_controls", "offline_control_prediction"),
-        (
-            "real_controls",
-            "offline_controls",
-            "offline_control_import_run_ledger",
-        ),
-        (
-            "real_controls",
-            "offline_controls",
-            "offline_prediction_import_report",
-        ),
-        ("real_controls", "offline_controls", "offline_control_result_report"),
-        (
-            "predicted_dsg",
-            "predicted_dsg",
-            "predicted_dsg_detector_run_ledger",
-        ),
-        ("predicted_dsg", "predicted_dsg", "predicted_graph_report"),
-        ("run_outputs", "real_run", "experiment_record"),
-    }
-    offline_missing = [
-        row
-        for row in input_rows
-        if row["group"] == "offline_controls"
-        and row["role"] == "offline_control_source_input"
-    ]
-    assert {row["metadata"]["source_kind"] for row in offline_missing} == {
-        "caption_memory",
-        "graph_text",
-        "multi_frame_vlm",
-        "vlm",
-    }
-    assert preflight["ready_to_run"] is False
-    assert preflight["summary"]["missing_requirement_count"] == 0
-    missing = {(item["group"], item["role"]) for item in preflight["missing_inputs"]}
-    assert ("real_collection", "episode") in missing
-    assert ("real_collection", "real_collection_report") in missing
-    assert ("offline_controls", "gold_qa") in missing
-    assert ("offline_controls", "offline_control_source_input") in missing
-    assert ("offline_controls", "candidate_prediction") in missing
-    assert ("predicted_dsg", "detector_jsonl") in missing
-    assert ("review_artifacts", "active_task_delta_report") in missing
-    assert ("review_artifacts", "dashboard_bundle") in missing
-    assert ("review_artifacts", "error_attribution_report") in missing
-    assert ("review_artifacts", "graph_eval_report") in missing
-    tampered_contracts = {**loaded_contracts, "summary": {**contracts["summary"]}}
-    tampered_contracts["summary"]["track_count"] = 4
-    tampered_contracts["contracts_digest"] = (
-        lab.real_experiment_external_artifact_contracts_digest(tampered_contracts)
-    )
-    tampered_validation = lab.validate_real_experiment_external_artifact_contracts(
-        tampered_contracts
-    )
-    assert tampered_validation["valid"] is False
-    assert {
-        check["name"]
-        for check in tampered_validation["checks"]
-        if check["passed"] is False
-    } == {"track_count"}
-
-
-def test_external_artifact_contract_comparison_handles_relative_handoff_root(
-    tmp_path: Path,
-    monkeypatch: MonkeyPatch,
-) -> None:
-    monkeypatch.chdir(tmp_path)
-    handoff = lab.write_real_experiment_handoff_manifests(
-        root=Path("real-handoff"),
-        dataset_name="ai2thor_real_smoke",
-        episode_paths=(Path("inputs/episodes/FloorPlan1.jsonl"),),
-        min_episode_count=1,
-        min_scene_count=1,
-        min_frame_count=1,
-        min_qa_count=8,
-    )
-    contracts_path = Path(
-        handoff["manifest_paths"]["real_experiment_external_artifact_contracts"]
-    )
-    contracts = lab.load_real_experiment_external_artifact_contracts(contracts_path)
-
-    comparison = lab.compare_real_experiment_external_artifact_contracts(contracts)
-
-    assert comparison["action"] == "compare_real_experiment_external_artifact_contracts"
-    assert comparison["matches"] is True
+    assert f"{root}/{root}" not in launch_report["next_commands"]["run"]
 
 
 def test_operator_progress_audits_saved_smoke_run_runbook_content(
