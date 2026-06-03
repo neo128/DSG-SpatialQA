@@ -1256,9 +1256,19 @@ Before executing that handoff, audit the declared local inputs and remaining
 gaps without writing experiment outputs:
 
 ```bash
+python scripts/run_real_small_experiment.py \
+  --manifest examples/real_small_experiment/real-small-run-manifest.template.json \
+  --output-dir /tmp/dsg-real-small \
+  --report /tmp/dsg-real-small/run-report.json
 python scripts/run_real_experiment.py \
   --preflight-run-manifest real-experiment-run-manifest.json
 ```
+
+The real-small command is the concise first-pilot entrypoint documented in
+`docs/real_small_experiment.md`. It consumes only explicit local files from a
+small manifest, fails with `ready=false` and `next_missing_artifacts` when real
+artifacts are absent, and labels `synthetic_test_fixture` runs as not real
+research results.
 
 The run manifest schema is
 `dsg-spatialqa-lab.real-experiment-run-manifest.v1`. It records the local

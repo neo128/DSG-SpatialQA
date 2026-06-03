@@ -1,0 +1,59 @@
+{
+  "schema_version": "dsg-spatialqa-lab.offline-control-import-manifest.v1",
+  "candidate_name": "graph_tool",
+  "candidate_prediction_path": "data/real-small/predictions/graph-tool-predictions.jsonl",
+  "matrix_report_path": "data/real-small/reports/offline-control-matrix.json",
+  "output_dir": "data/real-small/outputs/offline-controls/imports",
+  "qa_eval_output_dir": "data/real-small/reports/qa-eval",
+  "qa_path": "data/real-small/qa/qa.jsonl",
+  "required_source_kinds": [
+    "vlm",
+    "multi_frame_vlm",
+    "caption_memory",
+    "graph_text"
+  ],
+  "result_report_path": "data/real-small/reports/offline-control-result.json",
+  "sources": [
+    {
+      "input_format": "offline_prediction_record",
+      "input_path": "data/real-small/predictions/vlm-predictions.jsonl",
+      "metadata": {
+        "model_id": "external-vlm",
+        "prompt_id": "vlm-spatial-qa-v1"
+      },
+      "source_kind": "vlm",
+      "source_name": "external_vlm"
+    },
+    {
+      "input_format": "offline_prediction_record",
+      "input_path": "data/real-small/predictions/multi-frame-vlm-predictions.jsonl",
+      "metadata": {
+        "model_id": "external-multi-frame-vlm",
+        "prompt_id": "multi-frame-vlm-spatial-qa-v1"
+      },
+      "source_kind": "multi_frame_vlm",
+      "source_name": "external_multi_frame_vlm"
+    },
+    {
+      "input_format": "offline_prediction_record",
+      "input_path": "data/real-small/predictions/caption-memory-predictions.jsonl",
+      "metadata": {
+        "model_id": "external-caption-memory",
+        "prompt_id": "caption-memory-spatial-qa-v1"
+      },
+      "source_kind": "caption_memory",
+      "source_name": "external_caption_memory"
+    },
+    {
+      "input_format": "offline_prediction_record",
+      "input_path": "data/real-small/predictions/graph-text-predictions.jsonl",
+      "metadata": {
+        "model_id": "external-graph-text",
+        "prompt_id": "graph-text-spatial-qa-v1"
+      },
+      "source_kind": "graph_text",
+      "source_name": "external_graph_text"
+    }
+  ]
+}
+

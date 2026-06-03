@@ -1,0 +1,38 @@
+{
+  "schema_version": "dsg-spatialqa-lab.real-small-experiment-run-manifest.v1",
+  "dataset_name": "real_small_ai2thor_trial_v1",
+  "data_source_kind": "real",
+  "episodes": [
+    "data/real-small/episodes/ai2thor_real_smoke_001.jsonl"
+  ],
+  "max_qa_per_episode": 50,
+  "min_episode_count": 3,
+  "min_qa_count": 30,
+  "min_scene_count": 1,
+  "offline_controls": {
+    "manifest_path": "data/real-small/offline-control-import-manifest.json",
+    "required_source_kinds": [
+      "vlm",
+      "multi_frame_vlm",
+      "caption_memory",
+      "graph_text"
+    ]
+  },
+  "predicted_dsg": {
+    "detector_run_manifest_path": "data/real-small/predicted-dsg-detector-run-manifest.json"
+  },
+  "real_collection_reports": [
+    "data/real-small/reports/real-collection-report.json"
+  ],
+  "reports": {
+    "active_task_delta_report": "data/real-small/reports/active-task-delta.json",
+    "benchmark_manifest": "data/real-small/final/benchmark-manifest.json",
+    "dashboard_bundle": "data/real-small/dashboard/dashboard.json",
+    "error_attribution_report": "data/real-small/reports/error-attribution-report.json",
+    "final_record": "data/real-small/final/final-experiment-record.json",
+    "graph_eval_report": "data/real-small/reports/graph-eval-report.json",
+    "readiness_report": "data/real-small/reports/real-experiment-readiness.json",
+    "summary_report": "data/real-small/final/experiment-summary.json"
+  }
+}
+
