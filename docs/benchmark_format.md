@@ -545,12 +545,15 @@ than only mock detections or text/caption imports. Top-level fields include
 Real collection reports use schema version
 `dsg-spatialqa-lab.real-collection-report.v1`. They are generated from
 explicit local episode JSONL files collected outside the default runtime and
-check that the package has supported AI2-THOR/Habitat source metadata, real
-collection markers, RGB/depth/segmentation frame evidence, minimum
-episode/scene/frame counts, valid episode digests, and no mock markers.
-Top-level fields include `dataset_name`, `source_kind`, `episode_paths`,
-`thresholds`, `required_frame_evidence`, `collection_summary`, `checks`,
-`readiness`, and `report_digest`.
+check that the package has supported AI2-THOR/Habitat adapter metadata, real
+simulator frame markers, RGB/depth/segmentation frame evidence, visible object
+observations, action coverage, minimum episode/scene/frame counts, valid
+episode digests, and no mock markers. Top-level fields include `dataset_name`,
+`source_kind`, optional `required_adapter`, `episode_paths`, `thresholds`,
+`required_frame_evidence`, `collection_summary`, `checks`, `readiness`, and
+`report_digest`. Use `--required-adapter ai2thor` or `--required-adapter
+habitat` for the stricter gate that requires frame metadata
+`source_kind: real_simulator` and matching `simulator` values.
 
 Real experiment readiness reports use schema version
 `dsg-spatialqa-lab.real-experiment-readiness.v1`. They are generated from a
@@ -601,7 +604,7 @@ python scripts/check_predicted_dsg.py --validate-report predicted-dsg-evidence.j
 python scripts/check_predicted_dsg.py --compare-report predicted-dsg-evidence.json
 python scripts/check_real_collection.py \
   --dataset-name ai2thor_real_smoke \
-  --source-kind ai2thor \
+  --required-adapter ai2thor \
   --episode real-ai2thor-episode-001.jsonl \
   --report real-collection-report.json
 python scripts/check_real_collection.py --validate-report real-collection-report.json

@@ -5,7 +5,8 @@ import json
 import sys
 from pathlib import Path
 from types import ModuleType
-from typing import Protocol, cast
+from collections.abc import Mapping
+from typing import Any, Protocol, cast
 
 from _pytest.capture import CaptureFixture
 import pytest
@@ -49,6 +50,85 @@ def test_ai2thor_adapter_imports_without_optional_dependency_and_reports_real_co
     assert lab.AI2THOR_MISSING_DEPENDENCY_MESSAGE == (
         "AI2-THOR optional dependency is not installed. Install with .[ai2thor]."
     )
+
+
+def test_ai2thor_real_collector_uses_fake_controller_and_writes_artifacts(
+    tmp_path: Path,
+) -> None:
+    config = lab.AI2ThorAdapterConfig(
+        scene_id="FloorPlan1",
+        episode_id="ai2thor_real_smoke_001",
+        steps=(1, 2),
+        actions=("Initialize", "MoveAhead"),
+        artifact_root=str(tmp_path / "raw"),
+    )
+    controller_factory = FakeControllerFactory()
+
+    frames = lab.AI2ThorEpisodeCollector(
+        config,
+        ai2thor_available=True,
+        controller_factory=controller_factory,
+    ).collect_episode()
+
+    controller = controller_factory.instances[0]
+    assert controller.scene == "FloorPlan1"
+    assert controller.actions == ["Initialize", "MoveAhead"]
+    assert [frame.step for frame in frames] == [1, 2]
+    assert [frame.action for frame in frames] == ["Initialize", "MoveAhead"]
+    assert frames[0].visible_object_ids == ("Mug|1",)
+    assert frames[0].agent_pose == Pose3D(1.0, 0.0, 2.0, yaw=90.0)
+    assert frames[0].metadata["adapter"] == "ai2thor"
+    assert frames[0].metadata["source_kind"] == "real_simulator"
+    assert frames[0].metadata["simulator"] == "ai2thor"
+    assert frames[0].metadata["collection_kind"] == "real"
+    assert frames[0].metadata["objects"] == [
+        {
+            "bbox": {
+                "center": {"x": 1.25, "y": 0.8, "z": 2.25, "yaw": 0.0},
+                "size": [0.1, 0.1, 0.2],
+            },
+            "confidence": 1.0,
+            "label": "Mug",
+            "object_id": "Mug|1",
+            "pose": {"x": 1.25, "y": 0.8, "z": 2.25, "yaw": 0.0},
+            "states": {"pickupable": True},
+            "visible": True,
+        }
+    ]
+    assert frames[0].rgb_path == str(
+        tmp_path / "raw" / "ai2thor_real_smoke_001" / "rgb" / "0001.ppm"
+    )
+    assert frames[0].depth_path == str(
+        tmp_path / "raw" / "ai2thor_real_smoke_001" / "depth" / "0001.npy"
+    )
+    assert frames[0].segmentation_path == str(
+        tmp_path / "raw" / "ai2thor_real_smoke_001" / "segmentation" / "0001.ppm"
+    )
+    assert Path(frames[0].rgb_path).read_text(encoding="utf-8").startswith(
+        "P3\n2 1\n255\n"
+    )
+    assert json.loads(Path(frames[0].depth_path).read_text(encoding="utf-8")) == [
+        [1.0, 1.1]
+    ]
+    assert Path(frames[0].segmentation_path).exists()
+    assert controller.stopped is True
+
+
+def test_ai2thor_real_collector_rejects_missing_event_fields(tmp_path: Path) -> None:
+    config = lab.AI2ThorAdapterConfig(
+        scene_id="FloorPlan1",
+        episode_id="ai2thor_real_smoke_001",
+        steps=(1,),
+        actions=("Initialize",),
+        artifact_root=str(tmp_path / "raw"),
+    )
+
+    with pytest.raises(SpatialQAError, match="AI2-THOR event metadata.agent"):
+        lab.AI2ThorEpisodeCollector(
+            config,
+            ai2thor_available=True,
+            controller_factory=BrokenControllerFactory(),
+        ).collect_episode()
 
 
 def test_mock_ai2thor_episode_is_deterministic_and_oracle_compatible() -> None:
@@ -182,3 +262,78 @@ def test_collect_ai2thor_cli_returns_structured_json_when_real_collector_is_unav
         "valid": False,
         "error": lab.AI2THOR_MISSING_DEPENDENCY_MESSAGE,
     }
+
+
+class FakeControllerFactory:
+    def __init__(self) -> None:
+        self.instances: list[FakeController] = []
+
+    def __call__(self, *, scene: str) -> "FakeController":
+        controller = FakeController(scene)
+        self.instances.append(controller)
+        return controller
+
+
+class FakeController:
+    def __init__(self, scene: str) -> None:
+        self.scene = scene
+        self.actions: list[str] = []
+        self.stopped = False
+
+    def step(self, *, action: str) -> "FakeEvent":
+        self.actions.append(action)
+        return FakeEvent(action)
+
+    def stop(self) -> None:
+        self.stopped = True
+
+
+class FakeEvent:
+    def __init__(self, action: str) -> None:
+        offset = 0.0 if action == "Initialize" else 0.5
+        self.metadata: dict[str, Any] = {
+            "agent": {
+                "position": {"x": 1.0 + offset, "y": 0.0, "z": 2.0},
+                "rotation": {"y": 90.0},
+            },
+            "objects": [
+                {
+                    "objectId": "Mug|1",
+                    "objectType": "Mug",
+                    "visible": True,
+                    "position": {"x": 1.25 + offset, "y": 0.8, "z": 2.25},
+                    "axisAlignedBoundingBox": {
+                        "center": {"x": 1.25 + offset, "y": 0.8, "z": 2.25},
+                        "size": {"x": 0.1, "y": 0.1, "z": 0.2},
+                    },
+                    "pickupable": True,
+                }
+            ],
+        }
+        self.frame = [
+            [[255, 0, 0], [0, 255, 0]],
+        ]
+        self.depth_frame = [[1.0 + offset, 1.1 + offset]]
+        self.instance_segmentation_frame = [
+            [[0, 0, 255], [255, 255, 0]],
+        ]
+
+
+class BrokenControllerFactory:
+    def __call__(self, *, scene: str) -> "BrokenController":
+        return BrokenController(scene)
+
+
+class BrokenController:
+    def __init__(self, scene: str) -> None:
+        self.scene = scene
+
+    def step(self, *, action: str) -> "BrokenEvent":
+        return BrokenEvent()
+
+
+class BrokenEvent:
+    metadata: Mapping[str, Any] = {"objects": []}
+    frame = [[[0, 0, 0]]]
+    depth_frame = [[0.0]]
+    instance_segmentation_frame = [[[0, 0, 0]]]

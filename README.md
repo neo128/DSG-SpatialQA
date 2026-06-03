@@ -661,6 +661,18 @@ Check externally collected episode JSONL files before treating them as real
 AI2-THOR/Habitat data:
 
 ```bash
+python -m pip install -e ".[ai2thor]"
+python scripts/collect_ai2thor.py \
+  --scene FloorPlan1 \
+  --episode-id ai2thor_real_smoke_001 \
+  --step 1 \
+  --step 2 \
+  --step 3 \
+  --action Initialize \
+  --action MoveAhead \
+  --action RotateRight \
+  --artifact-root data/real-small/raw \
+  --output data/real-small/episodes/ai2thor_real_smoke_001.jsonl
 python scripts/check_real_collection.py \
   --request-bundle real-collection-request-bundle.json \
   --dataset-name ai2thor_real_smoke \
@@ -677,7 +689,7 @@ python scripts/check_real_collection.py \
   --compare-request-bundle real-collection-request-bundle.json
 python scripts/check_real_collection.py \
   --dataset-name ai2thor_real_smoke \
-  --source-kind ai2thor \
+  --required-adapter ai2thor \
   --episode real-ai2thor-episode-001.jsonl \
   --episode real-ai2thor-episode-002.jsonl \
   --report real-collection-report.json \
@@ -698,11 +710,14 @@ consistency. `compare_real_collection_request_bundle()` rebuilds the request
 bundle from its recorded fields to detect drift before collection starts, and
 the matching CLI flags expose both checks for child-handoff review. The real
 collection gate reads only explicit local episode JSONL files. It
-requires supported source kind metadata, `collection_kind: real`, RGB, depth,
-and segmentation paths on each frame, minimum scene/episode/frame counts, valid
-episode digests, local frame asset receipt for declared RGB/depth/segmentation
-paths, and no mock markers before downstream readiness can treat the episodes
-as real collection evidence. It also rejects non-real markers such as
+requires supported adapter metadata, `source_kind: real_simulator`,
+`simulator: ai2thor` or `simulator: habitat`, RGB, depth, and segmentation
+paths on each frame, minimum scene/episode/frame counts, valid episode digests,
+local frame asset receipt for declared RGB/depth/segmentation paths, visible
+object observations, action coverage, and no mock markers before downstream
+readiness can treat the episodes as real collection evidence. The optional
+AI2-THOR collector is behind `.[ai2thor]`; default tests and default runtime do
+not start a simulator. It also rejects non-real markers such as
 synthetic, placeholder, fake, dummy, or mock strings in episode ids, scene ids,
 asset paths, or metadata. The gate records an `asset_summary` and checks path
 existence relative to each episode JSONL file; it does not open image or depth

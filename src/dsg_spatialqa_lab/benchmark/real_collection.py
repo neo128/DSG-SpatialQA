@@ -144,6 +144,7 @@ def real_collection_report(
     dataset_name: str,
     episode_paths: Sequence[str | Path],
     source_kind: str,
+    required_adapter: str | None = None,
     min_episode_count: int = 3,
     min_scene_count: int = 1,
     min_frame_count: int = 30,
@@ -151,6 +152,8 @@ def real_collection_report(
 ) -> dict[str, Any]:
     _validate_non_empty_str(dataset_name, "dataset_name")
     _validate_non_empty_str(source_kind, "source_kind")
+    if required_adapter is not None:
+        _validate_non_empty_str(required_adapter, "required_adapter")
     _validate_threshold(min_episode_count, "min_episode_count")
     _validate_threshold(min_scene_count, "min_scene_count")
     _validate_threshold(min_frame_count, "min_frame_count")
@@ -165,6 +168,7 @@ def real_collection_report(
     summary = _json_safe(_collection_summary(frames_by_path))
     checks = _json_safe(_checks(
         source_kind=source_kind,
+        required_adapter=required_adapter,
         frames_by_path=frames_by_path,
         summary=summary,
         min_episode_count=min_episode_count,
@@ -187,6 +191,8 @@ def real_collection_report(
         "checks": checks,
         "readiness": _readiness_from_checks(checks),
     }
+    if required_adapter is not None:
+        report["required_adapter"] = required_adapter
     report["report_digest"] = real_collection_report_digest(report)
     return report
 
@@ -268,6 +274,7 @@ def compare_real_collection_report(report: Mapping[str, Any]) -> dict[str, Any]:
         dataset_name=_required_str(report, "dataset_name"),
         episode_paths=_string_tuple(report, "episode_paths"),
         source_kind=_required_str(report, "source_kind"),
+        required_adapter=_optional_non_empty_str(report.get("required_adapter")),
         min_episode_count=_required_int(thresholds, "min_episode_count"),
         min_scene_count=_required_int(thresholds, "min_scene_count"),
         min_frame_count=_required_int(thresholds, "min_frame_count"),
@@ -456,8 +463,10 @@ def _episode_record_template(source_kind: str) -> dict[str, Any]:
         "action": "Initialize",
         "visible_object_ids": [],
         "metadata": {
+            "adapter": source_kind,
             "collection_kind": "real",
-            "source_kind": source_kind,
+            "simulator": source_kind,
+            "source_kind": "real_simulator",
         },
     }
 
@@ -522,6 +531,11 @@ def _collection_summary(
 ) -> dict[str, Any]:
     frames = [frame for frames in frames_by_path.values() for frame in frames]
     return {
+        "action_counts": _sorted_counts(
+            frame.action for frame in frames if isinstance(frame.action, str)
+        ),
+        "adapter_counts": _sorted_counts(_adapter(frame) for frame in frames),
+        "agent_pose_frame_count": len(frames),
         "asset_summary": _frame_asset_summary(frames_by_path),
         "collection_kind_counts": _sorted_counts(
             _collection_kind(frame) for frame in frames
@@ -533,18 +547,31 @@ def _collection_summary(
             for path in sorted(frames_by_path, key=str)
         },
         "frame_count": len(frames),
+        "frame_source_kind_counts": _sorted_counts(
+            _frame_source_kind(frame) for frame in frames
+        ),
         "rgb_frame_count": sum(1 for frame in frames if _has_path(frame.rgb_path)),
         "scene_count": len({frame.scene_id for frame in frames}),
         "segmentation_frame_count": sum(
             1 for frame in frames if _has_path(frame.segmentation_path)
         ),
+        "simulator_counts": _sorted_counts(_simulator(frame) for frame in frames),
         "source_kind_counts": _sorted_counts(_source_kind(frame) for frame in frames),
+        "visible_object_frame_count": sum(
+            1 for frame in frames if len(frame.visible_object_ids) > 0
+        ),
+        "visible_object_nonempty_ratio": (
+            sum(1 for frame in frames if len(frame.visible_object_ids) > 0) / len(frames)
+            if frames
+            else 0.0
+        ),
     }
 
 
 def _checks(
     *,
     source_kind: str,
+    required_adapter: str | None,
     frames_by_path: Mapping[Path, Sequence[EpisodeFrame]],
     summary: Mapping[str, Any],
     min_episode_count: int,
@@ -557,6 +584,9 @@ def _checks(
         for path, frames in sorted(frames_by_path.items(), key=lambda item: str(item[0]))
     }
     source_kind_counts = _int_mapping(summary.get("source_kind_counts"))
+    adapter_counts = _int_mapping(summary.get("adapter_counts"))
+    frame_source_kind_counts = _int_mapping(summary.get("frame_source_kind_counts"))
+    simulator_counts = _int_mapping(summary.get("simulator_counts"))
     collection_kind_counts = _int_mapping(summary.get("collection_kind_counts"))
     asset_summary = _mapping(summary.get("asset_summary"), "asset_summary")
     missing_evidence = [
@@ -566,7 +596,13 @@ def _checks(
     ]
     mock_markers = _mock_markers(frames_by_path)
     non_real_markers = _non_real_markers(frames_by_path)
-    return [
+    expected_source_counts = {source_kind: _int_value(summary, "frame_count")}
+    expected_required_adapter_counts = (
+        {required_adapter: _int_value(summary, "frame_count")}
+        if required_adapter is not None
+        else None
+    )
+    checks = [
         {
             "name": "episode_sequences_valid",
             "passed": all(item["valid"] is True for item in sequence_validations.values()),
@@ -577,6 +613,12 @@ def _checks(
             "passed": source_kind in SUPPORTED_REAL_COLLECTION_SOURCE_KINDS,
             "expected": list(SUPPORTED_REAL_COLLECTION_SOURCE_KINDS),
             "actual": source_kind,
+        },
+        {
+            "name": "adapter_supported",
+            "passed": _adapters_supported(adapter_counts),
+            "expected": list(SUPPORTED_REAL_COLLECTION_SOURCE_KINDS),
+            "actual": adapter_counts,
         },
         _minimum_check(
             "episode_count_minimum",
@@ -595,8 +637,8 @@ def _checks(
         ),
         {
             "name": "source_kind_matches_frames",
-            "passed": source_kind_counts == {source_kind: _int_value(summary, "frame_count")},
-            "expected": {source_kind: _int_value(summary, "frame_count")},
+            "passed": source_kind_counts == expected_source_counts,
+            "expected": expected_source_counts,
             "actual": source_kind_counts,
         },
         {
@@ -639,7 +681,57 @@ def _checks(
             "passed": len(non_real_markers) == 0,
             "actual": non_real_markers,
         },
+        {
+            "name": "visible_object_ids_observed",
+            "passed": _int_value(summary, "visible_object_frame_count") > 0,
+            "actual": _int_value(summary, "visible_object_frame_count"),
+        },
+        {
+            "name": "agent_pose_present",
+            "passed": _int_value(summary, "agent_pose_frame_count")
+            == _int_value(summary, "frame_count"),
+            "expected": _int_value(summary, "frame_count"),
+            "actual": _int_value(summary, "agent_pose_frame_count"),
+        },
+        {
+            "name": "action_coverage",
+            "passed": sum(_int_mapping(summary.get("action_counts")).values())
+            == _int_value(summary, "frame_count"),
+            "expected": _int_value(summary, "frame_count"),
+            "actual": sum(_int_mapping(summary.get("action_counts")).values()),
+        },
     ]
+    if required_adapter is not None:
+        checks.extend(
+            [
+                {
+                    "name": "required_adapter_supported",
+                    "passed": required_adapter in SUPPORTED_REAL_COLLECTION_SOURCE_KINDS,
+                    "expected": list(SUPPORTED_REAL_COLLECTION_SOURCE_KINDS),
+                    "actual": required_adapter,
+                },
+                {
+                    "name": "required_adapter_matches_frames",
+                    "passed": adapter_counts == expected_required_adapter_counts,
+                    "expected": expected_required_adapter_counts,
+                    "actual": adapter_counts,
+                },
+                {
+                    "name": "frame_source_kind_real_simulator",
+                    "passed": frame_source_kind_counts
+                    == {"real_simulator": _int_value(summary, "frame_count")},
+                    "expected": {"real_simulator": _int_value(summary, "frame_count")},
+                    "actual": frame_source_kind_counts,
+                },
+                {
+                    "name": "simulator_matches_required_adapter",
+                    "passed": simulator_counts == expected_required_adapter_counts,
+                    "expected": expected_required_adapter_counts,
+                    "actual": simulator_counts,
+                },
+            ]
+        )
+    return checks
 
 
 def _frame_asset_summary(
@@ -689,17 +781,40 @@ def _frame_asset_summary(
 
 def _collection_kind(frame: EpisodeFrame) -> str:
     value = frame.metadata.get("collection_kind")
+    if value is None and frame.metadata.get("source_kind") == "real_simulator":
+        return "real"
     return value if isinstance(value, str) and value != "" else "unspecified"
 
 
 def _source_kind(frame: EpisodeFrame) -> str:
-    value = frame.metadata.get("source_kind")
-    if isinstance(value, str) and value != "":
-        return value
     adapter = frame.metadata.get("adapter")
     if isinstance(adapter, str) and adapter != "":
         return adapter
+    value = frame.metadata.get("source_kind")
+    if isinstance(value, str) and value != "":
+        return value
     return "unspecified"
+
+
+def _adapter(frame: EpisodeFrame) -> str:
+    value = frame.metadata.get("adapter")
+    return value if isinstance(value, str) and value != "" else "unspecified"
+
+
+def _frame_source_kind(frame: EpisodeFrame) -> str:
+    value = frame.metadata.get("source_kind")
+    return value if isinstance(value, str) and value != "" else "unspecified"
+
+
+def _simulator(frame: EpisodeFrame) -> str:
+    value = frame.metadata.get("simulator")
+    return value if isinstance(value, str) and value != "" else "unspecified"
+
+
+def _adapters_supported(adapter_counts: Mapping[str, int]) -> bool:
+    if not adapter_counts:
+        return False
+    return all(adapter in SUPPORTED_REAL_COLLECTION_SOURCE_KINDS for adapter in adapter_counts)
 
 
 def _mock_markers(frames_by_path: Mapping[Path, Sequence[EpisodeFrame]]) -> list[str]:
@@ -929,6 +1044,14 @@ def _required_mapping_str(payload: Mapping[str, Any], field_name: str) -> str:
 
 def _string_or_none(value: object) -> str | None:
     return value if isinstance(value, str) and value != "" else None
+
+
+def _optional_non_empty_str(value: object) -> str | None:
+    if value is None:
+        return None
+    if not isinstance(value, str) or value == "":
+        raise SpatialQAError("Real collection report optional field must be a string")
+    return value
 
 
 def _has_path(value: object) -> bool:

@@ -63,6 +63,9 @@ def test_real_collection_report_accepts_ai2thor_rgbd_segmentation_collection(
     assert report["dataset_name"] == "ai2thor_real_smoke"
     assert report["source_kind"] == "ai2thor"
     assert report["collection_summary"] == {
+        "action_counts": {"Initialize": 2, "MoveAhead": 2},
+        "adapter_counts": {"ai2thor": 4},
+        "agent_pose_frame_count": 4,
         "asset_summary": {
             "asset_kind_counts": {"depth": 4, "rgb": 4, "segmentation": 4},
             "asset_path_count": 12,
@@ -82,10 +85,14 @@ def test_real_collection_report_accepts_ai2thor_rgbd_segmentation_collection(
             ),
         },
         "frame_count": 4,
+        "frame_source_kind_counts": {"ai2thor": 4},
         "rgb_frame_count": 4,
         "scene_count": 2,
         "segmentation_frame_count": 4,
+        "simulator_counts": {"unspecified": 4},
         "source_kind_counts": {"ai2thor": 4},
+        "visible_object_frame_count": 4,
+        "visible_object_nonempty_ratio": 1.0,
     }
     checks = {check["name"]: check for check in report["checks"]}
     assert checks["source_kind_supported"]["passed"] is True
@@ -109,6 +116,95 @@ def test_real_collection_report_accepts_ai2thor_rgbd_segmentation_collection(
     assert loaded == report
     assert validation["valid"] is True
     assert comparison["matches"] is True
+
+
+def test_real_collection_report_required_adapter_accepts_real_simulator_metadata(
+    tmp_path: Path,
+) -> None:
+    episode_path = tmp_path / "episode-001.jsonl"
+    frames = tuple(
+        replace(
+            frame,
+            metadata={
+                **frame.metadata,
+                "collection_kind": "real",
+                "source_kind": "real_simulator",
+                "simulator": "ai2thor",
+            },
+        )
+        for frame in _real_episode_frames(
+            scene_id="FloorPlan1",
+            episode_id="ai2thor_real_001",
+            root="real-ai2thor",
+        )
+    )
+    lab.save_episode_sequence(frames, episode_path)
+    _write_frame_assets(episode_path, frames)
+
+    report = lab.real_collection_report(
+        dataset_name="ai2thor_real_smoke",
+        episode_paths=(episode_path,),
+        source_kind="ai2thor",
+        required_adapter="ai2thor",
+        min_episode_count=1,
+        min_scene_count=1,
+        min_frame_count=2,
+    )
+    checks = {check["name"]: check for check in report["checks"]}
+
+    assert report["required_adapter"] == "ai2thor"
+    assert report["readiness"]["ready"] is True
+    assert report["collection_summary"]["adapter_counts"] == {"ai2thor": 2}
+    assert report["collection_summary"]["frame_source_kind_counts"] == {
+        "real_simulator": 2,
+    }
+    assert report["collection_summary"]["simulator_counts"] == {"ai2thor": 2}
+    assert report["collection_summary"]["visible_object_frame_count"] == 2
+    assert report["collection_summary"]["agent_pose_frame_count"] == 2
+    assert report["collection_summary"]["action_counts"] == {
+        "Initialize": 1,
+        "MoveAhead": 1,
+    }
+    assert checks["adapter_supported"]["passed"] is True
+    assert checks["required_adapter_matches_frames"]["passed"] is True
+    assert checks["frame_source_kind_real_simulator"]["passed"] is True
+    assert checks["simulator_matches_required_adapter"]["passed"] is True
+    assert checks["visible_object_ids_observed"]["passed"] is True
+    assert checks["agent_pose_present"]["passed"] is True
+    assert checks["action_coverage"]["passed"] is True
+    assert lab.validate_real_collection_report(report)["valid"] is True
+    assert lab.compare_real_collection_report(report)["matches"] is True
+
+
+def test_real_collection_report_required_adapter_rejects_mock_metadata(
+    tmp_path: Path,
+) -> None:
+    mock_episode_path = tmp_path / "mock-episode.jsonl"
+    frames = lab.build_mock_ai2thor_episode(
+        lab.AI2ThorAdapterConfig(
+            scene_id="FloorPlan1",
+            episode_id="ai2thor_mock_001",
+            steps=(1, 2),
+            artifact_root="mock-artifacts",
+        )
+    )
+    lab.save_episode_sequence(frames, mock_episode_path)
+
+    report = lab.real_collection_report(
+        dataset_name="mock_benchmark",
+        episode_paths=(mock_episode_path,),
+        source_kind="ai2thor",
+        required_adapter="ai2thor",
+        min_episode_count=1,
+        min_scene_count=1,
+        min_frame_count=2,
+    )
+    checks = {check["name"]: check for check in report["checks"]}
+
+    assert report["readiness"]["ready"] is False
+    assert checks["frame_source_kind_real_simulator"]["passed"] is False
+    assert checks["frame_source_kind_real_simulator"]["actual"] == {"unspecified": 2}
+    assert checks["mock_markers_absent"]["passed"] is False
 
 
 def test_real_collection_report_rejects_mock_or_incomplete_collection(
@@ -288,6 +384,57 @@ def test_real_collection_cli_writes_validates_and_compares_report(
     assert comparison["matches"] is True
 
 
+def test_real_collection_cli_supports_required_adapter_without_source_kind(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_real_collection_script()
+    main = cast(MainFn, getattr(module, "main"))
+    episode_path = tmp_path / "episode-001.jsonl"
+    frames = tuple(
+        replace(
+            frame,
+            metadata={
+                **frame.metadata,
+                "source_kind": "real_simulator",
+                "simulator": "ai2thor",
+            },
+        )
+        for frame in _real_episode_frames(
+            scene_id="FloorPlan1",
+            episode_id="ai2thor_real_001",
+            root="real-ai2thor",
+        )
+    )
+    lab.save_episode_sequence(frames, episode_path)
+    _write_frame_assets(episode_path, frames)
+    report_path = tmp_path / "real-collection.json"
+
+    assert main(
+        [
+            "--dataset-name",
+            "ai2thor_real_smoke",
+            "--episode",
+            str(episode_path),
+            "--report",
+            str(report_path),
+            "--min-episode-count",
+            "1",
+            "--min-scene-count",
+            "1",
+            "--min-frame-count",
+            "2",
+            "--required-adapter",
+            "ai2thor",
+        ]
+    ) == 0
+    output = json.loads(capsys.readouterr().out)
+    report = lab.load_real_collection_report(report_path)
+    assert output["ready"] is True
+    assert report["source_kind"] == "ai2thor"
+    assert report["required_adapter"] == "ai2thor"
+
+
 def test_real_collection_request_bundle_exports_collection_templates(
     tmp_path: Path,
     capsys: CaptureFixture[str],
@@ -376,8 +523,10 @@ def test_real_collection_request_bundle_exports_collection_templates(
         "action": "Initialize",
         "visible_object_ids": [],
         "metadata": {
+            "adapter": "ai2thor",
             "collection_kind": "real",
-            "source_kind": "ai2thor",
+            "simulator": "ai2thor",
+            "source_kind": "real_simulator",
         },
     }
     assert bundle["request_bundle_digest"] == (

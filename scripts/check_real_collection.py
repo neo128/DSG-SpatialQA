@@ -36,7 +36,8 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         dest="episodes",
     )
-    parser.add_argument("--source-kind", default="unspecified")
+    parser.add_argument("--source-kind")
+    parser.add_argument("--required-adapter")
     parser.add_argument("--report", type=Path)
     parser.add_argument("--min-episode-count", type=int, default=3)
     parser.add_argument("--min-scene-count", type=int, default=1)
@@ -155,10 +156,11 @@ def main(argv: list[str] | None = None) -> int:
             _emit_json(_missing_argument_payload("--report", args.request_bundle))
             return 1
         try:
+            source_kind = args.source_kind or args.required_adapter or "unspecified"
             bundle = real_collection_request_bundle(
                 dataset_name=args.dataset_name,
                 episode_paths=tuple(args.episodes),
-                source_kind=args.source_kind,
+                source_kind=source_kind,
                 report_path=args.report,
                 min_episode_count=args.min_episode_count,
                 min_scene_count=args.min_scene_count,
@@ -194,10 +196,12 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     try:
+        source_kind = args.source_kind or args.required_adapter or "unspecified"
         report = real_collection_report(
             dataset_name=args.dataset_name,
             episode_paths=tuple(args.episodes),
-            source_kind=args.source_kind,
+            source_kind=source_kind,
+            required_adapter=args.required_adapter,
             min_episode_count=args.min_episode_count,
             min_scene_count=args.min_scene_count,
             min_frame_count=args.min_frame_count,

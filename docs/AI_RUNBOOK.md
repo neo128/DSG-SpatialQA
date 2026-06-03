@@ -251,6 +251,14 @@
   `python scripts/build_benchmark.py --compare-manifest benchmark-manifest.json`
   to detect current graph/QA/report/dashboard artifact digest or coverage
   drift.
+- Use `python scripts/collect_ai2thor.py --scene FloorPlan1 --episode-id ai2thor_real_smoke_001 --step 1 --step 2 --step 3 --action Initialize --action MoveAhead --action RotateRight --artifact-root data/real-small/raw --output data/real-small/episodes/ai2thor_real_smoke_001.jsonl`
+  only after installing the optional `.[ai2thor]` extra and intentionally
+  starting an AI2-THOR simulator run. Default tests do not install AI2-THOR and
+  do not start the simulator. The real collector requires explicit
+  `episode_id`, steps, actions, and artifact root; it writes local
+  RGB/depth/segmentation artifacts and marks each frame with
+  `metadata.adapter: ai2thor`, `metadata.source_kind: real_simulator`, and
+  `metadata.simulator: ai2thor`.
 - Use `python scripts/check_real_collection.py --request-bundle real-collection-request-bundle.json --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode real-ai2thor-episode-001.jsonl --report real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30`
   before collection starts when an external AI2-THOR/Habitat producer needs a
   deterministic episode-frame template, target episode/report paths, required
@@ -261,14 +269,15 @@
   and
   `python scripts/check_real_collection.py --compare-request-bundle real-collection-request-bundle.json`
   before handing the request bundle to the collection producer. Use
-  `python scripts/check_real_collection.py --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode real-ai2thor-episode-001.jsonl --report real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30`
+  `python scripts/check_real_collection.py --dataset-name ai2thor_real_smoke --required-adapter ai2thor --episode real-ai2thor-episode-001.jsonl --report real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30`
   before treating externally collected episode JSONL files as real AI2-THOR or
-  Habitat data. That gate checks supported source kind, `collection_kind:
-  real`, RGB/depth/segmentation frame evidence, minimum scene/episode/frame
-  counts, valid episode digests, local frame asset receipt for declared
-  RGB/depth/segmentation paths, and absence of mock markers. It records an
-  `asset_summary` and checks path existence relative to each episode JSONL
-  file without opening image or depth files.
+  Habitat data. With `--required-adapter`, that gate checks supported adapter
+  metadata, `source_kind: real_simulator`, matching simulator metadata,
+  RGB/depth/segmentation frame evidence, visible object observations, action
+  coverage, minimum scene/episode/frame counts, valid episode digests, local
+  frame asset receipt for declared RGB/depth/segmentation paths, and absence
+  of mock markers. It records an `asset_summary` and checks path existence
+  relative to each episode JSONL file without opening image or depth files.
 - Use `python scripts/check_real_experiment.py --manifest benchmark-manifest.json --report real-experiment-readiness.json --data-source-kind real --min-episode-count 3 --min-scene-count 1 --min-qa-count 30 --required-control-kind vlm --required-control-kind multi_frame_vlm --required-control-kind caption_memory --required-control-kind graph_text --required-predicted-input-kind observation_sequence`
   before treating a candidate package as real DSG-vs-control evidence. This is
   a gate over the manifest and its explicit local artifact paths; it checks

@@ -87,7 +87,10 @@ def main(argv: list[str] | None = None) -> int:
             _emit_json(payload)
             return 0 if validation["valid"] is True else 1
 
-        frames = AI2ThorEpisodeCollector(config).collect_episode()
+        frames = AI2ThorEpisodeCollector(
+            config,
+            ai2thor_available=True,
+        ).collect_episode()
         save_episode_sequence(frames, args.output)
         validation = validate_episode_sequence(frames)
         payload = {
