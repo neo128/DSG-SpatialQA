@@ -14,6 +14,13 @@ from dsg_spatialqa_lab.episodes import (
     validate_episode_sequence,
 )
 from dsg_spatialqa_lab.memory import DynamicSceneGraph
+from dsg_spatialqa_lab.observations import (
+    SceneObservation,
+    ingest_scene_observation_sequence,
+    load_scene_observation_sequence,
+    scene_observation_sequence_digest,
+    scene_observation_sequence_summary,
+)
 from dsg_spatialqa_lab.perception import (
     MockDepthProjector,
     MockSegmenter,
@@ -31,6 +38,8 @@ from dsg_spatialqa_lab.schema import SpatialQAError
 
 
 PREDICTED_GRAPH_REPORT_SCHEMA_VERSION = "dsg-spatialqa-lab.predicted-graph-report.v1"
+OBSERVATION_PREDICTED_RELATIONS = ("LEFT_OF", "RIGHT_OF", "NEAR")
+OBSERVATION_PREDICTED_REFERENCE_FRAMES = ("world",)
 
 
 def build_predicted_graph_from_episode(
@@ -61,6 +70,22 @@ def build_predicted_graph_from_episode(
             tracked_instances,
             infer_relations=infer_relations,
         )
+    return graph
+
+
+def build_predicted_graph_from_observations(
+    observations: Sequence[SceneObservation],
+    *,
+    source_path: str | Path | None = None,
+    infer_relations: Sequence[str] = OBSERVATION_PREDICTED_RELATIONS,
+    reference_frames: Sequence[str] = OBSERVATION_PREDICTED_REFERENCE_FRAMES,
+) -> DynamicSceneGraph:
+    graph, _ = ingest_scene_observation_sequence(
+        observations,
+        source_path=source_path,
+        infer_relations=infer_relations,
+        reference_frames=reference_frames,
+    )
     return graph
 
 
@@ -96,6 +121,32 @@ def predicted_graph_summary(
     }
 
 
+def predicted_graph_observation_summary(
+    graph: DynamicSceneGraph,
+    observations: Sequence[SceneObservation],
+) -> dict[str, Any]:
+    objects = [obj for observation in observations for obj in observation.objects]
+    inferred_relation_count = sum(
+        1 for edge in graph.edges if edge.attributes.get("inferred") is True
+    )
+    return {
+        "graph_summary": graph_summary(graph),
+        "observation_summary": scene_observation_sequence_summary(observations),
+        "predicted_summary": {
+            "input_kind": "observation_sequence",
+            "observation_count": len(observations),
+            "object_observation_count": len(objects),
+            "visible_object_observation_count": sum(1 for obj in objects if obj.visible),
+            "hidden_object_observation_count": sum(1 for obj in objects if not obj.visible),
+            "inferred_relation_count": inferred_relation_count,
+            "by_observation_source": _sorted_counts(
+                _observation_source(obj) for obj in objects
+            ),
+            "by_object_label": _sorted_counts(obj.label for obj in objects),
+        },
+    }
+
+
 def predicted_graph_report(
     *,
     input_path: str | Path,
@@ -111,6 +162,38 @@ def predicted_graph_report(
         "valid": True,
         "episode_digest": episode_sequence_digest(frames),
         "summary": predicted_graph_summary(graph, frames),
+        "graph_report": graph_report(
+            graph,
+            action="build_predicted_graph",
+            graph_path=graph_path,
+        ),
+    }
+    report["digest"] = predicted_graph_report_digest(report)
+    return report
+
+
+def predicted_graph_report_from_observations(
+    *,
+    input_path: str | Path,
+    graph_path: str | Path,
+    graph: DynamicSceneGraph,
+    observations: Sequence[SceneObservation],
+    infer_relations: Sequence[str] = OBSERVATION_PREDICTED_RELATIONS,
+    reference_frames: Sequence[str] = OBSERVATION_PREDICTED_REFERENCE_FRAMES,
+) -> dict[str, Any]:
+    report: dict[str, Any] = {
+        "schema_version": PREDICTED_GRAPH_REPORT_SCHEMA_VERSION,
+        "action": "build_predicted_graph",
+        "input_kind": "observation_sequence",
+        "path": str(input_path),
+        "graph_path": str(graph_path),
+        "valid": True,
+        "observation_sequence_digest": scene_observation_sequence_digest(observations),
+        "options": {
+            "infer_relations": list(infer_relations),
+            "reference_frames": list(reference_frames),
+        },
+        "summary": predicted_graph_observation_summary(graph, observations),
         "graph_report": graph_report(
             graph,
             action="build_predicted_graph",
@@ -149,6 +232,7 @@ def load_predicted_graph_report(path: str | Path) -> dict[str, Any]:
 def validate_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]:
     schema_version = report.get("schema_version")
     action = report.get("action")
+    input_kind = report.get("input_kind", "episode")
     valid = report.get("valid")
     digest = report.get("digest")
     expected_digest = predicted_graph_report_digest(report)
@@ -166,6 +250,8 @@ def validate_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]
     )
     summary_value = report.get("summary")
     summary = summary_value if isinstance(summary_value, Mapping) else {}
+    options_value = report.get("options", {})
+    options = options_value if isinstance(options_value, Mapping) else {}
     checks = [
         {
             "name": "schema_version",
@@ -178,6 +264,12 @@ def validate_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]
             "passed": action == "build_predicted_graph",
             "expected": "build_predicted_graph",
             "actual": action,
+        },
+        {
+            "name": "input_kind",
+            "passed": input_kind in ("episode", "observation_sequence"),
+            "expected": "episode or observation_sequence",
+            "actual": input_kind,
         },
         {
             "name": "report_valid",
@@ -205,9 +297,17 @@ def validate_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]
         },
         {
             "name": "episode_digest_format",
-            "passed": _is_sha256_hexdigest(report.get("episode_digest")),
+            "passed": (
+                _is_sha256_hexdigest(report.get("episode_digest"))
+                if input_kind == "episode"
+                else _is_sha256_hexdigest(report.get("observation_sequence_digest"))
+            ),
             "expected": "64 lowercase sha256 hex characters",
-            "actual": report.get("episode_digest"),
+            "actual": (
+                report.get("episode_digest")
+                if input_kind == "episode"
+                else report.get("observation_sequence_digest")
+            ),
         },
         {
             "name": "graph_report_path_matches",
@@ -221,9 +321,15 @@ def validate_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]
         },
         {
             "name": "summary_shape",
-            "passed": all(
-                key in summary
-                for key in ("graph_summary", "episode_summary", "predicted_summary")
+            "passed": _predicted_summary_shape_valid(summary, str(input_kind)),
+        },
+        {
+            "name": "observation_options_shape",
+            "passed": (
+                _string_sequence(options.get("infer_relations"))
+                and _string_sequence(options.get("reference_frames"))
+                if input_kind == "observation_sequence"
+                else True
             ),
         },
     ]
@@ -236,17 +342,33 @@ def validate_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]
 
 
 def compare_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]:
+    input_kind = str(report.get("input_kind", "episode"))
     input_path = _required_str(report, "path")
     graph_path = _required_str(report, "graph_path")
-    frames = load_episode_sequence(input_path)
-    current_graph = build_predicted_graph_from_episode(frames)
-    saved_episode_digest = report.get("episode_digest")
-    current_episode_digest = episode_sequence_digest(frames)
+    if input_kind == "observation_sequence":
+        options = _as_mapping(report.get("options", {}), "options")
+        infer_relations = tuple(str(item) for item in _optional_sequence(options, "infer_relations"))
+        reference_frames = tuple(str(item) for item in _optional_sequence(options, "reference_frames"))
+        observations = load_scene_observation_sequence(input_path)
+        current_graph = build_predicted_graph_from_observations(
+            observations,
+            source_path=input_path,
+            infer_relations=infer_relations,
+            reference_frames=reference_frames,
+        )
+        saved_input_digest = report.get("observation_sequence_digest")
+        current_input_digest = scene_observation_sequence_digest(observations)
+        current_summary = predicted_graph_observation_summary(current_graph, observations)
+    else:
+        frames = load_episode_sequence(input_path)
+        current_graph = build_predicted_graph_from_episode(frames)
+        saved_input_digest = report.get("episode_digest")
+        current_input_digest = episode_sequence_digest(frames)
+        current_summary = predicted_graph_summary(current_graph, frames)
     saved_graph_report = _as_mapping(report.get("graph_report"), "graph_report")
     saved_graph_digest = saved_graph_report.get("digest")
     current_graph_digest = graph_json_digest(current_graph)
     saved_summary = report.get("summary")
-    current_summary = predicted_graph_summary(current_graph, frames)
     graph_file = load_graph_json(graph_path)
     graph_file_digest = graph_json_digest(graph_file)
     graph_file_summary = graph_summary(graph_file)
@@ -262,10 +384,10 @@ def compare_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]:
             "passed": validate_predicted_graph_report(report)["valid"] is True,
         },
         {
-            "name": "episode_digest_matches_current",
-            "passed": saved_episode_digest == current_episode_digest,
-            "expected": saved_episode_digest,
-            "actual": current_episode_digest,
+            "name": "input_digest_matches_current",
+            "passed": saved_input_digest == current_input_digest,
+            "expected": saved_input_digest,
+            "actual": current_input_digest,
         },
         {
             "name": "graph_digest_matches_current",
@@ -298,10 +420,11 @@ def compare_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]:
         checks[5]["differences"] = graph_file_summary_differences
     return {
         "matches": all(check["passed"] is True for check in checks),
+        "input_kind": input_kind,
         "episode_path": input_path,
         "graph_path": graph_path,
-        "saved_episode_digest": saved_episode_digest,
-        "current_episode_digest": current_episode_digest,
+        "saved_episode_digest": saved_input_digest,
+        "current_episode_digest": current_input_digest,
         "saved_digest": saved_graph_digest,
         "current_digest": current_graph_digest,
         "checks": checks,
@@ -364,6 +487,43 @@ def _detection_source(detection: Any) -> str:
         if isinstance(value, str) and value:
             return value
     return "mock_perception"
+
+
+def _observation_source(observation: SceneObservation | Any) -> str:
+    attributes = getattr(observation, "attributes", {})
+    if not isinstance(attributes, Mapping):
+        return "observation_sequence"
+    for key in ("source", "source_name", "source_kind"):
+        value = attributes.get(key)
+        if isinstance(value, str) and value:
+            return value
+    return "observation_sequence"
+
+
+def _predicted_summary_shape_valid(summary: Mapping[str, Any], input_kind: str) -> bool:
+    common_keys = ("graph_summary", "predicted_summary")
+    if not all(key in summary for key in common_keys):
+        return False
+    if input_kind == "episode":
+        return "episode_summary" in summary
+    if input_kind == "observation_sequence":
+        return "observation_summary" in summary
+    return False
+
+
+def _optional_sequence(payload: Mapping[str, Any], field_name: str) -> Sequence[Any]:
+    value = payload.get(field_name, ())
+    if not isinstance(value, Sequence) or isinstance(value, str):
+        raise SpatialQAError(f"{field_name} must be a sequence")
+    return value
+
+
+def _string_sequence(value: object) -> bool:
+    return (
+        isinstance(value, Sequence)
+        and not isinstance(value, str)
+        and all(isinstance(item, str) for item in value)
+    )
 
 
 def _nested_differences(

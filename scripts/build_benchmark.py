@@ -81,11 +81,39 @@ def main(argv: list[str] | None = None) -> int:
         help="Optional explicit graph eval report path to record in the manifest.",
     )
     parser.add_argument(
+        "--offline-prediction-import-report",
+        action="append",
+        type=Path,
+        dest="offline_prediction_import_reports",
+        help="Optional explicit offline prediction import report path to record in the manifest.",
+    )
+    parser.add_argument(
+        "--offline-control-matrix-report",
+        action="append",
+        type=Path,
+        dest="offline_control_matrix_reports",
+        help="Optional explicit offline control matrix report path to record in the manifest.",
+    )
+    parser.add_argument(
         "--predicted-graph-report",
         action="append",
         type=Path,
         dest="predicted_graph_reports",
         help="Optional explicit predicted graph report path to record in the manifest.",
+    )
+    parser.add_argument(
+        "--predicted-dsg-evidence-report",
+        action="append",
+        type=Path,
+        dest="predicted_dsg_evidence_reports",
+        help="Optional explicit predicted DSG evidence report path to record in the manifest.",
+    )
+    parser.add_argument(
+        "--real-collection-report",
+        action="append",
+        type=Path,
+        dest="real_collection_reports",
+        help="Optional explicit real collection report path to record in the manifest.",
     )
     parser.add_argument("--manifest", type=Path, help="Explicit manifest JSON output path.")
     parser.add_argument("--validate-manifest", type=Path, help="Validate a benchmark manifest.")
@@ -152,7 +180,17 @@ def main(argv: list[str] | None = None) -> int:
             dashboard_bundle_paths=tuple(args.dashboard_bundles or ()),
             error_attribution_report_paths=tuple(args.error_attribution_reports or ()),
             graph_eval_report_paths=tuple(args.graph_eval_reports or ()),
+            offline_control_matrix_report_paths=tuple(
+                args.offline_control_matrix_reports or ()
+            ),
+            offline_prediction_import_report_paths=tuple(
+                args.offline_prediction_import_reports or ()
+            ),
+            predicted_dsg_evidence_report_paths=tuple(
+                args.predicted_dsg_evidence_reports or ()
+            ),
             predicted_graph_report_paths=tuple(args.predicted_graph_reports or ()),
+            real_collection_report_paths=tuple(args.real_collection_reports or ()),
         )
         save_benchmark_manifest(manifest, args.manifest)
         validation = validate_benchmark_manifest(manifest)

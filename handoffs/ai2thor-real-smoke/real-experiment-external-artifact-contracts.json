@@ -1,0 +1,211 @@
+{
+  "action": "real_experiment_external_artifact_contracts",
+  "artifact_checklist_path": "handoffs/ai2thor-real-smoke/real-experiment-artifact-checklist.json",
+  "contracts_digest": "d00e0c85244b3682795be7e5ae6bce275e81fc41895a51465eba9257ed053da7",
+  "preflight_report_path": "handoffs/ai2thor-real-smoke/real-experiment-preflight.json",
+  "root": "handoffs/ai2thor-real-smoke",
+  "run_manifest_path": "handoffs/ai2thor-real-smoke/real-experiment-run-manifest.json",
+  "schema_version": "dsg-spatialqa-lab.real-experiment-external-artifact-contracts.v1",
+  "summary": {
+    "missing_input_artifact_count": 8,
+    "planned_output_artifact_count": 6,
+    "real_control_source_count": 4,
+    "required_input_artifact_count": 8,
+    "track_count": 5
+  },
+  "track_summary": {
+    "predicted_dsg": {
+      "existing_planned_output_artifact_count": 0,
+      "input_artifact_count": 1,
+      "input_ready": false,
+      "missing_input_artifact_count": 1,
+      "planned_output_artifact_count": 0,
+      "present_input_artifact_count": 0
+    },
+    "real_controls": {
+      "existing_planned_output_artifact_count": 0,
+      "input_artifact_count": 1,
+      "input_ready": false,
+      "missing_input_artifact_count": 1,
+      "planned_output_artifact_count": 0,
+      "present_input_artifact_count": 0
+    },
+    "real_data": {
+      "existing_planned_output_artifact_count": 0,
+      "input_artifact_count": 2,
+      "input_ready": false,
+      "missing_input_artifact_count": 2,
+      "planned_output_artifact_count": 0,
+      "present_input_artifact_count": 0
+    },
+    "review_artifacts": {
+      "existing_planned_output_artifact_count": 0,
+      "input_artifact_count": 4,
+      "input_ready": false,
+      "missing_input_artifact_count": 4,
+      "planned_output_artifact_count": 0,
+      "present_input_artifact_count": 0
+    },
+    "run_outputs": {
+      "existing_planned_output_artifact_count": 0,
+      "input_artifact_count": 0,
+      "input_ready": true,
+      "missing_input_artifact_count": 0,
+      "planned_output_artifact_count": 6,
+      "present_input_artifact_count": 0
+    }
+  },
+  "tracks": {
+    "predicted_dsg": {
+      "detector_jsonl_path": "inputs/predicted-dsg/detector-rgbd.jsonl",
+      "infer_relations": [
+        "LEFT_OF",
+        "RIGHT_OF",
+        "NEAR"
+      ],
+      "min_object_observation_count": 2,
+      "min_observation_count": 2,
+      "planned_outputs": {
+        "detector_import_report_path": "outputs/predicted-dsg/detector-import-report.json",
+        "observation_sequence_path": "outputs/predicted-dsg/detector-observations.json",
+        "predicted_dsg_evidence_report_path": "outputs/predicted-dsg/predicted-dsg-evidence.json",
+        "predicted_graph_path": "outputs/predicted-dsg/predicted-graph.json",
+        "predicted_graph_report_path": "outputs/predicted-dsg/predicted-graph-report.json"
+      },
+      "predicted_dsg_detector_run_ledger_path": "handoffs/ai2thor-real-smoke/outputs/predicted-dsg/predicted-dsg-detector-run-ledger.json",
+      "predicted_dsg_detector_run_manifest_path": "handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+      "reference_frames": [
+        "world"
+      ],
+      "required_evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ]
+    },
+    "real_controls": {
+      "candidate_prediction_path": "inputs/candidate/predicted-graph-tool.jsonl",
+      "offline_control_import_manifest_path": "handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+      "offline_control_import_run_ledger_path": "handoffs/ai2thor-real-smoke/outputs/offline-controls/offline-control-import-run-ledger.json",
+      "planned_outputs": {
+        "matrix_report_path": "outputs/offline-controls/offline-control-matrix.json",
+        "output_dir": "outputs/offline-controls/imports",
+        "qa_eval_output_dir": "outputs/offline-controls/qa-eval",
+        "result_report_path": "outputs/offline-controls/offline-control-result.json"
+      },
+      "qa_path": "inputs/qa.jsonl",
+      "required_source_kinds": [
+        "caption_memory",
+        "graph_text",
+        "multi_frame_vlm",
+        "vlm"
+      ],
+      "sources": [
+        {
+          "expected_input_format": "qa_prediction",
+          "input_path": "inputs/offline-controls/vlm.jsonl",
+          "metadata": {
+            "capabilities": [
+              "spatial_qa"
+            ],
+            "dataset_id": "ai2thor_real_smoke",
+            "model_id": "external-vlm",
+            "prompt_id": "vlm-spatial-qa"
+          },
+          "planned_import_report_path": "outputs/offline-controls/imports/vlm/import-report.json",
+          "planned_prediction_path": "outputs/offline-controls/imports/vlm/predictions.jsonl",
+          "source_kind": "vlm",
+          "source_name": "vlm_real_control"
+        },
+        {
+          "expected_input_format": "qa_prediction",
+          "input_path": "inputs/offline-controls/multi_frame_vlm.jsonl",
+          "metadata": {
+            "capabilities": [
+              "spatial_qa",
+              "dynamic_memory"
+            ],
+            "dataset_id": "ai2thor_real_smoke",
+            "model_id": "external-multi_frame_vlm",
+            "prompt_id": "multi_frame_vlm-spatial-qa"
+          },
+          "planned_import_report_path": "outputs/offline-controls/imports/multi_frame_vlm/import-report.json",
+          "planned_prediction_path": "outputs/offline-controls/imports/multi_frame_vlm/predictions.jsonl",
+          "source_kind": "multi_frame_vlm",
+          "source_name": "multi_frame_vlm_real_control"
+        },
+        {
+          "expected_input_format": "qa_prediction",
+          "input_path": "inputs/offline-controls/caption_memory.jsonl",
+          "metadata": {
+            "capabilities": [
+              "spatial_qa",
+              "dynamic_memory"
+            ],
+            "dataset_id": "ai2thor_real_smoke",
+            "model_id": "external-caption_memory",
+            "prompt_id": "caption_memory-spatial-qa"
+          },
+          "planned_import_report_path": "outputs/offline-controls/imports/caption_memory/import-report.json",
+          "planned_prediction_path": "outputs/offline-controls/imports/caption_memory/predictions.jsonl",
+          "source_kind": "caption_memory",
+          "source_name": "caption_memory_real_control"
+        },
+        {
+          "expected_input_format": "qa_prediction",
+          "input_path": "inputs/offline-controls/graph_text.jsonl",
+          "metadata": {
+            "capabilities": [
+              "spatial_qa",
+              "dynamic_memory",
+              "graph_tool_query"
+            ],
+            "dataset_id": "ai2thor_real_smoke",
+            "model_id": "external-graph_text",
+            "prompt_id": "graph_text-spatial-qa"
+          },
+          "planned_import_report_path": "outputs/offline-controls/imports/graph_text/import-report.json",
+          "planned_prediction_path": "outputs/offline-controls/imports/graph_text/predictions.jsonl",
+          "source_kind": "graph_text",
+          "source_name": "graph_text_real_control"
+        }
+      ]
+    },
+    "real_data": {
+      "dataset_name": "ai2thor_real_smoke",
+      "episode_paths": [
+        "inputs/episodes/FloorPlan1.jsonl"
+      ],
+      "min_episode_count": 3,
+      "min_frame_count": 30,
+      "min_qa_count": 30,
+      "min_scene_count": 1,
+      "real_collection_report_paths": [
+        "inputs/real-collection-report.json"
+      ],
+      "source_kind": "ai2thor"
+    },
+    "review_artifacts": {
+      "active_task_delta_report_paths": [
+        "inputs/review/active-task-delta.json"
+      ],
+      "dashboard_bundle_paths": [
+        "inputs/review/dashboard.json"
+      ],
+      "error_attribution_report_paths": [
+        "inputs/review/error-attribution.json"
+      ],
+      "graph_eval_report_paths": [
+        "inputs/review/graph-eval.json"
+      ]
+    },
+    "run_outputs": {
+      "benchmark_manifest_path": "outputs/benchmark-manifest.json",
+      "output_dir": "outputs/benchmark",
+      "readiness_report_path": "outputs/real-experiment-readiness.json",
+      "real_experiment_run_ledger_path": "handoffs/ai2thor-real-smoke/outputs/real-experiment-run-ledger.json",
+      "record_path": "outputs/experiment-record.json",
+      "summary_report_path": "outputs/experiment-summary.json"
+    }
+  }
+}

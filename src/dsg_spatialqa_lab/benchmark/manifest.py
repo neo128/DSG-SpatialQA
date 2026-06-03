@@ -28,6 +28,18 @@ from dsg_spatialqa_lab.eval.graph_metrics import (
     graph_eval_report_digest,
     load_graph_eval_report,
 )
+from dsg_spatialqa_lab.eval.offline_control_matrix import (
+    load_offline_control_matrix_report,
+    offline_control_matrix_report_digest,
+)
+from dsg_spatialqa_lab.eval.offline_control_result import (
+    load_offline_control_result_report,
+    offline_control_result_report_digest,
+)
+from dsg_spatialqa_lab.eval.offline_predictions import (
+    load_offline_prediction_import_report,
+    offline_prediction_import_report_digest,
+)
 from dsg_spatialqa_lab.eval.task_metrics import (
     active_task_delta_report_digest,
     active_task_report_digest,
@@ -38,6 +50,14 @@ from dsg_spatialqa_lab.oracle import build_oracle_graph_from_episode
 from dsg_spatialqa_lab.predicted import (
     load_predicted_graph_report,
     predicted_graph_report_digest,
+)
+from dsg_spatialqa_lab.predicted_evidence import (
+    load_predicted_dsg_evidence_report,
+    predicted_dsg_evidence_report_digest,
+)
+from dsg_spatialqa_lab.benchmark.real_collection import (
+    load_real_collection_report,
+    real_collection_report_digest,
 )
 from dsg_spatialqa_lab.scene_io import graph_json_digest, load_graph_json, save_graph_json
 from dsg_spatialqa_lab.schema import SpatialQAError
@@ -77,7 +97,12 @@ def build_benchmark_artifacts(
     dashboard_bundle_paths: Sequence[str | Path] = (),
     error_attribution_report_paths: Sequence[str | Path] = (),
     graph_eval_report_paths: Sequence[str | Path] = (),
+    offline_control_matrix_report_paths: Sequence[str | Path] = (),
+    offline_control_result_report_paths: Sequence[str | Path] = (),
+    offline_prediction_import_report_paths: Sequence[str | Path] = (),
+    predicted_dsg_evidence_report_paths: Sequence[str | Path] = (),
     predicted_graph_report_paths: Sequence[str | Path] = (),
+    real_collection_report_paths: Sequence[str | Path] = (),
 ) -> dict[str, Any]:
     _validate_non_empty_str(dataset_name, "dataset_name")
     if not episode_paths:
@@ -141,7 +166,12 @@ def build_benchmark_artifacts(
             dashboard_bundle_paths=dashboard_bundle_paths,
             error_attribution_report_paths=error_attribution_report_paths,
             graph_eval_report_paths=graph_eval_report_paths,
+            offline_control_matrix_report_paths=offline_control_matrix_report_paths,
+            offline_control_result_report_paths=offline_control_result_report_paths,
+            offline_prediction_import_report_paths=offline_prediction_import_report_paths,
+            predicted_dsg_evidence_report_paths=predicted_dsg_evidence_report_paths,
             predicted_graph_report_paths=predicted_graph_report_paths,
+            real_collection_report_paths=real_collection_report_paths,
         ),
     )
 
@@ -286,6 +316,11 @@ def compare_benchmark_manifest(manifest: Mapping[str, Any]) -> dict[str, Any]:
             manifest.get("qa_dataset_digests"),
             current_manifest["qa_dataset_digests"],
         ),
+        _equality_check(
+            "qa_digest_matches_current",
+            manifest.get("qa_digest"),
+            current_manifest["qa_digest"],
+        ),
         _equality_check("summary_matches_current", manifest.get("summary"), current_manifest["summary"]),
         _equality_check(
             "coverage_matches_current",
@@ -347,6 +382,7 @@ def _manifest(
         "scene_count": len(scene_ids),
         "episode_count": len(episode_ids),
         "qa_count": len(cases),
+        "qa_digest": qa_dataset_digest(cases),
         "task_count": 0,
         "graph_digests": graph_digests,
         "qa_dataset_digests": qa_dataset_digests,
@@ -430,7 +466,12 @@ def _experiment_artifacts(
     dashboard_bundle_paths: Sequence[str | Path],
     error_attribution_report_paths: Sequence[str | Path],
     graph_eval_report_paths: Sequence[str | Path],
+    offline_control_matrix_report_paths: Sequence[str | Path],
+    offline_control_result_report_paths: Sequence[str | Path],
+    offline_prediction_import_report_paths: Sequence[str | Path],
+    predicted_dsg_evidence_report_paths: Sequence[str | Path],
     predicted_graph_report_paths: Sequence[str | Path],
+    real_collection_report_paths: Sequence[str | Path],
 ) -> tuple[dict[str, Any], ...]:
     artifacts: list[dict[str, Any]] = []
     for path in active_task_delta_report_paths:
@@ -443,8 +484,35 @@ def _experiment_artifacts(
         artifacts.append(_experiment_artifact_from_path("error_attribution_report", path))
     for path in graph_eval_report_paths:
         artifacts.append(_experiment_artifact_from_path("graph_eval_report", path))
+    for path in offline_control_matrix_report_paths:
+        artifacts.append(
+            _experiment_artifact_from_path(
+                "offline_control_matrix_report",
+                path,
+            )
+        )
+    for path in offline_control_result_report_paths:
+        artifacts.append(
+            _experiment_artifact_from_path(
+                "offline_control_result_report",
+                path,
+            )
+        )
+    for path in offline_prediction_import_report_paths:
+        artifacts.append(
+            _experiment_artifact_from_path(
+                "offline_prediction_import_report",
+                path,
+            )
+        )
+    for path in predicted_dsg_evidence_report_paths:
+        artifacts.append(
+            _experiment_artifact_from_path("predicted_dsg_evidence_report", path)
+        )
     for path in predicted_graph_report_paths:
         artifacts.append(_experiment_artifact_from_path("predicted_graph_report", path))
+    for path in real_collection_report_paths:
+        artifacts.append(_experiment_artifact_from_path("real_collection_report", path))
     for path in qa_eval_delta_report_paths:
         artifacts.append(_experiment_artifact_from_path("qa_eval_delta_report", path))
     for path in qa_eval_report_paths:
@@ -485,9 +553,24 @@ def _load_experiment_artifact(
     if artifact_type == "graph_eval_report":
         payload = load_graph_eval_report(path)
         return payload, graph_eval_report_digest(payload)
+    if artifact_type == "offline_control_matrix_report":
+        payload = load_offline_control_matrix_report(path)
+        return payload, offline_control_matrix_report_digest(payload)
+    if artifact_type == "offline_control_result_report":
+        payload = load_offline_control_result_report(path)
+        return payload, offline_control_result_report_digest(payload)
+    if artifact_type == "offline_prediction_import_report":
+        payload = load_offline_prediction_import_report(path)
+        return payload, offline_prediction_import_report_digest(payload)
+    if artifact_type == "predicted_dsg_evidence_report":
+        payload = load_predicted_dsg_evidence_report(path)
+        return payload, predicted_dsg_evidence_report_digest(payload)
     if artifact_type == "predicted_graph_report":
         payload = load_predicted_graph_report(path)
         return payload, predicted_graph_report_digest(payload)
+    if artifact_type == "real_collection_report":
+        payload = load_real_collection_report(path)
+        return payload, real_collection_report_digest(payload)
     if artifact_type == "qa_eval_delta_report":
         payload = load_qa_eval_delta_report(path)
         return payload, qa_eval_delta_report_digest(payload)

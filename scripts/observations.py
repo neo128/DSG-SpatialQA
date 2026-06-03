@@ -9,6 +9,8 @@ from dsg_spatialqa_lab import (
     SpatialQAError,
     compare_observation_ingest_report,
     compare_scene_observation_sequence_summary,
+    detector_observation_import_report,
+    detector_observation_sequence_from_jsonl,
     ingest_scene_observation_sequence,
     load_observation_ingest_report,
     load_scene_observation_sequence,
@@ -16,6 +18,7 @@ from dsg_spatialqa_lab import (
     observation_ingest_report,
     observation_ingest_report_json,
     save_graph_json,
+    save_scene_observation_sequence,
     scene_observation_sequence_digest,
     scene_observation_sequence_summary,
     validate_scene_observation_sequence_payload,
@@ -36,6 +39,19 @@ def main(argv: list[str] | None = None) -> int:
         "--input",
         type=Path,
         help="Explicit local SceneObservation sequence JSON file to ingest.",
+    )
+    parser.add_argument(
+        "--import-detector-jsonl",
+        type=Path,
+        help=(
+            "Import explicit local detector/RGB-D JSONL records into a "
+            "SceneObservation sequence JSON artifact."
+        ),
+    )
+    parser.add_argument(
+        "--output-sequence",
+        type=Path,
+        help="Explicit local SceneObservation sequence JSON output path.",
     )
     parser.add_argument(
         "--output-graph",
@@ -102,6 +118,31 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     args = parser.parse_args(argv)
+
+    if args.import_detector_jsonl is not None:
+        if args.output_sequence is None:
+            parser.error("--import-detector-jsonl requires --output-sequence")
+        try:
+            input_payload = args.import_detector_jsonl.read_text(encoding="utf-8")
+            observations = detector_observation_sequence_from_jsonl(input_payload)
+            save_scene_observation_sequence(observations, args.output_sequence)
+            payload = detector_observation_import_report(
+                input_path=args.import_detector_jsonl,
+                output_sequence_path=args.output_sequence,
+                observations=observations,
+                input_payload=input_payload,
+            )
+        except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
+            payload = _error_report(
+                args.import_detector_jsonl,
+                args.output_sequence,
+                exc,
+                action="import_detector_observation_jsonl",
+            )
+            _emit_json_payload(payload, args.report)
+            return 1
+        _emit_json_payload(payload, args.report)
+        return 0
 
     if args.summarize_sequence is not None:
         try:

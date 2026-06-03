@@ -1,4 +1,5 @@
 from dsg_spatialqa_lab.visualization.dashboard_export import (
+    compare_dashboard_bundle,
     dashboard_bundle,
     dashboard_bundle_digest,
     dashboard_bundle_json,
@@ -10,6 +11,7 @@ from dsg_spatialqa_lab.visualization.dashboard_export import (
 )
 
 __all__ = [
+    "compare_dashboard_bundle",
     "dashboard_bundle",
     "dashboard_bundle_digest",
     "dashboard_bundle_json",

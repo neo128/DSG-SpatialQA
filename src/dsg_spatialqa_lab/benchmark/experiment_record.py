@@ -10,6 +10,11 @@ from dsg_spatialqa_lab.benchmark.experiment_summary import (
     experiment_summary_report_digest,
     load_experiment_summary_report,
 )
+from dsg_spatialqa_lab.benchmark.readiness import (
+    load_real_experiment_readiness_report,
+    real_experiment_readiness_report_digest,
+    validate_real_experiment_readiness_report,
+)
 from dsg_spatialqa_lab.schema import SpatialQAError
 from dsg_spatialqa_lab.visualization.dashboard_export import (
     dashboard_bundle_digest,
@@ -33,6 +38,8 @@ def experiment_record(
     summary_report_path: str | Path | None = None,
     dashboard_bundle: Mapping[str, Any] | None = None,
     dashboard_bundle_path: str | Path | None = None,
+    real_readiness_report: Mapping[str, Any] | None = None,
+    real_readiness_report_path: str | Path | None = None,
 ) -> dict[str, Any]:
     research_question_verdicts = _research_question_verdicts(summary_report)
     readiness = _mapping_or_empty(summary_report.get("readiness"))
@@ -50,6 +57,8 @@ def experiment_record(
         "verdict_counts": _verdict_counts(research_question_verdicts),
         "research_question_verdicts": research_question_verdicts,
         "research_question_matrix": _research_question_matrix(summary_report),
+        "source_profile_matrix": _source_profile_matrix(summary_report),
+        "source_profile_count": _source_profile_count(summary_report),
         "diagnostic_ledger": _diagnostic_ledger(summary_report),
         "source_artifact_digests": _json_mapping(
             summary_report.get("source_artifact_digests")
@@ -61,6 +70,25 @@ def experiment_record(
             dashboard_bundle,
             dashboard_bundle_path=dashboard_bundle_path,
         )
+    if real_readiness_report is not None:
+        real_package_readiness = _real_package_readiness_record(
+            real_readiness_report
+        )
+        record["real_readiness_report_path"] = (
+            str(real_readiness_report_path)
+            if real_readiness_report_path is not None
+            else None
+        )
+        record["real_readiness_report_digest"] = real_package_readiness[
+            "report_digest"
+        ]
+        record["real_package_status"] = (
+            "ready"
+            if real_package_readiness["valid"] is True
+            and real_package_readiness["ready"] is True
+            else "not_ready"
+        )
+        record["real_package_readiness"] = real_package_readiness
     record["record_digest"] = experiment_record_digest(record)
     return record
 
@@ -99,6 +127,7 @@ def validate_experiment_record(record: Mapping[str, Any]) -> dict[str, Any]:
     )
     readiness = _mapping_or_empty(record.get("readiness"))
     research_question_matrix = _mapping_sequence(record.get("research_question_matrix"))
+    source_profile_matrix = _mapping_sequence(record.get("source_profile_matrix"))
     diagnostic_ledger = _mapping_or_empty(record.get("diagnostic_ledger"))
     expected_verdict_counts = _verdict_counts(research_question_verdicts)
     checks = [
@@ -145,6 +174,13 @@ def validate_experiment_record(record: Mapping[str, Any]) -> dict[str, Any]:
             "name": "diagnostic_ledger",
             "passed": _validate_diagnostic_ledger(diagnostic_ledger),
         },
+        {
+            "name": "source_profile_count",
+            "passed": record.get("source_profile_count")
+            == len(source_profile_matrix),
+            "expected": len(source_profile_matrix),
+            "actual": record.get("source_profile_count"),
+        },
     ]
     dashboard = record.get("dashboard_bundle")
     if dashboard is not None:
@@ -153,6 +189,37 @@ def validate_experiment_record(record: Mapping[str, Any]) -> dict[str, Any]:
                 "name": "dashboard_bundle",
                 "passed": _validate_dashboard_record(dashboard),
             }
+        )
+    real_package_readiness = record.get("real_package_readiness")
+    if real_package_readiness is not None:
+        real_package = _mapping_or_empty(real_package_readiness)
+        expected_status = (
+            "ready"
+            if real_package.get("valid") is True and real_package.get("ready") is True
+            else "not_ready"
+        )
+        checks.extend(
+            [
+                {
+                    "name": "real_package_status",
+                    "passed": record.get("real_package_status") == expected_status,
+                    "expected": expected_status,
+                    "actual": record.get("real_package_status"),
+                },
+                {
+                    "name": "real_package_manifest_digest",
+                    "passed": real_package.get("manifest_digest")
+                    == record.get("manifest_digest"),
+                    "expected": record.get("manifest_digest"),
+                    "actual": real_package.get("manifest_digest"),
+                },
+                {
+                    "name": "real_package_ready",
+                    "passed": record.get("real_package_status") == "ready",
+                    "expected": "ready",
+                    "actual": record.get("real_package_status"),
+                },
+            ]
         )
     return {
         "valid": all(check["passed"] is True for check in checks),
@@ -165,6 +232,10 @@ def validate_experiment_record(record: Mapping[str, Any]) -> dict[str, Any]:
 def compare_experiment_record(record: Mapping[str, Any]) -> dict[str, Any]:
     summary_report_path = _required_record_path(record, "summary_report_path")
     dashboard_path = _dashboard_path(record.get("dashboard_bundle"))
+    real_readiness_path = _optional_record_path(
+        record,
+        "real_readiness_report_path",
+    )
     current_record = experiment_record(
         load_experiment_summary_report(summary_report_path),
         summary_report_path=summary_report_path,
@@ -172,6 +243,12 @@ def compare_experiment_record(record: Mapping[str, Any]) -> dict[str, Any]:
         if dashboard_path is not None
         else None,
         dashboard_bundle_path=dashboard_path,
+        real_readiness_report=load_real_experiment_readiness_report(
+            real_readiness_path
+        )
+        if real_readiness_path is not None
+        else None,
+        real_readiness_report_path=real_readiness_path,
     )
     validation = validate_experiment_record(record)
     saved_digest = _string_or_none(record.get("record_digest"))
@@ -220,6 +297,11 @@ def compare_experiment_record(record: Mapping[str, Any]) -> dict[str, Any]:
             current_record["diagnostic_ledger"],
         ),
         _equality_check(
+            "source_profile_matrix_match_current",
+            record.get("source_profile_matrix"),
+            current_record["source_profile_matrix"],
+        ),
+        _equality_check(
             "source_artifact_digests_match_current",
             record.get("source_artifact_digests"),
             current_record["source_artifact_digests"],
@@ -232,6 +314,21 @@ def compare_experiment_record(record: Mapping[str, Any]) -> dict[str, Any]:
                 record.get("dashboard_bundle"),
                 current_record.get("dashboard_bundle"),
             )
+        )
+    if real_readiness_path is not None:
+        checks.extend(
+            [
+                _equality_check(
+                    "real_package_status_matches_current",
+                    record.get("real_package_status"),
+                    current_record.get("real_package_status"),
+                ),
+                _equality_check(
+                    "real_package_readiness_matches_current",
+                    record.get("real_package_readiness"),
+                    current_record.get("real_package_readiness"),
+                ),
+            ]
         )
     return {
         "matches": all(check["passed"] is True for check in checks),
@@ -306,6 +403,21 @@ def _research_question_matrix(summary_report: Mapping[str, Any]) -> list[dict[st
                 }
             )
     return rows
+
+
+def _source_profile_matrix(summary_report: Mapping[str, Any]) -> list[dict[str, Any]]:
+    return [
+        _json_mapping(row)
+        for row in _mapping_sequence(summary_report.get("source_profile_matrix"))
+    ]
+
+
+def _source_profile_count(summary_report: Mapping[str, Any]) -> int:
+    summary = _mapping_or_empty(summary_report.get("summary"))
+    count = _int_or_none(summary.get("source_profile_count"))
+    if count is not None:
+        return count
+    return len(_mapping_sequence(summary_report.get("source_profile_matrix")))
 
 
 def _diagnostic_ledger(summary_report: Mapping[str, Any]) -> dict[str, Any]:
@@ -458,6 +570,23 @@ def _dashboard_record(
     }
 
 
+def _real_package_readiness_record(report: Mapping[str, Any]) -> dict[str, Any]:
+    validation = validate_real_experiment_readiness_report(report)
+    readiness = _mapping_or_empty(report.get("readiness"))
+    return {
+        "declared_data_source_kind": _string_or_none(
+            report.get("declared_data_source_kind")
+        ),
+        "failed_checks": _json_value(readiness.get("failed_checks", [])),
+        "failed_count": _int_or_none(readiness.get("failed_count")),
+        "manifest_digest": _string_or_none(report.get("manifest_digest")),
+        "missing_groups": _json_value(readiness.get("missing_groups", [])),
+        "ready": readiness.get("ready") is True,
+        "report_digest": real_experiment_readiness_report_digest(report),
+        "valid": validation["valid"] is True,
+    }
+
+
 def _validate_dashboard_record(value: object) -> bool:
     if not isinstance(value, Mapping):
         return False
@@ -504,6 +633,15 @@ def _required_record_path(record: Mapping[str, Any], key: str) -> Path:
     value = record.get(key)
     if not isinstance(value, str) or value == "":
         raise SpatialQAError(f"Experiment record missing required path: {key}")
+    return Path(value)
+
+
+def _optional_record_path(record: Mapping[str, Any], key: str) -> Path | None:
+    value = record.get(key)
+    if value is None:
+        return None
+    if not isinstance(value, str) or value == "":
+        raise SpatialQAError(f"Experiment record path must be a string: {key}")
     return Path(value)
 
 

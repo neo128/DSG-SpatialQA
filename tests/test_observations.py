@@ -579,6 +579,75 @@ def test_scene_observation_sequence_summary_artifact_validates_and_compares(
     assert [check["passed"] for check in comparison["checks"]] == [True, True, True]
 
 
+def test_detector_observation_jsonl_imports_sequence_and_report(
+    tmp_path: Path,
+) -> None:
+    assert hasattr(lab, "DETECTOR_OBSERVATION_RECORD_SCHEMA_VERSION")
+    assert hasattr(lab, "detector_observation_sequence_from_jsonl")
+    assert hasattr(lab, "detector_observation_records_digest")
+    assert hasattr(lab, "detector_observation_import_report")
+    assert hasattr(lab, "save_detector_observation_import_report")
+    assert hasattr(lab, "load_detector_observation_import_report")
+    assert hasattr(lab, "validate_detector_observation_import_report")
+    assert hasattr(lab, "compare_detector_observation_import_report")
+    input_path = tmp_path / "detector" / "rgbd-detections.jsonl"
+    sequence_path = tmp_path / "observations" / "detector-sequence.json"
+    report_path = tmp_path / "reports" / "detector-import-report.json"
+    payload = "\n".join(
+        json.dumps(record, sort_keys=True)
+        for record in _detector_records()
+    ) + "\n"
+    input_path.parent.mkdir(parents=True, exist_ok=True)
+    input_path.write_text(payload, encoding="utf-8")
+
+    observations = lab.detector_observation_sequence_from_jsonl(payload)
+    saved_sequence_path = lab.save_scene_observation_sequence(observations, sequence_path)
+    report = lab.detector_observation_import_report(
+        input_path=input_path,
+        output_sequence_path=sequence_path,
+        observations=observations,
+        input_payload=payload,
+    )
+    saved_report_path = lab.save_detector_observation_import_report(report, report_path)
+    loaded_report = lab.load_detector_observation_import_report(report_path)
+    validation = lab.validate_detector_observation_import_report(loaded_report)
+    comparison = lab.compare_detector_observation_import_report(loaded_report)
+
+    assert [observation.step for observation in observations] == [1, 2]
+    assert saved_sequence_path == sequence_path
+    assert saved_report_path == report_path
+    assert observations[0].agent_pose == Pose3D(0.0, 0.0, 0.0)
+    assert observations[0].objects[0] == ObjectObservation(
+        "track_mug_1",
+        "mug",
+        Pose3D(-0.4, 1.0, 0.78),
+        BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+        confidence=0.93,
+        visible=True,
+        attributes={
+            "depth_path": "depth/0001.npy",
+            "detector_id": "owlvit-real-trial",
+            "rgb_path": "rgb/0001.png",
+            "segmentation_path": "seg/0001.png",
+            "source": "detector_rgbd",
+            "track_id": "track_mug_1",
+        },
+    )
+    assert report["action"] == "import_detector_observation_jsonl"
+    assert report["path"] == str(input_path)
+    assert report["output_sequence_path"] == str(sequence_path)
+    assert report["valid"] is True
+    assert report["input_digest"] == lab.detector_observation_records_digest(payload)
+    assert report["sequence_digest"] == lab.scene_observation_sequence_digest(
+        observations
+    )
+    assert report["summary"] == lab.scene_observation_sequence_summary(observations)
+    assert report["digest"] == lab.detector_observation_import_report_digest(report)
+    assert loaded_report == report
+    assert validation["valid"] is True
+    assert comparison["matches"] is True
+
+
 def test_scene_observation_sequence_summary_validation_and_compare_report_drift(
     tmp_path: Path,
 ) -> None:
@@ -699,6 +768,70 @@ def test_observation_ingest_report_save_loads_explicit_file(
     assert loaded_report == report
     assert report_path.read_text(encoding="utf-8").endswith("\n")
     assert lab.validate_observation_ingest_report(loaded_report)["valid"] is True
+
+
+def _detector_records() -> tuple[dict[str, object], ...]:
+    return (
+        {
+            "schema_version": "dsg-spatialqa-lab.detector-observation-record.v1",
+            "step": 2,
+            "agent_id": "agent",
+            "rgb_path": "rgb/0002.png",
+            "depth_path": "depth/0002.npy",
+            "metadata": {
+                "detector_id": "owlvit-real-trial",
+                "source": "detector_rgbd",
+            },
+            "detections": [
+                {
+                    "object_id": "track_mug_1",
+                    "label": "mug",
+                    "pose": {"x": 0.2, "y": 1.2, "z": 0.78, "yaw": 0.0},
+                    "bbox": {
+                        "center": {"x": 0.2, "y": 1.2, "z": 0.78, "yaw": 0.0},
+                        "size": [0.12, 0.12, 0.16],
+                    },
+                    "confidence": 0.41,
+                    "visible": False,
+                    "attributes": {"track_id": "track_mug_1"},
+                }
+            ],
+        },
+        {
+            "schema_version": "dsg-spatialqa-lab.detector-observation-record.v1",
+            "step": 1,
+            "agent_id": "agent",
+            "agent_pose": {"x": 0.0, "y": 0.0, "z": 0.0, "yaw": 0.0},
+            "rgb_path": "rgb/0001.png",
+            "depth_path": "depth/0001.npy",
+            "segmentation_path": "seg/0001.png",
+            "metadata": {
+                "detector_id": "owlvit-real-trial",
+                "source": "detector_rgbd",
+            },
+            "rooms": [
+                {
+                    "node_id": "kitchen",
+                    "label": "Kitchen",
+                    "attributes": {"source": "detector_metadata"},
+                }
+            ],
+            "detections": [
+                {
+                    "object_id": "track_mug_1",
+                    "label": "mug",
+                    "pose": {"x": -0.4, "y": 1.0, "z": 0.78, "yaw": 0.0},
+                    "bbox": {
+                        "center": {"x": -0.4, "y": 1.0, "z": 0.78, "yaw": 0.0},
+                        "size": [0.12, 0.12, 0.16],
+                    },
+                    "confidence": 0.93,
+                    "visible": True,
+                    "attributes": {"track_id": "track_mug_1"},
+                }
+            ],
+        },
+    )
 
 
 def test_observation_ingest_report_includes_stable_digest_and_validates_tampering(

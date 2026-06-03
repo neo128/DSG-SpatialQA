@@ -1,24 +1,40 @@
 from __future__ import annotations
 
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
 import hashlib
 from html import escape
 import json
 from pathlib import Path
 from typing import Any, cast
 
-from dsg_spatialqa_lab.benchmark import QACase, qa_case_to_dict
-from dsg_spatialqa_lab.eval import QAPrediction, qa_prediction_to_dict
+from dsg_spatialqa_lab.benchmark import QACase, load_qa_dataset, qa_case_to_dict
+from dsg_spatialqa_lab.eval import (
+    QAPrediction,
+    load_qa_eval_report,
+    load_qa_predictions,
+    qa_prediction_to_dict,
+)
+from dsg_spatialqa_lab.eval.error_attribution import load_error_attribution_report
 from dsg_spatialqa_lab.eval.qa_metrics import (
     QA_RESEARCH_AXIS_NAMES,
     qa_research_axes_for_case,
 )
+from dsg_spatialqa_lab.eval.task_metrics import (
+    load_active_task_delta_report,
+    load_active_task_report,
+)
 from dsg_spatialqa_lab.memory import DynamicSceneGraph
-from dsg_spatialqa_lab.scene_io import graph_summary
+from dsg_spatialqa_lab.scene_io import graph_summary, load_graph_json
 from dsg_spatialqa_lab.schema import Edge, Node, SpatialQAError
 
 
 DASHBOARD_BUNDLE_SCHEMA_VERSION = "dsg-spatialqa-lab.dashboard-bundle.v1"
+DASHBOARD_REQUIRED_SOURCE_PATH_KEYS = (
+    "graph_path",
+    "prediction_path",
+    "qa_eval_report_path",
+    "qa_path",
+)
 
 
 def dashboard_bundle(
@@ -31,6 +47,14 @@ def dashboard_bundle(
     active_task_report: Mapping[str, Any] | None = None,
     active_task_delta_report: Mapping[str, Any] | None = None,
     experiment_summary_report: Mapping[str, Any] | None = None,
+    qa_path: str | Path | None = None,
+    prediction_path: str | Path | None = None,
+    qa_eval_report_path: str | Path | None = None,
+    graph_path: str | Path | None = None,
+    error_attribution_report_path: str | Path | None = None,
+    active_task_report_path: str | Path | None = None,
+    active_task_delta_report_path: str | Path | None = None,
+    experiment_summary_report_path: str | Path | None = None,
 ) -> dict[str, Any]:
     prediction_by_id = _prediction_mapping(predictions)
     eval_by_id = _case_mapping(qa_eval_report.get("cases", ()))
@@ -65,6 +89,18 @@ def dashboard_bundle(
         bundle["experiment_summary_review"] = _experiment_summary_review(
             experiment_summary_report
         )
+    source_paths = _source_paths(
+        qa_path=qa_path,
+        prediction_path=prediction_path,
+        qa_eval_report_path=qa_eval_report_path,
+        graph_path=graph_path,
+        error_attribution_report_path=error_attribution_report_path,
+        active_task_report_path=active_task_report_path,
+        active_task_delta_report_path=active_task_delta_report_path,
+        experiment_summary_report_path=experiment_summary_report_path,
+    )
+    if source_paths:
+        bundle["source_paths"] = source_paths
     bundle["bundle_digest"] = dashboard_bundle_digest(bundle)
     return bundle
 
@@ -112,6 +148,7 @@ def validate_dashboard_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
     active_task_review = bundle.get("active_task_review")
     active_task_delta_review = bundle.get("active_task_delta_review")
     experiment_summary_review = bundle.get("experiment_summary_review")
+    source_paths = bundle.get("source_paths")
     expected_source_summary = _predicted_evidence_source_summary(_case_rows(bundle))
     actual_source_summary = (
         summary.get("by_predicted_evidence_source")
@@ -183,11 +220,249 @@ def validate_dashboard_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
                 ),
             }
         )
+    if source_paths is not None:
+        checks.append(
+            {
+                "name": "source_paths",
+                "passed": _valid_source_paths(source_paths),
+            }
+        )
     return {
         "valid": all(check["passed"] is True for check in checks),
         "schema_version": schema_version,
         "bundle_digest": digest,
         "checks": checks,
+    }
+
+
+def compare_dashboard_bundle(bundle: Mapping[str, Any]) -> dict[str, Any]:
+    validation = validate_dashboard_bundle(bundle)
+    source_paths = _dashboard_source_paths(bundle.get("source_paths"))
+    missing_source_paths = [
+        key for key in DASHBOARD_REQUIRED_SOURCE_PATH_KEYS if key not in source_paths
+    ]
+    saved_bundle_digest = _string_value(bundle.get("bundle_digest")) or None
+    checks: list[dict[str, Any]] = [
+        {
+            "name": "bundle_valid",
+            "passed": validation["valid"] is True,
+            "expected": True,
+            "actual": validation["valid"],
+        },
+        {
+            "name": "required_source_paths_present",
+            "passed": not missing_source_paths,
+            "expected": [],
+            "actual": missing_source_paths,
+        },
+    ]
+    if missing_source_paths:
+        return {
+            "matches": False,
+            "comparable": False,
+            "saved_bundle_digest": saved_bundle_digest,
+            "current_bundle_digest": None,
+            "missing_source_paths": missing_source_paths,
+            "validation": validation,
+            "checks": checks,
+        }
+    try:
+        current_bundle = _current_dashboard_bundle(source_paths)
+    except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
+        checks.append(
+            {
+                "name": "current_bundle_loadable",
+                "passed": False,
+                "error": str(exc),
+            }
+        )
+        return {
+            "matches": False,
+            "comparable": False,
+            "saved_bundle_digest": saved_bundle_digest,
+            "current_bundle_digest": None,
+            "missing_source_paths": [],
+            "validation": validation,
+            "checks": checks,
+        }
+    current_bundle_digest = _string_value(current_bundle.get("bundle_digest")) or None
+    checks.extend(
+        [
+            {
+                "name": "current_bundle_loadable",
+                "passed": True,
+            },
+            _equality_check(
+                "bundle_digest_matches_current",
+                saved_bundle_digest,
+                current_bundle_digest,
+            ),
+            _equality_check(
+                "summary_matches_current",
+                bundle.get("summary"),
+                current_bundle["summary"],
+            ),
+            _equality_check(
+                "graph_summary_matches_current",
+                bundle.get("graph_summary"),
+                current_bundle["graph_summary"],
+            ),
+            _equality_check(
+                "cases_match_current",
+                bundle.get("cases"),
+                current_bundle["cases"],
+            ),
+            _equality_check(
+                "active_task_review_matches_current",
+                bundle.get("active_task_review"),
+                current_bundle.get("active_task_review"),
+            ),
+            _equality_check(
+                "active_task_delta_review_matches_current",
+                bundle.get("active_task_delta_review"),
+                current_bundle.get("active_task_delta_review"),
+            ),
+            _equality_check(
+                "experiment_summary_review_matches_current",
+                bundle.get("experiment_summary_review"),
+                current_bundle.get("experiment_summary_review"),
+            ),
+        ]
+    )
+    return {
+        "matches": all(check["passed"] is True for check in checks),
+        "comparable": True,
+        "saved_bundle_digest": saved_bundle_digest,
+        "current_bundle_digest": current_bundle_digest,
+        "missing_source_paths": [],
+        "validation": validation,
+        "checks": checks,
+    }
+
+
+def _current_dashboard_bundle(source_paths: Mapping[str, str]) -> dict[str, Any]:
+    error_attribution_report = _optional_source_report(
+        source_paths,
+        "error_attribution_report_path",
+        load_error_attribution_report,
+    )
+    active_task_report = _optional_source_report(
+        source_paths,
+        "active_task_report_path",
+        load_active_task_report,
+    )
+    active_task_delta_report = _optional_source_report(
+        source_paths,
+        "active_task_delta_report_path",
+        load_active_task_delta_report,
+    )
+    experiment_summary_report = _optional_json_source_report(
+        source_paths,
+        "experiment_summary_report_path",
+    )
+    return dashboard_bundle(
+        load_qa_dataset(source_paths["qa_path"]),
+        predictions=load_qa_predictions(source_paths["prediction_path"]),
+        qa_eval_report=load_qa_eval_report(source_paths["qa_eval_report_path"]),
+        graph=load_graph_json(source_paths["graph_path"]),
+        error_attribution_report=error_attribution_report,
+        active_task_report=active_task_report,
+        active_task_delta_report=active_task_delta_report,
+        experiment_summary_report=experiment_summary_report,
+        qa_path=source_paths["qa_path"],
+        prediction_path=source_paths["prediction_path"],
+        qa_eval_report_path=source_paths["qa_eval_report_path"],
+        graph_path=source_paths["graph_path"],
+        error_attribution_report_path=source_paths.get(
+            "error_attribution_report_path"
+        ),
+        active_task_report_path=source_paths.get("active_task_report_path"),
+        active_task_delta_report_path=source_paths.get(
+            "active_task_delta_report_path"
+        ),
+        experiment_summary_report_path=source_paths.get(
+            "experiment_summary_report_path"
+        ),
+    )
+
+
+def _optional_source_report(
+    source_paths: Mapping[str, str],
+    key: str,
+    loader: Callable[[str | Path], dict[str, Any]],
+) -> dict[str, Any] | None:
+    path = source_paths.get(key)
+    if path is None:
+        return None
+    return loader(path)
+
+
+def _optional_json_source_report(
+    source_paths: Mapping[str, str],
+    key: str,
+) -> dict[str, Any] | None:
+    path = source_paths.get(key)
+    if path is None:
+        return None
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(payload, Mapping):
+        raise SpatialQAError("Dashboard source report JSON must be an object")
+    return cast(dict[str, Any], payload)
+
+
+def _source_paths(
+    *,
+    qa_path: str | Path | None,
+    prediction_path: str | Path | None,
+    qa_eval_report_path: str | Path | None,
+    graph_path: str | Path | None,
+    error_attribution_report_path: str | Path | None,
+    active_task_report_path: str | Path | None,
+    active_task_delta_report_path: str | Path | None,
+    experiment_summary_report_path: str | Path | None,
+) -> dict[str, str]:
+    rows = (
+        ("active_task_delta_report_path", active_task_delta_report_path),
+        ("active_task_report_path", active_task_report_path),
+        ("error_attribution_report_path", error_attribution_report_path),
+        ("experiment_summary_report_path", experiment_summary_report_path),
+        ("graph_path", graph_path),
+        ("prediction_path", prediction_path),
+        ("qa_eval_report_path", qa_eval_report_path),
+        ("qa_path", qa_path),
+    )
+    return {
+        key: str(path)
+        for key, path in rows
+        if path is not None and str(path) != ""
+    }
+
+
+def _dashboard_source_paths(value: object) -> dict[str, str]:
+    if not isinstance(value, Mapping):
+        return {}
+    return {
+        str(key): item
+        for key, item in value.items()
+        if isinstance(key, str) and isinstance(item, str) and item
+    }
+
+
+def _valid_source_paths(value: object) -> bool:
+    if not isinstance(value, Mapping):
+        return False
+    return all(
+        isinstance(key, str) and isinstance(item, str)
+        for key, item in value.items()
+    )
+
+
+def _equality_check(name: str, expected: object, actual: object) -> dict[str, Any]:
+    return {
+        "name": name,
+        "passed": expected == actual,
+        "expected": expected,
+        "actual": actual,
     }
 
 
@@ -210,6 +485,7 @@ def dashboard_html(bundle: Mapping[str, Any]) -> str:
     evidence_source_options = _filter_options(
         source for case in cases for source in _predicted_evidence_sources(case)
     )
+    source_profile_options = _filter_options(_source_profile_keys(bundle))
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -240,6 +516,7 @@ def dashboard_html(bundle: Mapping[str, Any]) -> str:
     <label>Error category<select id="error-category-filter"><option value="all">All</option>{error_category_options}</select></label>
     <label>Research axis<select id="research-axis-filter"><option value="all">All</option>{research_axis_options}</select></label>
     <label>Evidence source<select id="evidence-source-filter"><option value="all">All</option>{evidence_source_options}</select></label>
+    <label>Source profile<select id="source-profile-filter"><option value="all">All</option>{source_profile_options}</select></label>
   </section>
   <table>
     <thead>
@@ -261,9 +538,11 @@ def dashboard_html(bundle: Mapping[str, Any]) -> str:
         correctness: document.getElementById("correctness-filter"),
         errorCategory: document.getElementById("error-category-filter"),
         researchAxis: document.getElementById("research-axis-filter"),
-        evidenceSource: document.getElementById("evidence-source-filter")
+        evidenceSource: document.getElementById("evidence-source-filter"),
+        sourceProfile: document.getElementById("source-profile-filter")
       }};
       const rows = Array.from(document.querySelectorAll("tbody tr[data-case-id]"));
+      const sourceProfileRows = Array.from(document.querySelectorAll("tbody tr[data-source-profile-key]"));
       function matches(values, selected) {{
         return selected === "all" || values.split("|").includes(selected);
       }}
@@ -278,6 +557,9 @@ def dashboard_html(bundle: Mapping[str, Any]) -> str:
             matches(row.dataset.evidenceSources || "", filters.evidenceSource.value)
           );
           row.hidden = !visible;
+        }});
+        sourceProfileRows.forEach(function (row) {{
+          row.hidden = !matches(row.dataset.sourceProfileKey || "", filters.sourceProfile.value);
         }});
       }}
       Object.values(filters).forEach(function (filter) {{
@@ -512,6 +794,9 @@ def _experiment_summary_review(report: Mapping[str, Any]) -> dict[str, Any]:
             if isinstance(report.get("research_questions"), Mapping)
             else {}
         ),
+        "source_profile_matrix": _source_profile_matrix(
+            report.get("source_profile_matrix")
+        ),
         "failure_linkage_review": _failure_linkage_review(
             report.get("failure_linkage_diagnostics")
         ),
@@ -640,6 +925,7 @@ def _validate_experiment_summary_review(value: object) -> bool:
     research_questions = value.get("research_questions")
     research_question_matrix = value.get("research_question_matrix")
     failure_linkage_review = value.get("failure_linkage_review")
+    source_profile_matrix = value.get("source_profile_matrix")
     if not isinstance(summary, Mapping):
         return False
     if not isinstance(readiness, Mapping):
@@ -659,16 +945,27 @@ def _validate_experiment_summary_review(value: object) -> bool:
         or not all(isinstance(item, Mapping) for item in failure_linkage_review)
     ):
         return False
+    if not isinstance(source_profile_matrix, Sequence) or isinstance(
+        source_profile_matrix,
+        str,
+    ):
+        return False
+    if not all(isinstance(item, Mapping) for item in source_profile_matrix):
+        return False
     research_question_count = summary.get("research_question_count")
     if isinstance(research_question_count, bool) or not isinstance(
         research_question_count,
         int,
     ):
         return False
+    source_profile_count = summary.get("source_profile_count", 0)
+    if isinstance(source_profile_count, bool) or not isinstance(source_profile_count, int):
+        return False
     return (
         len(research_questions) == research_question_count
         and len(research_question_matrix)
         == _experiment_summary_measurement_count(research_questions)
+        and len(source_profile_matrix) == source_profile_count
     )
 
 
@@ -702,6 +999,21 @@ def _experiment_summary_section(bundle: Mapping[str, Any]) -> str:
 {matrix_rows}
       </tbody>
     </table>"""
+    source_profile_rows = "\n".join(
+        _source_profile_row(row) for row in _source_profile_rows(review)
+    )
+    source_profile_table = ""
+    if source_profile_rows != "":
+        source_profile_table = f"""
+    <h3>Source Profiles</h3>
+    <table>
+      <thead>
+        <tr><th>Source</th><th>Adapter</th><th>Model</th><th>Prompt</th><th>Capabilities</th><th>Imported</th><th>Missing</th><th>Artifact</th></tr>
+      </thead>
+      <tbody>
+{source_profile_rows}
+      </tbody>
+    </table>"""
     linkage_rows = "\n".join(
         _failure_linkage_row(row)
         for row in _failure_linkage_rows(review)
@@ -731,6 +1043,7 @@ def _experiment_summary_section(bundle: Mapping[str, Any]) -> str:
       </tbody>
     </table>
 {matrix_table}
+{source_profile_table}
 {linkage_table}
   </section>"""
 
@@ -814,6 +1127,16 @@ def _research_question_matrix(value: object) -> list[dict[str, Any]]:
     return rows
 
 
+def _source_profile_matrix(value: object) -> list[dict[str, Any]]:
+    if not isinstance(value, Sequence) or isinstance(value, str):
+        return []
+    return [
+        _json_mapping(row)
+        for row in value
+        if isinstance(row, Mapping)
+    ]
+
+
 def _measurement_verdict(primary_metric: Mapping[str, Any], case_count_match: object) -> str:
     if case_count_match is False:
         return "inconclusive"
@@ -864,6 +1187,34 @@ def _experiment_summary_matrix_row(row: Mapping[str, Any]) -> str:
         f"<td>{escape(str(row.get('measurement_verdict', '')))}</td>"
         f"<td>{escape(metric_name)}</td>"
         f"<td>{escape(metric_value)}</td>"
+        f"<td>{escape(str(row.get('artifact_key', '')))}</td>"
+        "</tr>"
+    )
+
+
+def _source_profile_rows(review: Mapping[str, Any]) -> tuple[Mapping[str, Any], ...]:
+    matrix = review.get("source_profile_matrix")
+    if not isinstance(matrix, Sequence) or isinstance(matrix, str):
+        return ()
+    return tuple(cast(Mapping[str, Any], row) for row in matrix if isinstance(row, Mapping))
+
+
+def _source_profile_row(row: Mapping[str, Any]) -> str:
+    capability_axes = _string_items(row.get("capability_axes"))
+    capabilities = ", ".join(capability_axes)
+    capability_value = "|".join(capability_axes)
+    return (
+        "        <tr"
+        f" data-source-profile-key=\"{escape(str(row.get('source_key', '')))}\""
+        f" data-source-profile-capabilities=\"{escape(capability_value)}\""
+        ">"
+        f"<td>{escape(str(row.get('source_key', '')))}</td>"
+        f"<td>{escape(str(row.get('adapter', '')))}</td>"
+        f"<td>{escape(str(row.get('model_id', '')))}</td>"
+        f"<td>{escape(str(row.get('prompt_id', '')))}</td>"
+        f"<td>{escape(capabilities)}</td>"
+        f"<td>{escape(str(row.get('imported_prediction_count', '')))}</td>"
+        f"<td>{escape(str(row.get('missing_case_count', '')))}</td>"
         f"<td>{escape(str(row.get('artifact_key', '')))}</td>"
         "</tr>"
     )
@@ -1081,6 +1432,17 @@ def _case_research_axes(case: Mapping[str, Any]) -> tuple[str, ...]:
     if not isinstance(axes, Sequence) or isinstance(axes, str):
         return ()
     return tuple(axis for axis in axes if isinstance(axis, str) and axis)
+
+
+def _source_profile_keys(bundle: Mapping[str, Any]) -> tuple[str, ...]:
+    review = bundle.get("experiment_summary_review")
+    if not isinstance(review, Mapping):
+        return ()
+    return tuple(
+        str(row["source_key"])
+        for row in _source_profile_rows(review)
+        if isinstance(row.get("source_key"), str) and row.get("source_key") != ""
+    )
 
 
 def _filter_options(values: Iterable[str]) -> str:

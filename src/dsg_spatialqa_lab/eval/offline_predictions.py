@@ -20,6 +20,8 @@ OFFLINE_PREDICTION_RECORD_SCHEMA_VERSION = "dsg-spatialqa-lab.offline-prediction
 OFFLINE_PREDICTION_IMPORT_REPORT_SCHEMA_VERSION = (
     "dsg-spatialqa-lab.offline-prediction-import-report.v1"
 )
+OFFLINE_PREDICTION_RECORD_INPUT_FORMAT = "offline_prediction_record"
+QA_PREDICTION_INPUT_FORMAT = "qa_prediction"
 
 
 @dataclass(frozen=True)
@@ -221,6 +223,33 @@ def import_offline_predictions(
     return predictions, report
 
 
+def import_qa_prediction_inputs(
+    gold_cases: Sequence[QACase],
+    predictions: Sequence[QAPrediction],
+    *,
+    source_name: str,
+    source_kind: str = "offline",
+    source_metadata: Mapping[str, Any] | None = None,
+    qa_path: str | Path | None = None,
+    input_path: str | Path | None = None,
+    prediction_path: str | Path | None = None,
+) -> tuple[list[QAPrediction], dict[str, Any]]:
+    normalized_predictions, report = import_offline_predictions(
+        gold_cases,
+        tuple(_record_from_prediction(prediction) for prediction in predictions),
+        source_name=source_name,
+        source_kind=source_kind,
+        source_metadata=source_metadata,
+        qa_path=qa_path,
+        input_path=input_path,
+        prediction_path=prediction_path,
+    )
+    report["input_format"] = QA_PREDICTION_INPUT_FORMAT
+    report["input_digest"] = qa_predictions_digest(predictions)
+    report["report_digest"] = offline_prediction_import_report_digest(report)
+    return normalized_predictions, report
+
+
 def offline_prediction_import_report_digest(report: Mapping[str, Any]) -> str:
     payload = {key: value for key, value in report.items() if key != "report_digest"}
     return hashlib.sha256(
@@ -320,16 +349,29 @@ def compare_offline_prediction_import_report(report: Mapping[str, Any]) -> dict[
     input_path = _required_report_path(report, "input_path")
     prediction_path = _required_report_path(report, "prediction_path")
     source = _required_mapping(report, "source")
-    predictions, current_report = import_offline_predictions(
-        load_qa_dataset(qa_path),
-        load_offline_prediction_records(input_path),
-        source_name=_required_str(source, "name"),
-        source_kind=_required_str(source, "kind"),
-        source_metadata=_optional_mapping(source, "metadata"),
-        qa_path=qa_path,
-        input_path=input_path,
-        prediction_path=prediction_path,
-    )
+    input_format = _prediction_input_format(report.get("input_format"))
+    if input_format == QA_PREDICTION_INPUT_FORMAT:
+        predictions, current_report = import_qa_prediction_inputs(
+            load_qa_dataset(qa_path),
+            load_qa_predictions(input_path),
+            source_name=_required_str(source, "name"),
+            source_kind=_required_str(source, "kind"),
+            source_metadata=_optional_mapping(source, "metadata"),
+            qa_path=qa_path,
+            input_path=input_path,
+            prediction_path=prediction_path,
+        )
+    else:
+        predictions, current_report = import_offline_predictions(
+            load_qa_dataset(qa_path),
+            load_offline_prediction_records(input_path),
+            source_name=_required_str(source, "name"),
+            source_kind=_required_str(source, "kind"),
+            source_metadata=_optional_mapping(source, "metadata"),
+            qa_path=qa_path,
+            input_path=input_path,
+            prediction_path=prediction_path,
+        )
     validation = validate_offline_prediction_import_report(report)
     saved_digest = _string_or_none(report.get("report_digest"))
     current_digest = _string_or_none(current_report.get("report_digest"))
@@ -381,6 +423,17 @@ def compare_offline_prediction_import_report(report: Mapping[str, Any]) -> dict[
         "validation": validation,
         "checks": checks,
     }
+
+
+def _record_from_prediction(prediction: QAPrediction) -> OfflinePredictionRecord:
+    return OfflinePredictionRecord(
+        case_id=prediction.id,
+        answer=prediction.answer,
+        evidence_nodes=prediction.evidence_nodes,
+        evidence_edges=prediction.evidence_edges,
+        confidence=prediction.confidence,
+        error=prediction.error,
+    )
 
 
 def _record_result(
@@ -509,6 +562,17 @@ def _string_or_none(value: object) -> str | None:
 
 def _summary_value(summary: object, key: str) -> object:
     return summary.get(key) if isinstance(summary, Mapping) else None
+
+
+def _prediction_input_format(value: object) -> str:
+    if value is None:
+        return OFFLINE_PREDICTION_RECORD_INPUT_FORMAT
+    if value in (
+        OFFLINE_PREDICTION_RECORD_INPUT_FORMAT,
+        QA_PREDICTION_INPUT_FORMAT,
+    ):
+        return str(value)
+    raise SpatialQAError(f"Unsupported offline prediction input format: {value}")
 
 
 def _metadata_text(

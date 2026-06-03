@@ -18,6 +18,7 @@ from dsg_spatialqa_lab import (
     graph_json_digest,
     graph_report_digest,
     load_graph_json,
+    load_scene_observation_sequence,
     observation_ingest_report_digest,
     save_scene_observation_sequence,
     save_graph_json,
@@ -241,6 +242,51 @@ def test_observations_cli_validates_and_compares_sequence_summary(
         observations
     )
     assert [check["passed"] for check in comparison["checks"]] == [True, True, True]
+
+
+def test_observations_cli_imports_detector_jsonl_to_sequence(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_observations_script()
+    main = cast(MainFn, getattr(module, "main"))
+    input_path = tmp_path / "detector" / "rgbd-detections.jsonl"
+    sequence_path = tmp_path / "observations" / "detector-sequence.json"
+    report_path = tmp_path / "reports" / "detector-import-report.json"
+    input_path.parent.mkdir(parents=True, exist_ok=True)
+    input_path.write_text(
+        "\n".join(json.dumps(record, sort_keys=True) for record in _detector_records())
+        + "\n",
+        encoding="utf-8",
+    )
+
+    assert (
+        main(
+            [
+                "--import-detector-jsonl",
+                str(input_path),
+                "--output-sequence",
+                str(sequence_path),
+                "--report",
+                str(report_path),
+            ]
+        )
+        == 0
+    )
+
+    output = json.loads(capsys.readouterr().out)
+    saved_report = json.loads(report_path.read_text(encoding="utf-8"))
+    observations = load_scene_observation_sequence(sequence_path)
+    assert output == saved_report
+    assert output["action"] == "import_detector_observation_jsonl"
+    assert output["path"] == str(input_path)
+    assert output["output_sequence_path"] == str(sequence_path)
+    assert output["valid"] is True
+    assert output["sequence_digest"] == scene_observation_sequence_digest(observations)
+    assert output["summary"] == scene_observation_sequence_summary(observations)
+    assert [observation.step for observation in observations] == [1, 2]
+    assert observations[0].objects[0].attributes["source"] == "detector_rgbd"
+    assert observations[0].objects[0].attributes["rgb_path"] == "rgb/0001.png"
 
 
 def test_observations_cli_returns_nonzero_for_sequence_summary_drift(
@@ -841,3 +887,60 @@ def test_observations_cli_returns_nonzero_for_exported_graph_file_drift(
         "expected": 1,
         "actual": 0,
     } in checks["graph_file_summary_matches_report"]["differences"]
+
+
+def _detector_records() -> tuple[dict[str, object], ...]:
+    return (
+        {
+            "schema_version": "dsg-spatialqa-lab.detector-observation-record.v1",
+            "step": 2,
+            "agent_id": "agent",
+            "rgb_path": "rgb/0002.png",
+            "depth_path": "depth/0002.npy",
+            "metadata": {
+                "detector_id": "owlvit-real-trial",
+                "source": "detector_rgbd",
+            },
+            "detections": [
+                {
+                    "object_id": "track_mug_1",
+                    "label": "mug",
+                    "pose": {"x": 0.2, "y": 1.2, "z": 0.78, "yaw": 0.0},
+                    "bbox": {
+                        "center": {"x": 0.2, "y": 1.2, "z": 0.78, "yaw": 0.0},
+                        "size": [0.12, 0.12, 0.16],
+                    },
+                    "confidence": 0.41,
+                    "visible": False,
+                    "attributes": {"track_id": "track_mug_1"},
+                }
+            ],
+        },
+        {
+            "schema_version": "dsg-spatialqa-lab.detector-observation-record.v1",
+            "step": 1,
+            "agent_id": "agent",
+            "agent_pose": {"x": 0.0, "y": 0.0, "z": 0.0, "yaw": 0.0},
+            "rgb_path": "rgb/0001.png",
+            "depth_path": "depth/0001.npy",
+            "segmentation_path": "seg/0001.png",
+            "metadata": {
+                "detector_id": "owlvit-real-trial",
+                "source": "detector_rgbd",
+            },
+            "detections": [
+                {
+                    "object_id": "track_mug_1",
+                    "label": "mug",
+                    "pose": {"x": -0.4, "y": 1.0, "z": 0.78, "yaw": 0.0},
+                    "bbox": {
+                        "center": {"x": -0.4, "y": 1.0, "z": 0.78, "yaw": 0.0},
+                        "size": [0.12, 0.12, 0.16],
+                    },
+                    "confidence": 0.93,
+                    "visible": True,
+                    "attributes": {"track_id": "track_mug_1"},
+                }
+            ],
+        },
+    )

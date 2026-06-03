@@ -1,0 +1,24 @@
+{
+  "detector_import_report_path": "outputs/predicted-dsg/detector-import-report.json",
+  "detector_jsonl_path": "inputs/predicted-dsg/detector-rgbd.jsonl",
+  "infer_relations": [
+    "LEFT_OF",
+    "RIGHT_OF",
+    "NEAR"
+  ],
+  "min_object_observation_count": 2,
+  "min_observation_count": 2,
+  "output_graph_path": "outputs/predicted-dsg/predicted-graph.json",
+  "output_sequence_path": "outputs/predicted-dsg/detector-observations.json",
+  "predicted_dsg_evidence_report_path": "outputs/predicted-dsg/predicted-dsg-evidence.json",
+  "predicted_graph_report_path": "outputs/predicted-dsg/predicted-graph-report.json",
+  "reference_frames": [
+    "world"
+  ],
+  "required_evidence_kinds": [
+    "depth",
+    "detector",
+    "rgb"
+  ],
+  "schema_version": "dsg-spatialqa-lab.predicted-dsg-detector-run-manifest.v1"
+}

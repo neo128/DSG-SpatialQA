@@ -10,6 +10,10 @@ from dsg_spatialqa_lab.benchmark.manifest import (
     benchmark_manifest_digest,
     load_benchmark_manifest,
 )
+from dsg_spatialqa_lab.benchmark.real_collection import (
+    load_real_collection_report,
+    real_collection_report_digest,
+)
 from dsg_spatialqa_lab.eval.error_attribution import (
     error_attribution_report_digest,
     load_error_attribution_report,
@@ -17,6 +21,18 @@ from dsg_spatialqa_lab.eval.error_attribution import (
 from dsg_spatialqa_lab.eval.graph_metrics import (
     graph_eval_report_digest,
     load_graph_eval_report,
+)
+from dsg_spatialqa_lab.eval.offline_control_matrix import (
+    load_offline_control_matrix_report,
+    offline_control_matrix_report_digest,
+)
+from dsg_spatialqa_lab.eval.offline_control_result import (
+    load_offline_control_result_report,
+    offline_control_result_report_digest,
+)
+from dsg_spatialqa_lab.eval.offline_predictions import (
+    load_offline_prediction_import_report,
+    offline_prediction_import_report_digest,
 )
 from dsg_spatialqa_lab.eval.qa_metrics import (
     load_qa_eval_delta_report,
@@ -33,6 +49,10 @@ from dsg_spatialqa_lab.eval.task_metrics import (
 from dsg_spatialqa_lab.predicted import (
     load_predicted_graph_report,
     predicted_graph_report_digest,
+)
+from dsg_spatialqa_lab.predicted_evidence import (
+    load_predicted_dsg_evidence_report,
+    predicted_dsg_evidence_report_digest,
 )
 from dsg_spatialqa_lab.schema import SpatialQAError
 from dsg_spatialqa_lab.visualization.dashboard_export import (
@@ -89,11 +109,17 @@ def experiment_summary_report(
         for artifact in source_artifacts
         if artifact["artifact_type"] == "graph_eval_report"
     ]
+    offline_import_summaries = [
+        _offline_import_summary(artifact)
+        for artifact in source_artifacts
+        if artifact["artifact_type"] == "offline_prediction_import_report"
+    ]
     error_attribution_summaries = [
         _error_attribution_summary(artifact)
         for artifact in source_artifacts
         if artifact["artifact_type"] == "error_attribution_report"
     ]
+    source_profile_matrix = _source_profile_matrix(offline_import_summaries)
     qa_diagnostic_slices = _qa_diagnostic_slices(qa_delta_comparisons)
     graph_construction_diagnostics = _graph_construction_diagnostics(
         graph_eval_summaries
@@ -116,6 +142,7 @@ def experiment_summary_report(
         source_artifacts=source_artifacts,
         qa_delta_comparisons=qa_delta_comparisons,
         active_delta_comparisons=active_delta_comparisons,
+        source_profile_matrix=source_profile_matrix,
         qa_diagnostic_slices=qa_diagnostic_slices,
         graph_construction_diagnostics=graph_construction_diagnostics,
         error_attribution_diagnostics=error_attribution_diagnostics,
@@ -133,6 +160,8 @@ def experiment_summary_report(
         "qa_delta_comparisons": qa_delta_comparisons,
         "qa_diagnostic_slices": qa_diagnostic_slices,
         "active_task_delta_comparisons": active_delta_comparisons,
+        "offline_prediction_import_summaries": offline_import_summaries,
+        "source_profile_matrix": source_profile_matrix,
         "graph_eval_summaries": graph_eval_summaries,
         "graph_construction_diagnostics": graph_construction_diagnostics,
         "error_attribution_summaries": error_attribution_summaries,
@@ -181,9 +210,13 @@ def validate_experiment_summary_report(report: Mapping[str, Any]) -> dict[str, A
         report.get("active_task_delta_comparisons")
     )
     graph_eval_summaries = _mapping_sequence(report.get("graph_eval_summaries"))
+    offline_import_summaries = _mapping_sequence(
+        report.get("offline_prediction_import_summaries")
+    )
     error_attribution_summaries = _mapping_sequence(
         report.get("error_attribution_summaries")
     )
+    source_profile_matrix = _mapping_sequence(report.get("source_profile_matrix"))
     qa_diagnostic_slices = _mapping_or_empty(report.get("qa_diagnostic_slices"))
     graph_construction_diagnostics = _mapping_or_empty(
         report.get("graph_construction_diagnostics")
@@ -203,6 +236,7 @@ def validate_experiment_summary_report(report: Mapping[str, Any]) -> dict[str, A
     expected_error_attribution_diagnostics = _error_attribution_diagnostics(
         error_attribution_summaries
     )
+    expected_source_profile_matrix = _source_profile_matrix(offline_import_summaries)
     expected_failure_linkage_diagnostics = _failure_linkage_diagnostics(
         expected_error_attribution_diagnostics,
         expected_graph_construction_diagnostics,
@@ -218,6 +252,7 @@ def validate_experiment_summary_report(report: Mapping[str, Any]) -> dict[str, A
         source_artifacts=source_artifacts,
         qa_delta_comparisons=qa_delta_comparisons,
         active_delta_comparisons=active_delta_comparisons,
+        source_profile_matrix=expected_source_profile_matrix,
         qa_diagnostic_slices=expected_qa_diagnostic_slices,
         graph_construction_diagnostics=expected_graph_construction_diagnostics,
         error_attribution_diagnostics=expected_error_attribution_diagnostics,
@@ -232,6 +267,7 @@ def validate_experiment_summary_report(report: Mapping[str, Any]) -> dict[str, A
         qa_delta_comparisons,
         active_delta_comparisons,
         graph_eval_summaries,
+        offline_import_summaries,
         error_attribution_summaries,
     )
     checks = [
@@ -277,6 +313,13 @@ def validate_experiment_summary_report(report: Mapping[str, Any]) -> dict[str, A
             == expected_graph_construction_diagnostics,
             "expected": expected_graph_construction_diagnostics,
             "actual": graph_construction_diagnostics,
+        },
+        {
+            "name": "source_profile_matrix",
+            "passed": tuple(source_profile_matrix)
+            == tuple(expected_source_profile_matrix),
+            "expected": expected_source_profile_matrix,
+            "actual": list(source_profile_matrix),
         },
         {
             "name": "error_attribution_diagnostics",
@@ -369,6 +412,16 @@ def compare_experiment_summary_report(report: Mapping[str, Any]) -> dict[str, An
             current_report["graph_eval_summaries"],
         ),
         _equality_check(
+            "offline_prediction_import_summaries_match_current",
+            report.get("offline_prediction_import_summaries"),
+            current_report["offline_prediction_import_summaries"],
+        ),
+        _equality_check(
+            "source_profile_matrix_match_current",
+            report.get("source_profile_matrix"),
+            current_report["source_profile_matrix"],
+        ),
+        _equality_check(
             "graph_construction_diagnostics_match_current",
             report.get("graph_construction_diagnostics"),
             current_report["graph_construction_diagnostics"],
@@ -455,15 +508,30 @@ def _load_source_artifact(
     if artifact_type == "graph_eval_report":
         payload = load_graph_eval_report(path)
         return payload, graph_eval_report_digest(payload)
+    if artifact_type == "offline_control_matrix_report":
+        payload = load_offline_control_matrix_report(path)
+        return payload, offline_control_matrix_report_digest(payload)
+    if artifact_type == "offline_control_result_report":
+        payload = load_offline_control_result_report(path)
+        return payload, offline_control_result_report_digest(payload)
+    if artifact_type == "offline_prediction_import_report":
+        payload = load_offline_prediction_import_report(path)
+        return payload, offline_prediction_import_report_digest(payload)
     if artifact_type == "predicted_graph_report":
         payload = load_predicted_graph_report(path)
         return payload, predicted_graph_report_digest(payload)
+    if artifact_type == "predicted_dsg_evidence_report":
+        payload = load_predicted_dsg_evidence_report(path)
+        return payload, predicted_dsg_evidence_report_digest(payload)
     if artifact_type == "qa_eval_delta_report":
         payload = load_qa_eval_delta_report(path)
         return payload, qa_eval_delta_report_digest(payload)
     if artifact_type == "qa_eval_report":
         payload = load_qa_eval_report(path)
         return payload, qa_eval_report_digest(payload)
+    if artifact_type == "real_collection_report":
+        payload = load_real_collection_report(path)
+        return payload, real_collection_report_digest(payload)
     raise SpatialQAError(f"Unsupported experiment artifact type: {artifact_type}")
 
 
@@ -700,6 +768,69 @@ def _research_question_entry(
     }
 
 
+def _offline_import_summary(source_artifact: Mapping[str, Any]) -> dict[str, Any]:
+    report = load_offline_prediction_import_report(_required_str(source_artifact, "path"))
+    return {
+        "artifact_key": _required_str(source_artifact, "artifact_key"),
+        "path": _required_str(source_artifact, "path"),
+        "digest": _required_str(source_artifact, "digest"),
+        "source": _json_value(_mapping_or_empty(report.get("source"))),
+        "source_profile": _json_value(
+            _mapping_or_empty(report.get("source_profile"))
+        ),
+        "summary": _json_value(_mapping_or_empty(report.get("summary"))),
+        "qa_digest": _string_or_none(report.get("qa_digest")),
+        "input_digest": _string_or_none(report.get("input_digest")),
+        "prediction_digest": _string_or_none(report.get("prediction_digest")),
+    }
+
+
+def _source_profile_matrix(
+    offline_import_summaries: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for summary in sorted(
+        offline_import_summaries,
+        key=lambda item: _required_str(item, "artifact_key"),
+    ):
+        profile = _mapping_or_empty(summary.get("source_profile"))
+        source = _mapping_or_empty(summary.get("source"))
+        counts = _mapping_or_empty(summary.get("summary"))
+        rows.append(
+            {
+                "adapter": _string_or_none(profile.get("adapter")),
+                "artifact_key": _required_str(summary, "artifact_key"),
+                "capability_axes": _string_list(profile.get("capability_axes")),
+                "dataset_id": _string_or_none(profile.get("dataset_id")),
+                "digest": _required_str(summary, "digest"),
+                "duplicate_case_count": _int_or_none(
+                    counts.get("duplicate_case_count")
+                ),
+                "imported_prediction_count": _int_or_none(
+                    counts.get("imported_prediction_count")
+                ),
+                "metadata_keys": _string_list(profile.get("metadata_keys")),
+                "missing_case_count": _int_or_none(
+                    counts.get("missing_case_count")
+                ),
+                "model_id": _string_or_none(profile.get("model_id")),
+                "path": _required_str(summary, "path"),
+                "prediction_digest": _string_or_none(
+                    summary.get("prediction_digest")
+                ),
+                "prompt_id": _string_or_none(profile.get("prompt_id")),
+                "qa_digest": _string_or_none(summary.get("qa_digest")),
+                "source_key": _string_or_none(profile.get("source_key")),
+                "source_kind": _string_or_none(source.get("kind")),
+                "source_name": _string_or_none(source.get("name")),
+                "unknown_case_count": _int_or_none(
+                    counts.get("unknown_case_count")
+                ),
+            }
+        )
+    return rows
+
+
 def _summary(
     *,
     research_questions: Mapping[str, Any],
@@ -707,6 +838,7 @@ def _summary(
     source_artifacts: Sequence[Mapping[str, Any]],
     qa_delta_comparisons: Sequence[Mapping[str, Any]],
     active_delta_comparisons: Sequence[Mapping[str, Any]],
+    source_profile_matrix: Sequence[Mapping[str, Any]],
     qa_diagnostic_slices: Mapping[str, Any],
     graph_construction_diagnostics: Mapping[str, Any],
     error_attribution_diagnostics: Mapping[str, Any],
@@ -731,6 +863,7 @@ def _summary(
         "readiness_status": _string_or_none(readiness.get("status")),
         "research_question_count": len(research_questions),
         "source_artifact_count": len(source_artifacts),
+        "source_profile_count": len(source_profile_matrix),
         "verdict_counts": _verdict_counts(research_questions),
     }
 
@@ -862,6 +995,7 @@ def _source_comparison_map(
             "active_task_delta_report",
             "error_attribution_report",
             "graph_eval_report",
+            "offline_prediction_import_report",
             "qa_eval_delta_report",
         }
     }
@@ -871,6 +1005,7 @@ def _comparison_source_map(
     qa_delta_comparisons: Sequence[Mapping[str, Any]],
     active_delta_comparisons: Sequence[Mapping[str, Any]],
     graph_eval_summaries: Sequence[Mapping[str, Any]],
+    offline_import_summaries: Sequence[Mapping[str, Any]],
     error_attribution_summaries: Sequence[Mapping[str, Any]],
 ) -> dict[str, dict[str, Any]]:
     comparison_items = [
@@ -883,6 +1018,10 @@ def _comparison_source_map(
     )
     comparison_items.extend(
         ("graph_eval_report", summary) for summary in graph_eval_summaries
+    )
+    comparison_items.extend(
+        ("offline_prediction_import_report", summary)
+        for summary in offline_import_summaries
     )
     comparison_items.extend(
         ("error_attribution_report", summary)
@@ -1114,6 +1253,12 @@ def _float_or_none(value: object) -> float | None:
 
 def _metric_rate(metrics: Mapping[str, Any], metric_name: str) -> float | None:
     return _float_or_none(_mapping_or_empty(metrics.get(metric_name)).get("rate"))
+
+
+def _string_list(value: object) -> list[str]:
+    if isinstance(value, str) or not isinstance(value, Sequence):
+        return []
+    return sorted(item for item in value if isinstance(item, str))
 
 
 def _json_value(value: Any) -> Any:

@@ -192,9 +192,16 @@ def test_benchmark_manifest_records_experiment_artifacts_and_detects_drift(
     )
     predicted_graph_path = tmp_path / "predicted-graph.json"
     predicted_report_path = tmp_path / "predicted-report.json"
+    predicted_evidence_path = tmp_path / "predicted-dsg-evidence.json"
     graph_eval_path = tmp_path / "graph-eval-report.json"
     error_attribution_path = tmp_path / "error-attribution-report.json"
     prediction_path = tmp_path / "predictions.jsonl"
+    offline_input_path = tmp_path / "offline-input.jsonl"
+    offline_prediction_path = tmp_path / "offline-predictions.jsonl"
+    offline_import_report_path = tmp_path / "offline-import-report.json"
+    offline_control_matrix_path = tmp_path / "offline-control-matrix.json"
+    offline_control_matrix_path = tmp_path / "offline-control-matrix.json"
+    offline_control_matrix_path = tmp_path / "offline-control-matrix.json"
     qa_report_path = tmp_path / "qa-eval-report.json"
     qa_delta_path = tmp_path / "qa-delta-report.json"
     active_report_path = tmp_path / "active-report.json"
@@ -225,6 +232,63 @@ def test_benchmark_manifest_records_experiment_artifacts_and_detects_drift(
         prediction_path=prediction_path,
     )
     lab.save_predicted_graph_report(predicted_report, predicted_report_path)
+    predicted_evidence = lab.predicted_dsg_evidence_report(
+        predicted_report,
+        predicted_graph_report_path=predicted_report_path,
+    )
+    lab.save_predicted_dsg_evidence_report(
+        predicted_evidence,
+        predicted_evidence_path,
+    )
+    lab.save_offline_prediction_records(
+        (
+            lab.OfflinePredictionRecord(
+                case_id=case.id,
+                answer=case.answer,
+                evidence_nodes=case.required_nodes,
+                evidence_edges=case.required_edges,
+                confidence=0.88,
+            ),
+        ),
+        offline_input_path,
+    )
+    imported_predictions, offline_import_report = lab.import_offline_predictions(
+        (case,),
+        lab.load_offline_prediction_records(offline_input_path),
+        source_name="vlm_fixture",
+        source_kind="vlm",
+        source_metadata={
+            "capabilities": ("spatial_qa", "graph_tool_query"),
+            "model_id": "mock-vlm",
+            "prompt_id": "spatial-qa-v1",
+        },
+        qa_path=cast(str, manifest["artifacts"][0]["qa_path"]),
+        input_path=offline_input_path,
+        prediction_path=offline_prediction_path,
+    )
+    lab.save_qa_predictions(imported_predictions, offline_prediction_path)
+    lab.save_offline_prediction_import_report(
+        offline_import_report,
+        offline_import_report_path,
+    )
+    offline_control_matrix = lab.offline_control_matrix_report(
+        (offline_import_report,),
+        report_paths=(offline_import_report_path,),
+        required_source_kinds=("caption_memory",),
+    )
+    lab.save_offline_control_matrix_report(
+        offline_control_matrix,
+        offline_control_matrix_path,
+    )
+    offline_control_matrix = lab.offline_control_matrix_report(
+        (offline_import_report,),
+        report_paths=(offline_import_report_path,),
+        required_source_kinds=("vlm",),
+    )
+    lab.save_offline_control_matrix_report(
+        offline_control_matrix,
+        offline_control_matrix_path,
+    )
     lab.save_graph_eval_report(graph_eval, graph_eval_path)
     lab.save_error_attribution_report(
         error_attribution_report,
@@ -248,12 +312,15 @@ def test_benchmark_manifest_records_experiment_artifacts_and_detects_drift(
         dashboard_bundle_paths=(dashboard_path,),
         error_attribution_report_paths=(error_attribution_path,),
         graph_eval_report_paths=(graph_eval_path,),
+        offline_control_matrix_report_paths=(offline_control_matrix_path,),
+        offline_prediction_import_report_paths=(offline_import_report_path,),
+        predicted_dsg_evidence_report_paths=(predicted_evidence_path,),
         predicted_graph_report_paths=(predicted_report_path,),
     )
     validation = lab.validate_benchmark_manifest(manifest_with_artifacts)
     comparison = lab.compare_benchmark_manifest(manifest_with_artifacts)
 
-    assert manifest_with_artifacts["summary"]["experiment_artifact_count"] == 8
+    assert manifest_with_artifacts["summary"]["experiment_artifact_count"] == 11
     assert manifest_with_artifacts["experiment_artifact_digests"] == {
         "active_task_delta_report:active-delta-report.json": active_delta_report[
             "report_digest"
@@ -264,6 +331,15 @@ def test_benchmark_manifest_records_experiment_artifacts_and_detects_drift(
             error_attribution_report["report_digest"]
         ),
         "graph_eval_report:graph-eval-report.json": graph_eval["report_digest"],
+        "offline_control_matrix_report:offline-control-matrix.json": (
+            offline_control_matrix["report_digest"]
+        ),
+        "offline_prediction_import_report:offline-import-report.json": (
+            offline_import_report["report_digest"]
+        ),
+        "predicted_dsg_evidence_report:predicted-dsg-evidence.json": (
+            predicted_evidence["report_digest"]
+        ),
         "predicted_graph_report:predicted-report.json": predicted_report["digest"],
         "qa_eval_delta_report:qa-delta-report.json": qa_delta_report["report_digest"],
         "qa_eval_report:qa-eval-report.json": candidate_report["report_digest"],
@@ -274,6 +350,9 @@ def test_benchmark_manifest_records_experiment_artifacts_and_detects_drift(
         "dashboard_bundle",
         "error_attribution_report",
         "graph_eval_report",
+        "offline_control_matrix_report",
+        "offline_prediction_import_report",
+        "predicted_dsg_evidence_report",
         "predicted_graph_report",
         "qa_eval_delta_report",
         "qa_eval_report",
@@ -316,8 +395,52 @@ def test_build_benchmark_cli_accepts_experiment_artifact_paths(
     graph_eval_path = tmp_path / "graph-eval-report.json"
     error_attribution_path = tmp_path / "error-attribution-report.json"
     prediction_path = tmp_path / "predictions.jsonl"
+    offline_input_path = tmp_path / "offline-input.jsonl"
+    offline_prediction_path = tmp_path / "offline-predictions.jsonl"
+    offline_import_report_path = tmp_path / "offline-import-report.json"
+    offline_control_matrix_path = tmp_path / "offline-control-matrix.json"
     lab.save_graph_json(predicted_graph, predicted_graph_path)
     lab.save_qa_predictions((prediction,), prediction_path)
+    qa_path = tmp_path / "qa.jsonl"
+    lab.save_qa_dataset((case,), qa_path)
+    lab.save_offline_prediction_records(
+        (
+            lab.OfflinePredictionRecord(
+                case_id=case.id,
+                answer=case.answer,
+                confidence=0.88,
+            ),
+        ),
+        offline_input_path,
+    )
+    imported_predictions, offline_import_report = lab.import_offline_predictions(
+        (case,),
+        lab.load_offline_prediction_records(offline_input_path),
+        source_name="caption_fixture",
+        source_kind="caption_memory",
+        source_metadata={
+            "capabilities": "spatial_qa,dynamic_memory",
+            "model_id": "caption-baseline",
+            "prompt_id": "caption-v1",
+        },
+        qa_path=qa_path,
+        input_path=offline_input_path,
+        prediction_path=offline_prediction_path,
+    )
+    lab.save_qa_predictions(imported_predictions, offline_prediction_path)
+    lab.save_offline_prediction_import_report(
+        offline_import_report,
+        offline_import_report_path,
+    )
+    offline_control_matrix = lab.offline_control_matrix_report(
+        (offline_import_report,),
+        report_paths=(offline_import_report_path,),
+        required_source_kinds=("caption_memory",),
+    )
+    lab.save_offline_control_matrix_report(
+        offline_control_matrix,
+        offline_control_matrix_path,
+    )
     lab.save_predicted_graph_report(
         lab.predicted_graph_report(
             input_path=episode_paths[0],
@@ -362,6 +485,10 @@ def test_build_benchmark_cli_accepts_experiment_artifact_paths(
             "2",
             "--qa-eval-report",
             str(qa_report_path),
+            "--offline-prediction-import-report",
+            str(offline_import_report_path),
+            "--offline-control-matrix-report",
+            str(offline_control_matrix_path),
             "--graph-eval-report",
             str(graph_eval_path),
             "--error-attribution-report",
@@ -377,10 +504,12 @@ def test_build_benchmark_cli_accepts_experiment_artifact_paths(
     manifest = lab.load_benchmark_manifest(manifest_path)
     assert output["valid"] is True
     assert output["digest"] == manifest["manifest_digest"]
-    assert manifest["summary"]["experiment_artifact_count"] == 4
+    assert manifest["summary"]["experiment_artifact_count"] == 6
     assert [item["artifact_type"] for item in manifest["experiment_artifacts"]] == [
         "error_attribution_report",
         "graph_eval_report",
+        "offline_control_matrix_report",
+        "offline_prediction_import_report",
         "predicted_graph_report",
         "qa_eval_report",
     ]

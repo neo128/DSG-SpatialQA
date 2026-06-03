@@ -26,6 +26,12 @@ SCENE_OBSERVATION_SEQUENCE_SCHEMA_VERSION = (
 OBSERVATION_INGEST_REPORT_SCHEMA_VERSION = (
     "dsg-spatialqa-lab.observation-ingest-report.v1"
 )
+DETECTOR_OBSERVATION_RECORD_SCHEMA_VERSION = (
+    "dsg-spatialqa-lab.detector-observation-record.v1"
+)
+DETECTOR_OBSERVATION_IMPORT_REPORT_SCHEMA_VERSION = (
+    "dsg-spatialqa-lab.detector-observation-import-report.v1"
+)
 SCENE_OBSERVATION_SEQUENCE_SUMMARY_SCHEMA_VERSION = (
     "dsg-spatialqa-lab.scene-observation-sequence-summary.v1"
 )
@@ -555,6 +561,330 @@ def save_scene_observation_sequence(
 
 def load_scene_observation_sequence(path: str | Path) -> tuple[SceneObservation, ...]:
     return scene_observation_sequence_from_json(Path(path).read_text(encoding="utf-8"))
+
+
+def detector_observation_sequence_from_jsonl(payload: str) -> tuple[SceneObservation, ...]:
+    observations: list[SceneObservation] = []
+    for line_number, line in enumerate(payload.splitlines(), start=1):
+        if line == "":
+            continue
+        item = json.loads(line)
+        observation = _scene_observation_from_detector_record(
+            _as_mapping(item, f"detector_observation_record line {line_number}"),
+        )
+        observations.append(observation)
+    return tuple(sorted(_validate_unique_observation_steps(observations), key=lambda item: item.step))
+
+
+def load_detector_observation_sequence(path: str | Path) -> tuple[SceneObservation, ...]:
+    return detector_observation_sequence_from_jsonl(Path(path).read_text(encoding="utf-8"))
+
+
+def detector_observation_records_digest(payload: str) -> str:
+    return hashlib.sha256(_normalized_detector_jsonl(payload).encode("utf-8")).hexdigest()
+
+
+def detector_observation_import_report(
+    *,
+    input_path: str | Path,
+    output_sequence_path: str | Path,
+    observations: Sequence[SceneObservation],
+    input_payload: str,
+) -> dict[str, Any]:
+    report: dict[str, Any] = {
+        "schema_version": DETECTOR_OBSERVATION_IMPORT_REPORT_SCHEMA_VERSION,
+        "action": "import_detector_observation_jsonl",
+        "path": str(input_path),
+        "output_sequence_path": str(output_sequence_path),
+        "valid": True,
+        "input_digest": detector_observation_records_digest(input_payload),
+        "sequence_digest": scene_observation_sequence_digest(observations),
+        "summary": scene_observation_sequence_summary(observations),
+    }
+    report["digest"] = detector_observation_import_report_digest(report)
+    return report
+
+
+def detector_observation_import_report_digest(report: Mapping[str, Any]) -> str:
+    payload = {key: value for key, value in report.items() if key != "digest"}
+    return hashlib.sha256(
+        json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    ).hexdigest()
+
+
+def detector_observation_import_report_json(report: Mapping[str, Any]) -> str:
+    return json.dumps(report, indent=2, sort_keys=True) + "\n"
+
+
+def save_detector_observation_import_report(
+    report: Mapping[str, Any],
+    path: str | Path,
+) -> Path:
+    output_path = Path(path)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(detector_observation_import_report_json(report), encoding="utf-8")
+    return output_path
+
+
+def load_detector_observation_import_report(path: str | Path) -> dict[str, Any]:
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise SpatialQAError("Detector observation import report JSON must be an object")
+    return cast(dict[str, Any], payload)
+
+
+def validate_detector_observation_import_report(
+    report: Mapping[str, Any],
+) -> dict[str, Any]:
+    schema_version = report.get("schema_version")
+    action = report.get("action")
+    valid = report.get("valid")
+    digest = report.get("digest")
+    expected_digest = detector_observation_import_report_digest(report)
+    sequence_digest = report.get("sequence_digest")
+    summary = report.get("summary")
+    checks = [
+        {
+            "name": "schema_version",
+            "passed": schema_version == DETECTOR_OBSERVATION_IMPORT_REPORT_SCHEMA_VERSION,
+            "expected": DETECTOR_OBSERVATION_IMPORT_REPORT_SCHEMA_VERSION,
+            "actual": schema_version,
+        },
+        {
+            "name": "action",
+            "passed": action == "import_detector_observation_jsonl",
+            "expected": "import_detector_observation_jsonl",
+            "actual": action,
+        },
+        {
+            "name": "report_valid",
+            "passed": valid is True,
+            "expected": True,
+            "actual": valid,
+        },
+        {
+            "name": "report_digest",
+            "passed": digest == expected_digest,
+            "expected": expected_digest,
+            "actual": digest,
+        },
+        {
+            "name": "input_path_present",
+            "passed": _is_non_empty_string(report.get("path")),
+            "expected": "non-empty explicit local path",
+            "actual": report.get("path"),
+        },
+        {
+            "name": "output_sequence_path_present",
+            "passed": _is_non_empty_string(report.get("output_sequence_path")),
+            "expected": "non-empty explicit local path",
+            "actual": report.get("output_sequence_path"),
+        },
+        {
+            "name": "input_digest_format",
+            "passed": _is_sha256_hexdigest(report.get("input_digest")),
+            "expected": "64 lowercase sha256 hex characters",
+            "actual": report.get("input_digest"),
+        },
+        {
+            "name": "sequence_digest_format",
+            "passed": _is_sha256_hexdigest(sequence_digest),
+            "expected": "64 lowercase sha256 hex characters",
+            "actual": sequence_digest,
+        },
+        {
+            "name": "summary_sequence_digest_matches",
+            "passed": (
+                isinstance(summary, Mapping)
+                and summary.get("sequence_digest") == sequence_digest
+            ),
+            "expected": sequence_digest,
+            "actual": summary.get("sequence_digest") if isinstance(summary, Mapping) else None,
+        },
+    ]
+    return {
+        "valid": all(check["passed"] is True for check in checks),
+        "schema_version": schema_version,
+        "digest": digest,
+        "checks": checks,
+    }
+
+
+def compare_detector_observation_import_report(
+    report: Mapping[str, Any],
+) -> dict[str, Any]:
+    input_path = _required_str(report, "path")
+    output_sequence_path = _required_str(report, "output_sequence_path")
+    input_payload = Path(input_path).read_text(encoding="utf-8")
+    current_observations = detector_observation_sequence_from_jsonl(input_payload)
+    output_observations = load_scene_observation_sequence(output_sequence_path)
+    current_report = detector_observation_import_report(
+        input_path=input_path,
+        output_sequence_path=output_sequence_path,
+        observations=current_observations,
+        input_payload=input_payload,
+    )
+    current_sequence_digest = scene_observation_sequence_digest(current_observations)
+    output_sequence_digest = scene_observation_sequence_digest(output_observations)
+    current_summary = scene_observation_sequence_summary(current_observations)
+    saved_summary = report.get("summary")
+    summary_differences = _nested_differences(saved_summary, current_summary)
+    checks = [
+        {
+            "name": "saved_report_valid",
+            "passed": validate_detector_observation_import_report(report)["valid"] is True,
+        },
+        {
+            "name": "input_digest_matches_current",
+            "passed": report.get("input_digest") == current_report["input_digest"],
+            "expected": report.get("input_digest"),
+            "actual": current_report["input_digest"],
+        },
+        {
+            "name": "sequence_digest_matches_current",
+            "passed": report.get("sequence_digest") == current_sequence_digest,
+            "expected": report.get("sequence_digest"),
+            "actual": current_sequence_digest,
+        },
+        {
+            "name": "output_sequence_digest_matches_report",
+            "passed": report.get("sequence_digest") == output_sequence_digest,
+            "expected": report.get("sequence_digest"),
+            "actual": output_sequence_digest,
+        },
+        {
+            "name": "summary_matches_current",
+            "passed": saved_summary == current_summary,
+            "expected": saved_summary,
+            "actual": current_summary,
+        },
+    ]
+    if summary_differences:
+        checks[4]["differences"] = summary_differences
+    return {
+        "matches": all(check["passed"] is True for check in checks),
+        "input_path": input_path,
+        "output_sequence_path": output_sequence_path,
+        "saved_input_digest": report.get("input_digest"),
+        "current_input_digest": current_report["input_digest"],
+        "saved_sequence_digest": report.get("sequence_digest"),
+        "current_sequence_digest": current_sequence_digest,
+        "output_sequence_digest": output_sequence_digest,
+        "checks": checks,
+    }
+
+
+def _scene_observation_from_detector_record(
+    payload: Mapping[str, Any],
+) -> SceneObservation:
+    schema_version = payload.get("schema_version")
+    if schema_version != DETECTOR_OBSERVATION_RECORD_SCHEMA_VERSION:
+        raise SpatialQAError(
+            f"Unsupported detector observation record schema version: {schema_version}"
+        )
+    agent_pose = payload.get("agent_pose")
+    frame_attributes = _detector_frame_attributes(payload)
+    return SceneObservation(
+        step=_required_int(payload, "step"),
+        agent_id=_required_str(payload, "agent_id"),
+        agent_pose=(
+            _pose_from_mapping(_as_mapping(agent_pose, "agent_pose"))
+            if agent_pose is not None
+            else None
+        ),
+        rooms=tuple(
+            _node_observation_from_mapping(_as_mapping(item, "room"))
+            for item in _optional_sequence(payload, "rooms")
+        ),
+        regions=tuple(
+            _node_observation_from_mapping(_as_mapping(item, "region"))
+            for item in _optional_sequence(payload, "regions")
+        ),
+        objects=tuple(
+            _object_observation_from_detector_mapping(
+                _as_mapping(item, "detection"),
+                frame_attributes,
+            )
+            for item in _required_sequence(payload, "detections")
+        ),
+    )
+
+
+def _object_observation_from_detector_mapping(
+    payload: Mapping[str, Any],
+    frame_attributes: Mapping[str, Any],
+) -> ObjectObservation:
+    observation = _object_observation_from_mapping(payload)
+    attributes = {
+        **dict(frame_attributes),
+        **dict(observation.attributes),
+    }
+    return ObjectObservation(
+        observation.object_id,
+        observation.label,
+        observation.pose,
+        observation.bbox,
+        confidence=observation.confidence,
+        visible=observation.visible,
+        attributes=attributes,
+    )
+
+
+def _detector_frame_attributes(payload: Mapping[str, Any]) -> dict[str, Any]:
+    metadata = _as_mapping(payload.get("metadata", {}), "metadata")
+    attributes: dict[str, Any] = {
+        key: metadata[key]
+        for key in sorted(metadata)
+        if _json_attribute_value(metadata[key])
+    }
+    for field_name in ("rgb_path", "depth_path", "segmentation_path"):
+        value = payload.get(field_name)
+        if value is None:
+            continue
+        if not isinstance(value, str):
+            raise SpatialQAError(f"{field_name} must be a string")
+        attributes[field_name] = value
+    return attributes
+
+
+def _validate_unique_observation_steps(
+    observations: Sequence[SceneObservation],
+) -> Sequence[SceneObservation]:
+    seen: set[int] = set()
+    for observation in observations:
+        if observation.step in seen:
+            raise SpatialQAError(f"Duplicate detector observation step: {observation.step}")
+        seen.add(observation.step)
+    return observations
+
+
+def _normalized_detector_jsonl(payload: str) -> str:
+    lines: list[str] = []
+    for line_number, line in enumerate(payload.splitlines(), start=1):
+        if line == "":
+            continue
+        item = json.loads(line)
+        if not isinstance(item, Mapping):
+            raise SpatialQAError(
+                f"detector observation line {line_number} must be an object"
+            )
+        lines.append(json.dumps(item, separators=(",", ":"), sort_keys=True))
+    return "".join(f"{line}\n" for line in lines)
+
+
+def _json_attribute_value(value: object) -> bool:
+    if value is None:
+        return True
+    if isinstance(value, (str, int, float, bool)):
+        return True
+    if isinstance(value, Sequence) and not isinstance(value, str):
+        return all(_json_attribute_value(item) for item in value)
+    if isinstance(value, Mapping):
+        return all(
+            isinstance(key, str) and _json_attribute_value(item)
+            for key, item in value.items()
+        )
+    return False
 
 
 def ingest_scene_observation_sequence(

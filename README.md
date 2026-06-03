@@ -202,32 +202,210 @@ The `graph_tool` baseline replays questions through the local
 choice-style cases; `graph_text` and `caption_memory` provide stable offline
 interface placeholders. No baseline calls an external model or service.
 
-Import offline external prediction records into the standard QA prediction
-JSONL format:
+Import offline external prediction records, or already-normalized standard
+`QAPrediction` JSONL files, into the standard QA prediction JSONL format:
 
 ```bash
 python scripts/import_predictions.py \
   --qa qa.jsonl \
   --input offline-predictions.jsonl \
-  --source-name vlm_fixture \
+  --source-name llava16_ai2thor_trial \
   --source-kind vlm \
-  --metadata prompt_id=spatial-qa-v1 \
+  --metadata model_id=llava-v1.6-34b \
+  --metadata prompt_id=vlm-spatial-qa-v1 \
+  --metadata dataset_id=ai2thor-real-trial-v1 \
+  --pred vlm-predictions.jsonl \
+  --report vlm-import-report.json
+python scripts/import_predictions.py \
+  --qa qa.jsonl \
+  --input external-vlm-qa-predictions.jsonl \
+  --input-format qa_prediction \
+  --source-name llava16_ai2thor_trial \
+  --source-kind vlm \
+  --metadata model_id=llava-v1.6-34b \
+  --metadata prompt_id=vlm-spatial-qa-v1 \
+  --metadata dataset_id=ai2thor-real-trial-v1 \
   --pred vlm-predictions.jsonl \
   --report vlm-import-report.json
 python scripts/import_predictions.py --validate-report vlm-import-report.json
 python scripts/import_predictions.py --compare-report vlm-import-report.json
+python scripts/run_offline_controls.py \
+  --qa qa.jsonl \
+  --output-dir data/offline-controls \
+  --matrix-report offline-control-matrix.json \
+  --source vlm llava16_ai2thor_trial vlm-offline-predictions.jsonl \
+  --source multi_frame_vlm llava16_multiframe_ai2thor_trial multi-frame-vlm-offline-predictions.jsonl \
+  --source caption_memory caption_memory_ai2thor_trial caption-memory-offline-predictions.jsonl \
+  --source graph_text graph_text_ai2thor_trial graph-text-offline-predictions.jsonl \
+  --source-metadata llava16_ai2thor_trial model_id=llava-v1.6-34b \
+  --source-metadata llava16_ai2thor_trial prompt_id=vlm-spatial-qa-v1 \
+  --source-metadata llava16_ai2thor_trial dataset_id=ai2thor-real-trial-v1 \
+  --source-metadata llava16_multiframe_ai2thor_trial model_id=llava-v1.6-34b \
+  --source-metadata llava16_multiframe_ai2thor_trial prompt_id=multi-frame-vlm-spatial-qa-v1 \
+  --source-metadata llava16_multiframe_ai2thor_trial dataset_id=ai2thor-real-trial-v1 \
+  --source-metadata caption_memory_ai2thor_trial model_id=blip2-flan-t5-xl \
+  --source-metadata caption_memory_ai2thor_trial prompt_id=caption-memory-spatial-v1 \
+  --source-metadata caption_memory_ai2thor_trial dataset_id=ai2thor-real-trial-v1 \
+  --source-metadata graph_text_ai2thor_trial model_id=gpt-4.1-mini \
+  --source-metadata graph_text_ai2thor_trial prompt_id=graph-text-spatial-qa-v1 \
+  --source-metadata graph_text_ai2thor_trial dataset_id=ai2thor-real-trial-v1
+python scripts/check_offline_controls.py \
+  --import-report vlm-import-report.json \
+  --import-report multi-frame-vlm-import-report.json \
+  --import-report caption-memory-import-report.json \
+  --import-report graph-text-import-report.json \
+  --report offline-control-matrix.json
+python scripts/check_offline_controls.py --validate-report offline-control-matrix.json
+python scripts/check_offline_controls.py --compare-report offline-control-matrix.json
 python scripts/run_qa_eval.py \
   --gold qa.jsonl \
   --pred vlm-predictions.jsonl \
   --report vlm-qa-eval-report.json
 ```
 
-Offline import reads only local JSONL records, skips unknown case IDs with
-report diagnostics, records missing gold cases, preserves source metadata,
-derives a stable `source_profile` with source key, adapter, model, prompt,
-dataset, metadata keys, and capability axes, and writes deterministic
-`QAPrediction` JSONL for the existing QA evaluation, attribution, and
-dashboard pipeline.
+For repeated real-source runs, the same handoff can be driven by one local
+manifest instead of repeating every source argument:
+
+```bash
+python scripts/run_offline_controls.py \
+  --manifest offline-control-import-manifest.json \
+  --run-ledger offline-control-import-run-ledger.json
+```
+
+Before writing import reports, QA eval reports, deltas, or the matrix report,
+audit the manifest inputs:
+
+```bash
+python scripts/run_offline_controls.py \
+  --preflight-manifest offline-control-import-manifest.json \
+  --artifact-contracts offline-control-artifact-contracts.json
+```
+
+Before external VLM/LLM producers fill the four prediction JSONL files, export
+a no-gold-answer request bundle from the same manifest:
+
+```bash
+python scripts/run_offline_controls.py \
+  --prediction-request-bundle offline-control-import-manifest.json \
+  --request-bundle-output offline-control-prediction-request-bundle.json
+python scripts/run_offline_controls.py \
+  --prediction-receipt-bundle offline-control-import-manifest.json \
+  --receipt-bundle-output offline-control-prediction-receipt-bundle.json
+python scripts/run_offline_controls.py \
+  --validate-prediction-receipt-bundle offline-control-prediction-receipt-bundle.json
+```
+
+The manifest schema is
+`dsg-spatialqa-lab.offline-control-import-manifest.v1`. It records local
+`qa_path`, `output_dir`, `matrix_report_path`, optional candidate DSG
+prediction/eval/result paths, and four `sources` entries with `source_kind`,
+`source_name`, `input_path`, `input_format`, and real-source `metadata`.
+The preflight command reads the local QA file, source prediction files, and
+candidate prediction file, then reports source coverage, missing/unknown/
+duplicate/error predictions, matrix readiness, real-source metadata checks,
+and planned output paths without writing any artifacts. Its
+`artifact_contracts` section also lists each four-way control source's expected
+input schema, input status, source metadata readiness, diagnostics, normalized
+prediction/import output paths, and planned candidate-vs-source QA eval/delta
+paths, so externally produced VLM/LLM prediction files can be checked before
+the atomic import run. When `--artifact-contracts` is supplied, that compact
+contract section is also saved as stable JSON with a `contracts_digest`.
+After the external source files arrive, the prediction receipt bundle records
+the same manifest/QA digest, per-source input digests, prediction counts, input
+status, source metadata, planned normalized outputs, candidate prediction
+digest/status, and preflight/import/request-bundle commands without writing
+normalized predictions, import reports, QA eval reports, deltas, or matrix
+artifacts. `validate_offline_control_prediction_receipt_bundle()` checks the
+saved receipt digest plus summary/source/candidate consistency before a
+top-level launch report can accept the bundle as ready, and
+`scripts/run_offline_controls.py --validate-prediction-receipt-bundle` exposes
+the same check for child-handoff review.
+Validate the saved contract file, or compare it with the current manifest
+preflight output to detect drift before importing real predictions:
+
+```bash
+python scripts/check_offline_controls.py \
+  --validate-artifact-contracts offline-control-artifact-contracts.json
+python scripts/check_offline_controls.py \
+  --compare-artifact-contracts offline-control-artifact-contracts.json \
+  --manifest offline-control-import-manifest.json
+python scripts/check_offline_controls.py \
+  --artifact-launch-report offline-control-artifact-contracts.json \
+  --manifest offline-control-import-manifest.json
+```
+
+The launch report reruns the current import-manifest preflight and summarizes
+which VLM-only, multi-frame VLM, caption-memory, or graph-text source is still
+missing, invalid, diagnostic-bearing, or missing real-source metadata. It
+also reports whether the candidate DSG prediction is ready, missing, invalid,
+or not requested. Each source row carries the original `source_metadata` plus a
+`source_import_command` for a single-source `scripts/import_predictions.py`
+normalization smoke check. The `source_import_plan` section collects those
+single-source commands with the candidate DSG prediction status plus the atomic
+`next_commands.import` command, while `actionable_blockers` lists only the
+currently blocked source or candidate prediction rows. The
+`external_prediction_intake_plan` section focuses on the four real control
+prediction files: it lists required source kinds, required metadata fields,
+per-source file status, planned normalized output paths, blocked sources, and
+the request-bundle, receipt-bundle, preflight, and import commands. The request
+bundle includes case IDs, questions, answer types, source metadata, output
+paths, and empty `qa_prediction` / `offline_prediction_record` templates, but
+intentionally does not include gold answers or gold evidence. The receipt
+bundle records returned-file digests and readiness without writing import
+outputs. The launch report returns non-zero until the saved contract is valid,
+still matches the manifest, and all four source prediction files plus the
+candidate prediction are ready to import.
+
+Offline import reads only local JSONL records or standard `QAPrediction` JSONL
+files, skips unknown case IDs with report diagnostics, records missing gold
+cases, preserves source metadata, derives a stable `source_profile` with source
+key, adapter, model, prompt, dataset, metadata keys, and capability axes, and
+writes deterministic `QAPrediction` JSONL for the existing QA evaluation,
+attribution, and dashboard pipeline. The offline control matrix gate checks
+that VLM-only,
+multi-frame VLM, caption-memory, and graph-text LLM import reports are present,
+share the same QA digest, and have complete gold-case coverage before they are
+treated as real DSG-vs-control evidence. Real experiment readiness also checks
+that the matrix report is ready, that its required source kinds cover the
+readiness-required controls, and that these imports have complete coverage,
+clean diagnostics, real-source `model_id` / `prompt_id` / `dataset_id`
+metadata, no fixture/mock/placeholder source identity, and a shared digest
+matching the benchmark manifest `qa_digest`.
+`scripts/run_offline_controls.py` combines the four local imports and matrix
+gate in one deterministic handoff. Its structured output separates
+`matrix_readiness` from `source_metadata_summary`, and its aggregate `ready`
+status remains false until both the matrix and real-source metadata checks pass.
+When a candidate DSG prediction file is supplied, the run also writes candidate
+and baseline QA eval reports, four DSG-vs-control QA delta reports, and an
+offline control result report that summarizes candidate exact-match lift or
+regression for each required source kind. Validate or compare that result report
+with:
+
+```bash
+python scripts/check_offline_controls.py \
+  --validate-result-report offline-control-result.json
+
+python scripts/check_offline_controls.py \
+  --compare-result-report offline-control-result.json
+```
+
+The manifest-driven entry also reports a manifest digest for audit. When
+`--run-ledger` is supplied, it saves a compact import-run ledger with a stable
+`ledger_digest` that binds the manifest, four source input files, normalized
+prediction outputs, import reports, matrix/result reports, and
+candidate-vs-control QA eval/delta reports. Validate or compare that ledger
+with:
+
+```bash
+python scripts/check_offline_controls.py \
+  --validate-run-ledger offline-control-import-run-ledger.json
+
+python scripts/check_offline_controls.py \
+  --compare-run-ledger offline-control-import-run-ledger.json
+```
+
+It still requires externally produced prediction JSONL files and never calls a
+provider.
 
 Build a deterministic predicted DSG from mock perception detections in episode
 metadata:
@@ -240,6 +418,11 @@ python scripts/build_predicted_graph.py \
   --report predicted-report.json
 python scripts/build_predicted_graph.py --validate-report predicted-report.json
 python scripts/build_predicted_graph.py --compare-report predicted-report.json
+python scripts/check_predicted_dsg.py \
+  --predicted-report predicted-report.json \
+  --report predicted-dsg-evidence.json
+python scripts/check_predicted_dsg.py --validate-report predicted-dsg-evidence.json
+python scripts/check_predicted_dsg.py --compare-report predicted-dsg-evidence.json
 ```
 
 Predicted graph building reads only `EpisodeFrame.metadata["mock_detections"]`
@@ -249,6 +432,142 @@ state updates, and deterministic relation inference without importing real
 perception models. Detection `attributes.source`, `source_name`, or
 `source_kind` are propagated to object nodes, inferred relations are marked as
 `geometry_inference`, and predicted reports summarize detections by source.
+
+Build a predicted DSG from an explicit detector/RGB-D observation sequence
+artifact:
+
+```bash
+python scripts/build_predicted_graph.py \
+  --input-kind observation_sequence \
+  --input detector-observations.json \
+  --output-graph predicted-graph.json \
+  --report predicted-report.json \
+  --infer-relation LEFT_OF \
+  --infer-relation RIGHT_OF \
+  --infer-relation NEAR \
+  --reference-frame world
+python scripts/build_predicted_graph.py --validate-report predicted-report.json
+python scripts/build_predicted_graph.py --compare-report predicted-report.json
+```
+
+Observation-sequence predicted graph building reads only local
+`SceneObservation` sequence JSON. It is the deterministic handoff boundary for
+RGB-D or detector outputs produced outside the default runtime; it does not
+import or run perception models. Reports record `input_kind:
+observation_sequence`, the observation sequence digest, relation inference
+options, graph digest, and source summaries from object observation metadata.
+The predicted DSG evidence gate then checks that the report is backed by a
+multi-frame observation sequence with detector, RGB, and depth evidence, and
+rejects synthetic or placeholder detector sources before the package treats it
+as real predicted-DSG evidence.
+
+The detector/RGB-D predicted DSG handoff can also be described by one local
+manifest:
+
+```bash
+python scripts/run_predicted_dsg.py \
+  --manifest predicted-dsg-detector-run-manifest.json \
+  --run-ledger predicted-dsg-detector-run-ledger.json
+```
+
+Before detector/RGB-D producers fill the detector JSONL, export a manifest-only
+request bundle with the target path, required schema, build thresholds, planned
+outputs, and a minimal detector-observation record template:
+
+```bash
+python scripts/run_predicted_dsg.py \
+  --detector-request-bundle predicted-dsg-detector-run-manifest.json \
+  --request-bundle-output predicted-dsg-detector-request-bundle.json
+python scripts/run_predicted_dsg.py \
+  --detector-receipt-bundle predicted-dsg-detector-run-manifest.json \
+  --receipt-bundle-output predicted-dsg-detector-receipt-bundle.json
+python scripts/run_predicted_dsg.py \
+  --validate-detector-receipt-bundle predicted-dsg-detector-receipt-bundle.json
+```
+
+Before writing the observation sequence, predicted graph, detector import
+report, predicted graph report, or predicted DSG evidence report, audit the
+detector input in memory:
+
+```bash
+python scripts/run_predicted_dsg.py \
+  --preflight-manifest predicted-dsg-detector-run-manifest.json \
+  --artifact-contract predicted-dsg-detector-artifact-contract.json
+```
+
+The manifest schema is
+`dsg-spatialqa-lab.predicted-dsg-detector-run-manifest.v1`. It records the
+local detector JSONL input, observation sequence output, predicted graph JSON,
+detector import report, predicted graph report, predicted DSG evidence report,
+and relation/evidence gate options. Relative paths are resolved from the
+manifest directory.
+The preflight command reads only the local detector JSONL file, verifies that
+declared RGB/depth/segmentation frame asset paths exist beside that detector
+JSONL, builds the predicted graph in memory, applies the same
+detector/RGB/depth, observation count, and non-real detector-source evidence
+checks, and reports planned output paths without writing files. It records an
+`asset_summary` but does not open image/depth files or run detector models.
+After detector/RGB-D files arrive, the detector receipt bundle records the
+manifest digest, detector JSONL input digest, observation/object-observation
+counts, observation sequence digest, frame asset receipt summary, build
+requirements, planned outputs, readiness, and request/preflight/build commands
+without writing graph, report, evidence, or ledger artifacts.
+`validate_predicted_dsg_detector_receipt_bundle()` checks the saved receipt
+digest plus detector/readiness/summary consistency before a top-level launch
+report can accept the bundle as ready, and
+`scripts/run_predicted_dsg.py --validate-detector-receipt-bundle` exposes the
+same check for child-handoff review.
+When `--artifact-contract` is supplied, the compact detector/RGB-D contract is
+also saved as stable JSON with a `contract_digest`; it records the expected
+detector input schema, detector input status, frame asset receipt summary,
+build thresholds, required evidence kinds, readiness summary, and planned
+observation/graph/report output paths for handoff before building the real
+predicted DSG.
+As detector/RGB-D files arrive, summarize current build blockers from that
+saved contract and manifest:
+
+```bash
+python scripts/run_predicted_dsg.py \
+  --artifact-launch-report predicted-dsg-detector-artifact-contract.json \
+  --manifest predicted-dsg-detector-run-manifest.json
+```
+
+The launch report reruns the current detector-run preflight, compares the saved
+contract with current manifest inputs, and returns non-zero until the detector
+JSONL satisfies the required observation, object-observation, RGB/depth/detector
+evidence, and no-mock-source checks. If the detector JSONL is still missing or
+cannot be parsed, the same launch-report schema returns structured
+`detector_input` blockers instead of falling back to a generic error payload.
+It also includes a `build_command` for the explicit detector JSONL to
+observation-sequence / predicted-graph / evidence-report build, while
+`next_commands.build` remains the manifest-driven build command. The
+`build_plan` section collects the detector input status, explicit build
+command, manifest build command, preflight command, build requirements, and
+planned outputs in one place, plus the asset receipt summary when the detector
+JSONL is readable. The `external_detector_intake_plan` section focuses on
+externally produced detector/RGB-D files: it lists the detector JSONL status,
+required schema, frame asset receipt summary, readiness state, build
+thresholds, evidence requirements, planned outputs, and the same
+request-bundle, receipt-bundle, preflight, and build commands. The request
+bundle is generated from the manifest without reading the detector JSONL, so it
+remains available before the external detector/RGB-D files exist; the receipt
+bundle reads the returned detector JSONL and frame asset paths, but still
+writes no build outputs. The `actionable_blockers` section lists only the
+currently blocked detector-input or build-readiness rows, so a detector/RGB-D
+handoff can move directly from launch report to the next file or command.
+When `--run-ledger` is supplied on the manifest run, the completed detector
+handoff also saves a compact ledger with a stable `ledger_digest`; it binds the
+detector JSONL, observation sequence, predicted graph, detector import report,
+predicted graph report, and predicted DSG evidence report. Validate or compare
+that ledger with:
+
+```bash
+python scripts/run_predicted_dsg.py \
+  --validate-run-ledger predicted-dsg-detector-run-ledger.json
+
+python scripts/run_predicted_dsg.py \
+  --compare-run-ledger predicted-dsg-detector-run-ledger.json
+```
 
 Compare two deterministic graph JSON artifacts:
 
@@ -317,7 +636,12 @@ python scripts/build_benchmark.py \
   --dashboard-bundle dashboard/dashboard.json \
   --error-attribution-report error-attribution.json \
   --graph-eval-report graph-eval-report.json \
+  --offline-control-matrix-report offline-control-matrix.json \
+  --offline-control-result-report offline-control-result.json \
+  --offline-prediction-import-report vlm-import-report.json \
+  --predicted-dsg-evidence-report predicted-dsg-evidence.json \
   --predicted-graph-report predicted-report.json \
+  --real-collection-report real-collection-report.json \
   --manifest benchmark-manifest.json
 python scripts/build_benchmark.py --validate-manifest benchmark-manifest.json
 python scripts/build_benchmark.py --compare-manifest benchmark-manifest.json
@@ -329,8 +653,659 @@ summary counts, and coverage by scene, episode, question type, reference frame,
 tag, dynamic/static split, and oracle/predicted source. Optional experiment
 artifact paths let the same manifest record QA eval reports, QA delta reports,
 active task reports, active delta reports, dashboard bundles, oracle-vs-
-predicted graph eval reports, error attribution reports, and predicted graph
-reports with stable digests for current-file drift checks.
+predicted graph eval reports, error attribution reports, offline prediction
+import reports, predicted DSG evidence reports, predicted graph reports, and
+real collection reports with stable digests for current-file drift checks.
+
+Check externally collected episode JSONL files before treating them as real
+AI2-THOR/Habitat data:
+
+```bash
+python scripts/check_real_collection.py \
+  --request-bundle real-collection-request-bundle.json \
+  --dataset-name ai2thor_real_smoke \
+  --source-kind ai2thor \
+  --episode real-ai2thor-episode-001.jsonl \
+  --episode real-ai2thor-episode-002.jsonl \
+  --report real-collection-report.json \
+  --min-episode-count 3 \
+  --min-scene-count 1 \
+  --min-frame-count 30
+python scripts/check_real_collection.py \
+  --validate-request-bundle real-collection-request-bundle.json
+python scripts/check_real_collection.py \
+  --compare-request-bundle real-collection-request-bundle.json
+python scripts/check_real_collection.py \
+  --dataset-name ai2thor_real_smoke \
+  --source-kind ai2thor \
+  --episode real-ai2thor-episode-001.jsonl \
+  --episode real-ai2thor-episode-002.jsonl \
+  --report real-collection-report.json \
+  --min-episode-count 3 \
+  --min-scene-count 1 \
+  --min-frame-count 30
+python scripts/check_real_collection.py --validate-report real-collection-report.json
+python scripts/check_real_collection.py --compare-report real-collection-report.json
+```
+
+The request bundle is a manifest-only handoff artifact: it records target
+episode/report paths, required RGB/depth/segmentation evidence fields, a
+minimal episode-frame template, stable digest, and collection/validate/compare
+commands without reading episode JSONL files or frame assets.
+`validate_real_collection_request_bundle()` checks the saved bundle digest,
+schema, supported source kind, field shape, episode template, and command
+consistency. `compare_real_collection_request_bundle()` rebuilds the request
+bundle from its recorded fields to detect drift before collection starts, and
+the matching CLI flags expose both checks for child-handoff review. The real
+collection gate reads only explicit local episode JSONL files. It
+requires supported source kind metadata, `collection_kind: real`, RGB, depth,
+and segmentation paths on each frame, minimum scene/episode/frame counts, valid
+episode digests, local frame asset receipt for declared RGB/depth/segmentation
+paths, and no mock markers before downstream readiness can treat the episodes
+as real collection evidence. It also rejects non-real markers such as
+synthetic, placeholder, fake, dummy, or mock strings in episode ids, scene ids,
+asset paths, or metadata. The gate records an `asset_summary` and checks path
+existence relative to each episode JSONL file; it does not open image or depth
+files.
+
+Assemble externally collected real experiment artifacts into the canonical
+manifest plus readiness-report pair:
+
+```bash
+python scripts/assemble_real_experiment.py \
+  --episode real-ai2thor-episode-001.jsonl \
+  --dataset-name ai2thor_real_smoke \
+  --output-dir data/real-benchmark \
+  --manifest benchmark-manifest.json \
+  --readiness-report real-experiment-readiness.json \
+  --data-source-kind real \
+  --min-episode-count 3 \
+  --min-scene-count 1 \
+  --min-qa-count 30 \
+  --required-control-kind vlm \
+  --required-control-kind multi_frame_vlm \
+  --required-control-kind caption_memory \
+  --required-control-kind graph_text \
+  --required-predicted-input-kind observation_sequence \
+  --qa-eval-delta-report qa-delta-report.json \
+  --active-task-delta-report active-delta-report.json \
+  --dashboard-bundle dashboard/dashboard.json \
+  --error-attribution-report error-attribution.json \
+  --graph-eval-report graph-eval-report.json \
+  --offline-control-matrix-report offline-control-matrix.json \
+  --offline-prediction-import-report vlm-import-report.json \
+  --predicted-dsg-evidence-report predicted-dsg-evidence.json \
+  --predicted-graph-report predicted-report.json \
+  --real-collection-report real-collection-report.json
+```
+
+The assembler does not run a simulator, detector, VLM, or LLM. It records
+explicit local artifacts, writes the manifest, writes the readiness report, and
+returns non-zero unless the package passes the readiness gate. The readiness
+gate validates saved real collection reports and predicted DSG evidence reports
+before accepting their embedded ready state, and it binds each predicted DSG
+evidence report back to the saved predicted graph report digest it claims to
+summarize. It compares each predicted graph report against the current
+observation-sequence or episode input and exported graph file before accepting
+predicted-DSG graph evidence. It compares each real collection report against
+the current episode files before accepting collected real-data coverage,
+compares each graph eval report against the current oracle and
+predicted graph files before accepting graph-construction quality evidence,
+compares error attribution reports against the current gold QA, oracle graph,
+predicted graph, and prediction files before accepting failure-linkage
+diagnostics, and compares each saved DSG-vs-control QA delta against the current
+candidate and baseline QA eval reports before accepting real-control lift
+evidence, compares each offline prediction import report against the current
+QA, raw offline-control input, and normalized prediction files before accepting
+per-source control coverage, compares each offline-control matrix report
+against the current offline prediction import reports before accepting
+source-profile coverage, and compares the aggregate offline-control result
+report against the current matrix, candidate eval, and per-source deltas before
+accepting the source-result matrix. It also compares interactive-task delta
+reports against the current
+candidate and baseline active-task reports before accepting RQ4 lift evidence.
+It compares dashboard bundles against the current QA, prediction, eval, graph,
+and optional review source artifacts before accepting review dashboards as
+current experiment evidence.
+It also recomputes each manifest-declared experiment artifact digest and blocks
+the package when the manifest's artifact digest ledger has drifted from the
+current artifact files.
+Finally, it validates saved offline prediction import reports
+before accepting real-control source metadata, coverage summaries, diagnostics,
+or QA digests, so tampered, stale, or cross-wired primary-evidence and control
+reports remain blocked at package level.
+
+Run the deterministic import handoff for a ready real package in one command:
+
+```bash
+python scripts/run_real_experiment.py \
+  --episode real-ai2thor-episode-001.jsonl \
+  --dataset-name ai2thor_real_smoke \
+  --output-dir data/real-benchmark \
+  --manifest benchmark-manifest.json \
+  --readiness-report real-experiment-readiness.json \
+  --summary-report experiment-summary.json \
+  --record experiment-record.json \
+  --data-source-kind real \
+  --min-episode-count 3 \
+  --min-scene-count 1 \
+  --min-qa-count 30 \
+  --required-control-kind vlm \
+  --required-control-kind multi_frame_vlm \
+  --required-control-kind caption_memory \
+  --required-control-kind graph_text \
+  --required-predicted-input-kind observation_sequence \
+  --active-task-delta-report active-delta-report.json \
+  --dashboard-bundle dashboard/dashboard.json \
+  --error-attribution-report error-attribution.json \
+  --graph-eval-report graph-eval-report.json \
+  --offline-control-import-manifest offline-control-import-manifest.json \
+  --predicted-dsg-detector-run-manifest predicted-dsg-detector-run-manifest.json \
+  --real-collection-report real-collection-report.json
+```
+
+For repeated local real runs, the full handoff can also be driven by one
+top-level manifest:
+
+```bash
+python scripts/run_real_experiment.py \
+  --write-handoff-manifests \
+  --handoff-root handoffs/ai2thor-real-smoke \
+  --dataset-name ai2thor_real_smoke \
+  --episode inputs/episodes/FloorPlan1.jsonl \
+  --min-episode-count 1 \
+  --min-scene-count 1 \
+  --min-qa-count 8
+python scripts/run_real_experiment.py \
+  --run-manifest real-experiment-run-manifest.json
+```
+
+The handoff writer creates three stable manifest files under the handoff root:
+`real-experiment-run-manifest.json`,
+`offline-control-import-manifest.json`, and
+`predicted-dsg-detector-run-manifest.json`. It also writes
+`real-experiment-preflight.json`, the same structured missing-file report
+returned by `--preflight-run-manifest`, plus
+`real-experiment-artifact-checklist.json`, a compact checklist of required
+inputs and planned outputs. Each checklist row also records a collection track:
+`real_data`, `real_controls`, `predicted_dsg`, `review_artifacts`, or
+`run_outputs`, and the checklist includes a per-track summary of present
+inputs, missing inputs, planned outputs, and existing outputs. The writer also
+saves `real-experiment-operator-checklist.json`, a post-write command checklist
+from contract validation through request bundles, returned receipts, launch
+audit, execution packet, smoke checklist, post-run receipt, research review,
+and claim-readiness recheck. The writer also saves
+`real-experiment-external-artifact-contracts.json`, a static contract file for
+the external artifact producers. It records the real episode/report
+requirements, four offline-control source input paths and planned import
+outputs, detector/RGB-D input requirements and planned predicted-DSG outputs,
+review artifact paths, run outputs, and the same track summary. It does not
+read or fabricate real episode, QA, prediction, detector, graph-eval,
+attribution, active-task, or dashboard files. Instead, it declares portable
+default paths for those local artifacts plus normalized offline-control
+prediction/import-report outputs and the two child run ledgers, so the
+checklist shows exactly which externally collected files are still missing and
+which outputs the local handoff will write.
+
+Validate or compare the saved operator checklist before handing the command
+queue to a local runner:
+
+```bash
+python scripts/run_real_experiment.py \
+  --validate-operator-checklist real-experiment-operator-checklist.json
+python scripts/run_real_experiment.py \
+  --compare-operator-checklist real-experiment-operator-checklist.json
+```
+
+Validation checks the checklist schema, digest, phase and step counts,
+consecutive ordering, and first/last command keys. Comparison rebuilds the
+current command queue from the saved run manifest and contract paths without
+executing commands or reading real external inputs.
+
+Generate an operator progress report when you need to resume a partially filled
+handoff:
+
+```bash
+python scripts/run_real_experiment.py \
+  --operator-progress-report real-experiment-operator-checklist.json \
+  --operator-progress-output real-experiment-operator-progress-report.json
+```
+
+The progress report maps each checklist step to its target local artifact path,
+marks the target as present or missing, summarizes counts by track, and points
+to the next missing step. It checks only local path existence and does not
+execute commands or read real episode, prediction, detector, or review content.
+
+Validate or compare the saved progress report to catch stale resume views after
+target files are added or removed:
+
+```bash
+python scripts/run_real_experiment.py \
+  --validate-operator-progress-report real-experiment-operator-progress-report.json
+python scripts/run_real_experiment.py \
+  --compare-operator-progress-report real-experiment-operator-progress-report.json
+```
+
+Validation checks schema, digest, target counts, next missing step, and
+track-summary consistency. Comparison rebuilds the progress report from the
+saved operator checklist and current local path existence without executing
+handoff commands.
+
+Validate or compare that external artifact contract before sharing it with
+collection or model-output producers:
+
+```bash
+python scripts/run_real_experiment.py \
+  --validate-external-artifact-contracts real-experiment-external-artifact-contracts.json
+python scripts/run_real_experiment.py \
+  --compare-external-artifact-contracts real-experiment-external-artifact-contracts.json
+```
+
+Validation checks the saved contract schema, digest, required tracks, source
+counts, and summary consistency. Comparison rebuilds the contract from the
+run manifest, child manifests, and checklist paths recorded in the saved
+contract; it does not read missing real episode, prediction, detector, or
+review files.
+
+After external producers start filling those paths, summarize the current
+launch blockers by research-evidence track:
+
+```bash
+python scripts/run_real_experiment.py \
+  --external-artifact-launch-report real-experiment-external-artifact-contracts.json \
+  --launch-report-output real-experiment-external-artifact-launch-report.json
+```
+
+The launch report reloads the saved contract, reruns the current run-manifest
+preflight, and groups blockers under `real_data`, `real_controls`,
+`predicted_dsg`, `review_artifacts`, and `run_outputs`. It returns non-zero
+until every declared input is present and the contract still validates and
+matches the saved manifests/checklist. It also includes `child_launch_gates`
+for the real collection report, offline-control import manifest,
+predicted-DSG detector manifest, and review artifacts. Those gates include
+exact commands for generating the real collection request bundle, building,
+validating, or comparing the real collection report; inspecting child
+offline-control / predicted-DSG handoffs; and
+validating or comparing active-task delta, dashboard, error-attribution, and
+graph-eval review reports before running the top-level experiment. The
+`actionable_blockers` section lists only the currently blocked tracks and
+attaches the matching child gate for `real_data`, `real_controls`,
+`predicted_dsg`, and `review_artifacts`, so the next external artifact step can
+be read without manually cross-referencing the track summary. The
+`external_artifact_intake_plan` section orders those blocked tracks, records the
+matching child gate and recommended command keys for each one, and keeps the
+final top-level preflight/run commands in the same report. The
+`real_data_collection_intake_plan` section focuses on AI2-THOR/Habitat real
+episode intake: it lists dataset/source identity, episode and collection-report
+paths, minimum episode/scene/frame/QA thresholds, current missing or invalid
+real-data inputs, and the request-bundle/collection/validate/compare commands.
+It also
+includes `collection_report_receipt`, which projects the saved real collection
+report readiness, failed checks, digest validity, validation status, and local
+frame `asset_summary` into the top-level launch report, so a present or
+tampered report file cannot hide missing RGB, depth, segmentation frame assets,
+or an invalid `report_digest`. The
+`real_controls_prediction_intake_plan` section focuses on the VLM-only,
+multi-frame VLM, caption-memory, and graph-text prediction inputs. It projects
+the saved offline-control artifact contract receipt plus child launch report
+summary, actionable blockers, and `external_prediction_intake_plan` into the
+top-level launch report, so present prediction JSONL files cannot hide source
+diagnostics such as incomplete QA coverage or missing real-source metadata. Its
+child gate also exposes the offline prediction request-bundle and
+receipt-bundle commands, so the top-level report can move directly from
+requesting external VLM/LLM predictions to auditing the returned files. Its
+`prediction_receipt_bundle` field reads the saved returned-file bundle, checks
+the bundle digest, child manifest path, and bundle validation status, and keeps
+the track blocked until the returned prediction files have a ready receipt. The
+`predicted_dsg_detector_intake_plan` section focuses on detector/RGB-D inputs.
+It projects the saved predicted-DSG detector artifact contract receipt plus
+child launch report summary, actionable blockers, frame `asset_summary`, and
+`external_detector_intake_plan` into the top-level launch report, so a present
+detector JSONL file cannot hide missing RGB/depth/segmentation frame assets or
+other build-readiness failures. Its child gate also exposes the detector/RGB-D
+request-bundle and receipt-bundle commands, so the top-level report can hand off
+predicted DSG inputs and then audit the returned detector files without
+cross-referencing the child manifest. Its `detector_receipt_bundle` field reads
+the saved returned-file bundle, checks the bundle digest and child manifest
+path plus bundle validation status, and keeps the track blocked until the
+returned detector/RGB-D files have a ready receipt. The
+`primary_evidence_receipt_gate` section combines those three receipt-aware
+plans. `preflight_ready_to_run` can still be true when all declared paths
+exist, but top-level `ready_to_run` remains false until real data, real offline
+controls, and real predicted DSG detector/RGB-D returned receipt bundles are
+all ready. The
+`primary_evidence_intake_plan` section strips the launch view down to the
+three experiment-critical evidence tracks: real data, real offline controls,
+and real predicted DSG detector/RGB-D inputs. It records each track's child
+gate, recommended command keys, readiness, blockers, and the final top-level
+preflight/run commands without including review artifacts or run outputs.
+For a saved, auditable three-track status artifact, run:
+
+```bash
+python scripts/run_real_experiment.py \
+  --primary-evidence-status real-experiment-external-artifact-launch-report.json \
+  --primary-evidence-status-output real-experiment-primary-evidence-status.json
+python scripts/run_real_experiment.py --validate-primary-evidence-status real-experiment-primary-evidence-status.json
+python scripts/run_real_experiment.py --compare-primary-evidence-status real-experiment-primary-evidence-status.json
+```
+
+The status artifact records only the real-data, real-control, and predicted-DSG
+tracks, their receipt status, recommended commands, and the next blocked track.
+Comparison rebuilds the launch report from the saved contracts and current
+receipt files, so it detects stale status after external artifacts arrive.
+To produce a shareable request package for those same three external producers,
+run:
+
+```bash
+python scripts/run_real_experiment.py \
+  --primary-evidence-request-package real-experiment-external-artifact-launch-report.json \
+  --primary-evidence-request-package-output real-experiment-primary-evidence-request-package.json
+python scripts/run_real_experiment.py --validate-primary-evidence-request-package real-experiment-primary-evidence-request-package.json
+python scripts/run_real_experiment.py --compare-primary-evidence-request-package real-experiment-primary-evidence-request-package.json
+python scripts/run_real_experiment.py --write-primary-evidence-request-bundles real-experiment-primary-evidence-request-package.json
+```
+
+The request package embeds the real-collection, offline-control prediction, and
+predicted-DSG detector request bundles when their local inputs are available.
+Each ready row also carries a compact child request-bundle validation summary,
+and top-level package validation recomputes those summaries so an internally
+inconsistent embedded child bundle cannot pass simply by updating its digest.
+`--write-primary-evidence-request-bundles` materializes those ready embedded
+child bundles to their declared local paths, while leaving blocked tracks
+unwritten and without collecting episodes, generating predictions, building
+graphs, or contacting external services.
+If a required local input is missing, such as the QA file needed to ask
+VLM/LLM controls for predictions, that track is marked blocked with the
+request-bundle command and error type instead of fabricating a template.
+After the request package is saved, generate the return checklist that tells
+operators which local artifacts and receipt/report commands should accept the
+external evidence when it comes back:
+
+```bash
+python scripts/run_real_experiment.py \
+  --primary-evidence-return-checklist real-experiment-primary-evidence-request-package.json \
+  --primary-evidence-return-checklist-output real-experiment-primary-evidence-return-checklist.json
+python scripts/run_real_experiment.py --validate-primary-evidence-return-checklist real-experiment-primary-evidence-return-checklist.json
+python scripts/run_real_experiment.py --compare-primary-evidence-return-checklist real-experiment-primary-evidence-return-checklist.json
+```
+
+The checklist stays deterministic and local: blocked request rows keep their
+request-bundle command, while actionable rows list the real collection report,
+offline-control prediction receipt bundle, or predicted-DSG detector receipt
+bundle command that will verify returned files.
+To see which returned artifact paths are already present before refreshing the
+launch report, build the return progress report:
+
+```bash
+python scripts/run_real_experiment.py \
+  --primary-evidence-return-progress-report real-experiment-primary-evidence-return-checklist.json \
+  --primary-evidence-return-progress-output real-experiment-primary-evidence-return-progress.json
+python scripts/run_real_experiment.py --validate-primary-evidence-return-progress-report real-experiment-primary-evidence-return-progress.json
+python scripts/run_real_experiment.py --compare-primary-evidence-return-progress-report real-experiment-primary-evidence-return-progress.json
+python scripts/run_real_experiment.py \
+  --primary-evidence-acceptance-report real-experiment-primary-evidence-return-progress.json \
+  --primary-evidence-acceptance-output real-experiment-primary-evidence-acceptance-report.json
+python scripts/run_real_experiment.py --validate-primary-evidence-acceptance-report real-experiment-primary-evidence-acceptance-report.json
+python scripts/run_real_experiment.py --compare-primary-evidence-acceptance-report real-experiment-primary-evidence-acceptance-report.json
+```
+
+The progress report checks only explicit local path presence from the checklist.
+It identifies the next missing returned artifact or blocked request row without
+opening episode, prediction, detector, or image files. The acceptance report is
+the next local gate: it reloads the current real-data, offline-control, and
+predicted-DSG receipt/report projections, records digest / validation / manifest
+status for each returned evidence track, and reports whether all three tracks
+are accepted before the launch report and execution packet are refreshed. It
+does not collect episodes, generate VLM/LLM predictions, run detectors, build
+graphs, or contact services.
+Saved launch reports can be checked with
+`python scripts/run_real_experiment.py --validate-external-artifact-launch-report real-experiment-external-artifact-launch-report.json`
+and compared against the current contract, manifests, and receipt bundles with
+`python scripts/run_real_experiment.py --compare-external-artifact-launch-report real-experiment-external-artifact-launch-report.json`.
+Once the saved launch report is ready, generate the deterministic execution
+packet:
+
+```bash
+python scripts/run_real_experiment.py \
+  --execution-packet real-experiment-external-artifact-launch-report.json \
+  --execution-packet-primary-evidence-acceptance-report real-experiment-primary-evidence-acceptance-report.json \
+  --execution-packet-output real-experiment-execution-packet.json
+python scripts/run_real_experiment.py --validate-execution-packet real-experiment-execution-packet.json
+python scripts/run_real_experiment.py --compare-execution-packet real-experiment-execution-packet.json
+```
+
+The packet freezes the launch report digest, current launch-report comparison
+status, primary-evidence acceptance status, audit commands, and final
+preflight/run commands. If the acceptance path is omitted, the CLI looks for
+`real-experiment-primary-evidence-acceptance-report.json` beside the launch
+report. It returns non-zero and leaves `execution_commands` empty until the
+launch report's primary real data, real-controls, and predicted-DSG receipt
+gate is ready and the saved acceptance report validates and compares cleanly,
+so it cannot authorize a run from merely present paths, stale receipts, or a
+skipped primary-evidence acceptance gate.
+For a ready packet, write the smoke-run checklist before executing the final
+commands:
+
+```bash
+python scripts/run_real_experiment.py \
+  --smoke-run-checklist real-experiment-execution-packet.json \
+  --smoke-run-checklist-output real-experiment-smoke-run-checklist.json \
+  --smoke-run-checklist-receipt-output real-experiment-execution-receipt.json
+python scripts/run_real_experiment.py --validate-smoke-run-checklist real-experiment-smoke-run-checklist.json
+python scripts/run_real_experiment.py --compare-smoke-run-checklist real-experiment-smoke-run-checklist.json
+```
+
+The checklist is a deterministic command receipt for the first real smoke run:
+it orders packet validation/comparison, launch-report audit commands, final
+preflight/run commands, and post-run receipt generation/validation/comparison.
+If the packet is not ready, the checklist keeps only audit steps and remains
+blocked.
+After running the checklist's final run command, archive the post-run output
+receipt:
+
+```bash
+python scripts/run_real_experiment.py \
+  --execution-receipt real-experiment-execution-packet.json \
+  --execution-receipt-output real-experiment-execution-receipt.json
+python scripts/run_real_experiment.py --validate-execution-receipt real-experiment-execution-receipt.json
+python scripts/run_real_experiment.py --compare-execution-receipt real-experiment-execution-receipt.json
+```
+
+The receipt checks only explicit local output paths from the packet's run
+manifest: the benchmark manifest, real readiness report, experiment summary,
+experiment record, output directory, and child offline-control / predicted-DSG
+run ledgers. It remains non-ready until those outputs exist and their saved
+digests and validators match the current files.
+Once the receipt is ready, archive the research review packet:
+
+```bash
+python scripts/run_real_experiment.py \
+  --research-review real-experiment-execution-receipt.json \
+  --research-review-output real-experiment-research-review.json
+python scripts/run_real_experiment.py --validate-research-review real-experiment-research-review.json
+python scripts/run_real_experiment.py --compare-research-review real-experiment-research-review.json
+```
+
+The research review packet reads the execution receipt plus its validated
+experiment summary and record. It reports whether all four research questions
+(`spatial_qa`, `dynamic_memory`, `graph_tool_query`, and `interactive_task`)
+have available measurements, projects verdict counts without changing them,
+and blocks review when the receipt, summary, record, real package readiness,
+source profiles, graph diagnostics, or failure-linkage diagnostics are missing.
+Finally, separate a smoke run from a claim-ready benchmark:
+
+```bash
+python scripts/run_real_experiment.py \
+  --claim-readiness real-experiment-research-review.json \
+  --claim-readiness-output real-experiment-claim-readiness.json
+python scripts/run_real_experiment.py --validate-claim-readiness real-experiment-claim-readiness.json
+python scripts/run_real_experiment.py --compare-claim-readiness real-experiment-claim-readiness.json
+```
+
+The default claim gate requires at least 3 episodes, 1 scene, 30 QA cases, and
+1 dynamic QA case, plus a ready research review. For a deliberately tiny smoke
+run, pass explicit lower thresholds such as
+`--claim-min-episode-count 1 --claim-min-scene-count 1 --claim-min-qa-count 8 --claim-min-dynamic-qa-count 0`;
+the saved thresholds are included in the report and used by comparison. When a
+run is claim-ready, inspect `research_question_verdicts` and
+`claim_conclusion_summary` for the actual per-capability conclusion:
+`all_improved`, `mixed_improvement`, `regression`, `no_change`, or `pilot_only`.
+`claim_conclusion_evidence` keeps the saved availability, measurement count,
+primary metric, source artifact type, and verdict behind each RQ conclusion.
+`claim_effect_matrix` flattens those primary metrics into per-RQ metric names,
+values, source artifact types, and verdicts so positive, zero, and negative DSG
+effects are visible without reopening the research review.
+`claim_effect_direction_summary` groups positive, zero, negative, and missing
+metric directions and keeps validation from accepting a conclusive verdict whose
+saved metric sign contradicts that verdict.
+`claim_hypothesis_assessment` turns those rows into an explicit assessment of
+the hypothesis that DSG improves all four target capabilities, distinguishing
+full support from partial improvement, no-change, regression, and pilot-only
+states.
+`claim_scope_assessment` compares the saved claim thresholds against the
+default benchmark thresholds, so a smoke-threshold-ready run cannot be confused
+with a full-scale claim-ready benchmark.
+`claim_scope_next_actions` records the deterministic default-scale expansion
+step when a smoke-threshold-ready run can conclude locally but still cannot
+support a full-scale benchmark claim.
+`claim_scope_handoff_plan` turns that action into a deterministic
+`next-full-scale-claim-handoff` command plan and operator checklist without
+changing the legacy `next_handoff_plan` meaning for claim-ready reports.
+Validation checks the scoped writer command against the saved handoff root,
+episode plan, artifact slots, and default claim thresholds.
+It also checks the scoped episode plan against the default episode deficit and
+deterministic planned episode paths.
+The scoped artifact slots must keep the deterministic candidate, detector/RGB-D,
+offline-control prediction, and track-order paths under that handoff root.
+They must also preserve the sibling handoff plan's full offline-control kind
+set, preventing a recomputed-digest artifact from silently dropping one control
+source while keeping the command internally consistent.
+The scoped plan also preserves the sibling handoff plan's required predicted
+input kinds and requires the matching `--required-predicted-input-kind`
+fragments in the writer command.
+Validation also binds the scoped after-write intake and next-run review plans to
+their deterministic artifact paths, command fragments, and mirrored operator
+checklist steps.
+The scoped current-threshold metadata and threshold-update summary are
+recomputed during validation, so the saved plan cannot understate the default
+scale increase still needed.
+Those scoped current thresholds must also match the sibling handoff plan, so a
+recomputed-digest artifact cannot hide the source smoke-threshold policy by
+editing both the current thresholds and derived update summary.
+The scoped source run-manifest path must also match the sibling handoff plan,
+derive the full-scale handoff root, and keep a SHA-256 source digest, preserving
+provenance from the smoke run to the full-scale expansion plan.
+The scoped dataset name must match the sibling handoff plan too, so a
+recomputed-digest artifact cannot rewrite the full-scale expansion commands to
+a different dataset while preserving internal command consistency.
+`claim_ready` means the report has enough scale/evidence to conclude; it does
+not force every RQ verdict to be improved. When a run remains `pilot_only`,
+inspect `claim_gap_summary.scale_deficits` and
+`claim_gap_summary.research_question_gaps` for the concrete episode/QA
+deficits, missing or inconclusive RQ keys, and saved RQ verdicts, then use
+`next_actions` for the next real-data, real-control, predicted-DSG, or
+review-artifact track to expand before the next claim-ready attempt. RQ gap
+actions include `evidence_targets` with the source artifact type, verdict, and
+tracks to expand for each missing or inconclusive RQ.
+`next_handoff_plan.commands.write_handoff_manifests`
+turns that gap summary into a deterministic command for preparing the next
+claim-ready handoff root with the saved target thresholds and planned episode
+slots for any missing real collection files. The same plan exposes
+`next_handoff_plan.external_artifact_slots` with deterministic local paths for
+the candidate GraphTool prediction file, the four offline-control prediction
+files, and the detector/RGB-D JSONL input that must be produced outside the
+default runtime before a real claim-ready run. After running the generated
+handoff writer command, use
+`next_handoff_plan.after_write_intake_plan.commands` to write the next
+external-artifact launch report, build the primary-evidence status and request
+package, materialize ready child request bundles, audit returned real collection
+/ prediction / detector files, and run the return-progress plus acceptance
+gates. Once that primary-evidence path is accepted and the launch report is
+refreshed as ready,
+`next_handoff_plan.next_run_review_plan.commands` gives the execution-packet,
+smoke-run checklist, post-run receipt, research-review, and claim-readiness
+recheck commands using the saved claim thresholds. For a single ordered view,
+`next_handoff_plan.operator_checklist.steps` combines those stages from
+handoff writing through primary-evidence acceptance and final claim comparison
+without executing them.
+
+Before executing that handoff, audit the declared local inputs and remaining
+gaps without writing experiment outputs:
+
+```bash
+python scripts/run_real_experiment.py \
+  --preflight-run-manifest real-experiment-run-manifest.json
+```
+
+The run manifest schema is
+`dsg-spatialqa-lab.real-experiment-run-manifest.v1`. It records the local
+episode paths, output directory, benchmark manifest path, readiness report
+path, summary report path, final record path, readiness thresholds, required
+control and predicted-input kinds, the real collection source kind
+(`ai2thor` or `habitat`), the real collection minimum frame threshold,
+optional review artifacts, optional offline-control import manifest, and
+optional predicted DSG detector-run manifest. It may also record output paths
+for the offline-control import run ledger and predicted DSG detector-run
+ledger. Relative paths are resolved from the run manifest directory, and the
+structured output includes a stable run-manifest digest for audit.
+The preflight output groups required inputs by real collection, offline
+controls, predicted DSG, review artifacts, and planned run outputs. It reports
+missing input paths, invalid child manifests, undeclared required evidence
+groups, and planned outputs; it does not import controls, build graphs, or
+write the benchmark manifest, summary, or final record.
+
+The real run/import command is still an explicit local-artifact pipeline,
+whether driven by CLI arguments or `--run-manifest`. It does not collect data
+or call models. When
+`--offline-control-import-manifest` is supplied, it first imports the local
+offline controls described by that manifest, then adds the generated import
+reports, offline control matrix, QA eval reports, DSG-vs-control QA delta
+reports, and offline control result report to the real package handoff. When
+`--predicted-dsg-detector-run-manifest` is supplied, it first builds the local
+detector/RGB-D predicted graph evidence package and adds the generated
+predicted graph report plus predicted DSG evidence report. If child ledger
+paths are supplied directly or through the run manifest, the command also saves
+the offline-control import run ledger and predicted DSG detector-run ledger and
+returns their paths plus stable digests. It then assembles the benchmark
+manifest, writes the readiness report, and only when readiness is `ready` does
+it write the experiment summary plus final record with the real readiness
+digest linked. Unready packages return non-zero and do not write the summary or
+final record.
+
+Check whether a candidate real experiment package has enough local evidence to
+start answering the DSG-vs-control research question:
+
+```bash
+python scripts/check_real_experiment.py \
+  --manifest benchmark-manifest.json \
+  --report real-experiment-readiness.json \
+  --data-source-kind real \
+  --min-episode-count 3 \
+  --min-scene-count 1 \
+  --min-qa-count 30 \
+  --required-control-kind vlm \
+  --required-control-kind multi_frame_vlm \
+  --required-control-kind caption_memory \
+  --required-control-kind graph_text \
+  --required-predicted-input-kind observation_sequence
+python scripts/check_real_experiment.py --validate-report real-experiment-readiness.json
+python scripts/check_real_experiment.py --compare-report real-experiment-readiness.json
+```
+
+The readiness report is an evidence gate, not a performance claim. It checks
+for an explicit `real` data declaration, minimum episode/scene/QA coverage,
+spatial/dynamic/GraphTool-style QA coverage, offline control imports,
+observation-backed predicted DSG reports, predicted DSG evidence reports,
+real collection reports, graph eval, attribution, active-task, and dashboard
+review artifacts, valid QA delta reports whose baselines cover the requested
+controls, valid active-task delta reports with matching task counts and
+non-placeholder comparison names, complete offline-control coverage, clean
+offline-control import diagnostics, a ready offline control matrix report whose
+required source kinds cover the requested controls, a ready offline control
+result report whose delta rows cover the requested controls, and matching QA
+digests between offline controls and the benchmark manifest. Mock or incomplete
+packages return non-zero structured JSON instead of being treated as real
+experiment evidence.
 
 Run the deterministic mock experiment pipeline when you want a local
 end-to-end final record in one command. It defaults to one episode and can
@@ -371,6 +1346,11 @@ python scripts/summarize_experiment.py --compare-report experiment-summary.json
 python scripts/record_experiment.py \
   --summary-report experiment-summary.json \
   --record experiment-record.json
+# For an externally collected real package that already passed readiness:
+python scripts/record_experiment.py \
+  --summary-report experiment-summary.json \
+  --real-readiness-report real-experiment-readiness.json \
+  --record experiment-record.json
 python scripts/record_experiment.py --validate-record experiment-record.json
 python scripts/record_experiment.py --compare-record experiment-record.json
 ```
@@ -380,7 +1360,8 @@ candidate-vs-baseline lift for spatial QA, dynamic memory, and GraphTool query
 axes, QA diagnostic slices by scene, episode, question type, tag, and reference
 frame, graph-construction diagnostics from oracle-vs-predicted graph eval
 reports, error attribution diagnostics from QA failure attribution reports,
-plus active-task lift for interactive task ability. Each research question also
+offline prediction source-profile rows for side-by-side source review, plus
+active-task lift for interactive task ability. Each research question also
 gets a deterministic `verdict` of `improved`, `unchanged`, `regressed`, or
 `inconclusive` from the primary metric delta. The graph diagnostic block
 records object recall, relation F1, state accuracy, duplicate-track /
@@ -397,16 +1378,21 @@ that marks the experiment `ready` only when RQ1-RQ4 all have
 candidate-vs-baseline evidence, otherwise listing missing research questions
 and missing source artifact types. Comparison reloads the manifest path stored
 in the summary and detects drift in the referenced local QA, active delta,
-graph-eval, and attribution artifacts.
+graph-eval, attribution, and offline import artifacts.
 
 The experiment record projects the saved summary into a compact final handoff:
 manifest and summary digests, readiness status, RQ1-RQ4 verdict rows,
 `verdict_counts`, a per-measurement `research_question_matrix`,
-`diagnostic_ledger` counts/keys for QA slices, graph construction, attribution,
-and failure-linkage pairs, source artifact digests, and optional dashboard bundle digest when
-`--dashboard-bundle dashboard/dashboard.json` is supplied. Record comparison
-reloads only the explicit summary/dashboard paths stored in the record and
-reports current-file drift.
+`source_profile_matrix` for imported prediction sources, `diagnostic_ledger`
+counts/keys for QA slices, graph construction, attribution, and failure-linkage
+pairs, source artifact digests, and optional dashboard bundle digest when
+`--dashboard-bundle dashboard/dashboard.json` is supplied. When
+`--real-readiness-report real-experiment-readiness.json` is supplied, the record
+also stores the real package readiness path, digest, status, manifest digest,
+missing groups, and failed checks. Record validation requires that linked real
+package readiness to be valid and ready, and comparison reloads only the
+explicit summary/dashboard/readiness paths stored in the record to report
+current-file drift.
 
 Export a deterministic static dashboard for per-sample review:
 
@@ -432,9 +1418,14 @@ transcripts, action evidence snapshots, evidence coverage, budget analysis,
 optional active-task delta review tables for candidate-vs-baseline RQ4 lift,
 optional experiment-summary review rows for RQ1-RQ4 lift, a per-measurement
 matrix for multi-baseline QA deltas, failure-linkage rows connecting graph
-quality to QA failure causes, verdicts, and experiment readiness, and a stable
-bundle digest. The HTML table includes local Research Axis and Evidence Source
-filters when attribution data is present.
+quality to QA failure causes, source-profile rows for imported prediction
+sources, verdicts, and experiment readiness, explicit source paths for
+current-file comparison, and a stable bundle digest.
+`compare_dashboard_bundle()` reloads those source paths and rebuilds the bundle
+to detect stale QA, prediction, eval, graph, attribution, active-task, or
+experiment-summary review inputs. The HTML includes local Research Axis,
+Evidence Source, and Source Profile filters when the corresponding review data
+is present.
 
 Run deterministic mock active EQA tasks against an explicit graph artifact:
 
@@ -527,6 +1518,9 @@ checks the sequence schema/count/step shape, and reports the stable sequence
 digest plus graph-free summary without building a graph. Observation sequence
 summarization reads only the explicit sequence JSON file and reports stable
 sequence digest, step, object, visibility, confidence, and label-count metadata.
+The same sequence file can be passed to `scripts/build_predicted_graph.py
+--input-kind observation_sequence` when the observation artifact should be
+evaluated as a predicted DSG rather than only ingested as a generic graph.
 Summary validation checks the explicit summary artifact fingerprint and internal
 count consistency; summary comparison reads only the sequence path recorded in
 that artifact and detects current sequence drift. Observation ingestion reads
@@ -569,9 +1563,10 @@ python scripts/verify.py --skip-install
 - Deterministic local baseline runner with `graph_tool`, `majority`,
   `graph_text`, and disabled `caption_memory` interfaces that emit prediction
   JSONL without external calls.
-- Deterministic offline prediction import tooling for local VLM/caption-memory
-  style outputs, with source metadata, unknown/missing case diagnostics, stable
-  prediction JSONL, and import report validation/comparison.
+- Deterministic offline prediction import and control-matrix tooling for local
+  VLM-only, multi-frame VLM, caption-memory, and graph-text style outputs, with
+  source metadata, unknown/missing case diagnostics, stable prediction JSONL,
+  import report validation/comparison, and matrix readiness gating.
 - Deterministic oracle-vs-predicted graph metrics with explicit graph JSON
   inputs, stable digest reports, validation, and current-file comparison.
 - Deterministic predicted DSG builder skeleton with mock perception detections,
@@ -861,6 +1856,10 @@ status.
 - Keep CI and local verification aligned as new benchmark gates are added.
 - Add optional deterministic dataset import adapters once real experiment
   formats are chosen.
+- Run real small-scale AI2-THOR or Habitat experiments as local artifact
+  pipelines before adding more mock-only framework surface.
+- Import real VLM-only, multi-frame, caption-memory, and graph-text prediction
+  results through the offline prediction boundary for DSG-vs-control evidence.
 - Expand relation geometry and sensor evidence models while preserving explicit
   caller-supplied steps.
 - Extend offline report outputs with any new benchmark metrics before adding

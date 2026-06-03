@@ -197,6 +197,7 @@ def test_import_predictions_cli_writes_predictions_and_report(
         "path": str(pred_path),
         "valid": True,
         "digest": report["report_digest"],
+        "input_format": "offline_prediction_record",
         "prediction_digest": lab.qa_predictions_digest(predictions),
         "source_profile": report["source_profile"],
         "summary": report["summary"],
@@ -229,6 +230,86 @@ def test_import_predictions_cli_writes_predictions_and_report(
     comparison = json.loads(capsys.readouterr().out)
     assert comparison["action"] == "compare_offline_prediction_import_report"
     assert comparison["path"] == str(report_path)
+    assert comparison["matches"] is True
+
+
+def test_import_predictions_cli_accepts_standard_qa_prediction_input(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_import_predictions_script()
+    main = cast(MainFn, getattr(module, "main"))
+    cases = _cases()
+    predictions = [
+        lab.QAPrediction(
+            id=cases[0].id,
+            answer=cases[0].answer,
+            evidence_nodes=cases[0].required_nodes,
+            evidence_edges=cases[0].required_edges,
+            confidence=0.88,
+        ),
+        lab.QAPrediction(
+            id=cases[1].id,
+            answer=cases[1].answer,
+            confidence=0.74,
+        ),
+    ]
+    qa_path = tmp_path / "qa.jsonl"
+    input_path = tmp_path / "external-vlm-predictions.jsonl"
+    pred_path = tmp_path / "normalized-vlm-predictions.jsonl"
+    report_path = tmp_path / "import-report.json"
+    lab.save_qa_dataset(cases, qa_path)
+    lab.save_qa_predictions(predictions, input_path)
+
+    assert main(
+        [
+            "--qa",
+            str(qa_path),
+            "--input",
+            str(input_path),
+            "--input-format",
+            "qa_prediction",
+            "--source-name",
+            "real_vlm",
+            "--source-kind",
+            "vlm",
+            "--metadata",
+            "model_id=gpt-4o-mini",
+            "--metadata",
+            "prompt_id=spatial-vlm-v2",
+            "--metadata",
+            "dataset_id=ai2thor-mini",
+            "--pred",
+            str(pred_path),
+            "--report",
+            str(report_path),
+        ]
+    ) == 0
+
+    output = json.loads(capsys.readouterr().out)
+    normalized = lab.load_qa_predictions(pred_path)
+    report = lab.load_offline_prediction_import_report(report_path)
+    assert hasattr(lab, "import_qa_prediction_inputs")
+    assert output["action"] == "import_predictions"
+    assert output["valid"] is True
+    assert output["input_format"] == "qa_prediction"
+    assert output["source_profile"]["source_key"] == "vlm:real_vlm"
+    assert [prediction.id for prediction in normalized] == [cases[0].id, cases[1].id]
+    assert report["input_format"] == "qa_prediction"
+    assert report["summary"] == {
+        "duplicate_case_count": 0,
+        "error_prediction_count": 0,
+        "gold_case_count": 3,
+        "imported_prediction_count": 2,
+        "missing_case_count": 1,
+        "record_count": 2,
+        "unknown_case_count": 0,
+    }
+    assert report["input_digest"] == lab.qa_predictions_digest(predictions)
+    assert report["prediction_digest"] == lab.qa_predictions_digest(normalized)
+
+    assert main(["--compare-report", str(report_path)]) == 0
+    comparison = json.loads(capsys.readouterr().out)
     assert comparison["matches"] is True
 
 

@@ -5,7 +5,7 @@ import json
 import sys
 from pathlib import Path
 from types import ModuleType
-from typing import Any, Protocol, cast
+from typing import Any, Mapping, Protocol, cast
 
 from _pytest.capture import CaptureFixture
 
@@ -67,6 +67,7 @@ def test_experiment_summary_report_summarizes_research_question_lift_and_drift(
         active_task_delta_report_paths=(artifacts.active_delta_path,),
         error_attribution_report_paths=(artifacts.error_attribution_path,),
         graph_eval_report_paths=(artifacts.graph_eval_path,),
+        offline_prediction_import_report_paths=(artifacts.offline_import_path,),
     )
     manifest_path = tmp_path / "benchmark-manifest.json"
     report_path = tmp_path / "experiment-summary.json"
@@ -93,10 +94,42 @@ def test_experiment_summary_report_summarizes_research_question_lift_and_drift(
         "graph_eval_report:graph-eval-report.json": artifacts.graph_eval[
             "report_digest"
         ],
+        "offline_prediction_import_report:offline-import-report.json": (
+            artifacts.offline_import["report_digest"]
+        ),
         "qa_eval_delta_report:qa-delta-report.json": artifacts.qa_delta[
             "report_digest"
         ],
     }
+    assert report["source_profile_matrix"] == [
+        {
+            "adapter": "vlm",
+            "artifact_key": (
+                "offline_prediction_import_report:offline-import-report.json"
+            ),
+            "capability_axes": ["graph_tool_query", "spatial_qa"],
+            "dataset_id": "mock_eval",
+            "digest": artifacts.offline_import["report_digest"],
+            "duplicate_case_count": 0,
+            "imported_prediction_count": 3,
+            "metadata_keys": [
+                "capabilities",
+                "dataset_id",
+                "model_id",
+                "prompt_id",
+            ],
+            "missing_case_count": 0,
+            "model_id": "mock-vlm",
+            "path": str(artifacts.offline_import_path),
+            "prediction_digest": artifacts.offline_import["prediction_digest"],
+            "prompt_id": "spatial-qa-v1",
+            "qa_digest": artifacts.offline_import["qa_digest"],
+            "source_key": "vlm:vlm_fixture",
+            "source_kind": "vlm",
+            "source_name": "vlm_fixture",
+            "unknown_case_count": 0,
+        }
+    ]
     graph_key = "graph_eval_report:graph-eval-report.json"
     assert report["graph_construction_diagnostics"][graph_key][
         "primary_metrics"
@@ -215,6 +248,7 @@ def test_experiment_summary_report_summarizes_research_question_lift_and_drift(
     assert report["summary"]["failure_linkage_diagnostic_count"] == 1
     assert report["summary"]["graph_construction_diagnostic_count"] == 1
     assert report["summary"]["qa_diagnostic_slice_count"] == 14
+    assert report["summary"]["source_profile_count"] == 1
     assert report["summary"]["verdict_counts"] == {
         "improved": 3,
         "inconclusive": 0,
@@ -226,6 +260,21 @@ def test_experiment_summary_report_summarizes_research_question_lift_and_drift(
     assert loaded == report
     assert validation["valid"] is True
     assert comparison["matches"] is True
+
+    tampered_report = dict(report)
+    tampered_report["source_profile_matrix"] = [
+        {
+            **dict(report["source_profile_matrix"][0]),
+            "source_key": "vlm:changed",
+        }
+    ]
+    tampered_report["report_digest"] = lab.experiment_summary_report_digest(
+        tampered_report
+    )
+    tampered_validation = lab.validate_experiment_summary_report(tampered_report)
+    tampered_checks = {check["name"]: check for check in tampered_validation["checks"]}
+    assert tampered_validation["valid"] is False
+    assert tampered_checks["source_profile_matrix"]["passed"] is False
 
     drifted_qa_delta = dict(artifacts.qa_delta)
     drifted_breakdown = dict(artifacts.qa_delta["breakdown_delta"])
@@ -264,6 +313,7 @@ def test_experiment_record_projects_final_readiness_and_verdicts(
         active_task_delta_report_paths=(artifacts.active_delta_path,),
         error_attribution_report_paths=(artifacts.error_attribution_path,),
         graph_eval_report_paths=(artifacts.graph_eval_path,),
+        offline_prediction_import_report_paths=(artifacts.offline_import_path,),
     )
     manifest_path = tmp_path / "benchmark-manifest.json"
     summary_path = tmp_path / "experiment-summary.json"
@@ -271,10 +321,15 @@ def test_experiment_record_projects_final_readiness_and_verdicts(
     lab.save_benchmark_manifest(manifest, manifest_path)
     summary_report = lab.experiment_summary_report(manifest, manifest_path=manifest_path)
     lab.save_experiment_summary_report(summary_report, summary_path)
+    real_readiness = _ready_real_readiness_report(manifest, manifest_path)
+    real_readiness_path = tmp_path / "real-readiness.json"
+    lab.save_real_experiment_readiness_report(real_readiness, real_readiness_path)
 
     record = lab.experiment_record(
         summary_report,
         summary_report_path=summary_path,
+        real_readiness_report=real_readiness,
+        real_readiness_report_path=real_readiness_path,
     )
     saved_path = lab.save_experiment_record(record, record_path)
     loaded = lab.load_experiment_record(record_path)
@@ -286,6 +341,19 @@ def test_experiment_record_projects_final_readiness_and_verdicts(
     assert record["summary_report_digest"] == summary_report["report_digest"]
     assert record["manifest_path"] == str(manifest_path)
     assert record["manifest_digest"] == manifest["manifest_digest"]
+    assert record["real_readiness_report_path"] == str(real_readiness_path)
+    assert record["real_readiness_report_digest"] == real_readiness["report_digest"]
+    assert record["real_package_status"] == "ready"
+    assert record["real_package_readiness"] == {
+        "declared_data_source_kind": "real",
+        "failed_checks": [],
+        "failed_count": 0,
+        "manifest_digest": manifest["manifest_digest"],
+        "missing_groups": [],
+        "ready": True,
+        "report_digest": real_readiness["report_digest"],
+        "valid": True,
+    }
     assert record["readiness_status"] == "ready"
     assert record["verdict_counts"] == {
         "improved": 3,
@@ -366,6 +434,8 @@ def test_experiment_record_projects_final_readiness_and_verdicts(
             "mean_evidence_node_recall_delta": 0.5,
         },
     }
+    assert record["source_profile_count"] == 1
+    assert record["source_profile_matrix"] == summary_report["source_profile_matrix"]
     assert record["diagnostic_ledger"] == {
         "error_attribution_artifact_keys": [
             "error_attribution_report:error-attribution-report.json",
@@ -417,6 +487,7 @@ def test_experiment_record_projects_final_readiness_and_verdicts(
     drifted_summary["failure_linkage_diagnostics"][
         "error_attribution_report:error-attribution-report.json"
     ]["linked_by"] = "unmatched"
+    drifted_summary["source_profile_matrix"][0]["source_key"] = "vlm:changed"
     drifted_summary["report_digest"] = lab.experiment_summary_report_digest(
         drifted_summary
     )
@@ -428,6 +499,56 @@ def test_experiment_record_projects_final_readiness_and_verdicts(
     assert checks["record_digest_matches_current"]["passed"] is False
     assert checks["research_question_verdicts_match_current"]["passed"] is False
     assert checks["diagnostic_ledger_match_current"]["passed"] is False
+    assert checks["source_profile_matrix_match_current"]["passed"] is False
+
+
+def test_record_experiment_cli_links_ready_real_package_readiness(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_record_experiment_script()
+    main = cast(MainFn, getattr(module, "main"))
+    artifacts = _write_experiment_artifacts(tmp_path)
+    manifest = lab.build_benchmark_artifacts(
+        dataset_name="mock_benchmark",
+        episode_paths=_write_mock_episodes(tmp_path / "episodes"),
+        output_dir=tmp_path / "benchmark",
+        max_qa_per_episode=3,
+        qa_eval_delta_report_paths=(artifacts.qa_delta_path,),
+        active_task_delta_report_paths=(artifacts.active_delta_path,),
+        error_attribution_report_paths=(artifacts.error_attribution_path,),
+        graph_eval_report_paths=(artifacts.graph_eval_path,),
+    )
+    manifest_path = tmp_path / "benchmark-manifest.json"
+    summary_path = tmp_path / "experiment-summary.json"
+    readiness_path = tmp_path / "real-readiness.json"
+    record_path = tmp_path / "experiment-record.json"
+    lab.save_benchmark_manifest(manifest, manifest_path)
+    lab.save_experiment_summary_report(
+        lab.experiment_summary_report(manifest, manifest_path=manifest_path),
+        summary_path,
+    )
+    real_readiness = _ready_real_readiness_report(manifest, manifest_path)
+    lab.save_real_experiment_readiness_report(real_readiness, readiness_path)
+
+    assert main(
+        [
+            "--summary-report",
+            str(summary_path),
+            "--real-readiness-report",
+            str(readiness_path),
+            "--record",
+            str(record_path),
+        ]
+    ) == 0
+
+    output = json.loads(capsys.readouterr().out)
+    record = lab.load_experiment_record(record_path)
+    assert output["action"] == "experiment_record"
+    assert output["valid"] is True
+    assert output["real_package_status"] == "ready"
+    assert output["digest"] == record["record_digest"]
+    assert record["real_readiness_report_digest"] == real_readiness["report_digest"]
 
 
 def test_record_experiment_cli_writes_validates_compares_and_reports_invalid_json(
@@ -496,6 +617,43 @@ def test_record_experiment_cli_writes_validates_compares_and_reports_invalid_jso
         "valid": False,
         "error": "Experiment record JSON must be an object",
     }
+
+
+def _ready_real_readiness_report(
+    manifest: Mapping[str, Any],
+    manifest_path: Path,
+) -> dict[str, Any]:
+    checks = [
+        {
+            "name": "real_package_import_ready",
+            "group": "real_data",
+            "passed": True,
+        }
+    ]
+    report: dict[str, Any] = {
+        "schema_version": "dsg-spatialqa-lab.real-experiment-readiness.v1",
+        "manifest_path": str(manifest_path),
+        "manifest_digest": manifest["manifest_digest"],
+        "declared_data_source_kind": "real",
+        "thresholds": {
+            "min_episode_count": 1,
+            "min_qa_count": 1,
+            "min_scene_count": 1,
+        },
+        "required_control_kinds": [],
+        "required_predicted_input_kinds": [],
+        "artifact_summary": {},
+        "checks": checks,
+        "readiness": {
+            "ready": True,
+            "passed_count": 1,
+            "failed_count": 0,
+            "missing_groups": [],
+            "failed_checks": [],
+        },
+    }
+    report["report_digest"] = lab.real_experiment_readiness_report_digest(report)
+    return report
 
 
 def test_experiment_summary_validation_detects_verdict_drift_after_digest_recompute(
@@ -768,6 +926,8 @@ class ExperimentArtifacts(Protocol):
     graph_eval: dict[str, Any]
     error_attribution_path: Path
     error_attribution: dict[str, Any]
+    offline_import_path: Path
+    offline_import: dict[str, Any]
 
 
 def _write_experiment_artifacts(tmp_path: Path) -> ExperimentArtifacts:
@@ -780,6 +940,8 @@ def _write_experiment_artifacts(tmp_path: Path) -> ExperimentArtifacts:
         graph_eval: dict[str, Any]
         error_attribution_path: Path
         error_attribution: dict[str, Any]
+        offline_import_path: Path
+        offline_import: dict[str, Any]
 
     cases = list(_qa_metric_cases())
     relation_payload = lab.qa_case_to_dict(cases[1])
@@ -855,6 +1017,9 @@ def _write_experiment_artifacts(tmp_path: Path) -> ExperimentArtifacts:
     qa_dataset_path = tmp_path / "qa.jsonl"
     prediction_path = tmp_path / "qa-predictions.jsonl"
     error_attribution_path = tmp_path / "error-attribution-report.json"
+    offline_input_path = tmp_path / "offline-input.jsonl"
+    offline_prediction_path = tmp_path / "offline-predictions.jsonl"
+    offline_import_path = tmp_path / "offline-import-report.json"
     lab.save_graph_json(oracle_graph, oracle_graph_path)
     lab.save_graph_json(predicted_graph, predicted_graph_path)
     predictions = _qa_metric_predictions(tuple(cases))
@@ -878,6 +1043,36 @@ def _write_experiment_artifacts(tmp_path: Path) -> ExperimentArtifacts:
     )
     lab.save_graph_eval_report(graph_eval, graph_eval_path)
     lab.save_error_attribution_report(error_attribution, error_attribution_path)
+    lab.save_offline_prediction_records(
+        tuple(
+            lab.OfflinePredictionRecord(
+                case_id=case.id,
+                answer=case.answer,
+                evidence_nodes=case.required_nodes,
+                evidence_edges=case.required_edges,
+                confidence=0.88,
+            )
+            for case in cases
+        ),
+        offline_input_path,
+    )
+    imported_predictions, offline_import = lab.import_offline_predictions(
+        cases,
+        lab.load_offline_prediction_records(offline_input_path),
+        source_name="vlm_fixture",
+        source_kind="vlm",
+        source_metadata={
+            "capabilities": ("spatial_qa", "graph_tool_query"),
+            "dataset_id": "mock_eval",
+            "model_id": "mock-vlm",
+            "prompt_id": "spatial-qa-v1",
+        },
+        qa_path=qa_dataset_path,
+        input_path=offline_input_path,
+        prediction_path=offline_prediction_path,
+    )
+    lab.save_qa_predictions(imported_predictions, offline_prediction_path)
+    lab.save_offline_prediction_import_report(offline_import, offline_import_path)
 
     artifacts = Artifacts()
     artifacts.qa_delta_path = qa_delta_path
@@ -888,6 +1083,8 @@ def _write_experiment_artifacts(tmp_path: Path) -> ExperimentArtifacts:
     artifacts.graph_eval = graph_eval
     artifacts.error_attribution_path = error_attribution_path
     artifacts.error_attribution = error_attribution
+    artifacts.offline_import_path = offline_import_path
+    artifacts.offline_import = offline_import
     return artifacts
 
 

@@ -8,6 +8,7 @@ from typing import Any
 from dsg_spatialqa_lab import (
     dashboard_bundle,
     export_dashboard,
+    load_dashboard_bundle,
     load_error_attribution_report,
     load_active_task_delta_report,
     load_active_task_report,
@@ -26,20 +27,18 @@ def main(argv: list[str] | None = None) -> int:
         allow_abbrev=False,
         description="Export a deterministic static dashboard bundle for SpatialQA review.",
     )
-    parser.add_argument("--qa", type=Path, required=True, help="Explicit local QA JSONL path.")
+    parser.add_argument("--qa", type=Path, help="Explicit local QA JSONL path.")
     parser.add_argument(
         "--pred",
         type=Path,
-        required=True,
         help="Explicit local QA prediction JSONL path.",
     )
     parser.add_argument(
         "--eval-report",
         type=Path,
-        required=True,
         help="Explicit local QA eval report JSON path.",
     )
-    parser.add_argument("--graph", type=Path, required=True, help="Explicit local graph JSON path.")
+    parser.add_argument("--graph", type=Path, help="Explicit local graph JSON path.")
     parser.add_argument(
         "--error-attribution",
         type=Path,
@@ -63,10 +62,48 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--output",
         type=Path,
-        required=True,
         help="Explicit local dashboard output directory.",
     )
+    parser.add_argument(
+        "--validate-bundle",
+        type=Path,
+        help="Validate an explicit dashboard bundle JSON path.",
+    )
     args = parser.parse_args(argv)
+
+    if args.validate_bundle is not None:
+        try:
+            bundle = load_dashboard_bundle(args.validate_bundle)
+            validation = validate_dashboard_bundle(bundle)
+        except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
+            _emit_json(_error_payload("validate_dashboard_bundle", args.validate_bundle, exc))
+            return 1
+
+        _emit_json(
+            {
+                "action": "validate_dashboard_bundle",
+                "path": str(args.validate_bundle),
+                "valid": validation["valid"],
+                "digest": bundle.get("bundle_digest"),
+            }
+        )
+        return 0 if validation["valid"] is True else 1
+
+    missing_required = [
+        flag
+        for flag, value in (
+            ("--qa", args.qa),
+            ("--pred", args.pred),
+            ("--eval-report", args.eval_report),
+            ("--graph", args.graph),
+            ("--output", args.output),
+        )
+        if value is None
+    ]
+    if missing_required:
+        parser.error(
+            "the following arguments are required: " + ", ".join(missing_required)
+        )
 
     try:
         attribution_report = (
@@ -98,6 +135,14 @@ def main(argv: list[str] | None = None) -> int:
             active_task_report=active_task_report,
             active_task_delta_report=active_task_delta_report,
             experiment_summary_report=experiment_summary_report,
+            qa_path=args.qa,
+            prediction_path=args.pred,
+            qa_eval_report_path=args.eval_report,
+            graph_path=args.graph,
+            error_attribution_report_path=args.error_attribution,
+            active_task_report_path=args.active_task_report,
+            active_task_delta_report_path=args.active_task_delta_report,
+            experiment_summary_report_path=args.experiment_summary_report,
         )
         export_result = export_dashboard(bundle, args.output)
         validation = validate_dashboard_bundle(bundle)

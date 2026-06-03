@@ -30,6 +30,7 @@ Completed layers:
 13. Habitat adapter skeleton.
 14. Benchmark manifest tooling.
 15. Architecture, roadmap, and artifact format documentation.
+16. Real experiment readiness reporting over manifest-linked local artifacts.
 
 ## Milestones
 
@@ -116,30 +117,124 @@ construction, evidence missing, benchmark/engine, or reasoning/tool-use failure
 categories. The final summary links attribution reports to graph eval reports
 by graph digest, giving each predicted graph a compact quality-plus-failure
 view. Final experiment records retain a diagnostic ledger of QA, graph,
-attribution, and linkage coverage. Offline import reports also derive stable
+attribution, and linkage coverage, and can seal a linked real package readiness
+digest/status when externally collected artifacts pass the readiness gate.
+Offline import reports also derive stable
 source profiles from explicit metadata, including source key, adapter, model,
 prompt, dataset, metadata keys, and capability axes. This supports VLM-only or
 caption-memory style outputs without provider calls during default
-verification.
+verification. Benchmark manifests can now record offline prediction import
+reports, and experiment summaries/final records project them into
+`source_profile_matrix` rows for side-by-side source review. Static dashboard
+exports show those rows and expose a Source Profile filter for imported-source
+review. `scripts/check_offline_controls.py` now gates the real control matrix
+itself, requiring VLM-only, multi-frame VLM, caption-memory, and graph-text LLM
+source kinds with complete gold-case coverage and a shared QA digest.
+`scripts/run_offline_controls.py` now imports all four local control prediction
+files and writes the matrix report in one deterministic handoff.
+Real experiment readiness then compares that shared offline-control digest with
+the benchmark manifest `qa_digest` before accepting the controls as aligned
+evidence, and rejects offline controls with incomplete gold-case coverage or
+import diagnostics. The matrix report itself is now recorded as a manifest
+artifact and must be ready, with required source kinds covering the requested
+controls, before a real package can pass readiness.
 
 Next steps:
 
-- side-by-side eval manifests for multiple imported sources,
-- optional real adapter boundaries that write offline files only.
+- provide real offline prediction JSONL files for VLM-only, multi-frame,
+  caption-memory, and graph-text LLM controls;
+- pass the offline control matrix gate before using source profiles and
+  dashboard filters to compare those controls against DSG GraphTool and
+  predicted-DSG GraphTool outputs.
 
 ### Predicted DSG Integration
 
-The current predicted DSG path is mock perception with deterministic
-source-metadata propagation from detections to graph object nodes, inferred
-relation edges marked as `geometry_inference`, and predicted graph report
-summaries by detection source. Future work can add optional real perception
-adapters only behind explicit boundaries:
+The current predicted DSG path includes mock episode perception plus an
+explicit `SceneObservation` sequence input for detector/RGB-D outputs produced
+outside the deterministic runtime. Both paths preserve source metadata on graph
+object nodes, mark inferred relation edges as `geometry_inference`, and write
+stable predicted graph reports. `scripts/check_predicted_dsg.py` now gates
+observation-sequence predicted graphs as detector/RGB-D evidence by requiring
+multi-frame object observations plus detector, RGB, and depth evidence before
+readiness treats them as real predicted DSG artifacts. Future work can add
+optional real perception adapters only behind explicit boundaries:
 
 - local file inputs,
 - optional extras,
 - deterministic mocked tests,
 - no default model imports,
 - stable graph and report artifacts.
+
+Next steps:
+
+- run a small detector/RGB-D pipeline outside the default runtime;
+- write its outputs as `SceneObservation` sequences;
+- build predicted graph reports with `--input-kind observation_sequence`;
+- pass the predicted DSG evidence gate;
+- compare those predicted graphs against oracle DSGs and QA/task outcomes.
+
+### Real Experiment Readiness
+
+Status: complete for deterministic readiness gating.
+
+`scripts/check_real_experiment.py` checks whether a benchmark manifest and its
+linked local artifacts are enough to begin answering whether DSG improves over
+controls. It requires an explicit `real` data declaration, minimum
+episode/scene/QA coverage, spatial/dynamic/GraphTool-style QA coverage,
+real collection reports, offline VLM-only, multi-frame VLM, caption-memory,
+and graph-text controls, observation-backed predicted DSG reports, graph eval,
+attribution, active-task, dashboard review artifacts, complete offline-control
+coverage, clean offline-control import diagnostics, and matching QA digests
+between offline controls and the benchmark manifest, plus a ready offline
+control matrix report artifact whose required source kinds cover the requested
+controls. Mock or underspecified packages fail the gate instead of being treated
+as real evidence.
+
+Next steps:
+
+- run a small AI2-THOR or Habitat artifact package;
+- pass the real collection evidence gate;
+- import real offline control predictions;
+- pass the readiness gate before summarizing DSG lift.
+
+### Real Experiment Package Assembly
+
+Status: complete for deterministic package assembly from explicit local
+artifacts.
+
+`scripts/assemble_real_experiment.py` takes caller-supplied episode JSONL files
+plus local QA, graph, active-task, dashboard, offline-prediction, and
+predicted-graph reports, including real collection reports, writes a benchmark
+manifest, writes the matching real experiment readiness report, and exits
+non-zero if the readiness gate is not ready. It does not collect simulator data
+or run perception/model inference.
+
+Next steps:
+
+- use the assembler on a small real AI2-THOR or Habitat package;
+- require real VLM-only, multi-frame, caption-memory, and graph-text offline
+  prediction imports;
+- run the deterministic real package handoff once the package is ready.
+
+### Real Experiment Package Run/Import
+
+Status: complete for deterministic run/import handoff from explicit local
+artifacts.
+
+`scripts/run_real_experiment.py` composes package assembly, real readiness,
+experiment summary, and final experiment record generation. It does not collect
+simulator data, run detectors, or call VLM/LLM providers. It writes the summary
+and final record only when the linked real readiness report is ready; otherwise
+it returns non-zero structured diagnostics and leaves the final evidence record
+unwritten.
+
+Next steps:
+
+- supply a small real AI2-THOR or Habitat artifact package;
+- import real VLM-only, multi-frame, caption-memory, and graph-text offline
+  predictions;
+- compare DSG rows only after the assembled package passes readiness.
+- run the package handoff and inspect DSG-vs-control lift.
 
 ## Long-Term Research Extensions
 

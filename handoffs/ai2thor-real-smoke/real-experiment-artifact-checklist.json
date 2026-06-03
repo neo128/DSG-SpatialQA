@@ -1,0 +1,174 @@
+{
+  "action": "real_experiment_artifact_checklist",
+  "input_artifacts": [
+    {
+      "exists": false,
+      "group": "offline_controls",
+      "path": "handoffs/ai2thor-real-smoke/handoffs/ai2thor-real-smoke/offline-control-import-manifest.json",
+      "role": "offline_control_import_manifest",
+      "status": "missing",
+      "track": "real_controls"
+    },
+    {
+      "exists": false,
+      "group": "predicted_dsg",
+      "path": "handoffs/ai2thor-real-smoke/handoffs/ai2thor-real-smoke/predicted-dsg-detector-run-manifest.json",
+      "role": "predicted_dsg_detector_run_manifest",
+      "status": "missing",
+      "track": "predicted_dsg"
+    },
+    {
+      "exists": false,
+      "group": "real_collection",
+      "path": "handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl",
+      "role": "episode",
+      "status": "missing",
+      "track": "real_data"
+    },
+    {
+      "exists": false,
+      "group": "real_collection",
+      "path": "handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+      "role": "real_collection_report",
+      "status": "missing",
+      "track": "real_data"
+    },
+    {
+      "exists": false,
+      "group": "review_artifacts",
+      "path": "handoffs/ai2thor-real-smoke/inputs/review/active-task-delta.json",
+      "role": "active_task_delta_report",
+      "status": "missing",
+      "track": "review_artifacts"
+    },
+    {
+      "exists": false,
+      "group": "review_artifacts",
+      "path": "handoffs/ai2thor-real-smoke/inputs/review/dashboard.json",
+      "role": "dashboard_bundle",
+      "status": "missing",
+      "track": "review_artifacts"
+    },
+    {
+      "exists": false,
+      "group": "review_artifacts",
+      "path": "handoffs/ai2thor-real-smoke/inputs/review/error-attribution.json",
+      "role": "error_attribution_report",
+      "status": "missing",
+      "track": "review_artifacts"
+    },
+    {
+      "exists": false,
+      "group": "review_artifacts",
+      "path": "handoffs/ai2thor-real-smoke/inputs/review/graph-eval.json",
+      "role": "graph_eval_report",
+      "status": "missing",
+      "track": "review_artifacts"
+    }
+  ],
+  "planned_output_artifacts": [
+    {
+      "exists": false,
+      "group": "real_run",
+      "path": "handoffs/ai2thor-real-smoke/outputs/benchmark-manifest.json",
+      "role": "benchmark_manifest",
+      "status": "planned",
+      "track": "run_outputs"
+    },
+    {
+      "exists": false,
+      "group": "real_run",
+      "path": "handoffs/ai2thor-real-smoke/outputs/experiment-record.json",
+      "role": "experiment_record",
+      "status": "planned",
+      "track": "run_outputs"
+    },
+    {
+      "exists": false,
+      "group": "real_run",
+      "path": "handoffs/ai2thor-real-smoke/outputs/experiment-summary.json",
+      "role": "experiment_summary",
+      "status": "planned",
+      "track": "run_outputs"
+    },
+    {
+      "exists": false,
+      "group": "real_run",
+      "path": "handoffs/ai2thor-real-smoke/outputs/benchmark",
+      "role": "output_dir",
+      "status": "planned",
+      "track": "run_outputs"
+    },
+    {
+      "exists": false,
+      "group": "real_run",
+      "path": "handoffs/ai2thor-real-smoke/outputs/real-experiment-readiness.json",
+      "role": "real_readiness_report",
+      "status": "planned",
+      "track": "run_outputs"
+    },
+    {
+      "exists": false,
+      "group": "run_outputs",
+      "path": "handoffs/ai2thor-real-smoke/handoffs/ai2thor-real-smoke/outputs/real-experiment-run-ledger.json",
+      "role": "real_experiment_run_ledger",
+      "status": "planned",
+      "track": "run_outputs"
+    }
+  ],
+  "preflight_report_path": "handoffs/ai2thor-real-smoke/real-experiment-preflight.json",
+  "ready_to_run": false,
+  "run_manifest_path": "handoffs/ai2thor-real-smoke/real-experiment-run-manifest.json",
+  "schema_version": "dsg-spatialqa-lab.real-experiment-artifact-checklist.v1",
+  "summary": {
+    "blocked_group_count": 4,
+    "existing_planned_output_count": 0,
+    "input_artifact_count": 8,
+    "missing_input_artifact_count": 8,
+    "planned_output_artifact_count": 6,
+    "present_input_artifact_count": 0,
+    "ready_to_run": false
+  },
+  "track_summary": {
+    "predicted_dsg": {
+      "existing_planned_output_artifact_count": 0,
+      "input_artifact_count": 1,
+      "input_ready": false,
+      "missing_input_artifact_count": 1,
+      "planned_output_artifact_count": 0,
+      "present_input_artifact_count": 0
+    },
+    "real_controls": {
+      "existing_planned_output_artifact_count": 0,
+      "input_artifact_count": 1,
+      "input_ready": false,
+      "missing_input_artifact_count": 1,
+      "planned_output_artifact_count": 0,
+      "present_input_artifact_count": 0
+    },
+    "real_data": {
+      "existing_planned_output_artifact_count": 0,
+      "input_artifact_count": 2,
+      "input_ready": false,
+      "missing_input_artifact_count": 2,
+      "planned_output_artifact_count": 0,
+      "present_input_artifact_count": 0
+    },
+    "review_artifacts": {
+      "existing_planned_output_artifact_count": 0,
+      "input_artifact_count": 4,
+      "input_ready": false,
+      "missing_input_artifact_count": 4,
+      "planned_output_artifact_count": 0,
+      "present_input_artifact_count": 0
+    },
+    "run_outputs": {
+      "existing_planned_output_artifact_count": 0,
+      "input_artifact_count": 0,
+      "input_ready": true,
+      "missing_input_artifact_count": 0,
+      "planned_output_artifact_count": 6,
+      "present_input_artifact_count": 0
+    }
+  }
+}

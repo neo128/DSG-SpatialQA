@@ -6,11 +6,15 @@ from pathlib import Path
 from typing import Any
 
 from dsg_spatialqa_lab import (
+    OFFLINE_PREDICTION_RECORD_INPUT_FORMAT,
+    QA_PREDICTION_INPUT_FORMAT,
     compare_offline_prediction_import_report,
     import_offline_predictions,
+    import_qa_prediction_inputs,
     load_offline_prediction_import_report,
     load_offline_prediction_records,
     load_qa_dataset,
+    load_qa_predictions,
     offline_prediction_import_report_digest,
     qa_predictions_digest,
     save_offline_prediction_import_report,
@@ -27,6 +31,12 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--qa", type=Path, help="Explicit local gold QA JSONL dataset.")
     parser.add_argument("--input", type=Path, help="Explicit local offline prediction JSONL input.")
+    parser.add_argument(
+        "--input-format",
+        choices=(OFFLINE_PREDICTION_RECORD_INPUT_FORMAT, QA_PREDICTION_INPUT_FORMAT),
+        default=OFFLINE_PREDICTION_RECORD_INPUT_FORMAT,
+        help="Prediction input format.",
+    )
     parser.add_argument("--source-name", help="Stable source name for this prediction artifact.")
     parser.add_argument("--source-kind", default="offline", help="Stable source kind.")
     parser.add_argument(
@@ -95,16 +105,30 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--report is required when importing predictions")
 
     try:
-        predictions, report = import_offline_predictions(
-            load_qa_dataset(args.qa),
-            load_offline_prediction_records(args.input),
-            source_name=args.source_name,
-            source_kind=args.source_kind,
-            source_metadata=_metadata(args.metadata),
-            qa_path=args.qa,
-            input_path=args.input,
-            prediction_path=args.pred,
-        )
+        cases = load_qa_dataset(args.qa)
+        metadata = _metadata(args.metadata)
+        if args.input_format == QA_PREDICTION_INPUT_FORMAT:
+            predictions, report = import_qa_prediction_inputs(
+                cases,
+                load_qa_predictions(args.input),
+                source_name=args.source_name,
+                source_kind=args.source_kind,
+                source_metadata=metadata,
+                qa_path=args.qa,
+                input_path=args.input,
+                prediction_path=args.pred,
+            )
+        else:
+            predictions, report = import_offline_predictions(
+                cases,
+                load_offline_prediction_records(args.input),
+                source_name=args.source_name,
+                source_kind=args.source_kind,
+                source_metadata=metadata,
+                qa_path=args.qa,
+                input_path=args.input,
+                prediction_path=args.pred,
+            )
     except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
         _emit_json(_error_payload("import_predictions", args.pred, exc))
         return 1
@@ -117,6 +141,7 @@ def main(argv: list[str] | None = None) -> int:
         "path": str(args.pred),
         "valid": validation["valid"],
         "digest": offline_prediction_import_report_digest(report),
+        "input_format": report.get("input_format", OFFLINE_PREDICTION_RECORD_INPUT_FORMAT),
         "prediction_digest": qa_predictions_digest(predictions),
         "source_profile": report["source_profile"],
         "summary": report["summary"],

@@ -14,13 +14,17 @@ The implemented MVP is organized as a repeatable artifact chain:
 
 ```text
 explicit episode JSONL
+-> real collection evidence report
 -> oracle Dynamic Scene Graph
 -> predicted/mock Dynamic Scene Graph
+-> predicted DSG evidence report
 -> QA JSONL and active task JSONL
 -> local baselines and graph-tool answers
 -> QA, graph, and active-task metrics
 -> error attribution
 -> dashboard bundle and benchmark manifest
+-> real experiment package assembly
+-> real experiment readiness report
 ```
 
 Each stage has explicit local inputs and explicit local outputs. Most stages
@@ -118,16 +122,21 @@ Primary modules and scripts:
 | --- | --- | --- |
 | Scene graph core | `DynamicSceneGraph`, `GraphTool`, relation engine, QA engine | In memory only |
 | Episode input | Episode JSONL with explicit steps | No simulator needed |
+| Real collection evidence | AI2-THOR/Habitat episode collection gate | Explicit local episode files only |
 | Oracle graph | Episode metadata to DSG | Uses explicit metadata |
-| Predicted graph | Mock detections to DSG with source metadata | No real perception model |
+| Predicted graph | Mock detections or explicit observation sequences to DSG with source metadata | No real perception model |
 | Baselines | `graph_tool`, `majority`, `graph_text`, disabled `caption_memory` | No model calls |
 | Offline prediction imports | Local external prediction JSONL to `QAPrediction` JSONL | Explicit files only |
+| Offline control matrix | VLM-only, multi-frame VLM, caption-memory, graph-text import gate | Explicit import reports only |
+| Predicted DSG evidence | Observation-sequence RGB-D/detector evidence gate | Explicit predicted graph reports and observation files only |
 | QA metrics | QA prediction JSONL reports | Explicit gold/pred paths |
 | Graph metrics | Oracle-vs-predicted graph reports | Exact by default; label+center optional |
 | Error attribution | Oracle, predicted, and prediction comparison | Explicit local files |
 | Dashboard | Static JSON/HTML bundle | QA/error review plus optional active panels |
 | Active tasks | Mock graph-step EQA loop | No navigation or robot control |
 | Benchmark | Multi-episode manifest and coverage | Explicit episode paths |
+| Real experiment package assembly | Manifest plus readiness report writer | Explicit local artifacts only |
+| Real experiment readiness | Manifest-linked evidence gate | Explicit local artifacts only |
 | Adapters | AI2-THOR and Habitat mock collectors | Real collection fails closed |
 
 ## Deterministic Runtime Rules
@@ -176,4 +185,7 @@ The following are intentionally not part of the default deterministic runtime:
   room-aware and confidence-weighted matching.
 
 Future work should add these only behind optional, explicit, mock-first
-boundaries.
+boundaries. Detector or RGB-D pipelines should first write local
+`SceneObservation` sequence artifacts, then feed those artifacts through the
+predicted graph builder for deterministic graph, QA, attribution, manifest, and
+dashboard evaluation.

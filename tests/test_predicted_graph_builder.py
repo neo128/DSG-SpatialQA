@@ -186,6 +186,66 @@ def test_predicted_graph_propagates_detection_source_metadata() -> None:
     ]["predicted_count"] == 4
 
 
+def test_predicted_graph_builds_from_explicit_observation_sequence_artifact(
+    tmp_path: Path,
+) -> None:
+    assert hasattr(lab, "build_predicted_graph_from_observations")
+    assert hasattr(lab, "predicted_graph_observation_summary")
+    assert hasattr(lab, "predicted_graph_report_from_observations")
+    observations = _detector_observations()
+    input_path = tmp_path / "detector-observations.json"
+    graph_path = tmp_path / "observation-predicted-graph.json"
+    lab.save_scene_observation_sequence(observations, input_path)
+
+    graph = lab.build_predicted_graph_from_observations(
+        observations,
+        source_path=input_path,
+        infer_relations=("LEFT_OF", "RIGHT_OF", "NEAR"),
+        reference_frames=("world",),
+    )
+    lab.save_graph_json(graph, graph_path)
+    report = lab.predicted_graph_report_from_observations(
+        input_path=input_path,
+        graph_path=graph_path,
+        graph=graph,
+        observations=observations,
+        infer_relations=("LEFT_OF", "RIGHT_OF", "NEAR"),
+        reference_frames=("world",),
+    )
+    validation = lab.validate_predicted_graph_report(report)
+    comparison = lab.compare_predicted_graph_report(report)
+
+    assert sorted(graph.object_states) == ["mug_1", "plate_1"]
+    assert graph.nodes["mug_1"].attributes["source"] == "rgbd_tracker"
+    assert graph.nodes["mug_1"].attributes["hidden_reason"] == "not_detected_in_frame"
+    assert graph.nodes["plate_1"].attributes["source"] == "rgbd_detector"
+    assert graph.get_object_state("mug_1").visible is False
+    assert graph.get_object_state("mug_1").confidence == 0.35
+    assert [
+        (edge.src, edge.relation, edge.dst, edge.reference_frame, edge.step)
+        for edge in graph.find_edges(src="plate_1", relation="NEAR", dst="mug_1")
+    ] == [("plate_1", "NEAR", "mug_1", "world", 1)]
+    assert report["input_kind"] == "observation_sequence"
+    assert report["observation_sequence_digest"] == lab.scene_observation_sequence_digest(
+        observations
+    )
+    assert report["summary"]["predicted_summary"] == {
+        "input_kind": "observation_sequence",
+        "observation_count": 2,
+        "object_observation_count": 3,
+        "visible_object_observation_count": 2,
+        "hidden_object_observation_count": 1,
+        "inferred_relation_count": 2,
+        "by_observation_source": {
+            "rgbd_detector": 2,
+            "rgbd_tracker": 1,
+        },
+        "by_object_label": {"mug": 2, "plate": 1},
+    }
+    assert validation["valid"] is True
+    assert comparison["matches"] is True
+
+
 def test_predicted_graph_report_save_load_validate_and_compare_explicit_artifacts(
     tmp_path: Path,
 ) -> None:
@@ -286,6 +346,63 @@ def test_predicted_graph_cli_builds_validates_and_compares_artifacts(
     assert comparison["matches"] is True
 
 
+def test_predicted_graph_cli_builds_from_observation_sequence(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_predicted_script()
+    main = cast(MainFn, getattr(module, "main"))
+    observations = _detector_observations()
+    input_path = tmp_path / "detector-observations.json"
+    graph_path = tmp_path / "observation-predicted-graph.json"
+    report_path = tmp_path / "observation-predicted-report.json"
+    lab.save_scene_observation_sequence(observations, input_path)
+
+    assert main(
+        [
+            "--input-kind",
+            "observation_sequence",
+            "--input",
+            str(input_path),
+            "--output-graph",
+            str(graph_path),
+            "--report",
+            str(report_path),
+            "--infer-relation",
+            "LEFT_OF",
+            "--infer-relation",
+            "RIGHT_OF",
+            "--infer-relation",
+            "NEAR",
+            "--reference-frame",
+            "world",
+        ]
+    ) == 0
+
+    output = json.loads(capsys.readouterr().out)
+    assert output["action"] == "build_predicted_graph"
+    assert output["input_kind"] == "observation_sequence"
+    assert output["path"] == str(input_path)
+    assert output["graph_path"] == str(graph_path)
+    assert output["valid"] is True
+    assert output["summary"]["predicted_summary"]["by_observation_source"] == {
+        "rgbd_detector": 2,
+        "rgbd_tracker": 1,
+    }
+    assert graph_path.exists()
+    assert report_path.exists()
+
+    assert main(["--validate-report", str(report_path)]) == 0
+    validation = json.loads(capsys.readouterr().out)
+    assert validation["action"] == "validate_predicted_graph_report"
+    assert validation["valid"] is True
+
+    assert main(["--compare-report", str(report_path)]) == 0
+    comparison = json.loads(capsys.readouterr().out)
+    assert comparison["action"] == "compare_predicted_graph_report"
+    assert comparison["matches"] is True
+
+
 def test_predicted_graph_cli_returns_structured_json_for_invalid_report(
     tmp_path: Path,
     capsys: CaptureFixture[str],
@@ -340,6 +457,73 @@ def _predicted_frames() -> tuple[EpisodeFrame, ...]:
                     bbox_size=(0.2, 0.2, 0.3),
                 ),
             ],
+        ),
+    )
+
+
+def _detector_observations() -> tuple[lab.SceneObservation, ...]:
+    return (
+        lab.SceneObservation(
+            step=1,
+            agent_pose=Pose3D(0.0, 0.0, 0.0),
+            objects=(
+                lab.ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(0.3, 1.0, 0.82),
+                    lab.BBox3D(
+                        center=Pose3D(0.3, 1.0, 0.82),
+                        size=(0.2, 0.2, 0.3),
+                    ),
+                    confidence=0.91,
+                    visible=True,
+                    attributes={
+                        "source": "rgbd_detector",
+                        "detector": "detic_fixture",
+                        "rgb_path": "frames/000001.rgb.png",
+                        "depth_path": "frames/000001.depth.png",
+                    },
+                ),
+                lab.ObjectObservation(
+                    "plate_1",
+                    "plate",
+                    Pose3D(0.0, 1.0, 0.74),
+                    lab.BBox3D(
+                        center=Pose3D(0.0, 1.0, 0.74),
+                        size=(0.3, 0.3, 0.04),
+                    ),
+                    confidence=0.87,
+                    visible=True,
+                    attributes={
+                        "source": "rgbd_detector",
+                        "detector": "detic_fixture",
+                        "rgb_path": "frames/000001.rgb.png",
+                        "depth_path": "frames/000001.depth.png",
+                    },
+                ),
+            ),
+        ),
+        lab.SceneObservation(
+            step=2,
+            agent_pose=Pose3D(0.1, 0.0, 0.0),
+            objects=(
+                lab.ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(0.32, 1.0, 0.82),
+                    lab.BBox3D(
+                        center=Pose3D(0.32, 1.0, 0.82),
+                        size=(0.2, 0.2, 0.3),
+                    ),
+                    confidence=0.35,
+                    visible=False,
+                    attributes={
+                        "source": "rgbd_tracker",
+                        "detector": "detic_fixture",
+                        "hidden_reason": "not_detected_in_frame",
+                    },
+                ),
+            ),
         ),
     )
 

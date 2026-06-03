@@ -8,11 +8,13 @@ from typing import Any
 from dsg_spatialqa_lab import (
     SpatialQAError,
     build_predicted_graph_from_episode,
+    build_predicted_graph_from_observations,
     compare_predicted_graph_report,
-    episode_sequence_digest,
     load_episode_sequence,
     load_predicted_graph_report,
+    load_scene_observation_sequence,
     predicted_graph_report,
+    predicted_graph_report_from_observations,
     save_graph_json,
     save_predicted_graph_report,
     validate_predicted_graph_report,
@@ -35,6 +37,15 @@ def main(argv: list[str] | None = None) -> int:
         help="Explicit local episode JSONL file to build into a predicted DSG.",
     )
     parser.add_argument(
+        "--input-kind",
+        choices=("episode", "observation_sequence"),
+        default="episode",
+        help=(
+            "Input artifact kind. Use episode with --mock for metadata mock detections, "
+            "or observation_sequence for explicit detector/RGB-D observation artifacts."
+        ),
+    )
+    parser.add_argument(
         "--output-graph",
         type=Path,
         help="Explicit local path where the predicted graph JSON is written.",
@@ -53,6 +64,24 @@ def main(argv: list[str] | None = None) -> int:
         "--compare-report",
         type=Path,
         help="Compare an explicit local predicted graph report with current episode/graph files.",
+    )
+    parser.add_argument(
+        "--infer-relation",
+        action="append",
+        dest="infer_relations",
+        help=(
+            "Spatial relation name to infer for observation_sequence input. "
+            "May be repeated."
+        ),
+    )
+    parser.add_argument(
+        "--reference-frame",
+        action="append",
+        dest="reference_frames",
+        help=(
+            "Reference frame for inferred observation_sequence relations. "
+            "May be repeated."
+        ),
     )
     args = parser.parse_args(argv)
 
@@ -101,31 +130,48 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.input is None or args.output_graph is None:
         parser.error("build requires --input and --output-graph")
-    if not args.mock:
-        parser.error("build requires --mock")
+    if args.input_kind == "episode" and not args.mock:
+        parser.error("episode build requires --mock")
 
     try:
-        frames = load_episode_sequence(args.input)
-        graph = build_predicted_graph_from_episode(frames)
+        if args.input_kind == "observation_sequence":
+            observations = load_scene_observation_sequence(args.input)
+            infer_relations = tuple(
+                args.infer_relations or ("LEFT_OF", "RIGHT_OF", "NEAR")
+            )
+            reference_frames = tuple(args.reference_frames or ("world",))
+            graph = build_predicted_graph_from_observations(
+                observations,
+                source_path=args.input,
+                infer_relations=infer_relations,
+                reference_frames=reference_frames,
+            )
+            report = predicted_graph_report_from_observations(
+                input_path=args.input,
+                graph_path=args.output_graph,
+                graph=graph,
+                observations=observations,
+                infer_relations=infer_relations,
+                reference_frames=reference_frames,
+            )
+        else:
+            frames = load_episode_sequence(args.input)
+            graph = build_predicted_graph_from_episode(frames)
+            report = predicted_graph_report(
+                input_path=args.input,
+                graph_path=args.output_graph,
+                graph=graph,
+                frames=frames,
+            )
         args.output_graph.parent.mkdir(parents=True, exist_ok=True)
         save_graph_json(graph, args.output_graph)
-        report = predicted_graph_report(
-            input_path=args.input,
-            graph_path=args.output_graph,
-            graph=graph,
-            frames=frames,
-        )
         if args.report is not None:
             save_predicted_graph_report(report, args.report)
     except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
         _emit_json(_error_payload("build_predicted_graph", args.input, exc))
         return 1
 
-    payload = {
-        **report,
-        "episode_digest": episode_sequence_digest(frames),
-    }
-    _emit_json(payload)
+    _emit_json(dict(report))
     return 0
 
 

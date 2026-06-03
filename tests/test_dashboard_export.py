@@ -326,6 +326,60 @@ def test_dashboard_validation_detects_research_axis_summary_drift() -> None:
     }
 
 
+def test_dashboard_compare_detects_stale_prediction_input(tmp_path: Path) -> None:
+    assert hasattr(lab, "compare_dashboard_bundle")
+    graph = lab.load_scene_fixture("tabletop")
+    case = _case_by_type("object_location")
+    prediction = lab.QAPrediction(id=case.id, answer=case.answer, confidence=0.9)
+    qa_path = tmp_path / "qa.jsonl"
+    pred_path = tmp_path / "predictions.jsonl"
+    eval_path = tmp_path / "qa-eval-report.json"
+    graph_path = tmp_path / "graph.json"
+    eval_report = lab.qa_eval_report(
+        (case,),
+        (prediction,),
+        gold_path=qa_path,
+        prediction_path=pred_path,
+    )
+    lab.save_qa_dataset((case,), qa_path)
+    lab.save_qa_predictions((prediction,), pred_path)
+    lab.save_qa_eval_report(eval_report, eval_path)
+    lab.save_graph_json(graph, graph_path)
+    bundle = lab.dashboard_bundle(
+        (case,),
+        predictions=(prediction,),
+        qa_eval_report=eval_report,
+        graph=graph,
+        qa_path=qa_path,
+        prediction_path=pred_path,
+        qa_eval_report_path=eval_path,
+        graph_path=graph_path,
+    )
+
+    comparison = lab.compare_dashboard_bundle(bundle)
+    changed_prediction = lab.QAPrediction(
+        id=case.id,
+        answer={"changed": True},
+        confidence=0.1,
+    )
+    lab.save_qa_predictions((changed_prediction,), pred_path)
+    stale_comparison = lab.compare_dashboard_bundle(bundle)
+    stale_checks = {check["name"]: check for check in stale_comparison["checks"]}
+
+    assert bundle["source_paths"] == {
+        "graph_path": str(graph_path),
+        "prediction_path": str(pred_path),
+        "qa_eval_report_path": str(eval_path),
+        "qa_path": str(qa_path),
+    }
+    assert comparison["matches"] is True
+    assert stale_comparison["matches"] is False
+    assert stale_comparison["saved_bundle_digest"] == bundle["bundle_digest"]
+    assert stale_comparison["current_bundle_digest"] != bundle["bundle_digest"]
+    assert stale_checks["bundle_digest_matches_current"]["passed"] is False
+    assert stale_checks["cases_match_current"]["passed"] is False
+
+
 def test_dashboard_bundle_handles_missing_optional_attribution_and_writes_html(
     tmp_path: Path,
 ) -> None:
@@ -529,6 +583,7 @@ def test_dashboard_bundle_includes_experiment_summary_review() -> None:
         "readiness": summary_report["readiness"],
         "source_artifact_digests": summary_report["source_artifact_digests"],
         "research_questions": summary_report["research_questions"],
+        "source_profile_matrix": summary_report["source_profile_matrix"],
         "failure_linkage_review": [
             {
                 "error_attribution_artifact_key": (
@@ -588,6 +643,11 @@ def test_dashboard_bundle_includes_experiment_summary_review() -> None:
     assert "Experiment Summary" in html
     assert "Failure Linkage" in html
     assert "Measurement Matrix" in html
+    assert "Source Profiles" in html
+    assert 'id="source-profile-filter"' in html
+    assert '<option value="vlm:vlm_fixture">vlm:vlm_fixture</option>' in html
+    assert 'data-source-profile-key="vlm:vlm_fixture"' in html
+    assert 'data-source-profile-capabilities="graph_tool_query|spatial_qa"' in html
     assert "Readiness: ready" in html
     assert "<th>Verdict</th>" in html
     assert "<th>Baseline</th>" in html
@@ -658,6 +718,35 @@ def test_export_dashboard_cli_writes_bundle_and_html(
     }
     assert (output_dir / "dashboard.json").exists()
     assert (output_dir / "index.html").exists()
+
+
+def test_export_dashboard_cli_validates_explicit_bundle(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_export_dashboard_script()
+    main = cast(MainFn, getattr(module, "main"))
+    graph = lab.load_scene_fixture("tabletop")
+    case = _case_by_type("object_location")
+    prediction = lab.QAPrediction(id=case.id, answer=case.answer, confidence=0.9)
+    bundle = lab.dashboard_bundle(
+        (case,),
+        predictions=(prediction,),
+        qa_eval_report=lab.qa_eval_report((case,), (prediction,)),
+        graph=graph,
+    )
+    bundle_path = tmp_path / "dashboard.json"
+    lab.save_dashboard_bundle(bundle, bundle_path)
+
+    assert main(["--validate-bundle", str(bundle_path)]) == 0
+
+    output = json.loads(capsys.readouterr().out)
+    assert output == {
+        "action": "validate_dashboard_bundle",
+        "path": str(bundle_path),
+        "valid": True,
+        "digest": bundle["bundle_digest"],
+    }
 
 
 def test_export_dashboard_cli_accepts_active_task_report(
@@ -987,10 +1076,43 @@ def _experiment_summary_report_for_dashboard() -> dict[str, Any]:
             ),
             "graph_eval_report:graph-eval-report.json": "graph-digest",
             "qa_eval_delta_report:qa-delta-report.json": "qa-digest",
+            "offline_prediction_import_report:offline-import-report.json": (
+                "offline-import-digest"
+            ),
         },
         "source_artifacts": [],
         "qa_delta_comparisons": [],
         "active_task_delta_comparisons": [],
+        "offline_prediction_import_summaries": [],
+        "source_profile_matrix": [
+            {
+                "adapter": "vlm",
+                "artifact_key": (
+                    "offline_prediction_import_report:offline-import-report.json"
+                ),
+                "capability_axes": ["graph_tool_query", "spatial_qa"],
+                "dataset_id": "mock_eval",
+                "digest": "offline-import-digest",
+                "duplicate_case_count": 0,
+                "imported_prediction_count": 3,
+                "metadata_keys": [
+                    "capabilities",
+                    "dataset_id",
+                    "model_id",
+                    "prompt_id",
+                ],
+                "missing_case_count": 0,
+                "model_id": "mock-vlm",
+                "path": "vlm-import-report.json",
+                "prediction_digest": "prediction-digest",
+                "prompt_id": "spatial-qa-v1",
+                "qa_digest": "qa-digest",
+                "source_key": "vlm:vlm_fixture",
+                "source_kind": "vlm",
+                "source_name": "vlm_fixture",
+                "unknown_case_count": 0,
+            },
+        ],
         "research_questions": {
             "dynamic_memory": _research_question(
                 primary_name="exact_match_rate_delta",
@@ -1024,9 +1146,10 @@ def _experiment_summary_report_for_dashboard() -> dict[str, Any]:
             "failure_linkage_diagnostic_count": 1,
             "graph_construction_diagnostic_count": 1,
             "qa_eval_delta_report_count": 1,
+            "source_profile_count": 1,
             "readiness_status": "ready",
             "research_question_count": 4,
-            "source_artifact_count": 4,
+            "source_artifact_count": 5,
             "verdict_counts": {
                 "improved": 3,
                 "inconclusive": 0,

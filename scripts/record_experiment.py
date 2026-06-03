@@ -13,6 +13,7 @@ from dsg_spatialqa_lab import (
     load_dashboard_bundle,
     load_experiment_record,
     load_experiment_summary_report,
+    load_real_experiment_readiness_report,
     save_experiment_record,
     validate_experiment_record,
 )
@@ -32,6 +33,11 @@ def main(argv: list[str] | None = None) -> int:
         "--dashboard-bundle",
         type=Path,
         help="Optional explicit dashboard bundle JSON path.",
+    )
+    parser.add_argument(
+        "--real-readiness-report",
+        type=Path,
+        help="Optional explicit real experiment readiness report JSON path.",
     )
     parser.add_argument("--record", type=Path, help="Explicit experiment record output path.")
     parser.add_argument(
@@ -99,11 +105,18 @@ def main(argv: list[str] | None = None) -> int:
             if args.dashboard_bundle is not None
             else None
         )
+        real_readiness_report = (
+            load_real_experiment_readiness_report(args.real_readiness_report)
+            if args.real_readiness_report is not None
+            else None
+        )
         record = experiment_record(
             summary_report,
             summary_report_path=args.summary_report,
             dashboard_bundle=dashboard_bundle,
             dashboard_bundle_path=args.dashboard_bundle,
+            real_readiness_report=real_readiness_report,
+            real_readiness_report_path=args.real_readiness_report,
         )
         save_experiment_record(record, args.record)
         validation = validate_experiment_record(record)
@@ -111,16 +124,17 @@ def main(argv: list[str] | None = None) -> int:
         _emit_json(_error_payload("experiment_record", args.record, exc))
         return 1
 
-    _emit_json(
-        {
-            "action": "experiment_record",
-            "path": str(args.record),
-            "valid": validation["valid"],
-            "digest": experiment_record_digest(record),
-            "readiness_status": record["readiness_status"],
-            "verdict_counts": record["verdict_counts"],
-        }
-    )
+    payload = {
+        "action": "experiment_record",
+        "path": str(args.record),
+        "valid": validation["valid"],
+        "digest": experiment_record_digest(record),
+        "readiness_status": record["readiness_status"],
+        "verdict_counts": record["verdict_counts"],
+    }
+    if "real_package_status" in record:
+        payload["real_package_status"] = record["real_package_status"]
+    _emit_json(payload)
     return 0 if validation["valid"] is True else 1
 
 
