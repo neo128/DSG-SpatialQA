@@ -14,12 +14,40 @@ or random sources.
 - [Benchmark And Artifact Formats](docs/benchmark_format.md) summarizes episode
   JSONL, graph JSON, QA JSONL, prediction JSONL, reports, dashboard bundles,
   active task artifacts, and benchmark manifests.
+- [Real Small Experiment](docs/real_small_experiment.md) gives the first-pilot
+  manifest entrypoint for assembling a real DSG-vs-control package from local
+  artifacts and explains why missing or synthetic inputs cannot be treated as
+  real research evidence.
 - [Roadmap](docs/roadmap.md) separates the completed deterministic MVP from
   future optional simulator, perception, VLM, and active-task extensions.
 - [AI Runbook](docs/AI_RUNBOOK.md) lists handoff commands and operational
   guardrails for agentic development.
 - [Verification Record](docs/VERIFICATION.md) records the local verification
   gates, current command results, and known limits.
+
+## Current Status
+
+DSG-SpatialQA Lab now has a deterministic artifact framework for episode JSONL,
+oracle DSG construction, QA generation, local baselines, offline-control import,
+predicted DSG evidence checks, graph/QA evaluation, attribution, dashboard
+export, real collection reporting, readiness reporting, and final experiment
+records. The default runtime remains local and deterministic: no simulator,
+detector, VLM, LLM, network, clock, or random output is invoked by default.
+
+The next research milestone is the first real small-scale experiment package,
+not another governance layer. A real package still needs explicit local
+AI2-THOR or Habitat episode artifacts, a real collection report, four external
+offline control prediction files (`vlm`, `multi_frame_vlm`, `caption_memory`,
+`graph_text`), detector/RGB-D observation evidence for the predicted DSG,
+GraphTool candidate predictions, eval/delta reports, graph eval, attribution,
+dashboard artifacts, and a readiness report with `ready=true`.
+
+Mock and synthetic artifacts are useful for smoke tests but are not research
+evidence. Synthetic fixtures must be labeled
+`data_source_kind="synthetic_test_fixture"` with
+`not_real_research_result=true`; `data_source_kind="real"` requires real
+simulator collection evidence and all required control/evidence artifacts before
+any DSG-vs-control claim can be made.
 
 ## Quickstart
 
@@ -45,6 +73,17 @@ Run the complete local verification gate:
 
 ```bash
 python scripts/verify.py
+```
+
+Run the first-pilot real-small manifest smoke. The template intentionally fails
+until real local artifacts are supplied, returning structured JSON with
+`ready=false`, `research_ready=false`, and `next_missing_artifacts`:
+
+```bash
+python scripts/run_real_small_experiment.py \
+  --manifest examples/real_small_experiment/real-small-run-manifest.template.json \
+  --output-dir /tmp/dsg-real-small \
+  --report /tmp/dsg-real-small/run-report.json
 ```
 
 Run a deterministic evaluation report or reproducibility bundle from the shell:
