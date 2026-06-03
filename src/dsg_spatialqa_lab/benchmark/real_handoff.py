@@ -4967,6 +4967,12 @@ def validate_real_experiment_claim_readiness(
     offline_control_prediction_paths = _mapping_or_empty(
         external_artifact_slots.get("offline_control_prediction_paths")
     )
+    next_handoff_required_control_kinds = _string_sequence_or_empty(
+        next_handoff_plan.get("required_control_kinds")
+    )
+    next_handoff_offline_control_kinds = sorted(
+        str(control_kind) for control_kind in offline_control_prediction_paths
+    )
     next_handoff_required_predicted_input_kinds = _string_sequence_or_empty(
         next_handoff_plan.get("required_predicted_input_kinds")
     )
@@ -4974,6 +4980,7 @@ def validate_real_experiment_claim_readiness(
     next_handoff_write_command = _text_or_none(
         next_handoff_commands.get("write_handoff_manifests")
     )
+    next_handoff_root = _text_or_none(next_handoff_plan.get("handoff_root"))
     after_write_intake_plan = _mapping_or_empty(
         next_handoff_plan.get("after_write_intake_plan")
     )
@@ -5045,6 +5052,7 @@ def validate_real_experiment_claim_readiness(
         claim_ready=claim_ready is True,
         scale_summary=scale_summary,
     )
+    expected_next_handoff_target_thresholds = _claim_target_thresholds(thresholds)
     expected_claim_scope_handoff_plan_valid = _claim_scope_handoff_plan_matches(
         claim_scope_handoff_plan,
         claim_scope_assessment=expected_claim_scope_assessment,
@@ -5406,11 +5414,18 @@ def validate_real_experiment_claim_readiness(
                 or (
                     claim_ready is False
                     and next_handoff_plan.get("required") is True
-                    and _text_or_none(next_handoff_plan.get("handoff_root"))
-                    is not None
+                    and next_handoff_root is not None
                     and _text_or_none(next_handoff_plan.get("source_run_manifest_path"))
                     is not None
                     and next_handoff_write_command is not None
+                    and bool(next_handoff_required_control_kinds)
+                    and all(
+                        (
+                            f"--required-control-kind {control_kind}"
+                            in next_handoff_write_command
+                        )
+                        for control_kind in next_handoff_required_control_kinds
+                    )
                     and bool(next_handoff_required_predicted_input_kinds)
                     and all(
                         (
@@ -5423,20 +5438,18 @@ def validate_real_experiment_claim_readiness(
             ),
             "expected": (
                 "no command when claim_ready else write_handoff_manifests with "
-                "required predicted inputs"
+                "required controls and predicted inputs"
             ),
             "actual": {
                 "claim_ready": claim_ready,
                 "command_keys": sorted(
                     str(key) for key in next_handoff_commands
                 ),
-                "handoff_root_present": _text_or_none(
-                    next_handoff_plan.get("handoff_root")
-                )
-                is not None,
+                "handoff_root_present": next_handoff_root is not None,
                 "required_predicted_input_kinds": (
                     next_handoff_required_predicted_input_kinds
                 ),
+                "required_control_kinds": next_handoff_required_control_kinds,
                 "required": next_handoff_plan.get("required"),
                 "source_run_manifest_path_present": _text_or_none(
                     next_handoff_plan.get("source_run_manifest_path")
@@ -5487,34 +5500,33 @@ def validate_real_experiment_claim_readiness(
         {
             "name": "next_handoff_external_artifact_slots",
             "passed": (
-                _text_or_none(
-                    external_artifact_slots.get("candidate_prediction_path")
-                )
-                is not None
-                and _text_or_none(external_artifact_slots.get("detector_jsonl_path"))
-                is not None
-                and len(offline_control_prediction_paths) > 0
-                and all(
-                    _text_or_none(path) is not None
-                    for path in offline_control_prediction_paths.values()
+                next_handoff_root is not None
+                and bool(next_handoff_required_control_kinds)
+                and _next_handoff_external_artifact_slots_match(
+                    external_artifact_slots,
+                    handoff_root=next_handoff_root,
+                    required_control_kinds=next_handoff_required_control_kinds,
                 )
             ),
             "expected": (
-                "candidate prediction, detector JSONL, and offline control "
-                "prediction input paths"
+                "deterministic candidate prediction, detector JSONL, and "
+                "offline-control prediction input paths under handoff_root"
             ),
             "actual": {
-                "candidate_prediction_path_present": _text_or_none(
-                    external_artifact_slots.get("candidate_prediction_path")
-                )
-                is not None,
-                "detector_jsonl_path_present": _text_or_none(
+                "candidate_prediction_path": _text_or_none(
+                    external_artifact_slots.get("candidate_prediction_path"),
+                ),
+                "detector_jsonl_path": _text_or_none(
                     external_artifact_slots.get("detector_jsonl_path")
-                )
-                is not None,
+                ),
+                "handoff_root": next_handoff_root,
                 "offline_control_prediction_path_count": len(
                     offline_control_prediction_paths
                 ),
+                "offline_control_prediction_kinds": (
+                    next_handoff_offline_control_kinds
+                ),
+                "required_control_kinds": next_handoff_required_control_kinds,
             },
         },
         {
@@ -5528,10 +5540,10 @@ def validate_real_experiment_claim_readiness(
                 or (
                     claim_ready is False
                     and after_write_intake_plan.get("required") is True
-                    and len(after_write_artifact_paths) > 0
-                    and all(
-                        _text_or_none(path) is not None
-                        for path in after_write_artifact_paths.values()
+                    and next_handoff_root is not None
+                    and _next_handoff_after_write_intake_plan_matches(
+                        next_handoff_plan,
+                        target_thresholds=expected_next_handoff_target_thresholds,
                     )
                     and {
                         "external_artifact_launch_report",
@@ -5549,7 +5561,11 @@ def validate_real_experiment_claim_readiness(
                 "artifact_path_count": len(after_write_artifact_paths),
                 "claim_ready": claim_ready,
                 "command_keys": sorted(str(key) for key in after_write_commands),
+                "handoff_root": next_handoff_root,
                 "required": after_write_intake_plan.get("required"),
+                "track_order": _string_sequence_or_empty(
+                    after_write_intake_plan.get("track_order")
+                ),
             },
         },
         {
@@ -10623,6 +10639,90 @@ def _claim_scope_handoff_external_artifact_slots_match(
     )
 
 
+def _next_handoff_external_artifact_slots_match(
+    external_artifact_slots: Mapping[str, Any],
+    *,
+    handoff_root: str,
+    required_control_kinds: Sequence[str],
+) -> bool:
+    root = Path(handoff_root)
+    offline_control_paths = _mapping_or_empty(
+        external_artifact_slots.get("offline_control_prediction_paths")
+    )
+    expected_offline_control_paths = {
+        control_kind: str(root / "inputs/offline-controls" / f"{control_kind}.jsonl")
+        for control_kind in sorted(required_control_kinds)
+    }
+    return bool(
+        _text_or_none(external_artifact_slots.get("candidate_prediction_path"))
+        == str(root / "inputs/candidate/predicted-graph-tool.jsonl")
+        and _text_or_none(external_artifact_slots.get("detector_jsonl_path"))
+        == str(root / "inputs/predicted-dsg/detector-rgbd.jsonl")
+        and _string_sequence_or_empty(external_artifact_slots.get("track_order"))
+        == ["real_controls", "predicted_dsg"]
+        and _json_value(offline_control_paths)
+        == _json_value(expected_offline_control_paths)
+    )
+
+
+def _next_handoff_after_write_intake_plan_matches(
+    next_handoff_plan: Mapping[str, Any],
+    *,
+    target_thresholds: Mapping[str, int],
+) -> bool:
+    handoff_root = _text_or_none(next_handoff_plan.get("handoff_root"))
+    dataset_name = _text_or_none(next_handoff_plan.get("dataset_name"))
+    if handoff_root is None or dataset_name is None:
+        return False
+    root = Path(handoff_root)
+    after_write_intake_plan = _mapping_or_empty(
+        next_handoff_plan.get("after_write_intake_plan")
+    )
+    after_write_artifact_paths = _mapping_or_empty(
+        after_write_intake_plan.get("artifact_paths")
+    )
+    expected_after_write_paths = _claim_scope_after_write_artifact_paths(root)
+    if (
+        after_write_intake_plan.get("required") is not True
+        or _json_value(after_write_artifact_paths)
+        != _json_value(expected_after_write_paths)
+        or _string_sequence_or_empty(after_write_intake_plan.get("track_order"))
+        != [
+            "real_data",
+            "real_controls",
+            "predicted_dsg",
+            "primary_evidence",
+            "launch_audit",
+        ]
+    ):
+        return False
+    episode_collection_plan = _mapping_or_empty(
+        next_handoff_plan.get("episode_collection_plan")
+    )
+    episode_paths = _string_sequence_or_empty(
+        episode_collection_plan.get("existing_episode_paths")
+    ) + _string_sequence_or_empty(
+        episode_collection_plan.get("planned_episode_paths")
+    )
+    current_handoff_thresholds = _mapping_or_empty(
+        next_handoff_plan.get("current_handoff_thresholds")
+    )
+    min_frame_count = _summary_int(
+        current_handoff_thresholds,
+        "min_frame_count",
+    ) or 30
+    return _claim_commands_match_fragments(
+        _mapping_or_empty(after_write_intake_plan.get("commands")),
+        _claim_scope_after_write_command_fragments(
+            dataset_name=dataset_name,
+            episode_paths=episode_paths,
+            min_frame_count=min_frame_count,
+            paths=expected_after_write_paths,
+            target_thresholds=target_thresholds,
+        ),
+    )
+
+
 def _claim_scope_handoff_episode_plan_matches(
     claim_scope_handoff_plan: Mapping[str, Any],
     *,
@@ -10919,6 +11019,9 @@ def _claim_next_handoff_plan(
         run_manifest,
         handoff_root=handoff_root,
     )
+    required_control_kinds = sorted(
+        _string_sequence_or_empty(run_manifest.get("required_control_kinds"))
+    )
     required_predicted_input_kinds = sorted(
         _string_sequence_or_empty(run_manifest.get("required_predicted_input_kinds"))
     )
@@ -10945,6 +11048,7 @@ def _claim_next_handoff_plan(
         "episode_collection_plan": episode_collection_plan,
         "external_artifact_slots": external_artifact_slots,
         "handoff_root": handoff_root,
+        "required_control_kinds": required_control_kinds,
         "required_predicted_input_kinds": required_predicted_input_kinds,
         "scale_deficits": _json_value(
             _mapping_or_empty(claim_gap_summary.get("scale_deficits"))
@@ -12810,11 +12914,11 @@ def _write_json(path: Path, payload: Mapping[str, Any]) -> None:
 
 def _path_text(path: str | Path, root: Path) -> str:
     local_path = Path(path)
-    if not local_path.is_absolute():
-        return local_path.as_posix()
     try:
         return local_path.relative_to(root).as_posix()
     except ValueError:
+        if not local_path.is_absolute():
+            return local_path.as_posix()
         return str(local_path)
 
 
@@ -12989,6 +13093,11 @@ def _anchored_path(path: str, base_dir: Path) -> Path:
     local_path = Path(path)
     if local_path.is_absolute():
         return local_path
+    try:
+        local_path.relative_to(base_dir)
+        return local_path
+    except ValueError:
+        pass
     return base_dir / local_path
 
 

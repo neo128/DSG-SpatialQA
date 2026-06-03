@@ -1,0 +1,111 @@
+{
+  "artifact_paths": {
+    "active_candidate_v2_report": "inputs/review-v2/active-candidate-v2-report.json",
+    "active_task_delta_v2": "inputs/review-v2/active-task-delta-v2.json",
+    "candidate_v2_delta": "outputs/diagnostics/predicted-graph-tool-v2-vs-original-delta.json",
+    "candidate_v2_graph": "outputs/predicted-dsg/predicted-graph-containment-v2.json",
+    "candidate_v2_predictions": "inputs/candidate/predicted-graph-tool-v2.jsonl",
+    "candidate_v2_qa_eval": "outputs/diagnostics/predicted-graph-tool-v2-qa-eval.json",
+    "dashboard_v2": "inputs/review-v2/dashboard.json",
+    "dashboard_v2_html": "inputs/review-v2/index.html",
+    "diagnostic_report": "outputs/diagnostics/diagnostic-report.json",
+    "error_attribution_v2": "inputs/review-v2/error-attribution-v2.json",
+    "frame_index": "inputs/traces/frame-index.jsonl",
+    "graph_eval_v2": "inputs/review-v2/graph-eval-containment-v2.json",
+    "original_predictions": "inputs/candidate/predicted-graph-tool.jsonl",
+    "original_qa_eval": "outputs/diagnostics/predicted-graph-tool-original-qa-eval.json",
+    "qa_trace": "inputs/traces/qa-trace.jsonl",
+    "raw_response_index": "inputs/traces/raw-response-index.jsonl",
+    "trace_manifest": "inputs/traces/trace-manifest.json",
+    "trace_readiness": "inputs/traces/trace-readiness.json",
+    "visibility_aligned_qa": "inputs/traces/visibility-aligned-qa.jsonl",
+    "visibility_v2_delta": "outputs/diagnostics/visibility-v2-vs-original-delta.json",
+    "vlm_interactions": "inputs/traces/vlm-interactions.jsonl"
+  },
+  "candidate_name": "predicted_graph_tool_v2_containment_diagnostic",
+  "checks": [
+    {
+      "evidence": "inputs/traces/trace-readiness.json",
+      "name": "trace_readiness",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-v2/dashboard.json",
+      "name": "dashboard_bundle_v2",
+      "passed": true
+    },
+    {
+      "evidence": "outputs/diagnostics/predicted-graph-tool-v2-vs-original-delta.json",
+      "name": "qa_eval_delta_v2",
+      "passed": true
+    },
+    {
+      "evidence": "outputs/diagnostics/visibility-v2-vs-original-delta.json",
+      "name": "visibility_slice_delta_v2",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-v2/graph-eval-containment-v2.json",
+      "name": "graph_eval_v2",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-v2/error-attribution-v2.json",
+      "name": "error_attribution_v2",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-v2/active-task-delta-v2.json",
+      "name": "active_task_delta_v2",
+      "passed": true
+    }
+  ],
+  "process_artifact_status": "ready",
+  "quality_findings": {
+    "candidate_v2_exact_match": 6,
+    "candidate_v2_exact_match_rate": 0.1,
+    "missing_predicted_evidence_case_count": 44,
+    "object_recall": 0.153409,
+    "oracle_object_count": 176,
+    "original_exact_match": 1,
+    "original_exact_match_rate": 0.016667,
+    "predicted_object_count": 38,
+    "relation_f1_v2": 0.052556,
+    "visibility_slice_candidate_v2_exact_match": 5,
+    "visibility_slice_candidate_v2_exact_match_rate": 0.384615
+  },
+  "readiness_digest": "46311ebe7075b52485ba2bebf1d772f7dc0a0fa49b40be2f7bb8f007fbae0c97",
+  "result_quality_status": "needs_detector_coverage_work",
+  "schema_version": "dsg-spatialqa-lab.candidate-v2-readiness.v1",
+  "scope": "diagnostic_sidecar_for_ai2thor_real_small",
+  "source_digests": {
+    "active_candidate_v2_report": "2c4f82d8d25e52188e51386591878665833a2dc70e7a6426c1d40704eda18c2f",
+    "active_task_delta_v2": "c7a60b14eafecdf8282c34d4f97fb3c257d0ff2074081aaa5a13a81b82345b52",
+    "candidate_v2_delta": "46a84907f42ebd84f6b5cf6522f039b40d58b07e2614502ccfac6744f42ea82e",
+    "candidate_v2_graph": "feda1281f75e6133471bf1c3ac9896f3b0f16ffaa4e9e44238663137333e2ccd",
+    "candidate_v2_predictions": "76f08ba3cc84950a9bf1d1be78e1824afb783c3b83b754916062b2967606720a",
+    "candidate_v2_qa_eval": "448463668083a2aea7f93bb5f5a227af3782349673631c9c8eb181e05a5d5962",
+    "dashboard_v2": "512268100ceee095a09e57b0935583988e8dc5b84e51123ae19ef6f1cdb37ee4",
+    "dashboard_v2_html": "34b8e4e3e37001a8ebdbbd61acfb7be4d576b16bd186f4892a90a13eeae97b0d",
+    "diagnostic_report": "7c4613530865603cf1a9ec0da16e3197157cff2b85537f8caf609ce2da93ced0",
+    "error_attribution_v2": "f7c92cabc0e7845d234d15a88bcc33a1dfea8e9a3b597ed0bb1b3dc7bea99a01",
+    "frame_index": "56f58e835d6c05afe4b3507b5cbe2973ff8d415bb4f33d22a3174f9265f9cea4",
+    "graph_eval_v2": "ba2bc89c17605735aa51e341b2c624dea96b4d9844069348d8a432019c1b0ccd",
+    "original_predictions": "f5f256e765140b771038fbaa407693537ae7df853b2b80e1212182b5d279bb8e",
+    "original_qa_eval": "4df3351c22c4fd239ab42e64bac9c4ba2a16458ddb7102a05d251e9091714b6e",
+    "qa_trace": "b87836f062416cf011f2983fe7eb4ac4369f61dd72bef8cc858978e333de8588",
+    "raw_response_index": "2ba70d21500ac6693c59a99588b4f70eabb7599fed04306de399d68bca7162c3",
+    "trace_manifest": "b15f0f2b75deb9f5533a1483513215f56dbc871e92ae598d028e512cd47edbe6",
+    "trace_readiness": "61a1fa98fe8a38c46da06d1f0c3892937c08f536644db8d36230615c8afc94f1",
+    "visibility_aligned_qa": "87a24fd3a64269a26e8431d0a3f10696ea2fc676c86b5c2aeb50faa7920f4ff1",
+    "visibility_v2_delta": "b5628e4cc173271a62b9313da96a250c4488d557e38285c320329f79cd507588",
+    "vlm_interactions": "44c87986a860b4ecb8226b3bf1136ebe5af25a5fe8243a5f3445d33bdf2ad4c8"
+  },
+  "trace_counts": {
+    "frame_index_count": 50,
+    "qa_trace_count": 60,
+    "raw_response_index_count": 8,
+    "visibility_aligned_qa_count": 13,
+    "vlm_interactions_count": 240
+  }
+}

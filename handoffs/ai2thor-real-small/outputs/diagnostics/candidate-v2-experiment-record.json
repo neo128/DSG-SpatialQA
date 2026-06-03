@@ -1,0 +1,413 @@
+{
+  "artifact_paths": {
+    "active_candidate_v2_report": "inputs/review-v2/active-candidate-v2-report.json",
+    "active_task_delta_v2": "inputs/review-v2/active-task-delta-v2.json",
+    "candidate_v2_delta": "outputs/diagnostics/predicted-graph-tool-v2-vs-original-delta.json",
+    "candidate_v2_graph": "outputs/predicted-dsg/predicted-graph-containment-v2.json",
+    "candidate_v2_predictions": "inputs/candidate/predicted-graph-tool-v2.jsonl",
+    "candidate_v2_qa_eval": "outputs/diagnostics/predicted-graph-tool-v2-qa-eval.json",
+    "dashboard_v2": "inputs/review-v2/dashboard.json",
+    "dashboard_v2_html": "inputs/review-v2/index.html",
+    "diagnostic_report": "outputs/diagnostics/diagnostic-report.json",
+    "error_attribution_v2": "inputs/review-v2/error-attribution-v2.json",
+    "frame_index": "inputs/traces/frame-index.jsonl",
+    "graph_eval_v2": "inputs/review-v2/graph-eval-containment-v2.json",
+    "original_predictions": "inputs/candidate/predicted-graph-tool.jsonl",
+    "original_qa_eval": "outputs/diagnostics/predicted-graph-tool-original-qa-eval.json",
+    "qa_trace": "inputs/traces/qa-trace.jsonl",
+    "raw_response_index": "inputs/traces/raw-response-index.jsonl",
+    "trace_manifest": "inputs/traces/trace-manifest.json",
+    "trace_readiness": "inputs/traces/trace-readiness.json",
+    "visibility_aligned_qa": "inputs/traces/visibility-aligned-qa.jsonl",
+    "visibility_v2_delta": "outputs/diagnostics/visibility-v2-vs-original-delta.json",
+    "vlm_interactions": "inputs/traces/vlm-interactions.jsonl"
+  },
+  "candidate_name": "predicted_graph_tool_v2_containment_diagnostic",
+  "conclusion": [
+    "The original poor score is mainly an evidence coverage and relation-construction issue, not only an answer-format issue.",
+    "Containment_v2 improves graph_tool exact match on the full set from 1/60 to 6/60 and on the visibility-aligned slice from 0/13 to 5/13.",
+    "The package still needs detector/coverage work before claiming a high-quality final real experiment: predicted graph has 38 objects versus 176 oracle objects, and 44/60 QA cases still lack predicted evidence."
+  ],
+  "dashboard_html_path": "inputs/review-v2/index.html",
+  "dashboard_path": "inputs/review-v2/dashboard.json",
+  "dataset_id": "ai2thor-real-small",
+  "diagnosis": [
+    "Original QA is generated from oracle graphs and includes many objects never observed by the detector/RGB-D sequence.",
+    "The observation-backed predicted DSG contains only 38 objects; only 13 of 60 QA cases have all target IDs present in that graph.",
+    "The original predicted DSG stores NEAR/STATE_CHANGED relations but lacks containment relations used by graph_tool for object_location.",
+    "Earlier VLM/LLM outputs preserved final predictions and raw responses, but not a per-case process trace; this run adds a trace manifest linking QA, image assets, predictions, and raw responses."
+  ],
+  "episodes": {
+    "count": 5,
+    "source": "AI2-THOR real collection artifacts"
+  },
+  "methods": {
+    "candidate_v2": "posthoc containment sidecar from saved detector/RGB-D/AI2-THOR geometry; adds IN_REGION, IN_ROOM, and ON relation candidates for diagnosis",
+    "original_candidate": "observation_sequence-backed predicted DSG graph_tool output preserved unchanged",
+    "vlm_process_trace": "links QA, frame assets, final predictions, and saved raw responses; per-case prompts are reconstructed from saved inputs because the earlier model call payloads were not persisted"
+  },
+  "objective": "Preserve the original real small experiment, diagnose weak graph_tool results, and save a traceable sidecar candidate built only from saved observation-backed artifacts.",
+  "process_artifact_status": "ready",
+  "qa": {
+    "count": 60,
+    "source": "benchmark QA aligned to offline controls"
+  },
+  "readiness_report_path": "outputs/diagnostics/candidate-v2-readiness.json",
+  "record_digest": "f65507d4fdd0bf36d14d5b5addd607d6cf36fb37d0adf97b6c3add8b266e892a",
+  "result_quality_status": "needs_detector_coverage_work",
+  "results": {
+    "active_task_delta_candidate_v2": {
+      "action_count": {
+        "average_delta": 0.0,
+        "baseline_average": 0.0,
+        "candidate_average": 0.0,
+        "total_match": true
+      },
+      "answer_accuracy": {
+        "baseline_count": 30,
+        "baseline_rate": 1.0,
+        "candidate_count": 6,
+        "candidate_rate": 0.2,
+        "count_delta": -24,
+        "rate_delta": -0.8,
+        "total_match": true
+      },
+      "answer_graph_consistency": {
+        "baseline_count": 30,
+        "baseline_rate": 1.0,
+        "candidate_count": 5,
+        "candidate_rate": 0.166667,
+        "count_delta": -25,
+        "rate_delta": -0.833333,
+        "total_match": true
+      },
+      "evidence_coverage": {
+        "average_delta": -0.746667,
+        "baseline_average": 1.0,
+        "candidate_average": 0.253333,
+        "total_match": true
+      },
+      "task_success": {
+        "baseline_count": 30,
+        "baseline_rate": 1.0,
+        "candidate_count": 5,
+        "candidate_rate": 0.166667,
+        "count_delta": -25,
+        "rate_delta": -0.833333,
+        "total_match": true
+      }
+    },
+    "error_attribution_candidate_v2": {
+      "answer_correct_count": 6,
+      "by_error_category": {
+        "benchmark_or_engine_error": 24,
+        "correct": 6,
+        "evidence_missing": 29,
+        "graph_construction": 1
+      },
+      "by_evidence_error_category": {
+        "missing_object": 26,
+        "missing_relation": 6,
+        "missing_state": 20,
+        "none": 8
+      },
+      "by_predicted_evidence_source": {
+        "ai2thor": {
+          "by_error_category": {
+            "benchmark_or_engine_error": 6,
+            "correct": 5,
+            "evidence_missing": 4,
+            "graph_construction": 1
+          },
+          "by_evidence_error_category": {
+            "missing_object": 1,
+            "missing_relation": 4,
+            "missing_state": 4,
+            "none": 7
+          },
+          "case_count": 16,
+          "error_count": 11
+        },
+        "containment_v2": {
+          "by_error_category": {
+            "benchmark_or_engine_error": 2,
+            "correct": 5,
+            "evidence_missing": 1,
+            "graph_construction": 1
+          },
+          "by_evidence_error_category": {
+            "missing_relation": 2,
+            "none": 7
+          },
+          "case_count": 9,
+          "error_count": 4
+        },
+        "missing_predicted_evidence": {
+          "by_error_category": {
+            "benchmark_or_engine_error": 18,
+            "correct": 1,
+            "evidence_missing": 25
+          },
+          "by_evidence_error_category": {
+            "missing_object": 25,
+            "missing_relation": 2,
+            "missing_state": 16,
+            "none": 1
+          },
+          "case_count": 44,
+          "error_count": 43
+        }
+      },
+      "by_research_axis": {
+        "dynamic_memory": {
+          "answer_correct_count": 0,
+          "by_error_category": {},
+          "by_evidence_error_category": {},
+          "by_predicted_evidence_source": {},
+          "case_count": 0,
+          "error_count": 0,
+          "oracle_graph_tool_correct_count": 0,
+          "predicted_graph_tool_correct_count": 0
+        },
+        "graph_tool_query": {
+          "answer_correct_count": 5,
+          "by_error_category": {
+            "benchmark_or_engine_error": 22,
+            "correct": 5,
+            "evidence_missing": 28
+          },
+          "by_evidence_error_category": {
+            "missing_object": 26,
+            "missing_relation": 3,
+            "missing_state": 20,
+            "none": 6
+          },
+          "by_predicted_evidence_source": {
+            "ai2thor": {
+              "by_error_category": {
+                "benchmark_or_engine_error": 5,
+                "correct": 5,
+                "evidence_missing": 3
+              },
+              "by_evidence_error_category": {
+                "missing_object": 1,
+                "missing_relation": 2,
+                "missing_state": 4,
+                "none": 6
+              },
+              "case_count": 13,
+              "error_count": 8
+            },
+            "containment_v2": {
+              "by_error_category": {
+                "benchmark_or_engine_error": 2,
+                "correct": 5
+              },
+              "by_evidence_error_category": {
+                "missing_relation": 1,
+                "none": 6
+              },
+              "case_count": 7,
+              "error_count": 2
+            },
+            "missing_predicted_evidence": {
+              "by_error_category": {
+                "benchmark_or_engine_error": 17,
+                "evidence_missing": 25
+              },
+              "by_evidence_error_category": {
+                "missing_object": 25,
+                "missing_relation": 1,
+                "missing_state": 16
+              },
+              "case_count": 42,
+              "error_count": 42
+            }
+          },
+          "case_count": 55,
+          "error_count": 50,
+          "oracle_graph_tool_correct_count": 33,
+          "predicted_graph_tool_correct_count": 5
+        },
+        "spatial_qa": {
+          "answer_correct_count": 6,
+          "by_error_category": {
+            "benchmark_or_engine_error": 24,
+            "correct": 6,
+            "evidence_missing": 29,
+            "graph_construction": 1
+          },
+          "by_evidence_error_category": {
+            "missing_object": 26,
+            "missing_relation": 6,
+            "missing_state": 20,
+            "none": 8
+          },
+          "by_predicted_evidence_source": {
+            "ai2thor": {
+              "by_error_category": {
+                "benchmark_or_engine_error": 6,
+                "correct": 5,
+                "evidence_missing": 4,
+                "graph_construction": 1
+              },
+              "by_evidence_error_category": {
+                "missing_object": 1,
+                "missing_relation": 4,
+                "missing_state": 4,
+                "none": 7
+              },
+              "case_count": 16,
+              "error_count": 11
+            },
+            "containment_v2": {
+              "by_error_category": {
+                "benchmark_or_engine_error": 2,
+                "correct": 5,
+                "evidence_missing": 1,
+                "graph_construction": 1
+              },
+              "by_evidence_error_category": {
+                "missing_relation": 2,
+                "none": 7
+              },
+              "case_count": 9,
+              "error_count": 4
+            },
+            "missing_predicted_evidence": {
+              "by_error_category": {
+                "benchmark_or_engine_error": 18,
+                "correct": 1,
+                "evidence_missing": 25
+              },
+              "by_evidence_error_category": {
+                "missing_object": 25,
+                "missing_relation": 2,
+                "missing_state": 16,
+                "none": 1
+              },
+              "case_count": 44,
+              "error_count": 43
+            }
+          },
+          "case_count": 60,
+          "error_count": 54,
+          "oracle_graph_tool_correct_count": 36,
+          "predicted_graph_tool_correct_count": 6
+        }
+      },
+      "case_count": 60,
+      "error_count": 54,
+      "oracle_graph_tool_correct_count": 36,
+      "predicted_graph_tool_correct_count": 6
+    },
+    "graph_eval_candidate_v2": {
+      "metrics": {
+        "object_precision": {
+          "count": 27,
+          "rate": 0.710526,
+          "total": 38
+        },
+        "object_recall": {
+          "count": 27,
+          "rate": 0.153409,
+          "total": 176
+        },
+        "relation_f1": {
+          "rate": 0.052556
+        },
+        "relation_precision": {
+          "count": 294,
+          "rate": 0.315451,
+          "total": 932
+        },
+        "relation_recall": {
+          "count": 294,
+          "rate": 0.028666,
+          "total": 10256
+        }
+      },
+      "summary": {
+        "matched_object_count": 27,
+        "matched_relation_count": 294,
+        "oracle_object_count": 176,
+        "oracle_relation_count": 10256,
+        "predicted_object_count": 38,
+        "predicted_relation_count": 932
+      }
+    },
+    "qa_delta_candidate_v2_vs_original": {
+      "baseline_case_count": 60,
+      "baseline_exact_match_count": 1,
+      "baseline_exact_match_rate": 0.016667,
+      "candidate_case_count": 60,
+      "candidate_exact_match_count": 6,
+      "candidate_exact_match_rate": 0.1,
+      "case_count_delta": 0,
+      "case_count_match": true,
+      "exact_match_count_delta": 5,
+      "exact_match_rate_delta": 0.083333
+    },
+    "qa_eval_candidate_v2": {
+      "case_count": 60,
+      "exact_match_count": 6,
+      "exact_match_rate": 0.1,
+      "matched_prediction_count": 60,
+      "missing_prediction_count": 0,
+      "prediction_count": 60
+    },
+    "qa_eval_original": {
+      "case_count": 60,
+      "exact_match_count": 1,
+      "exact_match_rate": 0.016667,
+      "matched_prediction_count": 60,
+      "missing_prediction_count": 0,
+      "prediction_count": 60
+    },
+    "visibility_delta_candidate_v2_vs_original": {
+      "baseline_case_count": 13,
+      "baseline_exact_match_count": 0,
+      "baseline_exact_match_rate": 0.0,
+      "candidate_case_count": 13,
+      "candidate_exact_match_count": 5,
+      "candidate_exact_match_rate": 0.384615,
+      "case_count_delta": 0,
+      "case_count_match": true,
+      "exact_match_count_delta": 5,
+      "exact_match_rate_delta": 0.384615
+    }
+  },
+  "schema_version": "dsg-spatialqa-lab.candidate-v2-experiment-record.v1",
+  "source_digests": {
+    "active_candidate_v2_report": "2c4f82d8d25e52188e51386591878665833a2dc70e7a6426c1d40704eda18c2f",
+    "active_task_delta_v2": "c7a60b14eafecdf8282c34d4f97fb3c257d0ff2074081aaa5a13a81b82345b52",
+    "candidate_v2_delta": "46a84907f42ebd84f6b5cf6522f039b40d58b07e2614502ccfac6744f42ea82e",
+    "candidate_v2_graph": "feda1281f75e6133471bf1c3ac9896f3b0f16ffaa4e9e44238663137333e2ccd",
+    "candidate_v2_predictions": "76f08ba3cc84950a9bf1d1be78e1824afb783c3b83b754916062b2967606720a",
+    "candidate_v2_qa_eval": "448463668083a2aea7f93bb5f5a227af3782349673631c9c8eb181e05a5d5962",
+    "dashboard_v2": "512268100ceee095a09e57b0935583988e8dc5b84e51123ae19ef6f1cdb37ee4",
+    "dashboard_v2_html": "34b8e4e3e37001a8ebdbbd61acfb7be4d576b16bd186f4892a90a13eeae97b0d",
+    "diagnostic_report": "7c4613530865603cf1a9ec0da16e3197157cff2b85537f8caf609ce2da93ced0",
+    "error_attribution_v2": "f7c92cabc0e7845d234d15a88bcc33a1dfea8e9a3b597ed0bb1b3dc7bea99a01",
+    "frame_index": "56f58e835d6c05afe4b3507b5cbe2973ff8d415bb4f33d22a3174f9265f9cea4",
+    "graph_eval_v2": "ba2bc89c17605735aa51e341b2c624dea96b4d9844069348d8a432019c1b0ccd",
+    "original_predictions": "f5f256e765140b771038fbaa407693537ae7df853b2b80e1212182b5d279bb8e",
+    "original_qa_eval": "4df3351c22c4fd239ab42e64bac9c4ba2a16458ddb7102a05d251e9091714b6e",
+    "qa_trace": "b87836f062416cf011f2983fe7eb4ac4369f61dd72bef8cc858978e333de8588",
+    "raw_response_index": "2ba70d21500ac6693c59a99588b4f70eabb7599fed04306de399d68bca7162c3",
+    "trace_manifest": "b15f0f2b75deb9f5533a1483513215f56dbc871e92ae598d028e512cd47edbe6",
+    "trace_readiness": "61a1fa98fe8a38c46da06d1f0c3892937c08f536644db8d36230615c8afc94f1",
+    "visibility_aligned_qa": "87a24fd3a64269a26e8431d0a3f10696ea2fc676c86b5c2aeb50faa7920f4ff1",
+    "visibility_v2_delta": "b5628e4cc173271a62b9313da96a250c4488d557e38285c320329f79cd507588",
+    "vlm_interactions": "44c87986a860b4ecb8226b3bf1136ebe5af25a5fe8243a5f3445d33bdf2ad4c8"
+  },
+  "status": "diagnostic_complete_result_quality_not_final",
+  "trace_counts": {
+    "frame_index_count": 50,
+    "qa_trace_count": 60,
+    "raw_response_index_count": 8,
+    "visibility_aligned_qa_count": 13,
+    "vlm_interactions_count": 240
+  },
+  "trace_manifest_digest": "b15f0f2b75deb9f5533a1483513215f56dbc871e92ae598d028e512cd47edbe6"
+}

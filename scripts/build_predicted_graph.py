@@ -83,6 +83,23 @@ def main(argv: list[str] | None = None) -> int:
             "May be repeated."
         ),
     )
+    parser.add_argument(
+        "--infer-containment",
+        action="store_true",
+        help=(
+            "Infer observation_sequence containment relations "
+            "(IN_REGION, IN_ROOM, ON)."
+        ),
+    )
+    parser.add_argument(
+        "--containment-axis",
+        choices=("z", "y"),
+        default="z",
+        help=(
+            "Vertical axis for ON containment inference. Use y for AI2-THOR "
+            "metadata coordinates and z for the default local graph frame."
+        ),
+    )
     args = parser.parse_args(argv)
 
     if args.validate_report is not None:
@@ -145,6 +162,8 @@ def main(argv: list[str] | None = None) -> int:
                 source_path=args.input,
                 infer_relations=infer_relations,
                 reference_frames=reference_frames,
+                infer_containment=args.infer_containment,
+                containment_axis=args.containment_axis,
             )
             report = predicted_graph_report_from_observations(
                 input_path=args.input,
@@ -153,6 +172,8 @@ def main(argv: list[str] | None = None) -> int:
                 observations=observations,
                 infer_relations=infer_relations,
                 reference_frames=reference_frames,
+                infer_containment=args.infer_containment,
+                containment_axis=args.containment_axis,
             )
         else:
             frames = load_episode_sequence(args.input)

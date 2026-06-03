@@ -1,0 +1,357 @@
+{
+  "artifact_paths": {
+    "normalized_predictions": "inputs/offline-controls/*.jsonl",
+    "offline_control_matrix": "outputs/offline-controls/offline-control-matrix.json",
+    "offline_control_result": "outputs/offline-controls/offline-control-result.json",
+    "raw_responses": "inputs/offline-controls/*.raw-response.txt",
+    "source_imports": "outputs/offline-controls/imports/*/import-report.json",
+    "source_qa_eval": "outputs/offline-controls/qa-eval/baselines/*/qa-eval.json"
+  },
+  "dataset_id": "ai2thor-real-small",
+  "diagnosis": [
+    "四组外部/离线 control 的导入链路完整：每组 60 条 prediction，未发现 missing、duplicate 或 import error。",
+    "四组 exact match 均为 0/60，主要不是导入失败，而是答案形态与 DSG QA 的结构化 gold answer 不匹配。",
+    "VLM-only 与 multi-frame VLM 产生了部分自然语言位置答案，但没有 evidence_nodes/evidence_edges，answer_graph_consistency 为 0。",
+    "caption_memory 与 graph_text 中 unknown-like 答案占比较高；graph_text 还输出了坐标类文本，当前 evaluator 不把这类自由文本直接等价为 graph relation/location answer。"
+  ],
+  "recommended_actions": [
+    "将 control prompt 改为输出与 QA evaluator 对齐的结构化 JSON answer，而不是自由文本描述。",
+    "为 VLM/LLM prediction 增加 parse_error、raw_answer、normalized_answer、evidence_nodes/evidence_edges 字段的逐 case 记录。",
+    "在正式大规模比较前，先用 observation-aware QA slice 校准 control，避免大量目标对象不可见导致所有 control 低分。"
+  ],
+  "report_digest": "1271ef89f73111c7313cc3513139f7aac695476492c0d5e7acbd1b257bc74fc0",
+  "schema_version": "dsg-spatialqa-lab.offline-control-calibration-diagnostic.v1",
+  "scope": "p1_control_calibration",
+  "source_order": [
+    "vlm",
+    "multi_frame_vlm",
+    "caption_memory",
+    "graph_text"
+  ],
+  "sources": {
+    "caption_memory": {
+      "answer_shape_counts": {
+        "other_text": 3,
+        "unknown_like": 57
+      },
+      "eval_metrics": {
+        "answer_graph_consistency": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 60
+        },
+        "evidence_edge_recall": {
+          "average": 0.033333,
+          "total": 60
+        },
+        "evidence_node_recall": {
+          "average": 0.016667,
+          "total": 60
+        },
+        "exact_match": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 60
+        },
+        "multiple_choice_accuracy": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 1
+        },
+        "numeric_mae": {
+          "count": 0,
+          "mean_absolute_error": null,
+          "total_absolute_error": 0
+        }
+      },
+      "eval_report_digest": "de6b3b69cd9a4aca0399acde3a38312fc377ea66837436e72ff8b3c60f261428",
+      "eval_summary": {
+        "case_count": 60,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "matched_prediction_count": 60,
+        "missing_prediction_count": 0,
+        "prediction_count": 60
+      },
+      "import_report_digest": "856b6d1e87e9f8aabc2b61a67f5547be879b3ba9068fae90c6c22752cbbde8f1",
+      "import_summary": {
+        "duplicate_case_count": 0,
+        "error_prediction_count": 0,
+        "gold_case_count": 60,
+        "imported_prediction_count": 60,
+        "missing_case_count": 0,
+        "record_count": 60,
+        "unknown_case_count": 0
+      },
+      "non_unknown_examples": [
+        {
+          "id": "ai2thor-real-small-episode-001:FloorPlan1:0131:relative_relation:coffeemachine_01_98_00_90_00_19_ON_countertop_01_87_00_95_01_21",
+          "text": "ON"
+        },
+        {
+          "id": "ai2thor-real-small-episode-002:FloorPlan201:0090:relative_relation:sofa_02_40_00_00_03_42_ON_floor_00_00_00_38_00_00",
+          "text": "ON"
+        },
+        {
+          "id": "ai2thor-real-small-episode-002:FloorPlan201:0137:relation_timeline:sofa_02_40_00_00_03_42_ON_floor_00_00_00_38_00_00",
+          "text": "remained ON"
+        }
+      ],
+      "prediction_path": "inputs/offline-controls/caption_memory.jsonl",
+      "raw_response_path": "inputs/offline-controls/caption_memory.raw-response.txt"
+    },
+    "graph_text": {
+      "answer_shape_counts": {
+        "coordinate_like": 9,
+        "other_text": 4,
+        "unknown_like": 47
+      },
+      "eval_metrics": {
+        "answer_graph_consistency": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 60
+        },
+        "evidence_edge_recall": {
+          "average": 0.033333,
+          "total": 60
+        },
+        "evidence_node_recall": {
+          "average": 0.016667,
+          "total": 60
+        },
+        "exact_match": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 60
+        },
+        "multiple_choice_accuracy": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 1
+        },
+        "numeric_mae": {
+          "count": 0,
+          "mean_absolute_error": null,
+          "total_absolute_error": 0
+        }
+      },
+      "eval_report_digest": "277b503812be9316c073272b627147ae65fd0bc24447ab453cf015a859e603e5",
+      "eval_summary": {
+        "case_count": 60,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "matched_prediction_count": 60,
+        "missing_prediction_count": 0,
+        "prediction_count": 60
+      },
+      "import_report_digest": "4b0b3dbb68827c91b98797edeaa7ee87daa2a9120a2ea82c740dab7739b36986",
+      "import_summary": {
+        "duplicate_case_count": 0,
+        "error_prediction_count": 0,
+        "gold_case_count": 60,
+        "imported_prediction_count": 60,
+        "missing_case_count": 0,
+        "record_count": 60,
+        "unknown_case_count": 0
+      },
+      "non_unknown_examples": [
+        {
+          "id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48",
+          "text": "(-0.46516576409339905,1.151225209236145,0.47580063343048096)"
+        },
+        {
+          "id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03",
+          "text": "(-0.5223836302757263,1.1704490184783936,-0.028279820457100868)"
+        },
+        {
+          "id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46",
+          "text": "(-0.41180744767189026,1.1053317785263062,-0.462016224861145)"
+        },
+        {
+          "id": "ai2thor-real-small-episode-001:FloorPlan1:0131:relative_relation:coffeemachine_01_98_00_90_00_19_ON_countertop_01_87_00_95_01_21",
+          "text": "ON"
+        },
+        {
+          "id": "ai2thor-real-small-episode-001:FloorPlan1:0157:relation_timeline:coffeemachine_01_98_00_90_00_19_ON_countertop_01_87_00_95_01_21",
+          "text": "unchanged"
+        }
+      ],
+      "prediction_path": "inputs/offline-controls/graph_text.jsonl",
+      "raw_response_path": "inputs/offline-controls/graph_text.raw-response.txt"
+    },
+    "multi_frame_vlm": {
+      "answer_shape_counts": {
+        "other_text": 13,
+        "relation_or_location_text": 12,
+        "unknown_like": 35
+      },
+      "eval_metrics": {
+        "answer_graph_consistency": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 60
+        },
+        "evidence_edge_recall": {
+          "average": 0.033333,
+          "total": 60
+        },
+        "evidence_node_recall": {
+          "average": 0.016667,
+          "total": 60
+        },
+        "exact_match": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 60
+        },
+        "multiple_choice_accuracy": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 1
+        },
+        "numeric_mae": {
+          "count": 0,
+          "mean_absolute_error": null,
+          "total_absolute_error": 0
+        }
+      },
+      "eval_report_digest": "5a9435420adf72d8fa9c1ac1f9085eaf1f9ad10cceefb2523808fe31dd317f58",
+      "eval_summary": {
+        "case_count": 60,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "matched_prediction_count": 60,
+        "missing_prediction_count": 0,
+        "prediction_count": 60
+      },
+      "import_report_digest": "cd207da1aa81124d03f6d27035f1d5b716895e5af07d1efd11679111f4541bd0",
+      "import_summary": {
+        "duplicate_case_count": 0,
+        "error_prediction_count": 0,
+        "gold_case_count": 60,
+        "imported_prediction_count": 60,
+        "missing_case_count": 0,
+        "record_count": 60,
+        "unknown_case_count": 0
+      },
+      "non_unknown_examples": [
+        {
+          "id": "ai2thor-real-small-episode-001:FloorPlan1:0131:relative_relation:coffeemachine_01_98_00_90_00_19_ON_countertop_01_87_00_95_01_21",
+          "text": "ON"
+        },
+        {
+          "id": "ai2thor-real-small-episode-002:FloorPlan201:0090:relative_relation:sofa_02_40_00_00_03_42_ON_floor_00_00_00_38_00_00",
+          "text": "ON"
+        },
+        {
+          "id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47",
+          "text": "on the dresser"
+        },
+        {
+          "id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82",
+          "text": "on the floor next to the dresser"
+        },
+        {
+          "id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24",
+          "text": "on the floor near the dogbed"
+        }
+      ],
+      "prediction_path": "inputs/offline-controls/multi_frame_vlm.jsonl",
+      "raw_response_path": "inputs/offline-controls/multi_frame_vlm.raw-response.txt"
+    },
+    "vlm": {
+      "answer_shape_counts": {
+        "other_text": 5,
+        "relation_or_location_text": 11,
+        "unknown_like": 44
+      },
+      "eval_metrics": {
+        "answer_graph_consistency": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 60
+        },
+        "evidence_edge_recall": {
+          "average": 0.033333,
+          "total": 60
+        },
+        "evidence_node_recall": {
+          "average": 0.016667,
+          "total": 60
+        },
+        "exact_match": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 60
+        },
+        "multiple_choice_accuracy": {
+          "count": 0,
+          "rate": 0.0,
+          "total": 1
+        },
+        "numeric_mae": {
+          "count": 0,
+          "mean_absolute_error": null,
+          "total_absolute_error": 0
+        }
+      },
+      "eval_report_digest": "7ee5ed85e8365fa20d337b2a159317a03b6abe00980e19b1fbdcb81f6d0ce0e4",
+      "eval_summary": {
+        "case_count": 60,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "matched_prediction_count": 60,
+        "missing_prediction_count": 0,
+        "prediction_count": 60
+      },
+      "import_report_digest": "90c53c1de80c4f026fa53526e439feff9e3abdcb75250b61b749448b96e30626",
+      "import_summary": {
+        "duplicate_case_count": 0,
+        "error_prediction_count": 0,
+        "gold_case_count": 60,
+        "imported_prediction_count": 60,
+        "missing_case_count": 0,
+        "record_count": 60,
+        "unknown_case_count": 0
+      },
+      "non_unknown_examples": [
+        {
+          "id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48",
+          "text": "on the countertop"
+        },
+        {
+          "id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75",
+          "text": "on the countertop"
+        },
+        {
+          "id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03",
+          "text": "on the countertop"
+        },
+        {
+          "id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20",
+          "text": "on the wall"
+        },
+        {
+          "id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46",
+          "text": "under the countertop"
+        }
+      ],
+      "prediction_path": "inputs/offline-controls/vlm.jsonl",
+      "raw_response_path": "inputs/offline-controls/vlm.raw-response.txt"
+    }
+  },
+  "summary": {
+    "all_sources_exact_match_zero": true,
+    "all_sources_import_complete": true,
+    "source_count": 4,
+    "structured_evidence_absent": true,
+    "total_imported_prediction_count": 240,
+    "unknown_like_answer_counts": {
+      "caption_memory": 57,
+      "graph_text": 47,
+      "multi_frame_vlm": 35,
+      "vlm": 44
+    }
+  }
+}

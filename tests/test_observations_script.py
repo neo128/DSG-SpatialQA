@@ -12,14 +12,17 @@ from _pytest.capture import CaptureFixture
 from dsg_spatialqa_lab import (
     BBox3D,
     DynamicSceneGraph,
+    EpisodeFrame,
     ObjectObservation,
     Pose3D,
     SceneObservation,
     graph_json_digest,
     graph_report_digest,
+    detector_observation_sequence_from_jsonl,
     load_graph_json,
     load_scene_observation_sequence,
     observation_ingest_report_digest,
+    save_episode_sequence,
     save_scene_observation_sequence,
     save_graph_json,
     scene_observation_sequence_digest,
@@ -181,6 +184,76 @@ def test_observations_cli_returns_nonzero_for_invalid_sequence_validation(
     assert validation["digest"] is None
     assert validation["summary"] is None
     assert validation["error"] == "Unsupported scene observation sequence schema version: invalid"
+
+
+def test_observations_cli_writes_episode_metadata_coverage_detector_jsonl(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_observations_script()
+    main = cast(MainFn, getattr(module, "main"))
+    episode_path = tmp_path / "episodes" / "episode-1.jsonl"
+    detector_path = tmp_path / "predicted" / "coverage-detector.jsonl"
+    frame = EpisodeFrame(
+        episode_id="episode-1",
+        scene_id="FloorPlan1",
+        step=1,
+        rgb_path="../frame-assets/episode-1/rgb/0001.ppm",
+        depth_path="../frame-assets/episode-1/depth/0001.npy",
+        segmentation_path="../frame-assets/episode-1/segmentation/0001.ppm",
+        agent_id="agent",
+        agent_pose=Pose3D(0.0, 0.9, 0.0),
+        action="Initialize",
+        visible_object_ids=(),
+        metadata={
+            "objects": [
+                {
+                    "attributes": {"ai2thor_object_id": "Book|0|0|0"},
+                    "bbox": {
+                        "center": {"x": 0.0, "y": 0.8, "z": 0.0, "yaw": 0.0},
+                        "size": [0.2, 0.1, 0.3],
+                    },
+                    "confidence": 0.65,
+                    "label": "book",
+                    "object_id": "book_1",
+                    "pose": {"x": 0.0, "y": 0.8, "z": 0.0, "yaw": 0.0},
+                    "region_id": "scene_region",
+                    "room_id": "ai2thor_room",
+                    "states": {"isOpen": False},
+                    "visible": False,
+                }
+            ],
+            "regions": [],
+            "rooms": [],
+        },
+    )
+    save_episode_sequence((frame,), episode_path)
+
+    assert (
+        main(
+            [
+                "--episode-metadata-coverage-jsonl",
+                str(episode_path),
+                "--output-detector-jsonl",
+                str(detector_path),
+                "--path-prefix",
+                "inputs",
+            ]
+        )
+        == 0
+    )
+
+    output = json.loads(capsys.readouterr().out)
+    payload = detector_path.read_text(encoding="utf-8")
+    imported_observations = detector_observation_sequence_from_jsonl(payload)
+    assert output["action"] == "episode_metadata_coverage_detector_jsonl"
+    assert output["detector_jsonl_path"] == str(detector_path)
+    assert output["frame_count"] == 1
+    assert output["record_count"] == 1
+    assert output["object_observation_count"] == 1
+    assert output["hidden_object_observation_count"] == 1
+    assert imported_observations[0].objects[0].object_id == "book_1"
+    assert imported_observations[0].objects[0].visible is False
 
 
 def test_observations_cli_validates_and_compares_sequence_summary(

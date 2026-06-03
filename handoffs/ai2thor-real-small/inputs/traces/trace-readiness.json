@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "actual": 50,
+      "expected": 50,
+      "name": "frame_index_count",
+      "passed": true
+    },
+    {
+      "actual": 50,
+      "expected": 50,
+      "name": "frame_assets_present",
+      "passed": true
+    },
+    {
+      "actual": 60,
+      "expected": 60,
+      "name": "qa_trace_count",
+      "passed": true
+    },
+    {
+      "actual": 240,
+      "expected": 240,
+      "name": "vlm_interactions_count",
+      "passed": true
+    },
+    {
+      "actual": 8,
+      "expected": ">= 4",
+      "name": "raw_response_records_present",
+      "passed": true
+    },
+    {
+      "actual": 13,
+      "expected": 13,
+      "name": "visibility_aligned_slice_present",
+      "passed": true
+    }
+  ],
+  "dataset_id": "ai2thor_real_small",
+  "manifest_digest": "b15f0f2b75deb9f5533a1483513215f56dbc871e92ae598d028e512cd47edbe6",
+  "manifest_path": "handoffs/ai2thor-real-small/inputs/traces/trace-manifest.json",
+  "ready": true,
+  "schema_version": "dsg-spatialqa-lab.real-experiment-process-trace-readiness.v1"
+}

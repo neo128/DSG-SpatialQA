@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "answer": {
+      "type": "object"
+    },
+    "answer_text": {
+      "type": "string"
+    },
+    "case_id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "type": "number"
+    },
+    "error": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "enum": [
+            "target_not_observed",
+            "relation_not_observed",
+            "state_not_observed",
+            "ambiguous_evidence",
+            "invalid_question",
+            "unsupported_question_type"
+          ],
+          "type": "string"
+        }
+      ]
+    },
+    "evidence": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "frame_id": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
+          },
+          "object_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "quote": {
+            "type": "string"
+          },
+          "relation_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "source_id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "source_type": {
+            "enum": [
+              "image",
+              "depth",
+              "segmentation",
+              "caption",
+              "memory",
+              "detector_observation",
+              "graph_text"
+            ],
+            "type": "string"
+          },
+          "step": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "integer"
+              }
+            ]
+          },
+          "supports": {
+            "enum": [
+              "answer",
+              "uncertainty",
+              "rejection"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_type",
+          "source_id",
+          "frame_id",
+          "step",
+          "object_ids",
+          "relation_ids",
+          "quote",
+          "supports"
+        ],
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "observability": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_sufficient": {
+          "type": "boolean"
+        },
+        "missing_evidence": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "target_observed": {
+          "type": "boolean"
+        },
+        "target_visible": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "required": [
+        "target_visible",
+        "target_observed",
+        "evidence_sufficient",
+        "missing_evidence"
+      ],
+      "type": "object"
+    },
+    "reasoning_summary": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "case_id",
+    "answer",
+    "answer_text",
+    "confidence",
+    "evidence",
+    "observability",
+    "reasoning_summary",
+    "error"
+  ],
+  "title": "DSG-SpatialQA Structured Control Response v1",
+  "type": "object"
+}

@@ -1,0 +1,72 @@
+{
+  "artifact_paths": {
+    "offline_control_calibration_p1": "outputs/diagnostics/offline-control-calibration-p1.json",
+    "p0_active_delta": "inputs/review-p0/active-task-delta-p0.json",
+    "p0_active_report": "inputs/review-p0/active-candidate-p0-report.json",
+    "p0_dashboard": "inputs/review-p0/dashboard.json",
+    "p0_dashboard_html": "inputs/review-p0/index.html",
+    "p0_error_attribution": "inputs/review-p0/error-attribution-p0.json",
+    "p0_graph_eval": "inputs/review-p0/graph-eval-containment-p0.json",
+    "p0_predicted_graph": "outputs/predicted-dsg/predicted-graph-containment-p0.json",
+    "p0_predicted_graph_report": "outputs/predicted-dsg/predicted-graph-containment-p0-report.json",
+    "p0_predictions": "inputs/candidate/predicted-graph-tool-p0.jsonl",
+    "p0_qa_delta": "outputs/diagnostics/predicted-graph-tool-p0-vs-original-delta.json",
+    "p0_qa_eval": "outputs/diagnostics/predicted-graph-tool-p0-qa-eval.json",
+    "qa_observability_original": "outputs/diagnostics/qa-observability-original.json",
+    "qa_observability_p0": "outputs/diagnostics/qa-observability-p0.json"
+  },
+  "benchmark": {
+    "qa_count": 60,
+    "source": "inputs/qa.jsonl"
+  },
+  "candidate_name": "predicted_graph_tool_p0_containment_inference",
+  "conclusion": [
+    "P0 已把 containment_v2 诊断逻辑正式沉淀为 observation ingestion/build_predicted_graph 的可验证入口。",
+    "P0 将 full QA exact match 从 1/60 提升到 6/60，并将 evidence-observable QA 从 1/60 提升到 8/60。",
+    "P0 没有新增 detector 观测对象，因此 object recall 仍为 0.153409；后续质量提升必须先解决 observation/detector coverage。",
+    "四组外部/离线 control 的导入链路完整：每组 60 条 prediction，未发现 missing、duplicate 或 import error。",
+    "四组 exact match 均为 0/60，主要不是导入失败，而是答案形态与 DSG QA 的结构化 gold answer 不匹配。"
+  ],
+  "dataset_id": "ai2thor-real-small",
+  "episodes": {
+    "count": 5,
+    "source": "AI2-THOR real collection artifacts"
+  },
+  "methods": {
+    "candidate": "graph_tool QA over p0 predicted DSG",
+    "containment_inference": "standard builder option --infer-containment --containment-axis y; adds IN_REGION, IN_ROOM, and bbox-support ON edges",
+    "p1_control_calibration": "diagnostic over imported VLM/LLM predictions, answer shapes, and QA eval summaries",
+    "predicted_dsg": "observation_sequence backed graph from detector-observations.json"
+  },
+  "metric_summary": {
+    "exact_match_count_delta": 5,
+    "object_recall": 0.153409,
+    "oracle_object_count": 176,
+    "original_evidence_observable_count": 1,
+    "original_exact_match_count": 1,
+    "original_exact_match_rate": 0.016667,
+    "p0_active_task_success_count": 5,
+    "p0_active_task_success_delta": -25,
+    "p0_active_task_success_rate": 0.166667,
+    "p0_evidence_observable_count": 8,
+    "p0_exact_match_count": 6,
+    "p0_exact_match_rate": 0.1,
+    "p0_missing_evidence_count": 52,
+    "p0_target_missing_count": 46,
+    "predicted_object_count": 38,
+    "relation_f1": 0.05403
+  },
+  "record_digest": "474b31458723580bfeda7753e5cdd475162fd9baff89daee0b874e069fd92b26",
+  "report_digests": {
+    "p0_active_delta": "93b6336e33374007d5b76e65ae4a9ba0124e4fc3a1c212b3b2bea04f1cd2d26f",
+    "p0_active_report": "35aa3645b3ee2be1ab2d5fd01e7fed4c1d5493938a73bd06f0d5374604ffee94",
+    "p0_error_attribution": "b7922d4029142f26e03df5a5e4b0f9e54a7561f611974a84d4bb292a557b8ed5",
+    "p0_graph_eval": "925a0c1cda593608224c4b1c604233d9dd5e41cc253a1f000a6cdcc94ee7a17d",
+    "p0_predicted_graph_report": "552807fc0aa01ccfdb7bfa8d1bc3b8568acc27c9e0790a12fddbfba17407cd5e",
+    "p0_qa_delta": "62284440fb6eedf5d8b9b58764864efba7618e13b0b0e8a97e07fb571639b3a0",
+    "p0_qa_eval": "abeaa4930a60af1fcdcc3078a7a3d267e3a3545f87ecd2fd5c1f59435078caa2",
+    "p0_readiness": "891197211f38f7be091239440a4fb1db21154a4544b1d8f0ba19a1fd0504e201",
+    "p1_offline_control_calibration": "1271ef89f73111c7313cc3513139f7aac695476492c0d5e7acbd1b257bc74fc0"
+  },
+  "schema_version": "dsg-spatialqa-lab.p0-experiment-record.v1"
+}

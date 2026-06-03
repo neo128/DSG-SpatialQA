@@ -10,8 +10,11 @@ from dsg_spatialqa_lab import (
     compare_observation_ingest_report,
     compare_scene_observation_sequence_summary,
     detector_observation_import_report,
+    detector_observation_records_digest,
     detector_observation_sequence_from_jsonl,
+    episode_metadata_coverage_detector_jsonl,
     ingest_scene_observation_sequence,
+    load_episode_sequence,
     load_observation_ingest_report,
     load_scene_observation_sequence,
     load_scene_observation_sequence_summary,
@@ -46,6 +49,40 @@ def main(argv: list[str] | None = None) -> int:
         help=(
             "Import explicit local detector/RGB-D JSONL records into a "
             "SceneObservation sequence JSON artifact."
+        ),
+    )
+    parser.add_argument(
+        "--episode-metadata-coverage-jsonl",
+        action="append",
+        dest="episode_metadata_coverage_jsonl",
+        type=Path,
+        help=(
+            "Convert an explicit local episode JSONL into coverage-enhanced "
+            "detector/RGB-D JSONL records using saved episode metadata. May be "
+            "repeated."
+        ),
+    )
+    parser.add_argument(
+        "--output-detector-jsonl",
+        type=Path,
+        help=(
+            "Explicit local detector/RGB-D JSONL output path for "
+            "--episode-metadata-coverage-jsonl."
+        ),
+    )
+    parser.add_argument(
+        "--path-prefix",
+        help=(
+            "Optional prefix for normalized frame asset paths written by "
+            "--episode-metadata-coverage-jsonl."
+        ),
+    )
+    parser.add_argument(
+        "--visible-only",
+        action="store_true",
+        help=(
+            "Only write visible episode metadata objects when building "
+            "coverage detector JSONL."
         ),
     )
     parser.add_argument(
@@ -118,6 +155,68 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     args = parser.parse_args(argv)
+
+    if args.episode_metadata_coverage_jsonl is not None:
+        if args.output_detector_jsonl is None:
+            parser.error(
+                "--episode-metadata-coverage-jsonl requires --output-detector-jsonl"
+            )
+        try:
+            frames = tuple(
+                frame
+                for episode_path in args.episode_metadata_coverage_jsonl
+                for frame in load_episode_sequence(episode_path)
+            )
+            detector_payload = episode_metadata_coverage_detector_jsonl(
+                frames,
+                include_hidden=not args.visible_only,
+                path_prefix=args.path_prefix,
+            )
+            args.output_detector_jsonl.parent.mkdir(parents=True, exist_ok=True)
+            args.output_detector_jsonl.write_text(
+                detector_payload,
+                encoding="utf-8",
+            )
+            observations = detector_observation_sequence_from_jsonl(detector_payload)
+            summary = scene_observation_sequence_summary(observations)
+            payload = {
+                "action": "episode_metadata_coverage_detector_jsonl",
+                "episode_paths": [
+                    str(path) for path in args.episode_metadata_coverage_jsonl
+                ],
+                "detector_jsonl_path": str(args.output_detector_jsonl),
+                "valid": True,
+                "include_hidden": not args.visible_only,
+                "path_prefix": args.path_prefix,
+                "frame_count": len(frames),
+                "record_count": len(observations),
+                "object_observation_count": summary["object_observation_count"],
+                "visible_object_observation_count": summary[
+                    "visible_object_observation_count"
+                ],
+                "hidden_object_observation_count": summary[
+                    "hidden_object_observation_count"
+                ],
+                "unique_object_count": summary["unique_object_count"],
+                "detector_jsonl_digest": detector_observation_records_digest(
+                    detector_payload
+                ),
+                "sequence_digest": summary["sequence_digest"],
+            }
+        except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
+            payload = _error_report(
+                args.episode_metadata_coverage_jsonl[0],
+                args.output_detector_jsonl,
+                exc,
+                action="episode_metadata_coverage_detector_jsonl",
+            )
+            _emit_json_payload(payload, args.report)
+            return 1
+        _emit_json_payload(payload, args.report)
+        return 0
+
+    if args.output_detector_jsonl is not None:
+        parser.error("--output-detector-jsonl requires --episode-metadata-coverage-jsonl")
 
     if args.import_detector_jsonl is not None:
         if args.output_sequence is None:

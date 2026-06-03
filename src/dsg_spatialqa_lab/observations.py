@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 from typing import Any, cast
 
+from dsg_spatialqa_lab.episodes import EpisodeFrame
 from dsg_spatialqa_lab.graph_tool import GraphTool
 from dsg_spatialqa_lab.memory import DynamicSceneGraph
 from dsg_spatialqa_lab.scene_io import (
@@ -36,6 +37,13 @@ SCENE_OBSERVATION_SEQUENCE_SUMMARY_SCHEMA_VERSION = (
     "dsg-spatialqa-lab.scene-observation-sequence-summary.v1"
 )
 OBSERVATION_SEQUENCE_LOW_CONFIDENCE_THRESHOLD = 0.5
+OBSERVATION_CONTAINMENT_SOURCE = "containment_inference"
+OBSERVATION_CONTAINMENT_AXES = ("z", "y")
+OBSERVATION_ON_VERTICAL_MARGIN = 0.08
+OBSERVATION_ON_OVERLAP_MARGIN = 0.05
+OBSERVATION_ON_SUPPORT_OVERLAP_RATIO = 0.25
+EPISODE_METADATA_COVERAGE_DETECTOR_NAME = "ai2thor_metadata_coverage_objects"
+EPISODE_METADATA_COVERAGE_SOURCE_KIND = "ai2thor_metadata_coverage"
 
 
 @dataclass(frozen=True)
@@ -580,6 +588,38 @@ def load_detector_observation_sequence(path: str | Path) -> tuple[SceneObservati
     return detector_observation_sequence_from_jsonl(Path(path).read_text(encoding="utf-8"))
 
 
+def episode_metadata_coverage_detector_jsonl(
+    frames: Sequence[EpisodeFrame],
+    *,
+    include_hidden: bool = True,
+    path_prefix: str | None = None,
+) -> str:
+    return "".join(
+        json.dumps(record, separators=(",", ":"), sort_keys=True) + "\n"
+        for record in episode_metadata_coverage_detector_records(
+            frames,
+            include_hidden=include_hidden,
+            path_prefix=path_prefix,
+        )
+    )
+
+
+def episode_metadata_coverage_detector_records(
+    frames: Sequence[EpisodeFrame],
+    *,
+    include_hidden: bool = True,
+    path_prefix: str | None = None,
+) -> tuple[dict[str, Any], ...]:
+    return tuple(
+        _episode_frame_to_coverage_detector_record(
+            frame,
+            include_hidden=include_hidden,
+            path_prefix=path_prefix,
+        )
+        for frame in sorted(frames, key=lambda item: (item.episode_id, item.step))
+    )
+
+
 def detector_observation_records_digest(payload: str) -> str:
     return hashlib.sha256(_normalized_detector_jsonl(payload).encode("utf-8")).hexdigest()
 
@@ -810,6 +850,158 @@ def _scene_observation_from_detector_record(
     )
 
 
+def _episode_frame_to_coverage_detector_record(
+    frame: EpisodeFrame,
+    *,
+    include_hidden: bool,
+    path_prefix: str | None,
+) -> dict[str, Any]:
+    metadata = _as_mapping(frame.metadata, "metadata")
+    objects = [
+        _episode_metadata_object_to_detection(_as_mapping(item, "metadata object"))
+        for item in _optional_sequence(metadata, "objects")
+    ]
+    if not include_hidden:
+        objects = [item for item in objects if item["visible"] is True]
+    objects = _disambiguate_detector_detection_ids(
+        sorted(objects, key=lambda item: item["object_id"])
+    )
+    rooms = [
+        _node_observation_to_dict(_metadata_room_observation(item))
+        for item in _optional_sequence(metadata, "rooms")
+    ]
+    regions = [
+        _node_observation_to_dict(_metadata_region_observation(item))
+        for item in _optional_sequence(metadata, "regions")
+    ]
+    return {
+        "schema_version": DETECTOR_OBSERVATION_RECORD_SCHEMA_VERSION,
+        "step": frame.step,
+        "agent_id": frame.agent_id,
+        "agent_pose": frame.agent_pose.to_dict(),
+        "rgb_path": _coverage_asset_path(frame.rgb_path, path_prefix),
+        "depth_path": _coverage_asset_path(frame.depth_path, path_prefix),
+        "segmentation_path": _coverage_asset_path(
+            frame.segmentation_path,
+            path_prefix,
+        ),
+        "metadata": {
+            "action": frame.action,
+            "detector": EPISODE_METADATA_COVERAGE_DETECTOR_NAME,
+            "episode_id": frame.episode_id,
+            "local_step": _episode_local_step(frame),
+            "scene_id": frame.scene_id,
+            "source_kind": EPISODE_METADATA_COVERAGE_SOURCE_KIND,
+        },
+        "rooms": sorted(rooms, key=lambda item: item["node_id"]),
+        "regions": sorted(regions, key=lambda item: item["node_id"]),
+        "detections": objects,
+    }
+
+
+def _episode_metadata_object_to_detection(payload: Mapping[str, Any]) -> dict[str, Any]:
+    attributes = dict(_as_mapping(payload.get("attributes", {}), "object attributes"))
+    states = payload.get("states")
+    if isinstance(states, Mapping):
+        attributes["states"] = _stable_json_mapping(states)
+    for field_name in ("region_id", "room_id"):
+        value = payload.get(field_name)
+        if isinstance(value, str):
+            attributes[field_name] = value
+    attributes["coverage_source"] = "episode_metadata"
+    return {
+        "object_id": _required_str(payload, "object_id"),
+        "label": _required_str(payload, "label"),
+        "pose": _pose_from_mapping(_as_mapping(payload.get("pose"), "object pose")).to_dict(),
+        "bbox": _bbox_to_dict(
+            _bbox_from_mapping(_as_mapping(payload.get("bbox"), "object bbox"))
+        ),
+        "confidence": _required_float(payload, "confidence"),
+        "visible": payload.get("visible") is True,
+        "attributes": attributes,
+    }
+
+
+def _disambiguate_detector_detection_ids(
+    detections: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    counts: dict[str, int] = {}
+    disambiguated: list[dict[str, Any]] = []
+    for detection in detections:
+        object_id = _required_str(detection, "object_id")
+        counts[object_id] = counts.get(object_id, 0) + 1
+        record = dict(detection)
+        if counts[object_id] > 1:
+            attributes = dict(_as_mapping(record.get("attributes", {}), "attributes"))
+            attributes["original_object_id"] = object_id
+            record["object_id"] = f"{object_id}_dup{counts[object_id]}"
+            record["attributes"] = attributes
+        disambiguated.append(record)
+    return disambiguated
+
+
+def _metadata_room_observation(value: object) -> NodeObservation:
+    payload = _as_mapping(value, "metadata room")
+    node_id = payload.get("node_id", payload.get("room_id"))
+    if not isinstance(node_id, str):
+        raise SpatialQAError("metadata room must include node_id or room_id")
+    label = payload.get("label", node_id)
+    if not isinstance(label, str):
+        raise SpatialQAError("metadata room label must be a string")
+    attributes = _as_mapping(payload.get("attributes", {}), "metadata room attributes")
+    return NodeObservation(node_id, label, attributes=_stable_json_mapping(attributes))
+
+
+def _metadata_region_observation(value: object) -> NodeObservation:
+    payload = _as_mapping(value, "metadata region")
+    node_id = payload.get("node_id", payload.get("region_id"))
+    if not isinstance(node_id, str):
+        raise SpatialQAError("metadata region must include node_id or region_id")
+    label = payload.get("label", node_id)
+    if not isinstance(label, str):
+        raise SpatialQAError("metadata region label must be a string")
+    attributes = dict(
+        _as_mapping(payload.get("attributes", {}), "metadata region attributes")
+    )
+    room_id = payload.get("room_id")
+    if isinstance(room_id, str):
+        attributes["room_id"] = room_id
+    return NodeObservation(node_id, label, attributes=_stable_json_mapping(attributes))
+
+
+def _coverage_asset_path(path: str | None, path_prefix: str | None) -> str | None:
+    if path is None:
+        return None
+    normalized = path
+    while normalized.startswith("../"):
+        normalized = normalized[3:]
+    if path_prefix is None or path_prefix == "":
+        return normalized
+    clean_prefix = path_prefix.strip("/")
+    if normalized == clean_prefix or normalized.startswith(f"{clean_prefix}/"):
+        return normalized
+    return f"{clean_prefix}/{normalized.lstrip('/')}"
+
+
+def _episode_local_step(frame: EpisodeFrame) -> int:
+    return ((frame.step - 1) % 10) + 1
+
+
+def _stable_json_mapping(payload: Mapping[Any, Any]) -> dict[str, Any]:
+    return {
+        str(key): _stable_json_value(payload[key])
+        for key in sorted(payload, key=lambda item: str(item))
+    }
+
+
+def _stable_json_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return _stable_json_mapping(value)
+    if isinstance(value, Sequence) and not isinstance(value, str):
+        return [_stable_json_value(item) for item in value]
+    return value
+
+
 def _object_observation_from_detector_mapping(
     payload: Mapping[str, Any],
     frame_attributes: Mapping[str, Any],
@@ -893,6 +1085,8 @@ def ingest_scene_observation_sequence(
     source_path: str | Path | None = None,
     infer_relations: Sequence[str] = (),
     reference_frames: Sequence[str] = ("world",),
+    infer_containment: bool = False,
+    containment_axis: str = "z",
 ) -> tuple[DynamicSceneGraph, tuple[IngestResult, ...]]:
     graph = DynamicSceneGraph()
     ingestor = ObservationIngestor(graph)
@@ -904,6 +1098,8 @@ def ingest_scene_observation_sequence(
             observation,
             infer_relations=infer_relations,
             reference_frames=reference_frames,
+            infer_containment=infer_containment,
+            containment_axis=containment_axis,
             relation_evidence=(
                 (f"{source_prefix}:{observation.step}",)
                 if source_prefix is not None
@@ -924,17 +1120,23 @@ def observation_ingest_report(
     sequence_digest: str | None = None,
     infer_relations: Sequence[str] = (),
     reference_frames: Sequence[str] = ("world",),
+    infer_containment: bool = False,
+    containment_axis: str = "z",
 ) -> dict[str, Any]:
+    options: dict[str, Any] = {
+        "infer_relations": list(infer_relations),
+        "reference_frames": list(reference_frames),
+    }
+    if infer_containment or containment_axis != "z":
+        options["infer_containment"] = infer_containment
+        options["containment_axis"] = containment_axis
     report: dict[str, Any] = {
         "schema_version": OBSERVATION_INGEST_REPORT_SCHEMA_VERSION,
         "action": "ingest_observation_sequence",
         "path": str(input_path),
         "graph_path": str(graph_path),
         "valid": True,
-        "options": {
-            "infer_relations": list(infer_relations),
-            "reference_frames": list(reference_frames),
-        },
+        "options": options,
         "observation_count": len(ingest_results),
         "steps": [result.step for result in ingest_results],
         "ingest_results": [
@@ -1094,6 +1296,8 @@ def compare_observation_ingest_report(report: Mapping[str, Any]) -> dict[str, An
     reference_frames = tuple(
         str(item) for item in _optional_sequence(options, "reference_frames")
     ) or ("world",)
+    infer_containment = options.get("infer_containment") is True
+    containment_axis = str(options.get("containment_axis", "z"))
     sequence_path = _required_str(report, "path")
     graph_path = _required_str(report, "graph_path")
     observations = load_scene_observation_sequence(sequence_path)
@@ -1104,6 +1308,8 @@ def compare_observation_ingest_report(report: Mapping[str, Any]) -> dict[str, An
         source_path=sequence_path,
         infer_relations=infer_relations,
         reference_frames=reference_frames,
+        infer_containment=infer_containment,
+        containment_axis=containment_axis,
     )
     saved_graph_report = _as_mapping(report.get("graph_report"), "graph_report")
     saved_digest = saved_graph_report.get("digest")
@@ -1197,6 +1403,8 @@ class ObservationIngestor:
         *,
         infer_relations: Sequence[str] = (),
         reference_frames: Sequence[str] = ("world", "agent"),
+        infer_containment: bool = False,
+        containment_axis: str = "z",
         relation_confidence: float = 1.0,
         relation_evidence: Sequence[str] | None = None,
     ) -> IngestResult:
@@ -1249,19 +1457,32 @@ class ObservationIngestor:
             node_ids.add(obj.object_id)
             state_edge_ids.append(self._state_edge_id(obj.object_id, observation.step))
 
-        inferred_edge_ids: tuple[str, ...] = ()
-        if infer_relations and object_ids:
-            inferred_edges = self.graph_tool.update_spatial_relations(
-                step=observation.step,
-                object_ids=tuple(object_ids),
-                relations=infer_relations,
-                reference_frames=reference_frames,
-                agent_id=observation.agent_id,
-                confidence=relation_confidence,
-                evidence=relation_evidence,
-                attributes={"source": "geometry_inference"},
+        inferred_edges = []
+        if infer_containment and object_ids:
+            inferred_edges.extend(
+                self._infer_containment_edges(
+                    observation,
+                    axis=containment_axis,
+                    evidence=relation_evidence,
+                )
             )
-            inferred_edge_ids = tuple(edge.id for edge in inferred_edges)
+
+        if infer_relations and object_ids:
+            inferred_edges.extend(
+                self.graph_tool.update_spatial_relations(
+                    step=observation.step,
+                    object_ids=tuple(object_ids),
+                    relations=infer_relations,
+                    reference_frames=reference_frames,
+                    agent_id=observation.agent_id,
+                    confidence=relation_confidence,
+                    evidence=relation_evidence,
+                    attributes={"source": "geometry_inference"},
+                )
+            )
+        inferred_edge_ids = tuple(
+            edge.id for edge in sorted(inferred_edges, key=self.graph_tool._edge_sort_key)
+        )
 
         return IngestResult(
             step=observation.step,
@@ -1287,6 +1508,120 @@ class ObservationIngestor:
     @staticmethod
     def _state_edge_id(object_id: str, step: int) -> str:
         return f"{object_id}-STATE_CHANGED-state:{object_id}:{step}-{step}"
+
+    def _infer_containment_edges(
+        self,
+        observation: SceneObservation,
+        *,
+        axis: str,
+        evidence: Sequence[str] | None,
+    ) -> list[Any]:
+        normalized_axis = axis.lower()
+        if normalized_axis not in OBSERVATION_CONTAINMENT_AXES:
+            raise SpatialQAError(
+                f"containment_axis must be one of: {', '.join(OBSERVATION_CONTAINMENT_AXES)}"
+            )
+        added: list[Any] = []
+        evidence_list = list(evidence or [])
+        attributes = {
+            "axis": normalized_axis,
+            "inferred": True,
+            "source": OBSERVATION_CONTAINMENT_SOURCE,
+        }
+        region = self._preferred_region(observation.regions)
+        room = self._preferred_room(observation.rooms, region)
+        for obj in sorted(observation.objects, key=lambda item: item.object_id):
+            if region is not None and not self._has_edge(
+                obj.object_id,
+                "IN_REGION",
+                region.node_id,
+                observation.step,
+            ):
+                added.append(
+                    self.graph.add_edge(
+                        obj.object_id,
+                        "IN_REGION",
+                        region.node_id,
+                        "world",
+                        obj.confidence,
+                        step=observation.step,
+                        evidence=evidence_list,
+                        attributes=attributes,
+                    )
+                )
+            if room is not None and not self._has_edge(
+                obj.object_id,
+                "IN_ROOM",
+                room.node_id,
+                observation.step,
+            ):
+                added.append(
+                    self.graph.add_edge(
+                        obj.object_id,
+                        "IN_ROOM",
+                        room.node_id,
+                        "world",
+                        obj.confidence,
+                        step=observation.step,
+                        evidence=evidence_list,
+                        attributes=attributes,
+                    )
+                )
+
+        objects = sorted(observation.objects, key=lambda item: item.object_id)
+        for src in objects:
+            for dst in objects:
+                if src.object_id == dst.object_id:
+                    continue
+                if not _is_on_axis(src.bbox, dst.bbox, normalized_axis):
+                    continue
+                if self._has_edge(src.object_id, "ON", dst.object_id, observation.step):
+                    continue
+                added.append(
+                    self.graph.add_edge(
+                        src.object_id,
+                        "ON",
+                        dst.object_id,
+                        "world",
+                        min(src.confidence, dst.confidence),
+                        step=observation.step,
+                        evidence=evidence_list,
+                        attributes=attributes,
+                    )
+                )
+        return added
+
+    @staticmethod
+    def _preferred_region(regions: Sequence[NodeObservation]) -> NodeObservation | None:
+        if not regions:
+            return None
+        return sorted(
+            regions,
+            key=lambda item: (
+                0 if item.node_id == "visible_region" else 1,
+                item.node_id,
+            ),
+        )[0]
+
+    @staticmethod
+    def _preferred_room(
+        rooms: Sequence[NodeObservation],
+        region: NodeObservation | None,
+    ) -> NodeObservation | None:
+        if not rooms:
+            return None
+        room_by_id = {room.node_id: room for room in rooms}
+        if region is not None:
+            region_room_id = region.attributes.get("room_id")
+            if isinstance(region_room_id, str) and region_room_id in room_by_id:
+                return room_by_id[region_room_id]
+        return sorted(rooms, key=lambda item: item.node_id)[0]
+
+    def _has_edge(self, src: str, relation: str, dst: str, step: int) -> bool:
+        return any(
+            edge.step == step
+            for edge in self.graph.find_edges(src=src, relation=relation, dst=dst)
+        )
 
 
 def _ingest_result_to_dict(result: IngestResult) -> dict[str, Any]:
@@ -1321,6 +1656,81 @@ def _scene_observation_step_summary(
             if not obj.visible and obj.confidence < low_confidence_threshold
         ),
     }
+
+
+def _is_on_axis(src: BBox3D, dst: BBox3D, axis: str) -> bool:
+    vertical_touch = (
+        abs(_bbox_min(src, axis) - _bbox_max(dst, axis))
+        <= OBSERVATION_ON_VERTICAL_MARGIN
+    )
+    support_area = _horizontal_overlap_area(
+        src,
+        dst,
+        axis=axis,
+        margin=OBSERVATION_ON_OVERLAP_MARGIN,
+    )
+    required_area = (
+        _horizontal_area(src, axis=axis) * OBSERVATION_ON_SUPPORT_OVERLAP_RATIO
+    )
+    return vertical_touch and support_area >= required_area
+
+
+def _bbox_min(bbox: BBox3D, axis: str) -> float:
+    if axis == "x":
+        return bbox.min_x
+    if axis == "y":
+        return bbox.min_y
+    if axis == "z":
+        return bbox.min_z
+    raise SpatialQAError(f"Unsupported bbox axis: {axis}")
+
+
+def _bbox_max(bbox: BBox3D, axis: str) -> float:
+    if axis == "x":
+        return bbox.max_x
+    if axis == "y":
+        return bbox.max_y
+    if axis == "z":
+        return bbox.max_z
+    raise SpatialQAError(f"Unsupported bbox axis: {axis}")
+
+
+def _horizontal_axes(axis: str) -> tuple[str, str]:
+    if axis == "x":
+        return ("y", "z")
+    if axis == "y":
+        return ("x", "z")
+    if axis == "z":
+        return ("x", "y")
+    raise SpatialQAError(f"Unsupported bbox axis: {axis}")
+
+
+def _horizontal_overlap_area(
+    src: BBox3D,
+    dst: BBox3D,
+    *,
+    axis: str,
+    margin: float,
+) -> float:
+    first_axis, second_axis = _horizontal_axes(axis)
+    first_overlap = max(
+        0.0,
+        min(_bbox_max(src, first_axis), _bbox_max(dst, first_axis) + margin)
+        - max(_bbox_min(src, first_axis), _bbox_min(dst, first_axis) - margin),
+    )
+    second_overlap = max(
+        0.0,
+        min(_bbox_max(src, second_axis), _bbox_max(dst, second_axis) + margin)
+        - max(_bbox_min(src, second_axis), _bbox_min(dst, second_axis) - margin),
+    )
+    return first_overlap * second_overlap
+
+
+def _horizontal_area(bbox: BBox3D, *, axis: str) -> float:
+    first_axis, second_axis = _horizontal_axes(axis)
+    return (_bbox_max(bbox, first_axis) - _bbox_min(bbox, first_axis)) * (
+        _bbox_max(bbox, second_axis) - _bbox_min(bbox, second_axis)
+    )
 
 
 def _observation_steps_from_payload(observations_value: object) -> list[Any] | None:

@@ -246,6 +246,56 @@ def test_predicted_graph_builds_from_explicit_observation_sequence_artifact(
     assert comparison["matches"] is True
 
 
+def test_predicted_graph_can_infer_observation_containment_relations(
+    tmp_path: Path,
+) -> None:
+    observations = _containment_observations()
+    input_path = tmp_path / "detector-observations.json"
+    graph_path = tmp_path / "observation-predicted-graph.json"
+    lab.save_scene_observation_sequence(observations, input_path)
+
+    graph = lab.build_predicted_graph_from_observations(
+        observations,
+        source_path=input_path,
+        infer_relations=("NEAR",),
+        reference_frames=("world",),
+        infer_containment=True,
+        containment_axis="z",
+    )
+    lab.save_graph_json(graph, graph_path)
+    report = lab.predicted_graph_report_from_observations(
+        input_path=input_path,
+        graph_path=graph_path,
+        graph=graph,
+        observations=observations,
+        infer_relations=("NEAR",),
+        reference_frames=("world",),
+        infer_containment=True,
+        containment_axis="z",
+    )
+    validation = lab.validate_predicted_graph_report(report)
+    comparison = lab.compare_predicted_graph_report(report)
+
+    assert [
+        (edge.src, edge.relation, edge.dst, edge.reference_frame, edge.step)
+        for edge in graph.find_edges(src="mug_1")
+        if edge.relation in {"IN_REGION", "IN_ROOM", "ON"}
+    ] == [
+        ("mug_1", "IN_REGION", "visible_region", "world", 1),
+        ("mug_1", "IN_ROOM", "kitchen", "world", 1),
+        ("mug_1", "ON", "table_1", "world", 1),
+    ]
+    assert {
+        edge.attributes["source"]
+        for edge in graph.find_edges(src="mug_1")
+        if edge.relation in {"IN_REGION", "IN_ROOM", "ON"}
+    } == {"containment_inference"}
+    assert report["options"]["infer_containment"] is True
+    assert report["options"]["containment_axis"] == "z"
+    assert validation["valid"] is True
+    assert comparison["matches"] is True
+
+
 def test_predicted_graph_report_save_load_validate_and_compare_explicit_artifacts(
     tmp_path: Path,
 ) -> None:
@@ -376,6 +426,9 @@ def test_predicted_graph_cli_builds_from_observation_sequence(
             "NEAR",
             "--reference-frame",
             "world",
+            "--infer-containment",
+            "--containment-axis",
+            "z",
         ]
     ) == 0
 
@@ -389,6 +442,8 @@ def test_predicted_graph_cli_builds_from_observation_sequence(
         "rgbd_detector": 2,
         "rgbd_tracker": 1,
     }
+    assert output["options"]["infer_containment"] is True
+    assert output["options"]["containment_axis"] == "z"
     assert graph_path.exists()
     assert report_path.exists()
 
@@ -522,6 +577,54 @@ def _detector_observations() -> tuple[lab.SceneObservation, ...]:
                         "detector": "detic_fixture",
                         "hidden_reason": "not_detected_in_frame",
                     },
+                ),
+            ),
+        ),
+    )
+
+
+def _containment_observations() -> tuple[lab.SceneObservation, ...]:
+    return (
+        lab.SceneObservation(
+            step=1,
+            rooms=(
+                lab.NodeObservation(
+                    "kitchen",
+                    "Kitchen",
+                    attributes={"source": "test_fixture"},
+                ),
+            ),
+            regions=(
+                lab.NodeObservation(
+                    "visible_region",
+                    "Visible region",
+                    attributes={"room_id": "kitchen", "source": "test_fixture"},
+                ),
+            ),
+            objects=(
+                lab.ObjectObservation(
+                    "table_1",
+                    "table",
+                    Pose3D(0.0, 0.0, 0.5),
+                    lab.BBox3D(
+                        center=Pose3D(0.0, 0.0, 0.5),
+                        size=(1.0, 1.0, 1.0),
+                    ),
+                    confidence=0.9,
+                    visible=True,
+                    attributes={"source": "rgbd_detector"},
+                ),
+                lab.ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(0.0, 0.0, 1.15),
+                    lab.BBox3D(
+                        center=Pose3D(0.0, 0.0, 1.15),
+                        size=(0.2, 0.2, 0.3),
+                    ),
+                    confidence=0.88,
+                    visible=True,
+                    attributes={"source": "rgbd_detector", "pickupable": True},
                 ),
             ),
         ),

@@ -1,0 +1,53 @@
+{
+  "action": "real_collection_request_bundle",
+  "commands": {
+    "collection_report": "python scripts/check_real_collection.py --dataset-name ai2thor_real_smoke --source-kind ai2thor --episode handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl --report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30 --required-frame-evidence depth --required-frame-evidence rgb --required-frame-evidence segmentation",
+    "compare_report": "python scripts/check_real_collection.py --compare-report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+    "validate_report": "python scripts/check_real_collection.py --validate-report handoffs/ai2thor-real-smoke/inputs/real-collection-report.json"
+  },
+  "dataset_name": "ai2thor_real_smoke",
+  "episode_paths": [
+    "handoffs/ai2thor-real-smoke/inputs/episodes/FloorPlan1.jsonl"
+  ],
+  "episode_record_template": {
+    "action": "Initialize",
+    "agent_id": "agent",
+    "agent_pose": {
+      "x": 0.0,
+      "y": 0.0,
+      "yaw": 0.0,
+      "z": 0.0
+    },
+    "depth_path": "frames/000001.depth.png",
+    "episode_id": "episode_001",
+    "metadata": {
+      "collection_kind": "real",
+      "source_kind": "ai2thor"
+    },
+    "rgb_path": "frames/000001.rgb.png",
+    "scene_id": "scene_001",
+    "schema_version": "dsg-spatialqa-lab.episode-frame.v1",
+    "segmentation_path": "frames/000001.segmentation.png",
+    "step": 1,
+    "visible_object_ids": []
+  },
+  "frame_asset_fields": [
+    "rgb_path",
+    "depth_path",
+    "segmentation_path"
+  ],
+  "report_path": "handoffs/ai2thor-real-smoke/inputs/real-collection-report.json",
+  "request_bundle_digest": "f66a9b8171088c09282fdffff3e1369e66f988c044d21f27482d7ed57e641971",
+  "required_frame_evidence": [
+    "depth",
+    "rgb",
+    "segmentation"
+  ],
+  "schema_version": "dsg-spatialqa-lab.real-collection-request-bundle.v1",
+  "source_kind": "ai2thor",
+  "thresholds": {
+    "min_episode_count": 3,
+    "min_frame_count": 30,
+    "min_scene_count": 1
+  }
+}

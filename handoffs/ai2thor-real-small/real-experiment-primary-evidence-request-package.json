@@ -1,0 +1,206 @@
+{
+  "action": "real_experiment_primary_evidence_request_package",
+  "launch_report_digest": "153aaae9fa9affd1a356b47a4bb9ed731d66deec15c41ddccc9cf757380e9eb8",
+  "launch_report_path": "handoffs/ai2thor-real-small/real-experiment-external-artifact-launch-report.json",
+  "launch_report_validation": {
+    "report_digest": "153aaae9fa9affd1a356b47a4bb9ed731d66deec15c41ddccc9cf757380e9eb8",
+    "valid": true
+  },
+  "package_digest": "60f93575de9b1ccaa5cb19b0d4b3a875f347a92d37e91cddc974ffdea1303194",
+  "schema_version": "dsg-spatialqa-lab.real-experiment-primary-evidence-request-package.v1",
+  "summary": {
+    "all_request_tracks_ready": false,
+    "blocked_request_track_count": 1,
+    "ready_request_track_count": 2,
+    "track_count": 3
+  },
+  "track_order": [
+    "real_data",
+    "real_controls",
+    "predicted_dsg"
+  ],
+  "tracks": [
+    {
+      "error": null,
+      "error_type": null,
+      "request_bundle": {
+        "action": "real_collection_request_bundle",
+        "commands": {
+          "collection_report": "python scripts/check_real_collection.py --dataset-name ai2thor_real_small --source-kind ai2thor --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl --report handoffs/ai2thor-real-small/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30 --required-frame-evidence depth --required-frame-evidence rgb --required-frame-evidence segmentation",
+          "compare_report": "python scripts/check_real_collection.py --compare-report handoffs/ai2thor-real-small/inputs/real-collection-report.json",
+          "validate_report": "python scripts/check_real_collection.py --validate-report handoffs/ai2thor-real-small/inputs/real-collection-report.json"
+        },
+        "dataset_name": "ai2thor_real_small",
+        "episode_paths": [
+          "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+          "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl",
+          "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl"
+        ],
+        "episode_record_template": {
+          "action": "Initialize",
+          "agent_id": "agent",
+          "agent_pose": {
+            "x": 0.0,
+            "y": 0.0,
+            "yaw": 0.0,
+            "z": 0.0
+          },
+          "depth_path": "frames/000001.depth.png",
+          "episode_id": "episode_001",
+          "metadata": {
+            "collection_kind": "real",
+            "source_kind": "ai2thor"
+          },
+          "rgb_path": "frames/000001.rgb.png",
+          "scene_id": "scene_001",
+          "schema_version": "dsg-spatialqa-lab.episode-frame.v1",
+          "segmentation_path": "frames/000001.segmentation.png",
+          "step": 1,
+          "visible_object_ids": []
+        },
+        "frame_asset_fields": [
+          "rgb_path",
+          "depth_path",
+          "segmentation_path"
+        ],
+        "report_path": "handoffs/ai2thor-real-small/inputs/real-collection-report.json",
+        "request_bundle_digest": "db4c3445168078803b765e5c063ee1e02e3a5dce84bd254445908a84daa96233",
+        "required_frame_evidence": [
+          "depth",
+          "rgb",
+          "segmentation"
+        ],
+        "schema_version": "dsg-spatialqa-lab.real-collection-request-bundle.v1",
+        "source_kind": "ai2thor",
+        "thresholds": {
+          "min_episode_count": 3,
+          "min_frame_count": 30,
+          "min_scene_count": 1
+        }
+      },
+      "request_bundle_command": "python scripts/check_real_collection.py --request-bundle handoffs/ai2thor-real-small/real-collection-request-bundle.json --dataset-name ai2thor_real_small --source-kind ai2thor --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl --report handoffs/ai2thor-real-small/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+      "request_bundle_digest": "db4c3445168078803b765e5c063ee1e02e3a5dce84bd254445908a84daa96233",
+      "request_bundle_path": "handoffs/ai2thor-real-small/real-collection-request-bundle.json",
+      "request_bundle_validation": {
+        "action": "validate_real_collection_request_bundle",
+        "request_bundle_digest": "db4c3445168078803b765e5c063ee1e02e3a5dce84bd254445908a84daa96233",
+        "valid": true
+      },
+      "status": "ready",
+      "track": "real_data"
+    },
+    {
+      "error": "[Errno 2] No such file or directory: 'handoffs/ai2thor-real-small/inputs/qa.jsonl'",
+      "error_type": "FileNotFoundError",
+      "request_bundle": null,
+      "request_bundle_command": "python scripts/run_offline_controls.py --prediction-request-bundle handoffs/ai2thor-real-small/offline-control-import-manifest.json --request-bundle-output handoffs/ai2thor-real-small/offline-control-prediction-request-bundle.json",
+      "request_bundle_digest": null,
+      "request_bundle_path": "handoffs/ai2thor-real-small/offline-control-prediction-request-bundle.json",
+      "request_bundle_validation": null,
+      "status": "blocked",
+      "track": "real_controls"
+    },
+    {
+      "error": null,
+      "error_type": null,
+      "request_bundle": {
+        "action": "predicted_dsg_detector_request_bundle",
+        "build_requirements": {
+          "infer_relations": [
+            "LEFT_OF",
+            "RIGHT_OF",
+            "NEAR"
+          ],
+          "min_object_observation_count": 2,
+          "min_observation_count": 2,
+          "reference_frames": [
+            "world"
+          ],
+          "required_evidence_kinds": [
+            "depth",
+            "detector",
+            "rgb"
+          ]
+        },
+        "commands": {
+          "build": "python scripts/run_predicted_dsg.py --manifest handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json",
+          "preflight": "python scripts/run_predicted_dsg.py --preflight-manifest handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json"
+        },
+        "detector_jsonl": {
+          "expected_schema_version": "dsg-spatialqa-lab.detector-observation-record.v1",
+          "input_format": "detector_observation_jsonl",
+          "path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd.jsonl"
+        },
+        "frame_asset_fields": [
+          "rgb_path",
+          "depth_path",
+          "segmentation_path"
+        ],
+        "manifest_digest": "55c144151a94bf7dfde322682d07941bc76b1943846004256efd32a025a5f4c2",
+        "manifest_path": "handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json",
+        "planned_outputs": {
+          "detector_import_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-import-report.json",
+          "observation_sequence_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations.json",
+          "predicted_dsg_evidence_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-evidence.json",
+          "predicted_graph_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph.json",
+          "predicted_graph_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-report.json"
+        },
+        "record_template": {
+          "agent_id": "agent",
+          "agent_pose": {
+            "x": 0.0,
+            "y": 0.0,
+            "yaw": 0.0,
+            "z": 0.0
+          },
+          "depth_path": "frames/000001.depth.png",
+          "detections": [
+            {
+              "attributes": {},
+              "bbox": {
+                "center": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "yaw": 0.0,
+                  "z": 0.0
+                },
+                "size": [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              },
+              "confidence": 0.0,
+              "label": "object",
+              "object_id": "track_object_1",
+              "pose": {
+                "x": 0.0,
+                "y": 0.0,
+                "yaw": 0.0,
+                "z": 0.0
+              },
+              "visible": true
+            }
+          ],
+          "metadata": {},
+          "rgb_path": "frames/000001.rgb.png",
+          "schema_version": "dsg-spatialqa-lab.detector-observation-record.v1",
+          "segmentation_path": "frames/000001.seg.png",
+          "step": 0
+        },
+        "request_bundle_digest": "da8598219fd3891f30309d41f540a6fbc1d07179ebfd320d23aaf98ad4c64eda",
+        "schema_version": "dsg-spatialqa-lab.predicted-dsg-detector-request-bundle.v1"
+      },
+      "request_bundle_command": "python scripts/run_predicted_dsg.py --detector-request-bundle handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json --request-bundle-output handoffs/ai2thor-real-small/predicted-dsg-detector-request-bundle.json",
+      "request_bundle_digest": "da8598219fd3891f30309d41f540a6fbc1d07179ebfd320d23aaf98ad4c64eda",
+      "request_bundle_path": "handoffs/ai2thor-real-small/predicted-dsg-detector-request-bundle.json",
+      "request_bundle_validation": {
+        "action": "validate_predicted_dsg_detector_request_bundle",
+        "request_bundle_digest": "da8598219fd3891f30309d41f540a6fbc1d07179ebfd320d23aaf98ad4c64eda",
+        "valid": true
+      },
+      "status": "ready",
+      "track": "predicted_dsg"
+    }
+  ]
+}

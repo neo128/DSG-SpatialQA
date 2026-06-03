@@ -1,0 +1,378 @@
+{
+  "action": "real_experiment_run_manifest_preflight",
+  "groups": {
+    "offline_controls": {
+      "invalid_input_count": 0,
+      "missing_input_count": 0,
+      "missing_requirement_count": 0,
+      "planned_output_count": 13,
+      "ready": true,
+      "required_input_count": 7
+    },
+    "predicted_dsg": {
+      "invalid_input_count": 0,
+      "missing_input_count": 0,
+      "missing_requirement_count": 0,
+      "planned_output_count": 6,
+      "ready": true,
+      "required_input_count": 2
+    },
+    "real_collection": {
+      "invalid_input_count": 0,
+      "missing_input_count": 0,
+      "missing_requirement_count": 0,
+      "planned_output_count": 0,
+      "ready": true,
+      "required_input_count": 6
+    },
+    "real_run": {
+      "invalid_input_count": 0,
+      "missing_input_count": 0,
+      "missing_requirement_count": 0,
+      "planned_output_count": 5,
+      "ready": true,
+      "required_input_count": 0
+    },
+    "review_artifacts": {
+      "invalid_input_count": 0,
+      "missing_input_count": 0,
+      "missing_requirement_count": 0,
+      "planned_output_count": 0,
+      "ready": true,
+      "required_input_count": 4
+    }
+  },
+  "invalid_inputs": [],
+  "missing_inputs": [],
+  "missing_requirements": [],
+  "planned_outputs": [
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-import-run-ledger.json",
+      "role": "offline_control_import_run_ledger"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-matrix.json",
+      "role": "offline_control_matrix_report"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "metadata": {
+        "source_kind": "caption_memory",
+        "source_name": "caption_memory_real_control"
+      },
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/caption_memory/predictions.jsonl",
+      "role": "offline_control_prediction"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "metadata": {
+        "source_kind": "graph_text",
+        "source_name": "graph_text_real_control"
+      },
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/graph_text/predictions.jsonl",
+      "role": "offline_control_prediction"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "metadata": {
+        "source_kind": "multi_frame_vlm",
+        "source_name": "multi_frame_vlm_real_control"
+      },
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/multi_frame_vlm/predictions.jsonl",
+      "role": "offline_control_prediction"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "metadata": {
+        "source_kind": "vlm",
+        "source_name": "vlm_real_control"
+      },
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/vlm/predictions.jsonl",
+      "role": "offline_control_prediction"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-result.json",
+      "role": "offline_control_result_report"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "metadata": {
+        "source_kind": "caption_memory",
+        "source_name": "caption_memory_real_control"
+      },
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/caption_memory/import-report.json",
+      "role": "offline_prediction_import_report"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "metadata": {
+        "source_kind": "graph_text",
+        "source_name": "graph_text_real_control"
+      },
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/graph_text/import-report.json",
+      "role": "offline_prediction_import_report"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "metadata": {
+        "source_kind": "multi_frame_vlm",
+        "source_name": "multi_frame_vlm_real_control"
+      },
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/multi_frame_vlm/import-report.json",
+      "role": "offline_prediction_import_report"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "metadata": {
+        "source_kind": "vlm",
+        "source_name": "vlm_real_control"
+      },
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/vlm/import-report.json",
+      "role": "offline_prediction_import_report"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports",
+      "role": "output_dir"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval",
+      "role": "qa_eval_output_dir"
+    },
+    {
+      "exists": true,
+      "group": "predicted_dsg",
+      "path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-import-report.json",
+      "role": "detector_import_report"
+    },
+    {
+      "exists": true,
+      "group": "predicted_dsg",
+      "path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations.json",
+      "role": "observation_sequence"
+    },
+    {
+      "exists": true,
+      "group": "predicted_dsg",
+      "path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-detector-run-ledger.json",
+      "role": "predicted_dsg_detector_run_ledger"
+    },
+    {
+      "exists": true,
+      "group": "predicted_dsg",
+      "path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-evidence.json",
+      "role": "predicted_dsg_evidence_report"
+    },
+    {
+      "exists": true,
+      "group": "predicted_dsg",
+      "path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph.json",
+      "role": "predicted_graph"
+    },
+    {
+      "exists": true,
+      "group": "predicted_dsg",
+      "path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-report.json",
+      "role": "predicted_graph_report"
+    },
+    {
+      "exists": true,
+      "group": "real_run",
+      "path": "handoffs/ai2thor-real-small/outputs/benchmark-manifest.json",
+      "role": "benchmark_manifest"
+    },
+    {
+      "exists": true,
+      "group": "real_run",
+      "path": "handoffs/ai2thor-real-small/outputs/experiment-record.json",
+      "role": "experiment_record"
+    },
+    {
+      "exists": true,
+      "group": "real_run",
+      "path": "handoffs/ai2thor-real-small/outputs/experiment-summary.json",
+      "role": "experiment_summary"
+    },
+    {
+      "exists": true,
+      "group": "real_run",
+      "path": "handoffs/ai2thor-real-small/outputs/benchmark",
+      "role": "output_dir"
+    },
+    {
+      "exists": true,
+      "group": "real_run",
+      "path": "handoffs/ai2thor-real-small/outputs/real-experiment-readiness.json",
+      "role": "real_readiness_report"
+    },
+    {
+      "exists": true,
+      "group": "run_outputs",
+      "path": "handoffs/ai2thor-real-small/outputs/real-experiment-run-ledger.json",
+      "role": "real_experiment_run_ledger"
+    }
+  ],
+  "ready_to_run": true,
+  "required_inputs": [
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool.jsonl",
+      "role": "candidate_prediction"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "path": "handoffs/ai2thor-real-small/inputs/qa.jsonl",
+      "role": "gold_qa"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "path": "handoffs/ai2thor-real-small/offline-control-import-manifest.json",
+      "role": "offline_control_import_manifest"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "metadata": {
+        "source_kind": "caption_memory",
+        "source_name": "caption_memory_real_control"
+      },
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/caption_memory.jsonl",
+      "role": "offline_control_source_input"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "metadata": {
+        "source_kind": "graph_text",
+        "source_name": "graph_text_real_control"
+      },
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/graph_text.jsonl",
+      "role": "offline_control_source_input"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "metadata": {
+        "source_kind": "multi_frame_vlm",
+        "source_name": "multi_frame_vlm_real_control"
+      },
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/multi_frame_vlm.jsonl",
+      "role": "offline_control_source_input"
+    },
+    {
+      "exists": true,
+      "group": "offline_controls",
+      "metadata": {
+        "source_kind": "vlm",
+        "source_name": "vlm_real_control"
+      },
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/vlm.jsonl",
+      "role": "offline_control_source_input"
+    },
+    {
+      "exists": true,
+      "group": "predicted_dsg",
+      "path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd.jsonl",
+      "role": "detector_jsonl"
+    },
+    {
+      "exists": true,
+      "group": "predicted_dsg",
+      "path": "handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json",
+      "role": "predicted_dsg_detector_run_manifest"
+    },
+    {
+      "exists": true,
+      "group": "real_collection",
+      "path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+      "role": "episode"
+    },
+    {
+      "exists": true,
+      "group": "real_collection",
+      "path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl",
+      "role": "episode"
+    },
+    {
+      "exists": true,
+      "group": "real_collection",
+      "path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl",
+      "role": "episode"
+    },
+    {
+      "exists": true,
+      "group": "real_collection",
+      "path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-004.jsonl",
+      "role": "episode"
+    },
+    {
+      "exists": true,
+      "group": "real_collection",
+      "path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-005.jsonl",
+      "role": "episode"
+    },
+    {
+      "exists": true,
+      "group": "real_collection",
+      "path": "handoffs/ai2thor-real-small/inputs/real-collection-report.json",
+      "role": "real_collection_report"
+    },
+    {
+      "exists": true,
+      "group": "review_artifacts",
+      "path": "handoffs/ai2thor-real-small/inputs/review/active-task-delta.json",
+      "role": "active_task_delta_report"
+    },
+    {
+      "exists": true,
+      "group": "review_artifacts",
+      "path": "handoffs/ai2thor-real-small/inputs/review/dashboard.json",
+      "role": "dashboard_bundle"
+    },
+    {
+      "exists": true,
+      "group": "review_artifacts",
+      "path": "handoffs/ai2thor-real-small/inputs/review/error-attribution.json",
+      "role": "error_attribution_report"
+    },
+    {
+      "exists": true,
+      "group": "review_artifacts",
+      "path": "handoffs/ai2thor-real-small/inputs/review/graph-eval.json",
+      "role": "graph_eval_report"
+    }
+  ],
+  "run_manifest_digest": "83317edc06925e9808d6e28615a2f52067e70d99fff98caea6fe296b3a185ffd",
+  "run_manifest_path": "handoffs/ai2thor-real-small/real-experiment-run-manifest.json",
+  "run_manifest_schema_version": "dsg-spatialqa-lab.real-experiment-run-manifest.v1",
+  "schema_version": "dsg-spatialqa-lab.real-experiment-preflight.v1",
+  "summary": {
+    "existing_planned_output_count": 25,
+    "invalid_input_count": 0,
+    "missing_input_count": 0,
+    "missing_requirement_count": 0,
+    "planned_output_count": 25,
+    "present_input_count": 19,
+    "required_input_count": 19
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "active_task_delta_report_paths": [
+    "inputs/review/active-task-delta.json"
+  ],
+  "dashboard_bundle_paths": [
+    "inputs/review/dashboard.json"
+  ],
+  "dataset_name": "ai2thor_real_small",
+  "declared_data_source_kind": "real",
+  "episode_paths": [
+    "inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+    "inputs/episodes/ai2thor-real-small-episode-002.jsonl",
+    "inputs/episodes/ai2thor-real-small-episode-003.jsonl",
+    "inputs/episodes/ai2thor-real-small-episode-004.jsonl",
+    "inputs/episodes/ai2thor-real-small-episode-005.jsonl"
+  ],
+  "error_attribution_report_paths": [
+    "inputs/review/error-attribution.json"
+  ],
+  "graph_eval_report_paths": [
+    "inputs/review/graph-eval.json"
+  ],
+  "manifest_path": "outputs/benchmark-manifest.json",
+  "max_qa_per_episode": 12,
+  "min_episode_count": 5,
+  "min_frame_count": 50,
+  "min_qa_count": 60,
+  "min_scene_count": 5,
+  "offline_control_import_manifest_path": "offline-control-import-manifest.json",
+  "offline_control_import_run_ledger_path": "outputs/offline-controls/offline-control-import-run-ledger.json",
+  "output_dir": "outputs/benchmark",
+  "predicted_dsg_detector_run_ledger_path": "outputs/predicted-dsg/predicted-dsg-detector-run-ledger.json",
+  "predicted_dsg_detector_run_manifest_path": "predicted-dsg-detector-run-manifest.json",
+  "readiness_report_path": "outputs/real-experiment-readiness.json",
+  "real_collection_report_paths": [
+    "inputs/real-collection-report.json"
+  ],
+  "real_collection_source_kind": "ai2thor",
+  "real_experiment_run_ledger_path": "outputs/real-experiment-run-ledger.json",
+  "record_path": "outputs/experiment-record.json",
+  "required_control_kinds": [
+    "caption_memory",
+    "graph_text",
+    "multi_frame_vlm",
+    "vlm"
+  ],
+  "required_predicted_input_kinds": [
+    "observation_sequence"
+  ],
+  "schema_version": "dsg-spatialqa-lab.real-experiment-run-manifest.v1",
+  "summary_report_path": "outputs/experiment-summary.json",
+  "tags": [
+    "benchmark",
+    "real"
+  ]
+}

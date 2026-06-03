@@ -648,6 +648,129 @@ def test_detector_observation_jsonl_imports_sequence_and_report(
     assert comparison["matches"] is True
 
 
+def test_episode_metadata_coverage_detector_jsonl_includes_hidden_objects() -> None:
+    assert hasattr(lab, "episode_metadata_coverage_detector_jsonl")
+    frame = lab.EpisodeFrame(
+        episode_id="episode-1",
+        scene_id="FloorPlan1",
+        step=7,
+        rgb_path="../frame-assets/episode-1/rgb/0007.ppm",
+        depth_path="../frame-assets/episode-1/depth/0007.npy",
+        segmentation_path="../frame-assets/episode-1/segmentation/0007.ppm",
+        agent_id="agent",
+        agent_pose=Pose3D(0.0, 0.9, 1.0, yaw=90.0),
+        action="MoveAhead",
+        visible_object_ids=("mug_1",),
+        metadata={
+            "objects": [
+                {
+                    "attributes": {"ai2thor_object_id": "Mug|0|0|0"},
+                    "bbox": {
+                        "center": {"x": 0.0, "y": 0.8, "z": 1.0, "yaw": 0.0},
+                        "size": [0.1, 0.1, 0.2],
+                    },
+                    "confidence": 0.92,
+                    "label": "mug",
+                    "object_id": "mug_1",
+                    "pose": {"x": 0.0, "y": 0.8, "z": 1.0, "yaw": 0.0},
+                    "region_id": "scene_region",
+                    "room_id": "ai2thor_room",
+                    "states": {"isOpen": False},
+                    "visible": True,
+                },
+                {
+                    "attributes": {"ai2thor_object_id": "Book|1|0|0"},
+                    "bbox": {
+                        "center": {"x": 1.0, "y": 0.5, "z": 1.5, "yaw": 0.0},
+                        "size": [0.2, 0.05, 0.3],
+                    },
+                    "confidence": 0.65,
+                    "label": "book",
+                    "object_id": "book_1",
+                    "pose": {"x": 1.0, "y": 0.5, "z": 1.5, "yaw": 0.0},
+                    "region_id": "scene_region",
+                    "room_id": "ai2thor_room",
+                    "states": {"isOpen": False},
+                    "visible": False,
+                },
+                {
+                    "attributes": {"ai2thor_object_id": "Book|1|0|0-dup"},
+                    "bbox": {
+                        "center": {"x": 1.1, "y": 0.5, "z": 1.5, "yaw": 0.0},
+                        "size": [0.2, 0.05, 0.3],
+                    },
+                    "confidence": 0.65,
+                    "label": "book",
+                    "object_id": "book_1",
+                    "pose": {"x": 1.1, "y": 0.5, "z": 1.5, "yaw": 0.0},
+                    "region_id": "scene_region",
+                    "room_id": "ai2thor_room",
+                    "states": {"isOpen": False},
+                    "visible": False,
+                },
+            ],
+            "regions": [
+                {
+                    "label": "FloorPlan1 scene region",
+                    "region_id": "scene_region",
+                    "room_id": "ai2thor_room",
+                }
+            ],
+            "rooms": [
+                {
+                    "label": "AI2-THOR room",
+                    "room_id": "ai2thor_room",
+                }
+            ],
+        },
+    )
+
+    payload = lab.episode_metadata_coverage_detector_jsonl(
+        (frame,),
+        path_prefix="inputs",
+    )
+    records = [json.loads(line) for line in payload.splitlines()]
+    observations = lab.detector_observation_sequence_from_jsonl(payload)
+
+    assert len(records) == 1
+    assert records[0]["metadata"] == {
+        "action": "MoveAhead",
+        "detector": "ai2thor_metadata_coverage_objects",
+        "episode_id": "episode-1",
+        "local_step": 7,
+        "scene_id": "FloorPlan1",
+        "source_kind": "ai2thor_metadata_coverage",
+    }
+    assert records[0]["rgb_path"] == "inputs/frame-assets/episode-1/rgb/0007.ppm"
+    assert records[0]["rooms"] == [
+        {
+            "attributes": {},
+            "label": "AI2-THOR room",
+            "node_id": "ai2thor_room",
+        }
+    ]
+    assert records[0]["regions"] == [
+        {
+            "attributes": {"room_id": "ai2thor_room"},
+            "label": "FloorPlan1 scene region",
+            "node_id": "scene_region",
+        }
+    ]
+    assert [item["object_id"] for item in records[0]["detections"]] == [
+        "book_1",
+        "book_1_dup2",
+        "mug_1",
+    ]
+    assert records[0]["detections"][0]["visible"] is False
+    assert records[0]["detections"][0]["attributes"]["states"] == {"isOpen": False}
+    assert records[0]["detections"][0]["attributes"]["coverage_source"] == (
+        "episode_metadata"
+    )
+    assert records[0]["detections"][1]["attributes"]["original_object_id"] == "book_1"
+    assert observations[0].objects[0].object_id == "book_1"
+    assert observations[0].objects[0].visible is False
+
+
 def test_scene_observation_sequence_summary_validation_and_compare_report_drift(
     tmp_path: Path,
 ) -> None:

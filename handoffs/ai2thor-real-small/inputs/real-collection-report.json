@@ -1,0 +1,876 @@
+{
+  "checks": [
+    {
+      "actual": {
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl": {
+          "checks": [
+            {
+              "actual": 10,
+              "expected": "at least one frame",
+              "name": "frame_count_positive",
+              "passed": true
+            },
+            {
+              "actual": [
+                [
+                  "ai2thor-real-small-episode-001",
+                  1
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  2
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  3
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  4
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  5
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  6
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  7
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  8
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  9
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  10
+                ]
+              ],
+              "expected": [
+                [
+                  "ai2thor-real-small-episode-001",
+                  1
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  2
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  3
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  4
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  5
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  6
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  7
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  8
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  9
+                ],
+                [
+                  "ai2thor-real-small-episode-001",
+                  10
+                ]
+              ],
+              "name": "ordered_by_episode_and_step",
+              "passed": true
+            },
+            {
+              "actual": 10,
+              "expected": 10,
+              "name": "unique_episode_steps",
+              "passed": true
+            }
+          ],
+          "digest": "e70b488f05cd103f9ad6c074e13d81ce068b57d4983a03749db3de306eaf0611",
+          "summary": {
+            "action_count": 10,
+            "by_action": {
+              "Initialize": 1,
+              "LookDown": 1,
+              "LookUp": 1,
+              "MoveAhead": 3,
+              "MoveBack": 1,
+              "RotateLeft": 2,
+              "RotateRight": 1
+            },
+            "by_episode": {
+              "ai2thor-real-small-episode-001": 10
+            },
+            "by_scene": {
+              "FloorPlan1": 10
+            },
+            "episode_count": 1,
+            "episode_ids": [
+              "ai2thor-real-small-episode-001"
+            ],
+            "first_step": 1,
+            "frame_count": 10,
+            "last_step": 10,
+            "scene_count": 1,
+            "scene_ids": [
+              "FloorPlan1"
+            ],
+            "schema_version": "dsg-spatialqa-lab.episode-sequence-summary.v1",
+            "unique_visible_object_ids": [
+              "apple_00_47_01_15_00_48",
+              "bread_00_52_01_17_00_03",
+              "butterknife_00_41_01_11_00_46",
+              "cabinet_01_55_00_50_00_38",
+              "cabinet_01_85_02_02_00_38",
+              "coffeemachine_01_98_00_90_00_19",
+              "countertop_00_08_01_15_00_00",
+              "countertop_01_87_00_95_01_21",
+              "drawer_01_56_00_33_00_20",
+              "drawer_01_56_00_66_00_20",
+              "drawer_01_56_00_84_00_20",
+              "floor_00_00_00_00_00_00",
+              "fridge_02_10_00_00_01_07",
+              "garbagecan_01_94_00_00_02_03",
+              "toaster_01_84_00_90_00_13"
+            ],
+            "visible_object_observation_count": 37
+          },
+          "valid": true
+        },
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl": {
+          "checks": [
+            {
+              "actual": 10,
+              "expected": "at least one frame",
+              "name": "frame_count_positive",
+              "passed": true
+            },
+            {
+              "actual": [
+                [
+                  "ai2thor-real-small-episode-002",
+                  11
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  12
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  13
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  14
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  15
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  16
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  17
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  18
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  19
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  20
+                ]
+              ],
+              "expected": [
+                [
+                  "ai2thor-real-small-episode-002",
+                  11
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  12
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  13
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  14
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  15
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  16
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  17
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  18
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  19
+                ],
+                [
+                  "ai2thor-real-small-episode-002",
+                  20
+                ]
+              ],
+              "name": "ordered_by_episode_and_step",
+              "passed": true
+            },
+            {
+              "actual": 10,
+              "expected": 10,
+              "name": "unique_episode_steps",
+              "passed": true
+            }
+          ],
+          "digest": "a02b81b937b78fc5c2035b8294ca794a019fea7fc650cd2458f7757e601a5716",
+          "summary": {
+            "action_count": 10,
+            "by_action": {
+              "Initialize": 1,
+              "LookDown": 1,
+              "LookUp": 1,
+              "MoveAhead": 3,
+              "MoveBack": 1,
+              "RotateLeft": 2,
+              "RotateRight": 1
+            },
+            "by_episode": {
+              "ai2thor-real-small-episode-002": 10
+            },
+            "by_scene": {
+              "FloorPlan201": 10
+            },
+            "episode_count": 1,
+            "episode_ids": [
+              "ai2thor-real-small-episode-002"
+            ],
+            "first_step": 11,
+            "frame_count": 10,
+            "last_step": 20,
+            "scene_count": 1,
+            "scene_ids": [
+              "FloorPlan201"
+            ],
+            "schema_version": "dsg-spatialqa-lab.episode-sequence-summary.v1",
+            "unique_visible_object_ids": [
+              "chair_02_51_00_02_00_99",
+              "chair_02_52_00_02_01_88",
+              "diningtable_02_27_00_02_01_42",
+              "floor_00_00_00_38_00_00",
+              "garbagecan_04_86_00_00_00_27",
+              "newspaper_02_76_00_68_01_18",
+              "pen_03_00_00_69_01_46",
+              "pencil_02_83_00_68_01_51",
+              "plate_02_40_00_68_01_68",
+              "sofa_02_40_00_00_03_42"
+            ],
+            "visible_object_observation_count": 30
+          },
+          "valid": true
+        },
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl": {
+          "checks": [
+            {
+              "actual": 10,
+              "expected": "at least one frame",
+              "name": "frame_count_positive",
+              "passed": true
+            },
+            {
+              "actual": [
+                [
+                  "ai2thor-real-small-episode-003",
+                  21
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  22
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  23
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  24
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  25
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  26
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  27
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  28
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  29
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  30
+                ]
+              ],
+              "expected": [
+                [
+                  "ai2thor-real-small-episode-003",
+                  21
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  22
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  23
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  24
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  25
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  26
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  27
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  28
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  29
+                ],
+                [
+                  "ai2thor-real-small-episode-003",
+                  30
+                ]
+              ],
+              "name": "ordered_by_episode_and_step",
+              "passed": true
+            },
+            {
+              "actual": 10,
+              "expected": 10,
+              "name": "unique_episode_steps",
+              "passed": true
+            }
+          ],
+          "digest": "35a60dd825a14c58deaa850fdf555725dc888530dc6e1559727195edfebcc6d6",
+          "summary": {
+            "action_count": 10,
+            "by_action": {
+              "Initialize": 1,
+              "LookDown": 1,
+              "LookUp": 1,
+              "MoveAhead": 3,
+              "MoveBack": 1,
+              "RotateLeft": 2,
+              "RotateRight": 1
+            },
+            "by_episode": {
+              "ai2thor-real-small-episode-003": 10
+            },
+            "by_scene": {
+              "FloorPlan301": 10
+            },
+            "episode_count": 1,
+            "episode_ids": [
+              "ai2thor-real-small-episode-003"
+            ],
+            "first_step": 21,
+            "frame_count": 10,
+            "last_step": 30,
+            "scene_count": 1,
+            "scene_ids": [
+              "FloorPlan301"
+            ],
+            "schema_version": "dsg-spatialqa-lab.episode-sequence-summary.v1",
+            "unique_visible_object_ids": [
+              "floor_00_00_00_00_00_00",
+              "lightswitch_02_66_01_28_01_90",
+              "mirror_01_99_01_38_01_88"
+            ],
+            "visible_object_observation_count": 11
+          },
+          "valid": true
+        },
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-004.jsonl": {
+          "checks": [
+            {
+              "actual": 10,
+              "expected": "at least one frame",
+              "name": "frame_count_positive",
+              "passed": true
+            },
+            {
+              "actual": [
+                [
+                  "ai2thor-real-small-episode-004",
+                  31
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  32
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  33
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  34
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  35
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  36
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  37
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  38
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  39
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  40
+                ]
+              ],
+              "expected": [
+                [
+                  "ai2thor-real-small-episode-004",
+                  31
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  32
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  33
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  34
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  35
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  36
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  37
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  38
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  39
+                ],
+                [
+                  "ai2thor-real-small-episode-004",
+                  40
+                ]
+              ],
+              "name": "ordered_by_episode_and_step",
+              "passed": true
+            },
+            {
+              "actual": 10,
+              "expected": 10,
+              "name": "unique_episode_steps",
+              "passed": true
+            }
+          ],
+          "digest": "af7641095a43e3a37dc1f1130036efaa980c78fa6b8511be33d53457defcfe0a",
+          "summary": {
+            "action_count": 10,
+            "by_action": {
+              "Initialize": 1,
+              "MoveAhead": 4,
+              "RotateLeft": 2,
+              "RotateRight": 3
+            },
+            "by_episode": {
+              "ai2thor-real-small-episode-004": 10
+            },
+            "by_scene": {
+              "FloorPlan401": 10
+            },
+            "episode_count": 1,
+            "episode_ids": [
+              "ai2thor-real-small-episode-004"
+            ],
+            "first_step": 31,
+            "frame_count": 10,
+            "last_step": 40,
+            "scene_count": 1,
+            "scene_ids": [
+              "FloorPlan401"
+            ],
+            "schema_version": "dsg-spatialqa-lab.episode-sequence-summary.v1",
+            "unique_visible_object_ids": [
+              "bathtub_00_21_00_36_00_92",
+              "bathtubbasin_00_16_00_04_00_88",
+              "floor_01_44_00_04_01_85",
+              "showerhead_00_07_00_91_02_14",
+              "soapbar_00_69_00_62_01_99"
+            ],
+            "visible_object_observation_count": 21
+          },
+          "valid": true
+        },
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-005.jsonl": {
+          "checks": [
+            {
+              "actual": 10,
+              "expected": "at least one frame",
+              "name": "frame_count_positive",
+              "passed": true
+            },
+            {
+              "actual": [
+                [
+                  "ai2thor-real-small-episode-005",
+                  41
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  42
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  43
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  44
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  45
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  46
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  47
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  48
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  49
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  50
+                ]
+              ],
+              "expected": [
+                [
+                  "ai2thor-real-small-episode-005",
+                  41
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  42
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  43
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  44
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  45
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  46
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  47
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  48
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  49
+                ],
+                [
+                  "ai2thor-real-small-episode-005",
+                  50
+                ]
+              ],
+              "name": "ordered_by_episode_and_step",
+              "passed": true
+            },
+            {
+              "actual": 10,
+              "expected": 10,
+              "name": "unique_episode_steps",
+              "passed": true
+            }
+          ],
+          "digest": "5b191c652459337e79f99753af53a04d78b4d6ad2f92d741d47efc874a4e5420",
+          "summary": {
+            "action_count": 10,
+            "by_action": {
+              "Initialize": 1,
+              "MoveAhead": 4,
+              "RotateLeft": 2,
+              "RotateRight": 3
+            },
+            "by_episode": {
+              "ai2thor-real-small-episode-005": 10
+            },
+            "by_scene": {
+              "FloorPlan2": 10
+            },
+            "episode_count": 1,
+            "episode_ids": [
+              "ai2thor-real-small-episode-005"
+            ],
+            "first_step": 41,
+            "frame_count": 10,
+            "last_step": 50,
+            "scene_count": 1,
+            "scene_ids": [
+              "FloorPlan2"
+            ],
+            "schema_version": "dsg-spatialqa-lab.episode-sequence-summary.v1",
+            "unique_visible_object_ids": [
+              "bowl_00_28_00_92_01_09",
+              "cellphone_00_31_00_92_01_29",
+              "chair_00_00_00_00_01_24",
+              "countertop_00_01_00_96_00_51",
+              "floor_00_00_00_00_00_00",
+              "potato_00_33_00_94_01_31"
+            ],
+            "visible_object_observation_count": 22
+          },
+          "valid": true
+        }
+      },
+      "name": "episode_sequences_valid",
+      "passed": true
+    },
+    {
+      "actual": "ai2thor",
+      "expected": [
+        "ai2thor",
+        "habitat"
+      ],
+      "name": "source_kind_supported",
+      "passed": true
+    },
+    {
+      "actual": 5,
+      "expected": 5,
+      "name": "episode_count_minimum",
+      "passed": true
+    },
+    {
+      "actual": 5,
+      "expected": 5,
+      "name": "scene_count_minimum",
+      "passed": true
+    },
+    {
+      "actual": 50,
+      "expected": 50,
+      "name": "frame_count_minimum",
+      "passed": true
+    },
+    {
+      "actual": {
+        "ai2thor": 50
+      },
+      "expected": {
+        "ai2thor": 50
+      },
+      "name": "source_kind_matches_frames",
+      "passed": true
+    },
+    {
+      "actual": {
+        "real": 50
+      },
+      "expected": {
+        "real": 50
+      },
+      "name": "collection_kind_real",
+      "passed": true
+    },
+    {
+      "actual": {
+        "depth": 50,
+        "rgb": 50,
+        "segmentation": 50
+      },
+      "missing": [],
+      "name": "required_frame_evidence_present",
+      "passed": true,
+      "required": [
+        "depth",
+        "rgb",
+        "segmentation"
+      ]
+    },
+    {
+      "asset_path_count": 150,
+      "missing": [],
+      "missing_asset_count": 0,
+      "name": "frame_assets_present",
+      "passed": true,
+      "present_asset_count": 150
+    },
+    {
+      "actual": [],
+      "name": "mock_markers_absent",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "name": "non_real_markers_absent",
+      "passed": true
+    }
+  ],
+  "collection_summary": {
+    "asset_summary": {
+      "asset_kind_counts": {
+        "depth": 50,
+        "rgb": 50,
+        "segmentation": 50
+      },
+      "asset_path_count": 150,
+      "missing_asset_count": 0,
+      "missing_assets": [],
+      "present_asset_count": 150
+    },
+    "collection_kind_counts": {
+      "real": 50
+    },
+    "depth_frame_count": 50,
+    "episode_count": 5,
+    "episode_digests": {
+      "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl": "e70b488f05cd103f9ad6c074e13d81ce068b57d4983a03749db3de306eaf0611",
+      "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl": "a02b81b937b78fc5c2035b8294ca794a019fea7fc650cd2458f7757e601a5716",
+      "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl": "35a60dd825a14c58deaa850fdf555725dc888530dc6e1559727195edfebcc6d6",
+      "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-004.jsonl": "af7641095a43e3a37dc1f1130036efaa980c78fa6b8511be33d53457defcfe0a",
+      "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-005.jsonl": "5b191c652459337e79f99753af53a04d78b4d6ad2f92d741d47efc874a4e5420"
+    },
+    "frame_count": 50,
+    "rgb_frame_count": 50,
+    "scene_count": 5,
+    "segmentation_frame_count": 50,
+    "source_kind_counts": {
+      "ai2thor": 50
+    }
+  },
+  "dataset_name": "ai2thor_real_small",
+  "episode_paths": [
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-004.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-005.jsonl"
+  ],
+  "readiness": {
+    "failed_check_count": 0,
+    "failed_checks": [],
+    "ready": true
+  },
+  "report_digest": "822601c66d02d9f1c1c4fa474600136475d872fd6575b5b43fa8035e05a53576",
+  "required_frame_evidence": [
+    "depth",
+    "rgb",
+    "segmentation"
+  ],
+  "schema_version": "dsg-spatialqa-lab.real-collection-report.v1",
+  "source_kind": "ai2thor",
+  "thresholds": {
+    "min_episode_count": 5,
+    "min_frame_count": 50,
+    "min_scene_count": 5
+  }
+}

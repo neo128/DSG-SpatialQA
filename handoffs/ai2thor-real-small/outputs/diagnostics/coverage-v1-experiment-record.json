@@ -1,0 +1,490 @@
+{
+  "artifact_paths": {
+    "active_candidate_report": "inputs/review-coverage-v1/active-candidate-coverage-v1-report.json",
+    "active_delta_vs_oracle": "inputs/review-coverage-v1/active-task-delta-coverage-v1-vs-oracle.json",
+    "active_delta_vs_p0": "inputs/review-coverage-v1/active-task-delta-coverage-v1-vs-p0.json",
+    "coverage_detector_build_report": "outputs/predicted-dsg/detector-rgbd-coverage-v1-build-report.json",
+    "coverage_detector_import_report": "outputs/predicted-dsg/detector-import-report-coverage-v1.json",
+    "coverage_detector_jsonl": "inputs/predicted-dsg/detector-rgbd-coverage-v1.jsonl",
+    "coverage_evidence_predictions": "inputs/candidate/predicted-graph-tool-coverage-v1-evidence-observable.jsonl",
+    "coverage_evidence_qa_eval": "outputs/diagnostics/predicted-graph-tool-coverage-v1-evidence-observable-qa-eval.json",
+    "coverage_evidence_vs_p0_delta": "outputs/diagnostics/predicted-graph-tool-coverage-v1-evidence-observable-vs-p0-delta.json",
+    "coverage_graph": "outputs/predicted-dsg/predicted-graph-coverage-v1.json",
+    "coverage_graph_report": "outputs/predicted-dsg/predicted-graph-coverage-v1-report.json",
+    "coverage_observability": "outputs/diagnostics/qa-observability-coverage-v1.json",
+    "coverage_observation_sequence": "outputs/predicted-dsg/detector-observations-coverage-v1.json",
+    "coverage_predictions": "inputs/candidate/predicted-graph-tool-coverage-v1.jsonl",
+    "coverage_qa_eval": "outputs/diagnostics/predicted-graph-tool-coverage-v1-qa-eval.json",
+    "coverage_vs_original_delta": "outputs/diagnostics/predicted-graph-tool-coverage-v1-vs-original-delta.json",
+    "coverage_vs_p0_delta": "outputs/diagnostics/predicted-graph-tool-coverage-v1-vs-p0-delta.json",
+    "dashboard": "inputs/review-coverage-v1/dashboard.json",
+    "dashboard_html": "inputs/review-coverage-v1/index.html",
+    "error_attribution": "inputs/review-coverage-v1/error-attribution-coverage-v1.json",
+    "evidence_observable_qa": "inputs/traces/evidence-observable-coverage-v1-qa.jsonl",
+    "graph_eval": "inputs/review-coverage-v1/graph-eval-coverage-v1.json",
+    "p0_error_attribution": "inputs/review-p0/error-attribution-p0.json",
+    "p0_graph_eval": "inputs/review-p0/graph-eval-containment-p0.json",
+    "p0_observability": "outputs/diagnostics/qa-observability-p0.json",
+    "p0_on_coverage_evidence_predictions": "inputs/candidate/predicted-graph-tool-p0-on-coverage-v1-evidence-observable.jsonl",
+    "p0_on_coverage_evidence_qa_eval": "outputs/diagnostics/predicted-graph-tool-p0-on-coverage-v1-evidence-observable-qa-eval.json",
+    "p0_qa_eval": "outputs/diagnostics/predicted-graph-tool-p0-qa-eval.json",
+    "structured_control_prompt": "inputs/offline-controls/structured-control-prompt-v1.md",
+    "structured_control_schema": "inputs/offline-controls/structured-control-output-schema-v1.json"
+  },
+  "candidate_name": "predicted_graph_tool_coverage_v1_metadata_observation_diagnostic",
+  "conclusion": [
+    "Object coverage is no longer the main blocker in coverage-v1: exact object recall is 1.0 and all 60 QA targets are present.",
+    "State timeline coverage improved materially: missing_state attribution dropped from 20 cases in P0 to 0 cases in coverage-v1.",
+    "QA accuracy improved from 6/60 to 22/60 on full QA and from 6/49 to 22/49 on the evidence-observable slice.",
+    "The remaining bottleneck is relation construction and benchmark/tool alignment: relation precision is 0.056883 and 11 cases still miss required relation evidence.",
+    "Because this run uses AI2-THOR metadata coverage, it is a diagnostic coverage run and should not be reported as a final detector-only VLM/LLM experiment."
+  ],
+  "dashboard_html_path": "inputs/review-coverage-v1/index.html",
+  "dashboard_path": "inputs/review-coverage-v1/dashboard.json",
+  "dataset_id": "ai2thor-real-small",
+  "inputs": {
+    "episodes": "inputs/episodes/ai2thor-real-small-episode-001.jsonl ... 005.jsonl",
+    "frame_assets": "inputs/frame-assets/ai2thor-real-small/",
+    "qa": "inputs/qa.jsonl"
+  },
+  "methods": {
+    "control_prompt": "structured JSON answer/evidence prompt and schema for the next external VLM/LLM rerun",
+    "coverage_detector": "episode metadata is converted into detector-style observation JSONL with all metadata objects and saved frame asset links",
+    "observation_aware_slice": "QA cases whose required evidence is present in the coverage-v1 predicted graph",
+    "predicted_graph": "observation_sequence-backed predicted DSG rebuilt from coverage-v1 observations with containment and state timeline edges"
+  },
+  "objective": "Improve detector/RGB-D observation coverage, build an observation-aware QA slice, reduce missing_state via state timeline coverage, and rerun a small graph_tool package.",
+  "process_artifact_status": "ready",
+  "quality_findings": {
+    "active_success_count": 12,
+    "active_success_delta_vs_oracle": -18,
+    "active_success_delta_vs_p0": 7,
+    "coverage_evidence_observable_count": 49,
+    "coverage_evidence_slice_exact_match_count": 22,
+    "coverage_evidence_slice_exact_match_delta_vs_p0": 16,
+    "coverage_evidence_slice_exact_match_rate": 0.44898,
+    "coverage_exact_match_count": 22,
+    "coverage_exact_match_delta_vs_original": 21,
+    "coverage_exact_match_delta_vs_p0": 16,
+    "coverage_exact_match_rate": 0.366667,
+    "coverage_exact_match_rate_delta_vs_p0": 0.266667,
+    "coverage_hidden_object_observation_count": 2767,
+    "coverage_missing_object_cases": 0,
+    "coverage_missing_relation_cases": 11,
+    "coverage_missing_state_cases": 0,
+    "coverage_object_observation_count": 2890,
+    "coverage_object_precision": 0.611111,
+    "coverage_object_recall": 1.0,
+    "coverage_relation_precision": 0.056883,
+    "coverage_relation_recall": 0.360667,
+    "coverage_state_accuracy": 0.994318,
+    "coverage_target_observable_count": 60,
+    "coverage_unique_object_count": 288,
+    "coverage_visible_object_observation_count": 123,
+    "episodes": 5,
+    "frames": 50,
+    "p0_evidence_observable_count": 8,
+    "p0_exact_match_count": 6,
+    "p0_exact_match_rate": 0.1,
+    "p0_missing_object_cases": 26,
+    "p0_missing_state_cases": 20,
+    "p0_object_recall": 0.153409,
+    "p0_on_coverage_evidence_slice_exact_match_count": 6,
+    "p0_on_coverage_evidence_slice_exact_match_rate": 0.122449,
+    "p0_target_observable_count": 14,
+    "qa_count": 60
+  },
+  "readiness_report_path": "outputs/diagnostics/coverage-v1-readiness.json",
+  "record_digest": "603a5e9d43199c049c9e627be51bee081280c4d9dd58130bd9f17ee78993ad61",
+  "result_quality_status": "improved_but_relation_construction_needed",
+  "results": {
+    "active_delta_vs_oracle": {
+      "baseline_failure_count": 0,
+      "baseline_success_count": 30,
+      "baseline_task_count": 30,
+      "baseline_total_action_count": 0,
+      "candidate_failure_count": 18,
+      "candidate_success_count": 12,
+      "candidate_task_count": 30,
+      "candidate_total_action_count": 0,
+      "failure_count_delta": 18,
+      "success_count_delta": -18,
+      "task_count_delta": 0,
+      "task_count_match": true,
+      "total_action_count_delta": 0
+    },
+    "active_delta_vs_p0": {
+      "baseline_failure_count": 25,
+      "baseline_success_count": 5,
+      "baseline_task_count": 30,
+      "baseline_total_action_count": 0,
+      "candidate_failure_count": 18,
+      "candidate_success_count": 12,
+      "candidate_task_count": 30,
+      "candidate_total_action_count": 0,
+      "failure_count_delta": -7,
+      "success_count_delta": 7,
+      "task_count_delta": 0,
+      "task_count_match": true,
+      "total_action_count_delta": 0
+    },
+    "active_task_summary": {
+      "by_policy": {
+        "direct_answer": 30
+      },
+      "failure_count": 18,
+      "success_count": 12,
+      "task_count": 30,
+      "total_action_count": 0
+    },
+    "coverage_build": {
+      "action": "episode_metadata_coverage_detector_jsonl",
+      "detector_jsonl_digest": "95b689334595b693b11f8e362ae4c28fba265afa4be17168ee8044ed5579a362",
+      "detector_jsonl_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-v1.jsonl",
+      "episode_paths": [
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl",
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl",
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-004.jsonl",
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-005.jsonl"
+      ],
+      "frame_count": 50,
+      "hidden_object_observation_count": 2767,
+      "include_hidden": true,
+      "object_observation_count": 2890,
+      "path_prefix": "inputs",
+      "record_count": 50,
+      "sequence_digest": "76252c376d3b5a63adca9ef92edca0eacb57dee29451ece8592dc36130e1cdaa",
+      "unique_object_count": 288,
+      "valid": true,
+      "visible_object_observation_count": 123
+    },
+    "error_attribution_summary": {
+      "answer_correct_count": 22,
+      "by_error_category": {
+        "benchmark_or_engine_error": 24,
+        "correct": 13,
+        "graph_construction": 23
+      },
+      "by_evidence_error_category": {
+        "missing_relation": 11,
+        "none": 49
+      },
+      "by_predicted_evidence_source": {
+        "ai2thor_metadata_coverage": {
+          "by_error_category": {
+            "benchmark_or_engine_error": 24,
+            "correct": 12,
+            "graph_construction": 23
+          },
+          "by_evidence_error_category": {
+            "missing_relation": 11,
+            "none": 48
+          },
+          "case_count": 59,
+          "error_count": 47
+        },
+        "containment_inference": {
+          "by_error_category": {
+            "benchmark_or_engine_error": 13,
+            "correct": 12,
+            "graph_construction": 22
+          },
+          "by_evidence_error_category": {
+            "none": 47
+          },
+          "case_count": 47,
+          "error_count": 35
+        },
+        "missing_predicted_evidence": {
+          "by_error_category": {
+            "correct": 1
+          },
+          "by_evidence_error_category": {
+            "none": 1
+          },
+          "case_count": 1,
+          "error_count": 0
+        }
+      },
+      "by_research_axis": {
+        "dynamic_memory": {
+          "answer_correct_count": 0,
+          "by_error_category": {},
+          "by_evidence_error_category": {},
+          "by_predicted_evidence_source": {},
+          "case_count": 0,
+          "error_count": 0,
+          "oracle_graph_tool_correct_count": 0,
+          "predicted_graph_tool_correct_count": 0
+        },
+        "graph_tool_query": {
+          "answer_correct_count": 21,
+          "by_error_category": {
+            "benchmark_or_engine_error": 22,
+            "correct": 12,
+            "graph_construction": 21
+          },
+          "by_evidence_error_category": {
+            "missing_relation": 9,
+            "none": 46
+          },
+          "by_predicted_evidence_source": {
+            "ai2thor_metadata_coverage": {
+              "by_error_category": {
+                "benchmark_or_engine_error": 22,
+                "correct": 12,
+                "graph_construction": 21
+              },
+              "by_evidence_error_category": {
+                "missing_relation": 9,
+                "none": 46
+              },
+              "case_count": 55,
+              "error_count": 43
+            },
+            "containment_inference": {
+              "by_error_category": {
+                "benchmark_or_engine_error": 13,
+                "correct": 12,
+                "graph_construction": 20
+              },
+              "by_evidence_error_category": {
+                "none": 45
+              },
+              "case_count": 45,
+              "error_count": 33
+            }
+          },
+          "case_count": 55,
+          "error_count": 43,
+          "oracle_graph_tool_correct_count": 33,
+          "predicted_graph_tool_correct_count": 21
+        },
+        "spatial_qa": {
+          "answer_correct_count": 22,
+          "by_error_category": {
+            "benchmark_or_engine_error": 24,
+            "correct": 13,
+            "graph_construction": 23
+          },
+          "by_evidence_error_category": {
+            "missing_relation": 11,
+            "none": 49
+          },
+          "by_predicted_evidence_source": {
+            "ai2thor_metadata_coverage": {
+              "by_error_category": {
+                "benchmark_or_engine_error": 24,
+                "correct": 12,
+                "graph_construction": 23
+              },
+              "by_evidence_error_category": {
+                "missing_relation": 11,
+                "none": 48
+              },
+              "case_count": 59,
+              "error_count": 47
+            },
+            "containment_inference": {
+              "by_error_category": {
+                "benchmark_or_engine_error": 13,
+                "correct": 12,
+                "graph_construction": 22
+              },
+              "by_evidence_error_category": {
+                "none": 47
+              },
+              "case_count": 47,
+              "error_count": 35
+            },
+            "missing_predicted_evidence": {
+              "by_error_category": {
+                "correct": 1
+              },
+              "by_evidence_error_category": {
+                "none": 1
+              },
+              "case_count": 1,
+              "error_count": 0
+            }
+          },
+          "case_count": 60,
+          "error_count": 47,
+          "oracle_graph_tool_correct_count": 36,
+          "predicted_graph_tool_correct_count": 22
+        }
+      },
+      "case_count": 60,
+      "error_count": 47,
+      "oracle_graph_tool_correct_count": 36,
+      "predicted_graph_tool_correct_count": 22
+    },
+    "evidence_observable_delta_vs_p0": {
+      "baseline_case_count": 49,
+      "baseline_exact_match_count": 6,
+      "baseline_exact_match_rate": 0.122449,
+      "candidate_case_count": 49,
+      "candidate_exact_match_count": 22,
+      "candidate_exact_match_rate": 0.44898,
+      "case_count_delta": 0,
+      "case_count_match": true,
+      "exact_match_count_delta": 16,
+      "exact_match_rate_delta": 0.326531
+    },
+    "evidence_observable_qa_eval": {
+      "case_count": 49,
+      "exact_match_count": 22,
+      "exact_match_rate": 0.44898,
+      "matched_prediction_count": 49,
+      "missing_prediction_count": 0,
+      "prediction_count": 49
+    },
+    "graph_eval_metrics": {
+      "bbox_center_error": {
+        "average": 0.002282,
+        "count": 176,
+        "total": 0.4016
+      },
+      "object_confidence_weighted_f1": {
+        "rate": 0.763029
+      },
+      "object_confidence_weighted_precision": {
+        "matched_weight": 117.64,
+        "rate": 0.616853,
+        "total_weight": 190.71
+      },
+      "object_confidence_weighted_recall": {
+        "matched_weight": 117.91,
+        "rate": 1.0,
+        "total_weight": 117.91
+      },
+      "object_label_accuracy": {
+        "count": 176,
+        "rate": 1.0,
+        "total": 176
+      },
+      "object_precision": {
+        "count": 176,
+        "rate": 0.611111,
+        "total": 288
+      },
+      "object_recall": {
+        "count": 176,
+        "rate": 1.0,
+        "total": 176
+      },
+      "relation_confidence_weighted_f1": {
+        "rate": 0.07273
+      },
+      "relation_confidence_weighted_precision": {
+        "matched_weight": 2489.28,
+        "rate": 0.040755,
+        "total_weight": 61078.6
+      },
+      "relation_confidence_weighted_recall": {
+        "matched_weight": 2486.88,
+        "rate": 0.337584,
+        "total_weight": 7366.7
+      },
+      "relation_f1": {
+        "rate": 0.098268
+      },
+      "relation_precision": {
+        "count": 3699,
+        "rate": 0.056883,
+        "total": 65028
+      },
+      "relation_recall": {
+        "count": 3699,
+        "rate": 0.360667,
+        "total": 10256
+      },
+      "state_accuracy": {
+        "count": 175,
+        "mode": "matched_object_state",
+        "rate": 0.994318,
+        "total": 176
+      }
+    },
+    "graph_eval_summary": {
+      "matched_object_count": 176,
+      "matched_relation_count": 3699,
+      "oracle_object_count": 176,
+      "oracle_relation_count": 10256,
+      "predicted_object_count": 288,
+      "predicted_relation_count": 65028
+    },
+    "qa_delta_vs_original": {
+      "baseline_case_count": 60,
+      "baseline_exact_match_count": 1,
+      "baseline_exact_match_rate": 0.016667,
+      "candidate_case_count": 60,
+      "candidate_exact_match_count": 22,
+      "candidate_exact_match_rate": 0.366667,
+      "case_count_delta": 0,
+      "case_count_match": true,
+      "exact_match_count_delta": 21,
+      "exact_match_rate_delta": 0.35
+    },
+    "qa_delta_vs_p0": {
+      "baseline_case_count": 60,
+      "baseline_exact_match_count": 6,
+      "baseline_exact_match_rate": 0.1,
+      "candidate_case_count": 60,
+      "candidate_exact_match_count": 22,
+      "candidate_exact_match_rate": 0.366667,
+      "case_count_delta": 0,
+      "case_count_match": true,
+      "exact_match_count_delta": 16,
+      "exact_match_rate_delta": 0.266667
+    },
+    "qa_eval": {
+      "case_count": 60,
+      "exact_match_count": 22,
+      "exact_match_rate": 0.366667,
+      "matched_prediction_count": 60,
+      "missing_prediction_count": 0,
+      "prediction_count": 60
+    },
+    "qa_metrics": {
+      "answer_graph_consistency": {
+        "count": 22,
+        "rate": 0.366667,
+        "total": 60
+      },
+      "evidence_edge_recall": {
+        "average": 0.683333,
+        "total": 60
+      },
+      "evidence_node_recall": {
+        "average": 0.966667,
+        "total": 60
+      },
+      "exact_match": {
+        "count": 22,
+        "rate": 0.366667,
+        "total": 60
+      },
+      "multiple_choice_accuracy": {
+        "count": 0,
+        "rate": 0.0,
+        "total": 1
+      },
+      "numeric_mae": {
+        "count": 0,
+        "mean_absolute_error": null,
+        "total_absolute_error": 0
+      }
+    },
+    "qa_observability": {
+      "case_count": 60,
+      "evidence_observable_count": 49,
+      "missing_evidence_count": 11,
+      "target_missing_count": 0,
+      "target_observable_count": 60,
+      "target_observable_relation_missing_count": 11
+    }
+  },
+  "schema_version": "dsg-spatialqa-lab.coverage-v1-experiment-record.v1"
+}

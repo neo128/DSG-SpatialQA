@@ -1,0 +1,109 @@
+{
+  "baseline_name": "p0_active_graph",
+  "baseline_report_digest": "35aa3645b3ee2be1ab2d5fd01e7fed4c1d5493938a73bd06f0d5374604ffee94",
+  "baseline_report_path": "handoffs/ai2thor-real-small/inputs/review-p0/active-candidate-p0-report.json",
+  "budget_delta": {
+    "budget_curve": [
+      {
+        "average_action_count_delta": 0.0,
+        "average_evidence_coverage_delta": 0.621667,
+        "baseline_average_action_count": 0.0,
+        "baseline_average_evidence_coverage": 0.253333,
+        "baseline_success_count": 5,
+        "baseline_success_rate": 0.166667,
+        "baseline_task_count": 30,
+        "candidate_average_action_count": 0.0,
+        "candidate_average_evidence_coverage": 0.875,
+        "candidate_success_count": 12,
+        "candidate_success_rate": 0.4,
+        "candidate_task_count": 30,
+        "max_actions": 0,
+        "success_count_delta": 7,
+        "success_rate_delta": 0.233333,
+        "task_count_delta": 0,
+        "task_count_match": true
+      }
+    ],
+    "by_max_actions": {
+      "0": {
+        "average_action_count_delta": 0.0,
+        "average_evidence_coverage_delta": 0.621667,
+        "baseline_average_action_count": 0.0,
+        "baseline_average_evidence_coverage": 0.253333,
+        "baseline_success_count": 5,
+        "baseline_success_rate": 0.166667,
+        "baseline_task_count": 30,
+        "candidate_average_action_count": 0.0,
+        "candidate_average_evidence_coverage": 0.875,
+        "candidate_success_count": 12,
+        "candidate_success_rate": 0.4,
+        "candidate_task_count": 30,
+        "success_count_delta": 7,
+        "success_rate_delta": 0.233333,
+        "task_count_delta": 0,
+        "task_count_match": true
+      }
+    }
+  },
+  "candidate_name": "coverage_v1_active_graph",
+  "candidate_report_digest": "baa62e074feec25602538bce9007fcfce6d6974bc34692bce27e32b5bbbe22dc",
+  "candidate_report_path": "handoffs/ai2thor-real-small/inputs/review-coverage-v1/active-candidate-coverage-v1-report.json",
+  "metrics_delta": {
+    "action_count": {
+      "average_delta": 0.0,
+      "baseline_average": 0.0,
+      "candidate_average": 0.0,
+      "total_match": true
+    },
+    "answer_accuracy": {
+      "baseline_count": 6,
+      "baseline_rate": 0.2,
+      "candidate_count": 12,
+      "candidate_rate": 0.4,
+      "count_delta": 6,
+      "rate_delta": 0.2,
+      "total_match": true
+    },
+    "answer_graph_consistency": {
+      "baseline_count": 5,
+      "baseline_rate": 0.166667,
+      "candidate_count": 12,
+      "candidate_rate": 0.4,
+      "count_delta": 7,
+      "rate_delta": 0.233333,
+      "total_match": true
+    },
+    "evidence_coverage": {
+      "average_delta": 0.621667,
+      "baseline_average": 0.253333,
+      "candidate_average": 0.875,
+      "total_match": true
+    },
+    "task_success": {
+      "baseline_count": 5,
+      "baseline_rate": 0.166667,
+      "candidate_count": 12,
+      "candidate_rate": 0.4,
+      "count_delta": 7,
+      "rate_delta": 0.233333,
+      "total_match": true
+    }
+  },
+  "report_digest": "afe1190de541d78e1bb2b51e7e831e175155706836426fe33ac1cd92619190f4",
+  "schema_version": "dsg-spatialqa-lab.active-task-delta-report.v1",
+  "summary_delta": {
+    "baseline_failure_count": 25,
+    "baseline_success_count": 5,
+    "baseline_task_count": 30,
+    "baseline_total_action_count": 0,
+    "candidate_failure_count": 18,
+    "candidate_success_count": 12,
+    "candidate_task_count": 30,
+    "candidate_total_action_count": 0,
+    "failure_count_delta": -7,
+    "success_count_delta": 7,
+    "task_count_delta": 0,
+    "task_count_match": true,
+    "total_action_count_delta": 0
+  }
+}

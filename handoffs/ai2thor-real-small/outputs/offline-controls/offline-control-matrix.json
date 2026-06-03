@@ -1,0 +1,196 @@
+{
+  "checks": [
+    {
+      "actual": [],
+      "name": "import_reports_valid",
+      "passed": true
+    },
+    {
+      "missing": [],
+      "name": "required_source_kinds_present",
+      "passed": true,
+      "required": [
+        "caption_memory",
+        "graph_text",
+        "multi_frame_vlm",
+        "vlm"
+      ]
+    },
+    {
+      "actual": [],
+      "name": "complete_prediction_coverage",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "name": "clean_import_diagnostics",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "name": "unique_source_keys",
+      "passed": true
+    },
+    {
+      "actual": [
+        "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf"
+      ],
+      "name": "qa_digest_consistent",
+      "passed": true
+    }
+  ],
+  "readiness": {
+    "failed_check_count": 0,
+    "failed_checks": [],
+    "ready": true
+  },
+  "report_count": 4,
+  "report_digest": "cd52fac319a680b27aff4ceb3759f38e8780adff7b9c2851de1b0295fd47406d",
+  "required_source_kinds": [
+    "caption_memory",
+    "graph_text",
+    "multi_frame_vlm",
+    "vlm"
+  ],
+  "schema_version": "dsg-spatialqa-lab.offline-control-matrix-report.v1",
+  "source_kind_counts": {
+    "caption_memory": 1,
+    "graph_text": 1,
+    "multi_frame_vlm": 1,
+    "vlm": 1
+  },
+  "source_profile_matrix": [
+    {
+      "adapter": "caption_memory",
+      "capability_axes": [
+        "dynamic_memory",
+        "spatial_qa"
+      ],
+      "dataset_id": "ai2thor_real_small",
+      "duplicate_case_count": 0,
+      "error_prediction_count": 0,
+      "gold_case_count": 60,
+      "imported_prediction_count": 60,
+      "metadata_keys": [
+        "capabilities",
+        "dataset_id",
+        "model_id",
+        "prompt_id"
+      ],
+      "missing_case_count": 0,
+      "model_id": "external-caption_memory",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/caption_memory/import-report.json",
+      "prediction_digest": "9be7431de15e39699b96e7d67971866be7996aceafd57f31b1b7e8d60a7c0bfc",
+      "prompt_id": "caption_memory-spatial-qa",
+      "qa_digest": "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf",
+      "report_digest": "856b6d1e87e9f8aabc2b61a67f5547be879b3ba9068fae90c6c22752cbbde8f1",
+      "source_key": "caption_memory:caption_memory_real_control",
+      "source_kind": "caption_memory",
+      "source_name": "caption_memory_real_control",
+      "unknown_case_count": 0
+    },
+    {
+      "adapter": "graph_text",
+      "capability_axes": [
+        "dynamic_memory",
+        "graph_tool_query",
+        "spatial_qa"
+      ],
+      "dataset_id": "ai2thor_real_small",
+      "duplicate_case_count": 0,
+      "error_prediction_count": 0,
+      "gold_case_count": 60,
+      "imported_prediction_count": 60,
+      "metadata_keys": [
+        "capabilities",
+        "dataset_id",
+        "model_id",
+        "prompt_id"
+      ],
+      "missing_case_count": 0,
+      "model_id": "external-graph_text",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/graph_text/import-report.json",
+      "prediction_digest": "5479c3307448f107c5380f371f56888104245c563b3f19089941412f3b458518",
+      "prompt_id": "graph_text-spatial-qa",
+      "qa_digest": "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf",
+      "report_digest": "4b0b3dbb68827c91b98797edeaa7ee87daa2a9120a2ea82c740dab7739b36986",
+      "source_key": "graph_text:graph_text_real_control",
+      "source_kind": "graph_text",
+      "source_name": "graph_text_real_control",
+      "unknown_case_count": 0
+    },
+    {
+      "adapter": "multi_frame_vlm",
+      "capability_axes": [
+        "dynamic_memory",
+        "spatial_qa"
+      ],
+      "dataset_id": "ai2thor_real_small",
+      "duplicate_case_count": 0,
+      "error_prediction_count": 0,
+      "gold_case_count": 60,
+      "imported_prediction_count": 60,
+      "metadata_keys": [
+        "capabilities",
+        "dataset_id",
+        "model_id",
+        "prompt_id"
+      ],
+      "missing_case_count": 0,
+      "model_id": "external-multi_frame_vlm",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/multi_frame_vlm/import-report.json",
+      "prediction_digest": "640dc0b92593627c41c8602f58ed2d5f6c00c89103cfc054d93f261b665d4474",
+      "prompt_id": "multi_frame_vlm-spatial-qa",
+      "qa_digest": "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf",
+      "report_digest": "cd207da1aa81124d03f6d27035f1d5b716895e5af07d1efd11679111f4541bd0",
+      "source_key": "multi_frame_vlm:multi_frame_vlm_real_control",
+      "source_kind": "multi_frame_vlm",
+      "source_name": "multi_frame_vlm_real_control",
+      "unknown_case_count": 0
+    },
+    {
+      "adapter": "vlm",
+      "capability_axes": [
+        "spatial_qa"
+      ],
+      "dataset_id": "ai2thor_real_small",
+      "duplicate_case_count": 0,
+      "error_prediction_count": 0,
+      "gold_case_count": 60,
+      "imported_prediction_count": 60,
+      "metadata_keys": [
+        "capabilities",
+        "dataset_id",
+        "model_id",
+        "prompt_id"
+      ],
+      "missing_case_count": 0,
+      "model_id": "external-vlm",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/vlm/import-report.json",
+      "prediction_digest": "c5be45d6a9b3903d7343939840ac71522e094cef99fb12311eca0a992ff47cd9",
+      "prompt_id": "vlm-spatial-qa",
+      "qa_digest": "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf",
+      "report_digest": "90c53c1de80c4f026fa53526e439feff9e3abdcb75250b61b749448b96e30626",
+      "source_key": "vlm:vlm_real_control",
+      "source_kind": "vlm",
+      "source_name": "vlm_real_control",
+      "unknown_case_count": 0
+    }
+  ],
+  "summary": {
+    "complete_source_count": 4,
+    "diagnostic_source_keys": [],
+    "incomplete_source_keys": [],
+    "missing_required_source_kinds": [],
+    "required_source_kind_count": 4,
+    "source_count": 4,
+    "source_kind_count": 4,
+    "source_kinds": [
+      "caption_memory",
+      "graph_text",
+      "multi_frame_vlm",
+      "vlm"
+    ],
+    "total_imported_prediction_count": 240
+  }
+}

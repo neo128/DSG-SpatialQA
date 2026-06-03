@@ -1,0 +1,101 @@
+{
+  "artifact_counts": {
+    "frames": 50,
+    "qa_cases": 60,
+    "raw_response_records": 8,
+    "visibility_aligned_qa_cases": 13,
+    "vlm_interactions": 240
+  },
+  "artifacts": {
+    "candidate_v2_augmented_graph": {
+      "digest": "feda1281f75e6133471bf1c3ac9896f3b0f16ffaa4e9e44238663137333e2ccd",
+      "path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-containment-v2.json"
+    },
+    "candidate_v2_delta": {
+      "digest": "46a84907f42ebd84f6b5cf6522f039b40d58b07e2614502ccfac6744f42ea82e",
+      "path": "handoffs/ai2thor-real-small/outputs/diagnostics/predicted-graph-tool-v2-vs-original-delta.json"
+    },
+    "candidate_v2_eval": {
+      "digest": "448463668083a2aea7f93bb5f5a227af3782349673631c9c8eb181e05a5d5962",
+      "path": "handoffs/ai2thor-real-small/outputs/diagnostics/predicted-graph-tool-v2-qa-eval.json"
+    },
+    "candidate_v2_predictions": {
+      "digest": "76f08ba3cc84950a9bf1d1be78e1824afb783c3b83b754916062b2967606720a",
+      "path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-v2.jsonl"
+    },
+    "diagnostic_report": {
+      "digest": "7c4613530865603cf1a9ec0da16e3197157cff2b85537f8caf609ce2da93ced0",
+      "path": "handoffs/ai2thor-real-small/outputs/diagnostics/diagnostic-report.json"
+    },
+    "frame_index": {
+      "digest": "56f58e835d6c05afe4b3507b5cbe2973ff8d415bb4f33d22a3174f9265f9cea4",
+      "path": "handoffs/ai2thor-real-small/inputs/traces/frame-index.jsonl"
+    },
+    "qa_trace": {
+      "digest": "b87836f062416cf011f2983fe7eb4ac4369f61dd72bef8cc858978e333de8588",
+      "path": "handoffs/ai2thor-real-small/inputs/traces/qa-trace.jsonl"
+    },
+    "raw_response_index": {
+      "digest": "2ba70d21500ac6693c59a99588b4f70eabb7599fed04306de399d68bca7162c3",
+      "path": "handoffs/ai2thor-real-small/inputs/traces/raw-response-index.jsonl"
+    },
+    "visibility_aligned_qa": {
+      "digest": "87a24fd3a64269a26e8431d0a3f10696ea2fc676c86b5c2aeb50faa7920f4ff1",
+      "path": "handoffs/ai2thor-real-small/inputs/traces/visibility-aligned-qa.jsonl"
+    },
+    "visibility_delta": {
+      "digest": "b5628e4cc173271a62b9313da96a250c4488d557e38285c320329f79cd507588",
+      "path": "handoffs/ai2thor-real-small/outputs/diagnostics/visibility-v2-vs-original-delta.json"
+    },
+    "visibility_original_predictions": {
+      "digest": "c0724ff632a3d8afd8db76d2dacf875825fe13772662049760cad8c1a22f903b",
+      "path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-visibility-aligned.jsonl"
+    },
+    "visibility_v2_eval": {
+      "digest": "1420352498795e1909ce19f5db42c819ad7e47ebcb6fcbd97f4434f1b5b4883a",
+      "path": "handoffs/ai2thor-real-small/outputs/diagnostics/visibility-v2-qa-eval.json"
+    },
+    "visibility_v2_predictions": {
+      "digest": "3a2021a7116afe658289f7f37397d502957ea25533016bd01af006037c1f1a73",
+      "path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-v2-visibility-aligned.jsonl"
+    },
+    "vlm_interactions": {
+      "digest": "44c87986a860b4ecb8226b3bf1136ebe5af25a5fe8243a5f3445d33bdf2ad4c8",
+      "path": "handoffs/ai2thor-real-small/inputs/traces/vlm-interactions.jsonl"
+    }
+  },
+  "dataset_id": "ai2thor_real_small",
+  "network_calls": "none_in_this_trace_generation",
+  "notes": [
+    "VLM prompts are marked reconstructed_from_saved_inputs where the original request payload was not persisted in the earlier run.",
+    "Raw VLM/LLM response text is linked by source and batch whenever available.",
+    "candidate_v2 is a diagnostic candidate and does not replace the original readiness-gated predicted_graph_tool candidate."
+  ],
+  "raw_inputs": {
+    "detector_rgbd_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd.jsonl",
+    "episode_paths": [
+      "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+      "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl",
+      "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl",
+      "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-004.jsonl",
+      "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-005.jsonl"
+    ],
+    "offline_control_prediction_paths": {
+      "caption_memory": "handoffs/ai2thor-real-small/inputs/offline-controls/caption_memory.jsonl",
+      "graph_text": "handoffs/ai2thor-real-small/inputs/offline-controls/graph_text.jsonl",
+      "multi_frame_vlm": "handoffs/ai2thor-real-small/inputs/offline-controls/multi_frame_vlm.jsonl",
+      "vlm": "handoffs/ai2thor-real-small/inputs/offline-controls/vlm.jsonl"
+    },
+    "original_candidate_prediction_path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool.jsonl",
+    "predicted_graph_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph.json",
+    "qa_path": "handoffs/ai2thor-real-small/inputs/qa.jsonl",
+    "raw_response_paths": {
+      "caption_memory": "handoffs/ai2thor-real-small/inputs/offline-controls/caption_memory.raw-response.txt",
+      "graph_text": "handoffs/ai2thor-real-small/inputs/offline-controls/graph_text.raw-response.txt",
+      "multi_frame_vlm": "handoffs/ai2thor-real-small/inputs/offline-controls/multi_frame_vlm.raw-response.txt",
+      "vlm": "handoffs/ai2thor-real-small/inputs/offline-controls/vlm.raw-response.txt"
+    }
+  },
+  "schema_version": "dsg-spatialqa-lab.real-experiment-process-trace-manifest.v1",
+  "trace_scope": "posthoc_trace_from_saved_real_experiment_artifacts"
+}

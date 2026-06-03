@@ -1,0 +1,1441 @@
+{
+  "breakdown": {
+    "by_episode_id": {
+      "ai2thor-real-small-episode-001": {
+        "case_count": 12,
+        "exact_match_count": 8,
+        "exact_match_rate": 0.666667,
+        "mean_evidence_edge_recall": 0.875,
+        "mean_evidence_node_recall": 1.0
+      },
+      "ai2thor-real-small-episode-002": {
+        "case_count": 12,
+        "exact_match_count": 1,
+        "exact_match_rate": 0.083333,
+        "mean_evidence_edge_recall": 0.583333,
+        "mean_evidence_node_recall": 1.0
+      },
+      "ai2thor-real-small-episode-003": {
+        "case_count": 12,
+        "exact_match_count": 4,
+        "exact_match_rate": 0.333333,
+        "mean_evidence_edge_recall": 0.708333,
+        "mean_evidence_node_recall": 1.0
+      },
+      "ai2thor-real-small-episode-004": {
+        "case_count": 6,
+        "exact_match_count": 3,
+        "exact_match_rate": 0.5,
+        "mean_evidence_edge_recall": 0.75,
+        "mean_evidence_node_recall": 1.0
+      },
+      "ai2thor-real-small-episode-005": {
+        "case_count": 7,
+        "exact_match_count": 6,
+        "exact_match_rate": 0.857143,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      }
+    },
+    "by_question_type": {
+      "nearest_object": {
+        "case_count": 1,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      },
+      "object_location": {
+        "case_count": 43,
+        "exact_match_count": 19,
+        "exact_match_rate": 0.44186,
+        "mean_evidence_edge_recall": 0.732558,
+        "mean_evidence_node_recall": 1.0
+      },
+      "relation_timeline": {
+        "case_count": 2,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      },
+      "relative_relation": {
+        "case_count": 2,
+        "exact_match_count": 2,
+        "exact_match_rate": 1.0,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      },
+      "reobserve_targets": {
+        "case_count": 1,
+        "exact_match_count": 1,
+        "exact_match_rate": 1.0,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      }
+    },
+    "by_reference_frame": {
+      "none": {
+        "case_count": 45,
+        "exact_match_count": 20,
+        "exact_match_rate": 0.444444,
+        "mean_evidence_edge_recall": 0.744444,
+        "mean_evidence_node_recall": 1.0
+      },
+      "world": {
+        "case_count": 4,
+        "exact_match_count": 2,
+        "exact_match_rate": 0.5,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      }
+    },
+    "by_research_axis": {
+      "dynamic_memory": {
+        "case_count": 0,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.0,
+        "mean_evidence_node_recall": 0.0
+      },
+      "graph_tool_query": {
+        "case_count": 46,
+        "exact_match_count": 21,
+        "exact_match_rate": 0.456522,
+        "mean_evidence_edge_recall": 0.75,
+        "mean_evidence_node_recall": 1.0
+      },
+      "spatial_qa": {
+        "case_count": 49,
+        "exact_match_count": 22,
+        "exact_match_rate": 0.44898,
+        "mean_evidence_edge_recall": 0.765306,
+        "mean_evidence_node_recall": 1.0
+      }
+    },
+    "by_scene_id": {
+      "FloorPlan1": {
+        "case_count": 12,
+        "exact_match_count": 8,
+        "exact_match_rate": 0.666667,
+        "mean_evidence_edge_recall": 0.875,
+        "mean_evidence_node_recall": 1.0
+      },
+      "FloorPlan2": {
+        "case_count": 7,
+        "exact_match_count": 6,
+        "exact_match_rate": 0.857143,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      },
+      "FloorPlan201": {
+        "case_count": 12,
+        "exact_match_count": 1,
+        "exact_match_rate": 0.083333,
+        "mean_evidence_edge_recall": 0.583333,
+        "mean_evidence_node_recall": 1.0
+      },
+      "FloorPlan301": {
+        "case_count": 12,
+        "exact_match_count": 4,
+        "exact_match_rate": 0.333333,
+        "mean_evidence_edge_recall": 0.708333,
+        "mean_evidence_node_recall": 1.0
+      },
+      "FloorPlan401": {
+        "case_count": 6,
+        "exact_match_count": 3,
+        "exact_match_rate": 0.5,
+        "mean_evidence_edge_recall": 0.75,
+        "mean_evidence_node_recall": 1.0
+      }
+    },
+    "by_tag": {
+      "benchmark": {
+        "case_count": 49,
+        "exact_match_count": 22,
+        "exact_match_rate": 0.44898,
+        "mean_evidence_edge_recall": 0.765306,
+        "mean_evidence_node_recall": 1.0
+      },
+      "generated": {
+        "case_count": 49,
+        "exact_match_count": 22,
+        "exact_match_rate": 0.44898,
+        "mean_evidence_edge_recall": 0.765306,
+        "mean_evidence_node_recall": 1.0
+      },
+      "nearest_object": {
+        "case_count": 1,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      },
+      "object_location": {
+        "case_count": 43,
+        "exact_match_count": 19,
+        "exact_match_rate": 0.44186,
+        "mean_evidence_edge_recall": 0.732558,
+        "mean_evidence_node_recall": 1.0
+      },
+      "qa": {
+        "case_count": 49,
+        "exact_match_count": 22,
+        "exact_match_rate": 0.44898,
+        "mean_evidence_edge_recall": 0.765306,
+        "mean_evidence_node_recall": 1.0
+      },
+      "real": {
+        "case_count": 49,
+        "exact_match_count": 22,
+        "exact_match_rate": 0.44898,
+        "mean_evidence_edge_recall": 0.765306,
+        "mean_evidence_node_recall": 1.0
+      },
+      "relation_timeline": {
+        "case_count": 2,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      },
+      "relative_relation": {
+        "case_count": 2,
+        "exact_match_count": 2,
+        "exact_match_rate": 1.0,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      },
+      "reobserve_targets": {
+        "case_count": 1,
+        "exact_match_count": 1,
+        "exact_match_rate": 1.0,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      }
+    }
+  },
+  "cases": [
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48",
+      "confidence": 0.92,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan1",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan1",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan1",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan1",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03",
+      "confidence": 0.92,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan1",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46",
+      "confidence": 0.92,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan1",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan1",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan1",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan1",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan1",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0131:relative_relation:coffeemachine_01_98_00_90_00_19_ON_countertop_01_87_00_95_01_21",
+      "confidence": 0.92,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0131:relative_relation:coffeemachine_01_98_00_90_00_19_ON_countertop_01_87_00_95_01_21",
+      "question_type": "relative_relation",
+      "reference_frame": "world",
+      "scene_id": "FloorPlan1",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "relative_relation"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0157:relation_timeline:coffeemachine_01_98_00_90_00_19_ON_countertop_01_87_00_95_01_21",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0157:relation_timeline:coffeemachine_01_98_00_90_00_19_ON_countertop_01_87_00_95_01_21",
+      "question_type": "relation_timeline",
+      "reference_frame": "world",
+      "scene_id": "FloorPlan1",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "relation_timeline"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan201",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan201",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan201",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan201",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan201",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan201",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan201",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan201",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan201",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan201",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0090:relative_relation:sofa_02_40_00_00_03_42_ON_floor_00_00_00_38_00_00",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0090:relative_relation:sofa_02_40_00_00_03_42_ON_floor_00_00_00_38_00_00",
+      "question_type": "relative_relation",
+      "reference_frame": "world",
+      "scene_id": "FloorPlan201",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "relative_relation"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0137:relation_timeline:sofa_02_40_00_00_03_42_ON_floor_00_00_00_38_00_00",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0137:relation_timeline:sofa_02_40_00_00_03_42_ON_floor_00_00_00_38_00_00",
+      "question_type": "relation_timeline",
+      "reference_frame": "world",
+      "scene_id": "FloorPlan201",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "relation_timeline"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0086:nearest_object:basketball_00_24_00_13_01_24",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": true,
+      "multiple_choice_correct": false,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0086:nearest_object:basketball_00_24_00_13_01_24",
+      "question_type": "nearest_object",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "nearest_object"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0087:reobserve_targets:all",
+      "confidence": 1.0,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0087:reobserve_targets:all",
+      "question_type": "reobserve_targets",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "reobserve_targets"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-004",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan401",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0002:object_location:bathtubbasin_00_16_00_04_00_88",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-004",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0002:object_location:bathtubbasin_00_16_00_04_00_88",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan401",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-004",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan401",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-004",
+      "error": null,
+      "evidence_edge_recall": 0.5,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan401",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-004",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan401",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-004",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan401",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0002:object_location:bowl_00_28_00_92_01_09",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-005",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-005:FloorPlan2:0002:object_location:bowl_00_28_00_92_01_09",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan2",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-005",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan2",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0006:object_location:cabinet_00_49_00_47_01_15",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-005",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-005:FloorPlan2:0006:object_location:cabinet_00_49_00_47_01_15",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan2",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0007:object_location:cabinet_00_50_00_47_01_15",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-005",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-005:FloorPlan2:0007:object_location:cabinet_00_50_00_47_01_15",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan2",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-005",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan2",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0009:object_location:cabinet_01_39_00_47_01_15",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-005",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-005:FloorPlan2:0009:object_location:cabinet_01_39_00_47_01_15",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan2",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": true,
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45",
+      "confidence": 0.65,
+      "episode_id": "ai2thor-real-small-episode-005",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": true,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan2",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    }
+  ],
+  "gold_digest": "234e6c33f3211f905cbf78cef78dae76c4e90f7d9b34abbc4568b7382cdf3ab3",
+  "gold_path": "handoffs/ai2thor-real-small/inputs/traces/evidence-observable-coverage-v1-qa.jsonl",
+  "metrics": {
+    "answer_graph_consistency": {
+      "count": 22,
+      "rate": 0.44898,
+      "total": 49
+    },
+    "evidence_edge_recall": {
+      "average": 0.765306,
+      "total": 49
+    },
+    "evidence_node_recall": {
+      "average": 1.0,
+      "total": 49
+    },
+    "exact_match": {
+      "count": 22,
+      "rate": 0.44898,
+      "total": 49
+    },
+    "multiple_choice_accuracy": {
+      "count": 0,
+      "rate": 0.0,
+      "total": 1
+    },
+    "numeric_mae": {
+      "count": 0,
+      "mean_absolute_error": null,
+      "total_absolute_error": 0
+    }
+  },
+  "prediction_digest": "04cbf39dfcdbd0cb5ca446c45e355660ace593f0b2462dd83144bb1340a398cd",
+  "prediction_path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-coverage-v1-evidence-observable.jsonl",
+  "report_digest": "610739622f67a3af9ae418359f32e6f82fc78d9f603295ba9aa2b0d30debdead",
+  "schema_version": "dsg-spatialqa-lab.qa-eval-report.v1",
+  "summary": {
+    "case_count": 49,
+    "exact_match_count": 22,
+    "exact_match_rate": 0.44898,
+    "matched_prediction_count": 49,
+    "missing_prediction_count": 0,
+    "prediction_count": 49
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "candidate": {
+    "prediction_digest": "f5f256e765140b771038fbaa407693537ae7df853b2b80e1212182b5d279bb8e",
+    "prediction_path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool.jsonl",
+    "qa_eval_report_digest": "d7f602ef680fab17dc9a7dae8b59fbe7f5295424ec061a5089df181af7a0c561",
+    "qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json"
+  },
+  "ledger_digest": "b16b2e975684b7f09ea858586d76e97720fc84e0cbaf395a29009714450119b5",
+  "matrix_readiness": {
+    "failed_check_count": 0,
+    "failed_checks": [],
+    "ready": true
+  },
+  "offline_control_result_readiness": {
+    "failed_check_count": 0,
+    "failed_checks": [],
+    "ready": true
+  },
+  "readiness": {
+    "failed_check_count": 0,
+    "failed_checks": [],
+    "ready": true
+  },
+  "run": {
+    "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
+    "manifest_digest": "84f4ffcedc1e15937a769089afb332a44470799ac980d958d7032d2924c59a20",
+    "manifest_path": "handoffs/ai2thor-real-small/offline-control-import-manifest.json",
+    "matrix_report_digest": "cd52fac319a680b27aff4ceb3759f38e8780adff7b9c2851de1b0295fd47406d",
+    "matrix_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-matrix.json",
+    "offline_control_result_report_digest": "6620ee0cd1551e0649761481d7a01bd9c100e1d03caed9eed281022b7d0cd645",
+    "offline_control_result_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-result.json",
+    "qa_digest": "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf",
+    "qa_path": "handoffs/ai2thor-real-small/inputs/qa.jsonl",
+    "ready": true,
+    "schema_version": "dsg-spatialqa-lab.offline-control-import-run.v1"
+  },
+  "schema_version": "dsg-spatialqa-lab.offline-control-import-run-ledger.v1",
+  "sources": [
+    {
+      "baseline_qa_eval_report_digest": "de6b3b69cd9a4aca0399acde3a38312fc377ea66837436e72ff8b3c60f261428",
+      "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/caption_memory_caption_memory_real_control/qa-eval.json",
+      "import_report_digest": "856b6d1e87e9f8aabc2b61a67f5547be879b3ba9068fae90c6c22752cbbde8f1",
+      "import_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/caption_memory/import-report.json",
+      "input_digest": "9be7431de15e39699b96e7d67971866be7996aceafd57f31b1b7e8d60a7c0bfc",
+      "input_format": "qa_prediction",
+      "input_path": "handoffs/ai2thor-real-small/inputs/offline-controls/caption_memory.jsonl",
+      "normalized_prediction_digest": "9be7431de15e39699b96e7d67971866be7996aceafd57f31b1b7e8d60a7c0bfc",
+      "normalized_prediction_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/caption_memory/predictions.jsonl",
+      "qa_eval_delta_report_digest": "c9a7480d9f7771080a0a6fa4d3cb2468def0b3a096a4bc844a252bf7de0b96cb",
+      "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
+      "source_key": "caption_memory:caption_memory_real_control",
+      "source_kind": "caption_memory",
+      "source_name": "caption_memory_real_control",
+      "summary": {
+        "duplicate_case_count": 0,
+        "error_prediction_count": 0,
+        "gold_case_count": 60,
+        "imported_prediction_count": 60,
+        "missing_case_count": 0,
+        "record_count": 60,
+        "unknown_case_count": 0
+      }
+    },
+    {
+      "baseline_qa_eval_report_digest": "277b503812be9316c073272b627147ae65fd0bc24447ab453cf015a859e603e5",
+      "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/graph_text_graph_text_real_control/qa-eval.json",
+      "import_report_digest": "4b0b3dbb68827c91b98797edeaa7ee87daa2a9120a2ea82c740dab7739b36986",
+      "import_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/graph_text/import-report.json",
+      "input_digest": "5479c3307448f107c5380f371f56888104245c563b3f19089941412f3b458518",
+      "input_format": "qa_prediction",
+      "input_path": "handoffs/ai2thor-real-small/inputs/offline-controls/graph_text.jsonl",
+      "normalized_prediction_digest": "5479c3307448f107c5380f371f56888104245c563b3f19089941412f3b458518",
+      "normalized_prediction_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/graph_text/predictions.jsonl",
+      "qa_eval_delta_report_digest": "29196d7aee6b114c8bcd9a49d21137e80faea47d1725f855e00d373feedd0348",
+      "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
+      "source_key": "graph_text:graph_text_real_control",
+      "source_kind": "graph_text",
+      "source_name": "graph_text_real_control",
+      "summary": {
+        "duplicate_case_count": 0,
+        "error_prediction_count": 0,
+        "gold_case_count": 60,
+        "imported_prediction_count": 60,
+        "missing_case_count": 0,
+        "record_count": 60,
+        "unknown_case_count": 0
+      }
+    },
+    {
+      "baseline_qa_eval_report_digest": "5a9435420adf72d8fa9c1ac1f9085eaf1f9ad10cceefb2523808fe31dd317f58",
+      "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/multi_frame_vlm_multi_frame_vlm_real_control/qa-eval.json",
+      "import_report_digest": "cd207da1aa81124d03f6d27035f1d5b716895e5af07d1efd11679111f4541bd0",
+      "import_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/multi_frame_vlm/import-report.json",
+      "input_digest": "640dc0b92593627c41c8602f58ed2d5f6c00c89103cfc054d93f261b665d4474",
+      "input_format": "qa_prediction",
+      "input_path": "handoffs/ai2thor-real-small/inputs/offline-controls/multi_frame_vlm.jsonl",
+      "normalized_prediction_digest": "640dc0b92593627c41c8602f58ed2d5f6c00c89103cfc054d93f261b665d4474",
+      "normalized_prediction_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/multi_frame_vlm/predictions.jsonl",
+      "qa_eval_delta_report_digest": "f0822615542a6a7094644959c71e95daaf52cc59f021b20ea59f404645c69b00",
+      "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
+      "source_key": "multi_frame_vlm:multi_frame_vlm_real_control",
+      "source_kind": "multi_frame_vlm",
+      "source_name": "multi_frame_vlm_real_control",
+      "summary": {
+        "duplicate_case_count": 0,
+        "error_prediction_count": 0,
+        "gold_case_count": 60,
+        "imported_prediction_count": 60,
+        "missing_case_count": 0,
+        "record_count": 60,
+        "unknown_case_count": 0
+      }
+    },
+    {
+      "baseline_qa_eval_report_digest": "7ee5ed85e8365fa20d337b2a159317a03b6abe00980e19b1fbdcb81f6d0ce0e4",
+      "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/vlm_vlm_real_control/qa-eval.json",
+      "import_report_digest": "90c53c1de80c4f026fa53526e439feff9e3abdcb75250b61b749448b96e30626",
+      "import_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/vlm/import-report.json",
+      "input_digest": "c5be45d6a9b3903d7343939840ac71522e094cef99fb12311eca0a992ff47cd9",
+      "input_format": "qa_prediction",
+      "input_path": "handoffs/ai2thor-real-small/inputs/offline-controls/vlm.jsonl",
+      "normalized_prediction_digest": "c5be45d6a9b3903d7343939840ac71522e094cef99fb12311eca0a992ff47cd9",
+      "normalized_prediction_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/vlm/predictions.jsonl",
+      "qa_eval_delta_report_digest": "93d82721c8b8f956f3f4b70c1af9390a30e3cf1847f32d8001d92d5ee7bc17b1",
+      "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-vlm_vlm_real_control.json",
+      "source_key": "vlm:vlm_real_control",
+      "source_kind": "vlm",
+      "source_name": "vlm_real_control",
+      "summary": {
+        "duplicate_case_count": 0,
+        "error_prediction_count": 0,
+        "gold_case_count": 60,
+        "imported_prediction_count": 60,
+        "missing_case_count": 0,
+        "record_count": 60,
+        "unknown_case_count": 0
+      }
+    }
+  ],
+  "summary": {
+    "candidate_requested": true,
+    "ready_source_count": 4,
+    "source_count": 4
+  }
+}

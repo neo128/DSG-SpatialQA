@@ -1,0 +1,145 @@
+{
+  "artifact_paths": {
+    "offline_control_calibration_p1": "outputs/diagnostics/offline-control-calibration-p1.json",
+    "p0_active_delta": "inputs/review-p0/active-task-delta-p0.json",
+    "p0_active_report": "inputs/review-p0/active-candidate-p0-report.json",
+    "p0_dashboard": "inputs/review-p0/dashboard.json",
+    "p0_dashboard_html": "inputs/review-p0/index.html",
+    "p0_error_attribution": "inputs/review-p0/error-attribution-p0.json",
+    "p0_graph_eval": "inputs/review-p0/graph-eval-containment-p0.json",
+    "p0_predicted_graph": "outputs/predicted-dsg/predicted-graph-containment-p0.json",
+    "p0_predicted_graph_report": "outputs/predicted-dsg/predicted-graph-containment-p0-report.json",
+    "p0_predictions": "inputs/candidate/predicted-graph-tool-p0.jsonl",
+    "p0_qa_delta": "outputs/diagnostics/predicted-graph-tool-p0-vs-original-delta.json",
+    "p0_qa_eval": "outputs/diagnostics/predicted-graph-tool-p0-qa-eval.json",
+    "qa_observability_original": "outputs/diagnostics/qa-observability-original.json",
+    "qa_observability_p0": "outputs/diagnostics/qa-observability-p0.json"
+  },
+  "candidate_name": "predicted_graph_tool_p0_containment_inference",
+  "checks": [
+    {
+      "evidence": "outputs/diagnostics/offline-control-calibration-p1.json",
+      "name": "offline_control_calibration_p1",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-p0/active-task-delta-p0.json",
+      "name": "p0_active_delta",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-p0/active-candidate-p0-report.json",
+      "name": "p0_active_report",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-p0/dashboard.json",
+      "name": "p0_dashboard",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-p0/index.html",
+      "name": "p0_dashboard_html",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-p0/error-attribution-p0.json",
+      "name": "p0_error_attribution",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-p0/graph-eval-containment-p0.json",
+      "name": "p0_graph_eval",
+      "passed": true
+    },
+    {
+      "evidence": "outputs/predicted-dsg/predicted-graph-containment-p0.json",
+      "name": "p0_predicted_graph",
+      "passed": true
+    },
+    {
+      "evidence": "outputs/predicted-dsg/predicted-graph-containment-p0-report.json",
+      "name": "p0_predicted_graph_report",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/candidate/predicted-graph-tool-p0.jsonl",
+      "name": "p0_predictions",
+      "passed": true
+    },
+    {
+      "evidence": "outputs/diagnostics/predicted-graph-tool-p0-vs-original-delta.json",
+      "name": "p0_qa_delta",
+      "passed": true
+    },
+    {
+      "evidence": "outputs/diagnostics/predicted-graph-tool-p0-qa-eval.json",
+      "name": "p0_qa_eval",
+      "passed": true
+    },
+    {
+      "evidence": "outputs/diagnostics/qa-observability-original.json",
+      "name": "qa_observability_original",
+      "passed": true
+    },
+    {
+      "evidence": "outputs/diagnostics/qa-observability-p0.json",
+      "name": "qa_observability_p0",
+      "passed": true
+    },
+    {
+      "evidence": "outputs/predicted-dsg/predicted-graph-containment-p0-report.json",
+      "name": "p0_predicted_graph_report_valid",
+      "passed": true
+    },
+    {
+      "evidence": "outputs/diagnostics/predicted-graph-tool-p0-qa-eval.json",
+      "name": "p0_qa_eval_digest_present",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-p0/graph-eval-containment-p0.json",
+      "name": "p0_graph_eval_digest_present",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-p0/error-attribution-p0.json",
+      "name": "p0_error_attribution_digest_present",
+      "passed": true
+    },
+    {
+      "evidence": "inputs/review-p0/dashboard.json",
+      "name": "p0_dashboard_digest_present",
+      "passed": true
+    }
+  ],
+  "conclusion": [
+    "P0 已把 containment_v2 诊断逻辑正式沉淀为 observation ingestion/build_predicted_graph 的可验证入口。",
+    "P0 将 full QA exact match 从 1/60 提升到 6/60，并将 evidence-observable QA 从 1/60 提升到 8/60。",
+    "P0 没有新增 detector 观测对象，因此 object recall 仍为 0.153409；后续质量提升必须先解决 observation/detector coverage。"
+  ],
+  "dataset_id": "ai2thor-real-small",
+  "process_artifact_status": "ready",
+  "quality_findings": {
+    "exact_match_count_delta": 5,
+    "object_recall": 0.153409,
+    "oracle_object_count": 176,
+    "original_evidence_observable_count": 1,
+    "original_exact_match_count": 1,
+    "original_exact_match_rate": 0.016667,
+    "p0_active_task_success_count": 5,
+    "p0_active_task_success_delta": -25,
+    "p0_active_task_success_rate": 0.166667,
+    "p0_evidence_observable_count": 8,
+    "p0_exact_match_count": 6,
+    "p0_exact_match_rate": 0.1,
+    "p0_missing_evidence_count": 52,
+    "p0_target_missing_count": 46,
+    "predicted_object_count": 38,
+    "relation_f1": 0.05403
+  },
+  "readiness_digest": "891197211f38f7be091239440a4fb1db21154a4544b1d8f0ba19a1fd0504e201",
+  "result_quality_status": "needs_detector_coverage_work",
+  "schema_version": "dsg-spatialqa-lab.p0-readiness.v1",
+  "scope": "formal_p0_observation_backed_candidate"
+}

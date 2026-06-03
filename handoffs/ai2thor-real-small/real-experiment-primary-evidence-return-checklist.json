@@ -1,0 +1,102 @@
+{
+  "action": "real_experiment_primary_evidence_return_checklist",
+  "checklist_digest": "96e5efbad2b09f229ba722aaa8695269fe0d8a8bc9dee2ed435e8ef5475d3217",
+  "launch_report_digest": "153aaae9fa9affd1a356b47a4bb9ed731d66deec15c41ddccc9cf757380e9eb8",
+  "launch_report_path": "handoffs/ai2thor-real-small/real-experiment-external-artifact-launch-report.json",
+  "request_package_digest": "60f93575de9b1ccaa5cb19b0d4b3a875f347a92d37e91cddc974ffdea1303194",
+  "request_package_path": "handoffs/ai2thor-real-small/real-experiment-primary-evidence-request-package.json",
+  "request_package_validation": {
+    "package_digest": "60f93575de9b1ccaa5cb19b0d4b3a875f347a92d37e91cddc974ffdea1303194",
+    "valid": true
+  },
+  "schema_version": "dsg-spatialqa-lab.real-experiment-primary-evidence-return-checklist.v1",
+  "steps": [
+    {
+      "error": null,
+      "error_type": null,
+      "expected_return_artifact_paths": [
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl",
+        "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl",
+        "handoffs/ai2thor-real-small/inputs/real-collection-report.json"
+      ],
+      "next_return_command": "python scripts/check_real_collection.py --dataset-name ai2thor_real_small --source-kind ai2thor --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl --report handoffs/ai2thor-real-small/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30 --required-frame-evidence depth --required-frame-evidence rgb --required-frame-evidence segmentation",
+      "next_return_command_key": "collection_report",
+      "receipt_artifact_path": "handoffs/ai2thor-real-small/inputs/real-collection-report.json",
+      "request_bundle_command": "python scripts/check_real_collection.py --request-bundle handoffs/ai2thor-real-small/real-collection-request-bundle.json --dataset-name ai2thor_real_small --source-kind ai2thor --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl --report handoffs/ai2thor-real-small/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30",
+      "request_bundle_digest": "db4c3445168078803b765e5c063ee1e02e3a5dce84bd254445908a84daa96233",
+      "request_bundle_path": "handoffs/ai2thor-real-small/real-collection-request-bundle.json",
+      "return_commands": [
+        {
+          "command": "python scripts/check_real_collection.py --dataset-name ai2thor_real_small --source-kind ai2thor --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl --episode handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl --report handoffs/ai2thor-real-small/inputs/real-collection-report.json --min-episode-count 3 --min-scene-count 1 --min-frame-count 30 --required-frame-evidence depth --required-frame-evidence rgb --required-frame-evidence segmentation",
+          "key": "collection_report"
+        },
+        {
+          "command": "python scripts/check_real_collection.py --validate-report handoffs/ai2thor-real-small/inputs/real-collection-report.json",
+          "key": "validate_report"
+        },
+        {
+          "command": "python scripts/check_real_collection.py --compare-report handoffs/ai2thor-real-small/inputs/real-collection-report.json",
+          "key": "compare_report"
+        }
+      ],
+      "status": "actionable",
+      "track": "real_data"
+    },
+    {
+      "error": "[Errno 2] No such file or directory: 'handoffs/ai2thor-real-small/inputs/qa.jsonl'",
+      "error_type": "FileNotFoundError",
+      "expected_return_artifact_paths": [],
+      "next_return_command": "python scripts/run_offline_controls.py --prediction-request-bundle handoffs/ai2thor-real-small/offline-control-import-manifest.json --request-bundle-output handoffs/ai2thor-real-small/offline-control-prediction-request-bundle.json",
+      "next_return_command_key": "request_bundle",
+      "receipt_artifact_path": null,
+      "request_bundle_command": "python scripts/run_offline_controls.py --prediction-request-bundle handoffs/ai2thor-real-small/offline-control-import-manifest.json --request-bundle-output handoffs/ai2thor-real-small/offline-control-prediction-request-bundle.json",
+      "request_bundle_digest": null,
+      "request_bundle_path": "handoffs/ai2thor-real-small/offline-control-prediction-request-bundle.json",
+      "return_commands": [],
+      "status": "blocked",
+      "track": "real_controls"
+    },
+    {
+      "error": null,
+      "error_type": null,
+      "expected_return_artifact_paths": [
+        "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd.jsonl",
+        "handoffs/ai2thor-real-small/predicted-dsg-detector-receipt-bundle.json"
+      ],
+      "next_return_command": "python scripts/run_predicted_dsg.py --detector-receipt-bundle handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json --receipt-bundle-output handoffs/ai2thor-real-small/predicted-dsg-detector-receipt-bundle.json",
+      "next_return_command_key": "detector_receipt_bundle",
+      "receipt_artifact_path": "handoffs/ai2thor-real-small/predicted-dsg-detector-receipt-bundle.json",
+      "request_bundle_command": "python scripts/run_predicted_dsg.py --detector-request-bundle handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json --request-bundle-output handoffs/ai2thor-real-small/predicted-dsg-detector-request-bundle.json",
+      "request_bundle_digest": "da8598219fd3891f30309d41f540a6fbc1d07179ebfd320d23aaf98ad4c64eda",
+      "request_bundle_path": "handoffs/ai2thor-real-small/predicted-dsg-detector-request-bundle.json",
+      "return_commands": [
+        {
+          "command": "python scripts/run_predicted_dsg.py --detector-receipt-bundle handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json --receipt-bundle-output handoffs/ai2thor-real-small/predicted-dsg-detector-receipt-bundle.json",
+          "key": "detector_receipt_bundle"
+        },
+        {
+          "command": "python scripts/run_predicted_dsg.py --preflight-manifest handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json --artifact-contract handoffs/ai2thor-real-small/predicted-dsg-detector-artifact-contract.json",
+          "key": "preflight_contract"
+        },
+        {
+          "command": "python scripts/run_predicted_dsg.py --artifact-launch-report handoffs/ai2thor-real-small/predicted-dsg-detector-artifact-contract.json --manifest handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json",
+          "key": "artifact_launch_report"
+        }
+      ],
+      "status": "actionable",
+      "track": "predicted_dsg"
+    }
+  ],
+  "summary": {
+    "actionable_return_track_count": 2,
+    "all_return_tracks_actionable": false,
+    "blocked_return_track_count": 1,
+    "track_count": 3
+  },
+  "track_order": [
+    "real_data",
+    "real_controls",
+    "predicted_dsg"
+  ]
+}

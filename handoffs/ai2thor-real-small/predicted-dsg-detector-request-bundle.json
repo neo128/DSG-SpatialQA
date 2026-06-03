@@ -1,0 +1,88 @@
+{
+  "action": "predicted_dsg_detector_request_bundle",
+  "build_requirements": {
+    "infer_relations": [
+      "LEFT_OF",
+      "RIGHT_OF",
+      "NEAR"
+    ],
+    "min_object_observation_count": 2,
+    "min_observation_count": 2,
+    "reference_frames": [
+      "world"
+    ],
+    "required_evidence_kinds": [
+      "depth",
+      "detector",
+      "rgb"
+    ]
+  },
+  "commands": {
+    "build": "python scripts/run_predicted_dsg.py --manifest handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json",
+    "preflight": "python scripts/run_predicted_dsg.py --preflight-manifest handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json"
+  },
+  "detector_jsonl": {
+    "expected_schema_version": "dsg-spatialqa-lab.detector-observation-record.v1",
+    "input_format": "detector_observation_jsonl",
+    "path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd.jsonl"
+  },
+  "frame_asset_fields": [
+    "rgb_path",
+    "depth_path",
+    "segmentation_path"
+  ],
+  "manifest_digest": "55c144151a94bf7dfde322682d07941bc76b1943846004256efd32a025a5f4c2",
+  "manifest_path": "handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json",
+  "planned_outputs": {
+    "detector_import_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-import-report.json",
+    "observation_sequence_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations.json",
+    "predicted_dsg_evidence_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-evidence.json",
+    "predicted_graph_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph.json",
+    "predicted_graph_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-report.json"
+  },
+  "record_template": {
+    "agent_id": "agent",
+    "agent_pose": {
+      "x": 0.0,
+      "y": 0.0,
+      "yaw": 0.0,
+      "z": 0.0
+    },
+    "depth_path": "frames/000001.depth.png",
+    "detections": [
+      {
+        "attributes": {},
+        "bbox": {
+          "center": {
+            "x": 0.0,
+            "y": 0.0,
+            "yaw": 0.0,
+            "z": 0.0
+          },
+          "size": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "confidence": 0.0,
+        "label": "object",
+        "object_id": "track_object_1",
+        "pose": {
+          "x": 0.0,
+          "y": 0.0,
+          "yaw": 0.0,
+          "z": 0.0
+        },
+        "visible": true
+      }
+    ],
+    "metadata": {},
+    "rgb_path": "frames/000001.rgb.png",
+    "schema_version": "dsg-spatialqa-lab.detector-observation-record.v1",
+    "segmentation_path": "frames/000001.seg.png",
+    "step": 0
+  },
+  "request_bundle_digest": "da8598219fd3891f30309d41f540a6fbc1d07179ebfd320d23aaf98ad4c64eda",
+  "schema_version": "dsg-spatialqa-lab.predicted-dsg-detector-request-bundle.v1"
+}

@@ -1,0 +1,22 @@
+{
+  "action": "episode_metadata_coverage_detector_jsonl",
+  "detector_jsonl_digest": "95b689334595b693b11f8e362ae4c28fba265afa4be17168ee8044ed5579a362",
+  "detector_jsonl_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-v1.jsonl",
+  "episode_paths": [
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-004.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-005.jsonl"
+  ],
+  "frame_count": 50,
+  "hidden_object_observation_count": 2767,
+  "include_hidden": true,
+  "object_observation_count": 2890,
+  "path_prefix": "inputs",
+  "record_count": 50,
+  "sequence_digest": "76252c376d3b5a63adca9ef92edca0eacb57dee29451ece8592dc36130e1cdaa",
+  "unique_object_count": 288,
+  "valid": true,
+  "visible_object_observation_count": 123
+}

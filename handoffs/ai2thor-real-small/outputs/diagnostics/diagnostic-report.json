@@ -1,0 +1,119 @@
+{
+  "artifact_paths": {
+    "candidate_v2_augmented_graph": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-containment-v2.json",
+    "candidate_v2_delta": "handoffs/ai2thor-real-small/outputs/diagnostics/predicted-graph-tool-v2-vs-original-delta.json",
+    "candidate_v2_eval": "handoffs/ai2thor-real-small/outputs/diagnostics/predicted-graph-tool-v2-qa-eval.json",
+    "candidate_v2_predictions": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-v2.jsonl",
+    "frame_index": "handoffs/ai2thor-real-small/inputs/traces/frame-index.jsonl",
+    "qa_trace": "handoffs/ai2thor-real-small/inputs/traces/qa-trace.jsonl",
+    "raw_response_index": "handoffs/ai2thor-real-small/inputs/traces/raw-response-index.jsonl",
+    "visibility_aligned_qa": "handoffs/ai2thor-real-small/inputs/traces/visibility-aligned-qa.jsonl",
+    "visibility_delta": "handoffs/ai2thor-real-small/outputs/diagnostics/visibility-v2-vs-original-delta.json",
+    "visibility_original_predictions": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-visibility-aligned.jsonl",
+    "visibility_v2_eval": "handoffs/ai2thor-real-small/outputs/diagnostics/visibility-v2-qa-eval.json",
+    "visibility_v2_predictions": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-v2-visibility-aligned.jsonl",
+    "vlm_interactions": "handoffs/ai2thor-real-small/inputs/traces/vlm-interactions.jsonl"
+  },
+  "candidate_v2_full_delta": {
+    "baseline_case_count": 60,
+    "baseline_exact_match_count": 1,
+    "baseline_exact_match_rate": 0.016667,
+    "candidate_case_count": 60,
+    "candidate_exact_match_count": 6,
+    "candidate_exact_match_rate": 0.1,
+    "case_count_delta": 0,
+    "case_count_match": true,
+    "exact_match_count_delta": 5,
+    "exact_match_rate_delta": 0.083333
+  },
+  "candidate_v2_full_eval_summary": {
+    "case_count": 60,
+    "exact_match_count": 6,
+    "exact_match_rate": 0.1,
+    "matched_prediction_count": 60,
+    "missing_prediction_count": 0,
+    "prediction_count": 60
+  },
+  "candidate_v2_visibility_delta": {
+    "baseline_case_count": 13,
+    "baseline_exact_match_count": 0,
+    "baseline_exact_match_rate": 0.0,
+    "candidate_case_count": 13,
+    "candidate_exact_match_count": 5,
+    "candidate_exact_match_rate": 0.384615,
+    "case_count_delta": 0,
+    "case_count_match": true,
+    "exact_match_count_delta": 5,
+    "exact_match_rate_delta": 0.384615
+  },
+  "candidate_v2_visibility_eval_summary": {
+    "case_count": 13,
+    "exact_match_count": 5,
+    "exact_match_rate": 0.384615,
+    "matched_prediction_count": 13,
+    "missing_prediction_count": 0,
+    "prediction_count": 13
+  },
+  "containment_v2_added_edge_count": 275,
+  "containment_v2_added_edge_sample": [
+    "cabinet_01_85_02_02_00_38-IN_REGION-visible_region-1",
+    "cabinet_01_85_02_02_00_38-IN_ROOM-ai2thor_room-1",
+    "coffeemachine_01_98_00_90_00_19-IN_REGION-visible_region-1",
+    "coffeemachine_01_98_00_90_00_19-IN_ROOM-ai2thor_room-1",
+    "fridge_02_10_00_00_01_07-IN_REGION-visible_region-1",
+    "fridge_02_10_00_00_01_07-IN_ROOM-ai2thor_room-1",
+    "toaster_01_84_00_90_00_13-IN_REGION-visible_region-1",
+    "toaster_01_84_00_90_00_13-IN_ROOM-ai2thor_room-1",
+    "fridge_02_10_00_00_01_07-IN_REGION-visible_region-2",
+    "fridge_02_10_00_00_01_07-IN_ROOM-ai2thor_room-2",
+    "fridge_02_10_00_00_01_07-IN_REGION-visible_region-3",
+    "fridge_02_10_00_00_01_07-IN_ROOM-ai2thor_room-3",
+    "garbagecan_01_94_00_00_02_03-IN_REGION-visible_region-3",
+    "garbagecan_01_94_00_00_02_03-IN_ROOM-ai2thor_room-3",
+    "fridge_02_10_00_00_01_07-IN_REGION-visible_region-5",
+    "fridge_02_10_00_00_01_07-IN_ROOM-ai2thor_room-5",
+    "fridge_02_10_00_00_01_07-IN_REGION-visible_region-6",
+    "fridge_02_10_00_00_01_07-IN_ROOM-ai2thor_room-6",
+    "garbagecan_01_94_00_00_02_03-IN_REGION-visible_region-6",
+    "garbagecan_01_94_00_00_02_03-IN_ROOM-ai2thor_room-6"
+  ],
+  "dataset_id": "ai2thor_real_small",
+  "diagnosis": [
+    "Original QA is generated from oracle graphs and includes many objects never observed by the detector/RGB-D sequence.",
+    "The observation-backed predicted DSG contains only 38 objects; only 13 of 60 QA cases have all target IDs present in that graph.",
+    "The original predicted DSG stores NEAR/STATE_CHANGED relations but lacks containment relations used by graph_tool for object_location.",
+    "Earlier VLM/LLM outputs preserved final predictions and raw responses, but not a per-case process trace; this run adds a trace manifest linking QA, image assets, predictions, and raw responses."
+  ],
+  "full_question_type_counts": {
+    "nearest_object": 1,
+    "object_location": 50,
+    "relation_timeline": 4,
+    "relative_relation": 4,
+    "reobserve_targets": 1
+  },
+  "original_full_eval_summary": {
+    "case_count": 60,
+    "exact_match_count": 1,
+    "exact_match_rate": 0.016667,
+    "matched_prediction_count": 60,
+    "missing_prediction_count": 0,
+    "prediction_count": 60
+  },
+  "original_visibility_eval_summary": {
+    "case_count": 13,
+    "exact_match_count": 0,
+    "exact_match_rate": 0.0,
+    "matched_prediction_count": 13,
+    "missing_prediction_count": 0,
+    "prediction_count": 13
+  },
+  "predicted_graph_object_count": 38,
+  "qa_case_count": 60,
+  "schema_version": "dsg-spatialqa-lab.real-experiment-diagnostic-report.v1",
+  "visibility_aligned_case_count": 13,
+  "visibility_aligned_question_type_counts": {
+    "object_location": 9,
+    "relation_timeline": 2,
+    "relative_relation": 2
+  }
+}

@@ -79,12 +79,16 @@ def build_predicted_graph_from_observations(
     source_path: str | Path | None = None,
     infer_relations: Sequence[str] = OBSERVATION_PREDICTED_RELATIONS,
     reference_frames: Sequence[str] = OBSERVATION_PREDICTED_REFERENCE_FRAMES,
+    infer_containment: bool = False,
+    containment_axis: str = "z",
 ) -> DynamicSceneGraph:
     graph, _ = ingest_scene_observation_sequence(
         observations,
         source_path=source_path,
         infer_relations=infer_relations,
         reference_frames=reference_frames,
+        infer_containment=infer_containment,
+        containment_axis=containment_axis,
     )
     return graph
 
@@ -180,6 +184,8 @@ def predicted_graph_report_from_observations(
     observations: Sequence[SceneObservation],
     infer_relations: Sequence[str] = OBSERVATION_PREDICTED_RELATIONS,
     reference_frames: Sequence[str] = OBSERVATION_PREDICTED_REFERENCE_FRAMES,
+    infer_containment: bool = False,
+    containment_axis: str = "z",
 ) -> dict[str, Any]:
     report: dict[str, Any] = {
         "schema_version": PREDICTED_GRAPH_REPORT_SCHEMA_VERSION,
@@ -192,6 +198,8 @@ def predicted_graph_report_from_observations(
         "options": {
             "infer_relations": list(infer_relations),
             "reference_frames": list(reference_frames),
+            "infer_containment": infer_containment,
+            "containment_axis": containment_axis,
         },
         "summary": predicted_graph_observation_summary(graph, observations),
         "graph_report": graph_report(
@@ -328,6 +336,8 @@ def validate_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]
             "passed": (
                 _string_sequence(options.get("infer_relations"))
                 and _string_sequence(options.get("reference_frames"))
+                and isinstance(options.get("infer_containment", False), bool)
+                and options.get("containment_axis", "z") in ("z", "y")
                 if input_kind == "observation_sequence"
                 else True
             ),
@@ -349,12 +359,16 @@ def compare_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]:
         options = _as_mapping(report.get("options", {}), "options")
         infer_relations = tuple(str(item) for item in _optional_sequence(options, "infer_relations"))
         reference_frames = tuple(str(item) for item in _optional_sequence(options, "reference_frames"))
+        infer_containment = options.get("infer_containment") is True
+        containment_axis = str(options.get("containment_axis", "z"))
         observations = load_scene_observation_sequence(input_path)
         current_graph = build_predicted_graph_from_observations(
             observations,
             source_path=input_path,
             infer_relations=infer_relations,
             reference_frames=reference_frames,
+            infer_containment=infer_containment,
+            containment_axis=containment_axis,
         )
         saved_input_digest = report.get("observation_sequence_digest")
         current_input_digest = scene_observation_sequence_digest(observations)

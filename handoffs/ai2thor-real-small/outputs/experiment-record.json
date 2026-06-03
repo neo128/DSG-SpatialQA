@@ -1,0 +1,589 @@
+{
+  "dashboard_bundle": {
+    "case_count": 60,
+    "digest": "242e3cc2c53c980db53e593ae6de8f495a1cceecc67fae00123b2b77809c32a3",
+    "has_experiment_summary_review": false,
+    "path": "handoffs/ai2thor-real-small/inputs/review/dashboard.json"
+  },
+  "diagnostic_ledger": {
+    "error_attribution_artifact_keys": [
+      "error_attribution_report:error-attribution.json"
+    ],
+    "error_attribution_diagnostic_count": 1,
+    "failure_linkage_pair_count": 1,
+    "failure_linkage_pairs": [
+      {
+        "error_attribution_artifact_key": "error_attribution_report:error-attribution.json",
+        "graph_eval_artifact_key": "graph_eval_report:graph-eval.json",
+        "linked_by": "oracle_and_predicted_graph_digest"
+      }
+    ],
+    "graph_construction_artifact_keys": [
+      "graph_eval_report:graph-eval.json"
+    ],
+    "graph_construction_diagnostic_count": 1,
+    "qa_diagnostic_slice_count": 104,
+    "qa_diagnostic_slice_keys": [
+      "qa_eval_delta_report:predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
+      "qa_eval_delta_report:predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
+      "qa_eval_delta_report:predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
+      "qa_eval_delta_report:predicted_graph_tool-vs-vlm_vlm_real_control.json"
+    ]
+  },
+  "manifest_digest": "69c10860a34aecf82ef335ee54299e5accd904e5a1a2f513355160cde48cd7d5",
+  "manifest_path": "handoffs/ai2thor-real-small/outputs/benchmark-manifest.json",
+  "readiness": {
+    "available_research_questions": [
+      "dynamic_memory",
+      "graph_tool_query",
+      "interactive_task",
+      "spatial_qa"
+    ],
+    "available_source_artifact_types": [
+      "active_task_delta_report",
+      "qa_eval_delta_report"
+    ],
+    "checks": [
+      {
+        "measurement_count": 4,
+        "missing_reason": null,
+        "name": "dynamic_memory",
+        "passed": true,
+        "source_artifact_type": "qa_eval_delta_report"
+      },
+      {
+        "measurement_count": 4,
+        "missing_reason": null,
+        "name": "graph_tool_query",
+        "passed": true,
+        "source_artifact_type": "qa_eval_delta_report"
+      },
+      {
+        "measurement_count": 1,
+        "missing_reason": null,
+        "name": "interactive_task",
+        "passed": true,
+        "source_artifact_type": "active_task_delta_report"
+      },
+      {
+        "measurement_count": 4,
+        "missing_reason": null,
+        "name": "spatial_qa",
+        "passed": true,
+        "source_artifact_type": "qa_eval_delta_report"
+      }
+    ],
+    "missing_research_questions": [],
+    "missing_source_artifact_types": [],
+    "required_research_questions": [
+      "dynamic_memory",
+      "graph_tool_query",
+      "interactive_task",
+      "spatial_qa"
+    ],
+    "required_source_artifact_types": [
+      "active_task_delta_report",
+      "qa_eval_delta_report"
+    ],
+    "status": "ready"
+  },
+  "readiness_status": "ready",
+  "real_package_readiness": {
+    "declared_data_source_kind": "real",
+    "failed_checks": [],
+    "failed_count": 0,
+    "manifest_digest": "69c10860a34aecf82ef335ee54299e5accd904e5a1a2f513355160cde48cd7d5",
+    "missing_groups": [],
+    "ready": true,
+    "report_digest": "c301f712d60f057f9e0e406167186000ea0d444bd8d91671f791cee1bb976aef",
+    "valid": true
+  },
+  "real_package_status": "ready",
+  "real_readiness_report_digest": "c301f712d60f057f9e0e406167186000ea0d444bd8d91671f791cee1bb976aef",
+  "real_readiness_report_path": "handoffs/ai2thor-real-small/outputs/real-experiment-readiness.json",
+  "record_digest": "5c7db633242d88c2a73103af1288049f3bbc4fb84a58c9ef209468c9bea0ffda",
+  "research_question_matrix": [
+    {
+      "artifact_key": "qa_eval_delta_report:predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
+      "baseline_name": "caption_memory",
+      "candidate_name": "predicted_graph_tool",
+      "case_count_match": true,
+      "label": "Does the Dynamic Scene Graph improve dynamic memory?",
+      "measurement_verdict": "unchanged",
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.0
+      },
+      "question_verdict": "unchanged",
+      "research_question": "dynamic_memory",
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "baseline_case_count": 0,
+        "candidate_case_count": 0,
+        "exact_match_count_delta": 0,
+        "mean_evidence_edge_recall_delta": 0.0,
+        "mean_evidence_node_recall_delta": 0.0
+      }
+    },
+    {
+      "artifact_key": "qa_eval_delta_report:predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
+      "baseline_name": "graph_text",
+      "candidate_name": "predicted_graph_tool",
+      "case_count_match": true,
+      "label": "Does the Dynamic Scene Graph improve dynamic memory?",
+      "measurement_verdict": "unchanged",
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.0
+      },
+      "question_verdict": "unchanged",
+      "research_question": "dynamic_memory",
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "baseline_case_count": 0,
+        "candidate_case_count": 0,
+        "exact_match_count_delta": 0,
+        "mean_evidence_edge_recall_delta": 0.0,
+        "mean_evidence_node_recall_delta": 0.0
+      }
+    },
+    {
+      "artifact_key": "qa_eval_delta_report:predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
+      "baseline_name": "multi_frame_vlm",
+      "candidate_name": "predicted_graph_tool",
+      "case_count_match": true,
+      "label": "Does the Dynamic Scene Graph improve dynamic memory?",
+      "measurement_verdict": "unchanged",
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.0
+      },
+      "question_verdict": "unchanged",
+      "research_question": "dynamic_memory",
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "baseline_case_count": 0,
+        "candidate_case_count": 0,
+        "exact_match_count_delta": 0,
+        "mean_evidence_edge_recall_delta": 0.0,
+        "mean_evidence_node_recall_delta": 0.0
+      }
+    },
+    {
+      "artifact_key": "qa_eval_delta_report:predicted_graph_tool-vs-vlm_vlm_real_control.json",
+      "baseline_name": "vlm",
+      "candidate_name": "predicted_graph_tool",
+      "case_count_match": true,
+      "label": "Does the Dynamic Scene Graph improve dynamic memory?",
+      "measurement_verdict": "unchanged",
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.0
+      },
+      "question_verdict": "unchanged",
+      "research_question": "dynamic_memory",
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "baseline_case_count": 0,
+        "candidate_case_count": 0,
+        "exact_match_count_delta": 0,
+        "mean_evidence_edge_recall_delta": 0.0,
+        "mean_evidence_node_recall_delta": 0.0
+      }
+    },
+    {
+      "artifact_key": "qa_eval_delta_report:predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
+      "baseline_name": "caption_memory",
+      "candidate_name": "predicted_graph_tool",
+      "case_count_match": true,
+      "label": "Does GraphTool improve graph-backed queries?",
+      "measurement_verdict": "unchanged",
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.0
+      },
+      "question_verdict": "unchanged",
+      "research_question": "graph_tool_query",
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "baseline_case_count": 55,
+        "candidate_case_count": 55,
+        "exact_match_count_delta": 0,
+        "mean_evidence_edge_recall_delta": 0.045454,
+        "mean_evidence_node_recall_delta": 0.163636
+      }
+    },
+    {
+      "artifact_key": "qa_eval_delta_report:predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
+      "baseline_name": "graph_text",
+      "candidate_name": "predicted_graph_tool",
+      "case_count_match": true,
+      "label": "Does GraphTool improve graph-backed queries?",
+      "measurement_verdict": "unchanged",
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.0
+      },
+      "question_verdict": "unchanged",
+      "research_question": "graph_tool_query",
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "baseline_case_count": 55,
+        "candidate_case_count": 55,
+        "exact_match_count_delta": 0,
+        "mean_evidence_edge_recall_delta": 0.045454,
+        "mean_evidence_node_recall_delta": 0.163636
+      }
+    },
+    {
+      "artifact_key": "qa_eval_delta_report:predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
+      "baseline_name": "multi_frame_vlm",
+      "candidate_name": "predicted_graph_tool",
+      "case_count_match": true,
+      "label": "Does GraphTool improve graph-backed queries?",
+      "measurement_verdict": "unchanged",
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.0
+      },
+      "question_verdict": "unchanged",
+      "research_question": "graph_tool_query",
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "baseline_case_count": 55,
+        "candidate_case_count": 55,
+        "exact_match_count_delta": 0,
+        "mean_evidence_edge_recall_delta": 0.045454,
+        "mean_evidence_node_recall_delta": 0.163636
+      }
+    },
+    {
+      "artifact_key": "qa_eval_delta_report:predicted_graph_tool-vs-vlm_vlm_real_control.json",
+      "baseline_name": "vlm",
+      "candidate_name": "predicted_graph_tool",
+      "case_count_match": true,
+      "label": "Does GraphTool improve graph-backed queries?",
+      "measurement_verdict": "unchanged",
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.0
+      },
+      "question_verdict": "unchanged",
+      "research_question": "graph_tool_query",
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "baseline_case_count": 55,
+        "candidate_case_count": 55,
+        "exact_match_count_delta": 0,
+        "mean_evidence_edge_recall_delta": 0.045454,
+        "mean_evidence_node_recall_delta": 0.163636
+      }
+    },
+    {
+      "artifact_key": "active_task_delta_report:active-task-delta.json",
+      "baseline_name": "oracle_graph",
+      "candidate_name": "predicted_graph",
+      "case_count_match": true,
+      "label": "Does the Dynamic Scene Graph improve interactive task ability?",
+      "measurement_verdict": "regressed",
+      "primary_metric": {
+        "name": "task_success_rate_delta",
+        "value": -0.966667
+      },
+      "question_verdict": "regressed",
+      "research_question": "interactive_task",
+      "source_artifact_type": "active_task_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "action_count_average_delta": 0.0,
+        "answer_accuracy_rate_delta": -0.966667,
+        "evidence_coverage_average_delta": -0.871667,
+        "success_count_delta": -29
+      }
+    },
+    {
+      "artifact_key": "qa_eval_delta_report:predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
+      "baseline_name": "caption_memory",
+      "candidate_name": "predicted_graph_tool",
+      "case_count_match": true,
+      "label": "Does the Dynamic Scene Graph improve spatial QA?",
+      "measurement_verdict": "improved",
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.016667
+      },
+      "question_verdict": "improved",
+      "research_question": "spatial_qa",
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "baseline_case_count": 60,
+        "candidate_case_count": 60,
+        "exact_match_count_delta": 1,
+        "mean_evidence_edge_recall_delta": 0.041667,
+        "mean_evidence_node_recall_delta": 0.15
+      }
+    },
+    {
+      "artifact_key": "qa_eval_delta_report:predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
+      "baseline_name": "graph_text",
+      "candidate_name": "predicted_graph_tool",
+      "case_count_match": true,
+      "label": "Does the Dynamic Scene Graph improve spatial QA?",
+      "measurement_verdict": "improved",
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.016667
+      },
+      "question_verdict": "improved",
+      "research_question": "spatial_qa",
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "baseline_case_count": 60,
+        "candidate_case_count": 60,
+        "exact_match_count_delta": 1,
+        "mean_evidence_edge_recall_delta": 0.041667,
+        "mean_evidence_node_recall_delta": 0.15
+      }
+    },
+    {
+      "artifact_key": "qa_eval_delta_report:predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
+      "baseline_name": "multi_frame_vlm",
+      "candidate_name": "predicted_graph_tool",
+      "case_count_match": true,
+      "label": "Does the Dynamic Scene Graph improve spatial QA?",
+      "measurement_verdict": "improved",
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.016667
+      },
+      "question_verdict": "improved",
+      "research_question": "spatial_qa",
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "baseline_case_count": 60,
+        "candidate_case_count": 60,
+        "exact_match_count_delta": 1,
+        "mean_evidence_edge_recall_delta": 0.041667,
+        "mean_evidence_node_recall_delta": 0.15
+      }
+    },
+    {
+      "artifact_key": "qa_eval_delta_report:predicted_graph_tool-vs-vlm_vlm_real_control.json",
+      "baseline_name": "vlm",
+      "candidate_name": "predicted_graph_tool",
+      "case_count_match": true,
+      "label": "Does the Dynamic Scene Graph improve spatial QA?",
+      "measurement_verdict": "improved",
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.016667
+      },
+      "question_verdict": "improved",
+      "research_question": "spatial_qa",
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "supporting_metrics": {
+        "baseline_case_count": 60,
+        "candidate_case_count": 60,
+        "exact_match_count_delta": 1,
+        "mean_evidence_edge_recall_delta": 0.041667,
+        "mean_evidence_node_recall_delta": 0.15
+      }
+    }
+  ],
+  "research_question_verdicts": {
+    "dynamic_memory": {
+      "measurement_count": 4,
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.0
+      },
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "verdict": "unchanged"
+    },
+    "graph_tool_query": {
+      "measurement_count": 4,
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.0
+      },
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "verdict": "unchanged"
+    },
+    "interactive_task": {
+      "measurement_count": 1,
+      "primary_metric": {
+        "name": "task_success_rate_delta",
+        "value": -0.966667
+      },
+      "source_artifact_type": "active_task_delta_report",
+      "status": "available",
+      "verdict": "regressed"
+    },
+    "spatial_qa": {
+      "measurement_count": 4,
+      "primary_metric": {
+        "name": "exact_match_rate_delta",
+        "value": 0.016667
+      },
+      "source_artifact_type": "qa_eval_delta_report",
+      "status": "available",
+      "verdict": "improved"
+    }
+  },
+  "schema_version": "dsg-spatialqa-lab.experiment-record.v1",
+  "source_artifact_count": 22,
+  "source_artifact_digests": {
+    "active_task_delta_report:active-task-delta.json": "2a76d82f40e22b84dcdc0cd4d9aacf98039b94a3003b1261c7d84be8f4cfd4b4",
+    "dashboard_bundle:dashboard.json": "242e3cc2c53c980db53e593ae6de8f495a1cceecc67fae00123b2b77809c32a3",
+    "error_attribution_report:error-attribution.json": "126b75e4c82079ca8a5c922cd5d2fd1e9a57375b32aa67c6aea51ae2197b292a",
+    "graph_eval_report:graph-eval.json": "4923a001710cc798958c6a2c54c60d5747a7d1c59aa1c288b879bc707816e341",
+    "offline_control_matrix_report:offline-control-matrix.json": "cd52fac319a680b27aff4ceb3759f38e8780adff7b9c2851de1b0295fd47406d",
+    "offline_control_result_report:offline-control-result.json": "6620ee0cd1551e0649761481d7a01bd9c100e1d03caed9eed281022b7d0cd645",
+    "offline_prediction_import_report:import-report.json": "90c53c1de80c4f026fa53526e439feff9e3abdcb75250b61b749448b96e30626",
+    "predicted_dsg_evidence_report:predicted-dsg-evidence.json": "a797165e6b37db9333ab13fe7579b1e1c921ee68a0494f3a66367e03363c9f11",
+    "predicted_graph_report:predicted-graph-report.json": "effad91a31429c626e75145c0dc27a3ac1ef1f742ec5d248778fdcd1ff51e1f8",
+    "qa_eval_delta_report:predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json": "c9a7480d9f7771080a0a6fa4d3cb2468def0b3a096a4bc844a252bf7de0b96cb",
+    "qa_eval_delta_report:predicted_graph_tool-vs-graph_text_graph_text_real_control.json": "29196d7aee6b114c8bcd9a49d21137e80faea47d1725f855e00d373feedd0348",
+    "qa_eval_delta_report:predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json": "f0822615542a6a7094644959c71e95daaf52cc59f021b20ea59f404645c69b00",
+    "qa_eval_delta_report:predicted_graph_tool-vs-vlm_vlm_real_control.json": "93d82721c8b8f956f3f4b70c1af9390a30e3cf1847f32d8001d92d5ee7bc17b1",
+    "qa_eval_report:qa-eval.json": "d7f602ef680fab17dc9a7dae8b59fbe7f5295424ec061a5089df181af7a0c561",
+    "real_collection_report:real-collection-report.json": "822601c66d02d9f1c1c4fa474600136475d872fd6575b5b43fa8035e05a53576"
+  },
+  "source_profile_count": 4,
+  "source_profile_matrix": [
+    {
+      "adapter": "caption_memory",
+      "artifact_key": "offline_prediction_import_report:import-report.json",
+      "capability_axes": [
+        "dynamic_memory",
+        "spatial_qa"
+      ],
+      "dataset_id": "ai2thor_real_small",
+      "digest": "856b6d1e87e9f8aabc2b61a67f5547be879b3ba9068fae90c6c22752cbbde8f1",
+      "duplicate_case_count": 0,
+      "imported_prediction_count": 60,
+      "metadata_keys": [
+        "capabilities",
+        "dataset_id",
+        "model_id",
+        "prompt_id"
+      ],
+      "missing_case_count": 0,
+      "model_id": "external-caption_memory",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/caption_memory/import-report.json",
+      "prediction_digest": "9be7431de15e39699b96e7d67971866be7996aceafd57f31b1b7e8d60a7c0bfc",
+      "prompt_id": "caption_memory-spatial-qa",
+      "qa_digest": "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf",
+      "source_key": "caption_memory:caption_memory_real_control",
+      "source_kind": "caption_memory",
+      "source_name": "caption_memory_real_control",
+      "unknown_case_count": 0
+    },
+    {
+      "adapter": "graph_text",
+      "artifact_key": "offline_prediction_import_report:import-report.json",
+      "capability_axes": [
+        "dynamic_memory",
+        "graph_tool_query",
+        "spatial_qa"
+      ],
+      "dataset_id": "ai2thor_real_small",
+      "digest": "4b0b3dbb68827c91b98797edeaa7ee87daa2a9120a2ea82c740dab7739b36986",
+      "duplicate_case_count": 0,
+      "imported_prediction_count": 60,
+      "metadata_keys": [
+        "capabilities",
+        "dataset_id",
+        "model_id",
+        "prompt_id"
+      ],
+      "missing_case_count": 0,
+      "model_id": "external-graph_text",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/graph_text/import-report.json",
+      "prediction_digest": "5479c3307448f107c5380f371f56888104245c563b3f19089941412f3b458518",
+      "prompt_id": "graph_text-spatial-qa",
+      "qa_digest": "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf",
+      "source_key": "graph_text:graph_text_real_control",
+      "source_kind": "graph_text",
+      "source_name": "graph_text_real_control",
+      "unknown_case_count": 0
+    },
+    {
+      "adapter": "multi_frame_vlm",
+      "artifact_key": "offline_prediction_import_report:import-report.json",
+      "capability_axes": [
+        "dynamic_memory",
+        "spatial_qa"
+      ],
+      "dataset_id": "ai2thor_real_small",
+      "digest": "cd207da1aa81124d03f6d27035f1d5b716895e5af07d1efd11679111f4541bd0",
+      "duplicate_case_count": 0,
+      "imported_prediction_count": 60,
+      "metadata_keys": [
+        "capabilities",
+        "dataset_id",
+        "model_id",
+        "prompt_id"
+      ],
+      "missing_case_count": 0,
+      "model_id": "external-multi_frame_vlm",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/multi_frame_vlm/import-report.json",
+      "prediction_digest": "640dc0b92593627c41c8602f58ed2d5f6c00c89103cfc054d93f261b665d4474",
+      "prompt_id": "multi_frame_vlm-spatial-qa",
+      "qa_digest": "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf",
+      "source_key": "multi_frame_vlm:multi_frame_vlm_real_control",
+      "source_kind": "multi_frame_vlm",
+      "source_name": "multi_frame_vlm_real_control",
+      "unknown_case_count": 0
+    },
+    {
+      "adapter": "vlm",
+      "artifact_key": "offline_prediction_import_report:import-report.json",
+      "capability_axes": [
+        "spatial_qa"
+      ],
+      "dataset_id": "ai2thor_real_small",
+      "digest": "90c53c1de80c4f026fa53526e439feff9e3abdcb75250b61b749448b96e30626",
+      "duplicate_case_count": 0,
+      "imported_prediction_count": 60,
+      "metadata_keys": [
+        "capabilities",
+        "dataset_id",
+        "model_id",
+        "prompt_id"
+      ],
+      "missing_case_count": 0,
+      "model_id": "external-vlm",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/vlm/import-report.json",
+      "prediction_digest": "c5be45d6a9b3903d7343939840ac71522e094cef99fb12311eca0a992ff47cd9",
+      "prompt_id": "vlm-spatial-qa",
+      "qa_digest": "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf",
+      "source_key": "vlm:vlm_real_control",
+      "source_kind": "vlm",
+      "source_name": "vlm_real_control",
+      "unknown_case_count": 0
+    }
+  ],
+  "summary_report_digest": "6a658f0d06e1ad33a99ac1942d88295aec0eba79dbb3351922173af5af492a71",
+  "summary_report_path": "handoffs/ai2thor-real-small/outputs/experiment-summary.json",
+  "verdict_counts": {
+    "improved": 1,
+    "inconclusive": 0,
+    "regressed": 1,
+    "unchanged": 2
+  }
+}
