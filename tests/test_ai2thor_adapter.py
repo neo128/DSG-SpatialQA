@@ -114,6 +114,46 @@ def test_ai2thor_real_collector_uses_fake_controller_and_writes_artifacts(
     assert controller.stopped is True
 
 
+def test_ai2thor_real_collector_rejects_missing_artifact_root() -> None:
+    config = lab.AI2ThorAdapterConfig(
+        scene_id="FloorPlan1",
+        episode_id="ai2thor_real_smoke_001",
+        steps=(1,),
+        actions=("Initialize",),
+    )
+
+    with pytest.raises(
+        SpatialQAError,
+        match="AI2-THOR real collection requires artifact_root",
+    ):
+        lab.AI2ThorEpisodeCollector(
+            config,
+            ai2thor_available=True,
+            controller_factory=FakeControllerFactory(),
+        ).collect_episode()
+
+
+def test_ai2thor_real_collector_requires_explicit_action_per_step(
+    tmp_path: Path,
+) -> None:
+    config = lab.AI2ThorAdapterConfig(
+        scene_id="FloorPlan1",
+        episode_id="ai2thor_real_smoke_001",
+        steps=(1,),
+        artifact_root=str(tmp_path / "raw"),
+    )
+
+    with pytest.raises(
+        SpatialQAError,
+        match="AI2-THOR real collection requires one explicit action per step",
+    ):
+        lab.AI2ThorEpisodeCollector(
+            config,
+            ai2thor_available=True,
+            controller_factory=FakeControllerFactory(),
+        ).collect_episode()
+
+
 def test_ai2thor_real_collector_rejects_missing_event_fields(tmp_path: Path) -> None:
     config = lab.AI2ThorAdapterConfig(
         scene_id="FloorPlan1",

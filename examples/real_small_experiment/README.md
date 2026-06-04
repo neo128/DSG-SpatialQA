@@ -1,8 +1,9 @@
 # Real Small Experiment Template
 
-This directory contains handoff templates for the first real-small DSG-vs-control
-experiment package. The files are templates only. They do not contain real
-episode data, real VLM/LLM predictions, detector outputs, or research results.
+This directory contains handoff templates for the first real-small
+DSG-vs-control experiment package. The files are templates only. They do not
+contain real episode data, real VLM/LLM predictions, detector outputs, or
+research results.
 
 Run the template as a failure smoke:
 
@@ -13,6 +14,21 @@ python scripts/run_real_small_experiment.py \
   --report /tmp/dsg-real-small/run-report.json
 ```
 
-Expected result: non-zero exit, `ready=false`, and a structured
-`next_missing_artifacts` list.
+Expected result: non-zero exit, `ready=false`, `research_ready=false`,
+`final_record_written=false`, and a structured `next_missing_artifacts` list.
 
+External producers fill the template paths under `data/real-small/`:
+
+- simulator collection writes episode JSONL plus referenced RGB/depth/
+  segmentation files
+- `scripts/check_real_collection.py` writes the real collection report
+- VLM/LLM producers return the four prediction JSONL files without receiving
+  gold answers or gold evidence
+- perception producers return detector/RGB-D JSONL matching
+  `external-detector-observations.example.jsonl`
+- local DSG-SpatialQA CLIs import controls, build predicted DSG evidence, run
+  evals, export dashboard artifacts, and run readiness
+
+Synthetic smoke fixtures must use `data_source_kind="synthetic_test_fixture"`
+and `not_real_research_result=true`. Mock or synthetic outputs must not be
+claimed as real DSG-vs-control evidence.

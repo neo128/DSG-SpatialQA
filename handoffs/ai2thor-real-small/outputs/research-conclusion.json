@@ -1,0 +1,211 @@
+{
+  "aggregate_comparison": {
+    "control_count": 4,
+    "failed_control_count": 4,
+    "minimum_exact_match_rate_delta": 0.016667,
+    "minimum_sign_test_p_value": 0.5,
+    "passed_control_count": 0
+  },
+  "candidate_summary": {
+    "case_count": 60,
+    "exact_match_count": 1,
+    "exact_match_rate": 0.016667
+  },
+  "conclusion": {
+    "claim": "Within this ready experiment package, DSG is not superior to the required VLM/video-memory/text controls under the configured paired QA and graph-evidence criteria.",
+    "dsg_superiority_claim_allowed": false,
+    "ready_to_claim_not_superior": true,
+    "reasons": [
+      {
+        "code": "candidate_exact_match_rate_below_floor",
+        "detail": "Candidate exact-match rate is below the practical superiority floor."
+      },
+      {
+        "code": "graph_object_recall_below_floor",
+        "detail": "Predicted DSG object recall is below the evidence floor."
+      },
+      {
+        "code": "no_control_passed_superiority",
+        "detail": "No required control comparison passed all superiority gates."
+      }
+    ],
+    "verdict": "dsg_not_superior"
+  },
+  "control_comparisons": [
+    {
+      "baseline_exact_match_count": 0,
+      "baseline_exact_match_rate": 0.0,
+      "baseline_name": "caption_memory",
+      "baseline_qa_eval_report_digest": "de6b3b69cd9a4aca0399acde3a38312fc377ea66837436e72ff8b3c60f261428",
+      "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/caption_memory_caption_memory_real_control/qa-eval.json",
+      "candidate_exact_match_count": 1,
+      "candidate_exact_match_rate": 0.016667,
+      "candidate_name": "predicted_graph_tool",
+      "candidate_qa_eval_report_digest": "d7f602ef680fab17dc9a7dae8b59fbe7f5295424ec061a5089df181af7a0c561",
+      "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
+      "case_count": 60,
+      "case_count_match": true,
+      "decision": "candidate_not_superior",
+      "discordant_count": 1,
+      "exact_match_count_delta": 1,
+      "exact_match_rate_delta": 0.016667,
+      "paired_losses": 0,
+      "paired_ties": 59,
+      "paired_wins": 1,
+      "passes_candidate_floor": false,
+      "passes_exact_match_rate_delta": false,
+      "passes_statistical_test": false,
+      "qa_eval_delta_report_digest": "c9a7480d9f7771080a0a6fa4d3cb2468def0b3a096a4bc844a252bf7de0b96cb",
+      "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
+      "sign_test_p_value": 0.5,
+      "source_key": "caption_memory:caption_memory_real_control",
+      "source_kind": "caption_memory",
+      "source_name": "caption_memory_real_control"
+    },
+    {
+      "baseline_exact_match_count": 0,
+      "baseline_exact_match_rate": 0.0,
+      "baseline_name": "graph_text",
+      "baseline_qa_eval_report_digest": "277b503812be9316c073272b627147ae65fd0bc24447ab453cf015a859e603e5",
+      "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/graph_text_graph_text_real_control/qa-eval.json",
+      "candidate_exact_match_count": 1,
+      "candidate_exact_match_rate": 0.016667,
+      "candidate_name": "predicted_graph_tool",
+      "candidate_qa_eval_report_digest": "d7f602ef680fab17dc9a7dae8b59fbe7f5295424ec061a5089df181af7a0c561",
+      "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
+      "case_count": 60,
+      "case_count_match": true,
+      "decision": "candidate_not_superior",
+      "discordant_count": 1,
+      "exact_match_count_delta": 1,
+      "exact_match_rate_delta": 0.016667,
+      "paired_losses": 0,
+      "paired_ties": 59,
+      "paired_wins": 1,
+      "passes_candidate_floor": false,
+      "passes_exact_match_rate_delta": false,
+      "passes_statistical_test": false,
+      "qa_eval_delta_report_digest": "29196d7aee6b114c8bcd9a49d21137e80faea47d1725f855e00d373feedd0348",
+      "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
+      "sign_test_p_value": 0.5,
+      "source_key": "graph_text:graph_text_real_control",
+      "source_kind": "graph_text",
+      "source_name": "graph_text_real_control"
+    },
+    {
+      "baseline_exact_match_count": 0,
+      "baseline_exact_match_rate": 0.0,
+      "baseline_name": "multi_frame_vlm",
+      "baseline_qa_eval_report_digest": "5a9435420adf72d8fa9c1ac1f9085eaf1f9ad10cceefb2523808fe31dd317f58",
+      "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/multi_frame_vlm_multi_frame_vlm_real_control/qa-eval.json",
+      "candidate_exact_match_count": 1,
+      "candidate_exact_match_rate": 0.016667,
+      "candidate_name": "predicted_graph_tool",
+      "candidate_qa_eval_report_digest": "d7f602ef680fab17dc9a7dae8b59fbe7f5295424ec061a5089df181af7a0c561",
+      "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
+      "case_count": 60,
+      "case_count_match": true,
+      "decision": "candidate_not_superior",
+      "discordant_count": 1,
+      "exact_match_count_delta": 1,
+      "exact_match_rate_delta": 0.016667,
+      "paired_losses": 0,
+      "paired_ties": 59,
+      "paired_wins": 1,
+      "passes_candidate_floor": false,
+      "passes_exact_match_rate_delta": false,
+      "passes_statistical_test": false,
+      "qa_eval_delta_report_digest": "f0822615542a6a7094644959c71e95daaf52cc59f021b20ea59f404645c69b00",
+      "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
+      "sign_test_p_value": 0.5,
+      "source_key": "multi_frame_vlm:multi_frame_vlm_real_control",
+      "source_kind": "multi_frame_vlm",
+      "source_name": "multi_frame_vlm_real_control"
+    },
+    {
+      "baseline_exact_match_count": 0,
+      "baseline_exact_match_rate": 0.0,
+      "baseline_name": "vlm",
+      "baseline_qa_eval_report_digest": "7ee5ed85e8365fa20d337b2a159317a03b6abe00980e19b1fbdcb81f6d0ce0e4",
+      "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/baselines/vlm_vlm_real_control/qa-eval.json",
+      "candidate_exact_match_count": 1,
+      "candidate_exact_match_rate": 0.016667,
+      "candidate_name": "predicted_graph_tool",
+      "candidate_qa_eval_report_digest": "d7f602ef680fab17dc9a7dae8b59fbe7f5295424ec061a5089df181af7a0c561",
+      "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
+      "case_count": 60,
+      "case_count_match": true,
+      "decision": "candidate_not_superior",
+      "discordant_count": 1,
+      "exact_match_count_delta": 1,
+      "exact_match_rate_delta": 0.016667,
+      "paired_losses": 0,
+      "paired_ties": 59,
+      "paired_wins": 1,
+      "passes_candidate_floor": false,
+      "passes_exact_match_rate_delta": false,
+      "passes_statistical_test": false,
+      "qa_eval_delta_report_digest": "93d82721c8b8f956f3f4b70c1af9390a30e3cf1847f32d8001d92d5ee7bc17b1",
+      "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-vlm_vlm_real_control.json",
+      "sign_test_p_value": 0.5,
+      "source_key": "vlm:vlm_real_control",
+      "source_kind": "vlm",
+      "source_name": "vlm_real_control"
+    }
+  ],
+  "error_attribution_summary": {
+    "answer_correct_count": 1,
+    "by_error_category": {
+      "benchmark_or_engine_error": 24,
+      "correct": 1,
+      "evidence_missing": 35
+    },
+    "by_evidence_error_category": {
+      "missing_object": 26,
+      "missing_relation": 13,
+      "missing_state": 20,
+      "none": 1
+    },
+    "case_count": 60,
+    "error_count": 59
+  },
+  "graph_quality": {
+    "object_recall": 0.153409,
+    "passes_object_recall_floor": false,
+    "relation_f1": 0.021442
+  },
+  "hypothesis": "dynamic_scene_graph_superiority_over_vlm_video_memory_and_text_controls",
+  "input_digests": {
+    "error_attribution_report": "126b75e4c82079ca8a5c922cd5d2fd1e9a57375b32aa67c6aea51ae2197b292a",
+    "graph_eval_report": "4923a001710cc798958c6a2c54c60d5747a7d1c59aa1c288b879bc707816e341",
+    "offline_control_result_report": "6620ee0cd1551e0649761481d7a01bd9c100e1d03caed9eed281022b7d0cd645",
+    "predicted_dsg_evidence_report": "a797165e6b37db9333ab13fe7579b1e1c921ee68a0494f3a66367e03363c9f11",
+    "real_readiness_report": "c301f712d60f057f9e0e406167186000ea0d444bd8d91671f791cee1bb976aef"
+  },
+  "input_paths": {
+    "error_attribution_report": "handoffs/ai2thor-real-small/inputs/review/error-attribution.json",
+    "graph_eval_report": "handoffs/ai2thor-real-small/inputs/review/graph-eval.json",
+    "offline_control_result_report": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-result.json",
+    "predicted_dsg_evidence_report": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-evidence.json",
+    "real_readiness_report": "handoffs/ai2thor-real-small/outputs/real-experiment-readiness.json"
+  },
+  "readiness_summary": {
+    "offline_controls_ready": true,
+    "predicted_dsg_ready": true,
+    "real_experiment_ready": true
+  },
+  "report_digest": "57bbc4db660da14e898338788ce023ffadcf2192ba44575436dd610ae58a24fd",
+  "required_source_kinds": [
+    "caption_memory",
+    "graph_text",
+    "multi_frame_vlm",
+    "vlm"
+  ],
+  "schema_version": "dsg-spatialqa-lab.research-conclusion-report.v1",
+  "thresholds": {
+    "alpha": 0.05,
+    "min_candidate_exact_match_rate": 0.2,
+    "min_exact_match_rate_delta": 0.05,
+    "min_graph_object_recall": 0.3
+  }
+}

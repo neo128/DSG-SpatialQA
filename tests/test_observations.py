@@ -648,6 +648,46 @@ def test_detector_observation_jsonl_imports_sequence_and_report(
     assert comparison["matches"] is True
 
 
+def test_external_detector_frame_jsonl_import_preserves_rgbd_detector_evidence() -> None:
+    payload = "\n".join(
+        json.dumps(record, sort_keys=True)
+        for record in _external_detector_frame_records()
+    ) + "\n"
+
+    observations = lab.detector_observation_sequence_from_jsonl(payload)
+    mug = observations[0].objects[0]
+    plate = observations[1].objects[0]
+
+    assert [observation.step for observation in observations] == [1, 2]
+    assert observations[0].agent_pose == Pose3D(0.0, 0.9, 0.0, yaw=90.0)
+    assert mug.object_id == "mug_track_1"
+    assert mug.label == "mug"
+    assert mug.pose == Pose3D(0.2, 1.0, 0.8, yaw=0.0)
+    assert mug.bbox == BBox3D(
+        center=Pose3D(0.2, 1.0, 0.8, yaw=0.0),
+        size=(0.1, 0.1, 0.16),
+    )
+    assert mug.confidence == 0.86
+    assert mug.visible is True
+    assert mug.attributes == {
+        "bbox_2d_xyxy": [10, 20, 80, 120],
+        "depth_path": "depth/000001.npy",
+        "detection_id": "det_000001_mug",
+        "detector": "grounded_sam2",
+        "episode_id": "ai2thor_real_smoke_001",
+        "evidence_kinds": ["depth", "detector", "rgb"],
+        "mask_path": "masks/000001_mug.png",
+        "rgb_path": "rgb/000001.png",
+        "scene_id": "FloorPlan1",
+        "source": "grounded_sam2",
+        "source_kind": "detector",
+        "source_name": "grounded_sam2",
+    }
+    assert plate.object_id == "det_000002_plate"
+    assert plate.attributes["source_warning"] == "object_id_missing_used_detection_id"
+    assert plate.attributes["evidence_kinds"] == ["depth", "detector", "rgb"]
+
+
 def test_episode_metadata_coverage_detector_jsonl_includes_hidden_objects() -> None:
     assert hasattr(lab, "episode_metadata_coverage_detector_jsonl")
     frame = lab.EpisodeFrame(
@@ -952,6 +992,67 @@ def _detector_records() -> tuple[dict[str, object], ...]:
                     "visible": True,
                     "attributes": {"track_id": "track_mug_1"},
                 }
+            ],
+        },
+    )
+
+
+def _external_detector_frame_records() -> tuple[dict[str, object], ...]:
+    return (
+        {
+            "schema_version": "dsg-spatialqa-lab.external-detector-frame.v1",
+            "episode_id": "ai2thor_real_smoke_001",
+            "scene_id": "FloorPlan1",
+            "step": 1,
+            "rgb_path": "rgb/000001.png",
+            "depth_path": "depth/000001.npy",
+            "detector_name": "grounded_sam2",
+            "camera_pose": {"x": 0.0, "y": 0.9, "z": 0.0, "yaw": 90.0},
+            "detections": [
+                {
+                    "detection_id": "det_000001_mug",
+                    "object_id": "mug_track_1",
+                    "label": "mug",
+                    "confidence": 0.86,
+                    "bbox_2d_xyxy": [10, 20, 80, 120],
+                    "bbox_3d_center": {
+                        "x": 0.2,
+                        "y": 1.0,
+                        "z": 0.8,
+                        "yaw": 0.0,
+                    },
+                    "bbox_3d_size": [0.1, 0.1, 0.16],
+                    "visible": True,
+                    "mask_path": "masks/000001_mug.png",
+                    "evidence_kinds": ["rgb", "depth", "detector"],
+                },
+            ],
+        },
+        {
+            "schema_version": "dsg-spatialqa-lab.external-detector-frame.v1",
+            "episode_id": "ai2thor_real_smoke_001",
+            "scene_id": "FloorPlan1",
+            "step": 2,
+            "rgb_path": "rgb/000002.png",
+            "depth_path": "depth/000002.npy",
+            "detector_name": "grounded_sam2",
+            "camera_pose": {"x": 0.1, "y": 0.9, "z": 0.0, "yaw": 90.0},
+            "detections": [
+                {
+                    "detection_id": "det_000002_plate",
+                    "label": "plate",
+                    "confidence": 0.72,
+                    "bbox_2d_xyxy": [20, 30, 100, 140],
+                    "bbox_3d_center": {
+                        "x": 0.4,
+                        "y": 1.0,
+                        "z": 0.8,
+                        "yaw": 0.0,
+                    },
+                    "bbox_3d_size": [0.2, 0.2, 0.03],
+                    "visible": True,
+                    "evidence_kinds": ["rgb", "depth", "detector"],
+                },
             ],
         },
     )

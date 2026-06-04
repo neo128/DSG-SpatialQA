@@ -30,6 +30,9 @@ OBSERVATION_INGEST_REPORT_SCHEMA_VERSION = (
 DETECTOR_OBSERVATION_RECORD_SCHEMA_VERSION = (
     "dsg-spatialqa-lab.detector-observation-record.v1"
 )
+EXTERNAL_DETECTOR_FRAME_SCHEMA_VERSION = (
+    "dsg-spatialqa-lab.external-detector-frame.v1"
+)
 DETECTOR_OBSERVATION_IMPORT_REPORT_SCHEMA_VERSION = (
     "dsg-spatialqa-lab.detector-observation-import-report.v1"
 )
@@ -818,6 +821,8 @@ def _scene_observation_from_detector_record(
     payload: Mapping[str, Any],
 ) -> SceneObservation:
     schema_version = payload.get("schema_version")
+    if schema_version == EXTERNAL_DETECTOR_FRAME_SCHEMA_VERSION:
+        return _scene_observation_from_external_detector_frame(payload)
     if schema_version != DETECTOR_OBSERVATION_RECORD_SCHEMA_VERSION:
         raise SpatialQAError(
             f"Unsupported detector observation record schema version: {schema_version}"
@@ -847,6 +852,100 @@ def _scene_observation_from_detector_record(
             )
             for item in _required_sequence(payload, "detections")
         ),
+    )
+
+
+def _scene_observation_from_external_detector_frame(
+    payload: Mapping[str, Any],
+) -> SceneObservation:
+    detector_name = _required_str(payload, "detector_name")
+    camera_pose = payload.get("camera_pose")
+    frame_attributes = _external_detector_frame_attributes(payload, detector_name)
+    return SceneObservation(
+        step=_required_int(payload, "step"),
+        agent_id=_optional_string(payload, "agent_id", default="agent"),
+        agent_pose=(
+            _pose_from_mapping(_as_mapping(camera_pose, "camera_pose"))
+            if camera_pose is not None
+            else None
+        ),
+        objects=tuple(
+            _object_observation_from_external_detection(
+                _as_mapping(item, "detection"),
+                frame_attributes,
+            )
+            for item in _required_sequence(payload, "detections")
+        ),
+    )
+
+
+def _external_detector_frame_attributes(
+    payload: Mapping[str, Any],
+    detector_name: str,
+) -> dict[str, Any]:
+    attributes = {
+        "detector": detector_name,
+        "source": detector_name,
+        "source_kind": "detector",
+        "source_name": detector_name,
+    }
+    for field_name in ("episode_id", "scene_id", "rgb_path", "depth_path"):
+        value = payload.get(field_name)
+        if value is not None:
+            if not isinstance(value, str):
+                raise SpatialQAError(f"{field_name} must be a string")
+            attributes[field_name] = value
+    return attributes
+
+
+def _object_observation_from_external_detection(
+    payload: Mapping[str, Any],
+    frame_attributes: Mapping[str, Any],
+) -> ObjectObservation:
+    detection_id = _required_str(payload, "detection_id")
+    object_id_value = payload.get("object_id")
+    source_warning = None
+    if isinstance(object_id_value, str) and object_id_value:
+        object_id = object_id_value
+    else:
+        object_id = detection_id
+        source_warning = "object_id_missing_used_detection_id"
+    center = _pose_from_mapping(_as_mapping(payload.get("bbox_3d_center"), "bbox_3d_center"))
+    bbox = BBox3D(
+        center=center,
+        size=_size_tuple(_required_sequence(payload, "bbox_3d_size")),
+    )
+    attributes = {
+        **dict(frame_attributes),
+        "detection_id": detection_id,
+        "evidence_kinds": _stable_string_list(payload.get("evidence_kinds")),
+    }
+    if source_warning is not None:
+        attributes["source_warning"] = source_warning
+    for field_name in ("mask_path",):
+        value = payload.get(field_name)
+        if value is not None:
+            if not isinstance(value, str):
+                raise SpatialQAError(f"{field_name} must be a string")
+            attributes[field_name] = value
+    bbox_2d = payload.get("bbox_2d_xyxy")
+    if bbox_2d is not None:
+        attributes["bbox_2d_xyxy"] = _stable_json_value(
+            _required_sequence(payload, "bbox_2d_xyxy")
+        )
+    attributes.update(
+        _stable_json_mapping(
+            _as_mapping(payload.get("attributes", {}), "detection attributes")
+        )
+    )
+    return ObjectObservation(
+        object_id,
+        _required_str(payload, "label"),
+        center,
+        bbox,
+        confidence=_required_float(payload, "confidence"),
+        visible=_required_bool(payload, "visible"),
+        attributes=attributes,
     )
 
 
@@ -1000,6 +1099,28 @@ def _stable_json_value(value: Any) -> Any:
     if isinstance(value, Sequence) and not isinstance(value, str):
         return [_stable_json_value(item) for item in value]
     return value
+
+
+def _stable_string_list(value: object) -> list[str]:
+    if not isinstance(value, Sequence) or isinstance(value, str):
+        raise SpatialQAError("evidence_kinds must be a sequence")
+    values: list[str] = []
+    for item in value:
+        if not isinstance(item, str) or item == "":
+            raise SpatialQAError("evidence_kinds must contain non-empty strings")
+        if item not in values:
+            values.append(item)
+    return sorted(values)
+
+
+def _size_tuple(value: Sequence[Any]) -> tuple[float, float, float]:
+    if len(value) != 3:
+        raise SpatialQAError("bbox_3d_size must contain exactly three numbers")
+    return (
+        _number_from_value(value[0], "bbox_3d_size"),
+        _number_from_value(value[1], "bbox_3d_size"),
+        _number_from_value(value[2], "bbox_3d_size"),
+    )
 
 
 def _object_observation_from_detector_mapping(
@@ -1958,6 +2079,18 @@ def _optional_sequence(payload: Mapping[str, Any], field_name: str) -> Sequence[
 
 def _required_str(payload: Mapping[str, Any], field_name: str) -> str:
     value = payload.get(field_name)
+    if not isinstance(value, str):
+        raise SpatialQAError(f"{field_name} must be a string")
+    return value
+
+
+def _optional_string(
+    payload: Mapping[str, Any],
+    field_name: str,
+    *,
+    default: str,
+) -> str:
+    value = payload.get(field_name, default)
     if not isinstance(value, str):
         raise SpatialQAError(f"{field_name} must be a string")
     return value

@@ -294,6 +294,12 @@ def _error_report(
     report_path: Path,
     error: Exception,
 ) -> dict[str, Any]:
+    blocker = _error_blocker(error)
+    next_missing_artifacts = (
+        [{"role": "manifest", "path": str(manifest_path)}]
+        if blocker["name"] == "manifest_file_present"
+        else []
+    )
     report: dict[str, Any] = {
         "schema_version": REAL_SMALL_EXPERIMENT_RUN_REPORT_SCHEMA_VERSION,
         "action": "run_real_small_experiment",
@@ -306,13 +312,40 @@ def _error_report(
         "final_record_written": False,
         "final_record_path": None,
         "final_record_kind": "none",
-        "blockers": [{"name": "run_real_small_experiment_error", "message": str(error)}],
-        "next_missing_artifacts": [],
+        "blockers": [blocker],
+        "next_missing_artifacts": next_missing_artifacts,
         "package_result": None,
         "digests": {},
     }
     report["report_digest"] = _json_digest(report)
     return report
+
+
+def _error_blocker(error: Exception) -> dict[str, Any]:
+    message = str(error)
+    if isinstance(error, FileNotFoundError):
+        return {
+            "name": "manifest_file_present",
+            "message": message,
+        }
+    if isinstance(error, json.JSONDecodeError):
+        return {
+            "name": "manifest_json_valid",
+            "message": message,
+        }
+    if isinstance(error, SpatialQAError):
+        if message.startswith("Unsupported real-small run manifest schema version:"):
+            return {
+                "name": "manifest_schema_version_supported",
+                "expected": REAL_SMALL_EXPERIMENT_RUN_MANIFEST_SCHEMA_VERSION,
+                "message": message,
+            }
+        if message == "Real-small run manifest JSON must be an object":
+            return {
+                "name": "manifest_object",
+                "message": message,
+            }
+    return {"name": "run_real_small_experiment_error", "message": message}
 
 
 def _blockers(

@@ -87,6 +87,70 @@ def test_real_small_template_manifest_fails_with_missing_artifacts(
     assert not (output_dir / "final" / "final-experiment-record.json").exists()
 
 
+def test_real_small_missing_manifest_returns_structured_blocker(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_real_small_script()
+    main = cast(MainFn, getattr(module, "main"))
+    manifest_path = tmp_path / "missing-manifest.json"
+    output_dir = tmp_path / "missing-manifest-run"
+    report_path = output_dir / "run-report.json"
+
+    assert main(
+        [
+            "--manifest",
+            str(manifest_path),
+            "--output-dir",
+            str(output_dir),
+            "--report",
+            str(report_path),
+        ]
+    ) == 1
+    report = json.loads(capsys.readouterr().out)
+
+    assert report["ready"] is False
+    assert report["research_ready"] is False
+    assert report["final_record_written"] is False
+    assert report["blockers"][0]["name"] == "manifest_file_present"
+    assert report["next_missing_artifacts"] == [
+        {"role": "manifest", "path": str(manifest_path)}
+    ]
+
+
+def test_real_small_invalid_manifest_schema_returns_structured_blocker(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_real_small_script()
+    main = cast(MainFn, getattr(module, "main"))
+    manifest_path = tmp_path / "invalid-schema-manifest.json"
+    manifest_path.write_text(
+        json.dumps({"schema_version": "wrong"}, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    output_dir = tmp_path / "invalid-schema-run"
+    report_path = output_dir / "run-report.json"
+
+    assert main(
+        [
+            "--manifest",
+            str(manifest_path),
+            "--output-dir",
+            str(output_dir),
+            "--report",
+            str(report_path),
+        ]
+    ) == 1
+    report = json.loads(capsys.readouterr().out)
+
+    assert report["ready"] is False
+    assert report["research_ready"] is False
+    assert report["final_record_written"] is False
+    assert report["blockers"][0]["name"] == "manifest_schema_version_supported"
+    assert report["next_missing_artifacts"] == []
+
+
 def test_real_small_real_manifest_requires_all_four_controls(
     tmp_path: Path,
     capsys: CaptureFixture[str],
@@ -137,6 +201,62 @@ def test_real_small_real_manifest_requires_all_four_controls(
         "multi_frame_vlm",
     ]
     assert "real_collection_report_required_for_real_data" in blockers
+
+
+def test_real_small_synthetic_fixture_requires_not_real_research_result(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_real_small_script()
+    main = cast(MainFn, getattr(module, "main"))
+    manifest_path = tmp_path / "synthetic-without-warning.json"
+    manifest_path.write_text(
+        json.dumps(
+            {
+                "schema_version": (
+                    "dsg-spatialqa-lab.real-small-experiment-run-manifest.v1"
+                ),
+                "dataset_name": "synthetic_without_warning",
+                "data_source_kind": "synthetic_test_fixture",
+                "not_real_research_result": False,
+                "episodes": [],
+                "offline_controls": {
+                    "required_source_kinds": [
+                        "vlm",
+                        "multi_frame_vlm",
+                        "caption_memory",
+                        "graph_text",
+                    ],
+                },
+                "predicted_dsg": {},
+                "real_collection_reports": [],
+                "reports": {},
+            },
+            indent=2,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    assert main(
+        [
+            "--manifest",
+            str(manifest_path),
+            "--output-dir",
+            str(tmp_path / "out"),
+            "--report",
+            str(tmp_path / "out" / "run-report.json"),
+        ]
+    ) == 1
+    report = json.loads(capsys.readouterr().out)
+    blockers = {blocker["name"]: blocker for blocker in report["blockers"]}
+
+    assert report["ready"] is False
+    assert report["research_ready"] is False
+    assert blockers["synthetic_fixture_requires_not_real_research_result"][
+        "expected"
+    ] is True
 
 
 def test_real_small_synthetic_fixture_mechanical_pass_is_not_research_result(
@@ -204,6 +324,210 @@ def test_real_small_synthetic_fixture_mechanical_pass_is_not_research_result(
     assert lab.validate_experiment_record(lab.load_experiment_record(record_path))[
         "valid"
     ] is True
+
+
+def test_real_small_synthetic_fixture_mislabeled_real_fails(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    helper_module = load_real_package_test_helpers()
+    inputs = cast(Any, getattr(helper_module, "_ready_package_inputs"))(tmp_path)
+    offline_manifest_path = cast(
+        Any,
+        getattr(helper_module, "_offline_control_import_manifest_for_real_run"),
+    )(tmp_path, inputs)
+    (
+        predicted_manifest_path,
+        graph_eval_report_path,
+        error_attribution_report_path,
+    ) = cast(
+        Any,
+        getattr(helper_module, "_predicted_dsg_detector_run_manifest_for_real_run"),
+    )(tmp_path, inputs)
+    module = load_real_small_script()
+    main = cast(MainFn, getattr(module, "main"))
+    output_dir = tmp_path / "mislabeled-real-run"
+    manifest_path = tmp_path / "mislabeled-real-small-manifest.json"
+    manifest = _synthetic_real_small_manifest(
+        output_dir=output_dir,
+        episode_paths=inputs["episode_paths"],
+        real_collection_report_path=inputs["real_collection_report_path"],
+        offline_manifest_path=offline_manifest_path,
+        predicted_manifest_path=predicted_manifest_path,
+        active_delta_report_path=inputs["active_delta_report_path"],
+        dashboard_bundle_path=inputs["dashboard_bundle_path"],
+        graph_eval_report_path=graph_eval_report_path,
+        error_attribution_report_path=error_attribution_report_path,
+    )
+    manifest["data_source_kind"] = "real"
+    manifest["not_real_research_result"] = False
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    report_path = output_dir / "final" / "run-report.json"
+
+    assert main(
+        [
+            "--manifest",
+            str(manifest_path),
+            "--output-dir",
+            str(output_dir),
+            "--report",
+            str(report_path),
+        ]
+    ) == 1
+    report = json.loads(capsys.readouterr().out)
+    blockers = {blocker["name"]: blocker for blocker in report["blockers"]}
+
+    assert report["ready"] is False
+    assert report["research_ready"] is False
+    assert report["final_record_written"] is False
+    assert report["final_record_kind"] == "none"
+    assert "real_collection_report_source_kind_real_simulator" in blockers
+    assert not (output_dir / "final" / "final-experiment-record.json").exists()
+
+
+def test_real_small_qa_digest_mismatch_fails_without_final_claim_record(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    helper_module = load_real_package_test_helpers()
+    inputs = cast(Any, getattr(helper_module, "_ready_package_inputs"))(tmp_path)
+    offline_manifest_path = cast(
+        Any,
+        getattr(helper_module, "_offline_control_import_manifest_for_real_run"),
+    )(tmp_path, inputs)
+    (
+        predicted_manifest_path,
+        graph_eval_report_path,
+        error_attribution_report_path,
+    ) = cast(
+        Any,
+        getattr(helper_module, "_predicted_dsg_detector_run_manifest_for_real_run"),
+    )(tmp_path, inputs)
+    offline_manifest = json.loads(offline_manifest_path.read_text(encoding="utf-8"))
+    qa_path = Path(str(offline_manifest["qa_path"]))
+    qa_path.write_text("", encoding="utf-8")
+    module = load_real_small_script()
+    main = cast(MainFn, getattr(module, "main"))
+    output_dir = tmp_path / "qa-digest-mismatch-run"
+    manifest_path = tmp_path / "qa-digest-mismatch-manifest.json"
+    manifest = _synthetic_real_small_manifest(
+        output_dir=output_dir,
+        episode_paths=inputs["episode_paths"],
+        real_collection_report_path=inputs["real_collection_report_path"],
+        offline_manifest_path=offline_manifest_path,
+        predicted_manifest_path=predicted_manifest_path,
+        active_delta_report_path=inputs["active_delta_report_path"],
+        dashboard_bundle_path=inputs["dashboard_bundle_path"],
+        graph_eval_report_path=graph_eval_report_path,
+        error_attribution_report_path=error_attribution_report_path,
+    )
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    report_path = output_dir / "final" / "run-report.json"
+
+    assert main(
+        [
+            "--manifest",
+            str(manifest_path),
+            "--output-dir",
+            str(output_dir),
+            "--report",
+            str(report_path),
+        ]
+    ) == 1
+    report = json.loads(capsys.readouterr().out)
+    blockers = {blocker["name"]: blocker for blocker in report["blockers"]}
+
+    assert report["ready"] is False
+    assert report["research_ready"] is False
+    assert report["final_record_written"] is False
+    assert "real_experiment_readiness_failed" in blockers
+    assert "offline_control_qa_digest_matches_manifest" in blockers[
+        "real_experiment_readiness_failed"
+    ]["failed_checks"]
+    assert not (output_dir / "final" / "final-experiment-record.json").exists()
+
+
+def test_real_small_predicted_dsg_without_rgbd_detector_evidence_fails(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    helper_module = load_real_package_test_helpers()
+    inputs = cast(Any, getattr(helper_module, "_ready_package_inputs"))(tmp_path)
+    offline_manifest_path = cast(
+        Any,
+        getattr(helper_module, "_offline_control_import_manifest_for_real_run"),
+    )(tmp_path, inputs)
+    (
+        predicted_manifest_path,
+        graph_eval_report_path,
+        error_attribution_report_path,
+    ) = cast(
+        Any,
+        getattr(helper_module, "_predicted_dsg_detector_run_manifest_for_real_run"),
+    )(tmp_path, inputs)
+    predicted_manifest = json.loads(predicted_manifest_path.read_text(encoding="utf-8"))
+    detector_jsonl_path = Path(str(predicted_manifest["detector_jsonl_path"]))
+    detector_records = [
+        json.loads(line)
+        for line in detector_jsonl_path.read_text(encoding="utf-8").splitlines()
+        if line
+    ]
+    for record in detector_records:
+        record.pop("rgb_path", None)
+        record.pop("depth_path", None)
+        record["metadata"] = {"source": "visual_only"}
+    detector_jsonl_path.write_text(
+        "".join(json.dumps(record, sort_keys=True) + "\n" for record in detector_records),
+        encoding="utf-8",
+    )
+    module = load_real_small_script()
+    main = cast(MainFn, getattr(module, "main"))
+    output_dir = tmp_path / "missing-rgbd-evidence-run"
+    manifest_path = tmp_path / "missing-rgbd-evidence-manifest.json"
+    manifest = _synthetic_real_small_manifest(
+        output_dir=output_dir,
+        episode_paths=inputs["episode_paths"],
+        real_collection_report_path=inputs["real_collection_report_path"],
+        offline_manifest_path=offline_manifest_path,
+        predicted_manifest_path=predicted_manifest_path,
+        active_delta_report_path=inputs["active_delta_report_path"],
+        dashboard_bundle_path=inputs["dashboard_bundle_path"],
+        graph_eval_report_path=graph_eval_report_path,
+        error_attribution_report_path=error_attribution_report_path,
+    )
+    manifest_path.write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    report_path = output_dir / "final" / "run-report.json"
+
+    assert main(
+        [
+            "--manifest",
+            str(manifest_path),
+            "--output-dir",
+            str(output_dir),
+            "--report",
+            str(report_path),
+        ]
+    ) == 1
+    report = json.loads(capsys.readouterr().out)
+    blockers = {blocker["name"]: blocker for blocker in report["blockers"]}
+
+    assert report["ready"] is False
+    assert report["research_ready"] is False
+    assert report["final_record_written"] is False
+    assert "real_experiment_readiness_failed" in blockers
+    assert "predicted_dsg_evidence_ready" in blockers[
+        "real_experiment_readiness_failed"
+    ]["failed_checks"]
+    assert not (output_dir / "final" / "final-experiment-record.json").exists()
 
 
 def _synthetic_real_small_manifest(

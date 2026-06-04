@@ -670,3 +670,42 @@ Coverage-v1 达成了本轮 P0-P1 的主要诊断目标：
 - active task success 从 P0 的 5/30 提升到 12/30。
 
 最终结论：实验过程和 artifact 已经完整保存，coverage/state-timeline 的假设被验证；但 coverage-v1 仍不是最终真实 detector-only 结果。下一阶段应把 metadata coverage 中被证明有效的对象覆盖和状态时间线能力迁移回真实 detector/RGB-D pipeline，并重点降低 relation over-generation，提高 relation precision。
+
+## 12. DSG-vs-Control 正式结论层
+
+本轮新增正式结论报告：
+
+- JSON：`outputs/research-conclusion.json`
+- 中文报告：`outputs/research-conclusion.zh.md`
+
+结论层不再只看 candidate 是否比 control 多答对几条，而是使用四组 gate：
+
+- real experiment readiness 必须 ready。
+- 四类 control 必须完整：`vlm`、`multi_frame_vlm`、`caption_memory`、`graph_text`。
+- candidate 必须在逐 case paired comparison 上通过 exact-match delta、sign test 和最低 exact-match rate 门槛。
+- predicted DSG graph quality 必须通过 object recall 门槛。
+
+当前正式判定：
+
+| 项目 | 数值 |
+| --- | ---: |
+| Verdict | `dsg_not_superior` |
+| Candidate exact match | 1 / 60 |
+| Candidate exact match rate | 0.016667 |
+| Passed required controls | 0 / 4 |
+| Minimum exact-match delta | 0.016667 |
+| Minimum sign-test p-value | 0.5 |
+| Predicted graph object recall | 0.153409 |
+| Predicted graph relation F1 | 0.021442 |
+
+主要原因：
+
+- `candidate_exact_match_rate_below_floor`：candidate 只答对 1/60，低于实用优越性门槛。
+- `graph_object_recall_below_floor`：原始 detector/RGB-D predicted graph object recall 只有 0.153409。
+- `no_control_passed_superiority`：四类 control 的 paired comparison 都没有通过完整 superiority gate。
+
+因此，本阶段可以得出的正式研究结论是：
+
+> 在当前 ready=true 的 `ai2thor-real-small` 真实小包上，DSG / predicted GraphTool 路线没有被证明优于 VLM-only 或视频记忆类 control；按当前预注册判定规则，应结论为不优于。
+
+这个结论不否定 DSG 路线本身。Coverage-v1 诊断显示：当 object coverage 和 state timeline 被补齐后，QA exact match 能提升到 22/60。但 coverage-v1 不是最终真实 detector-only 结果，所以不能拿它替代正式结论。下一阶段必须把 coverage-v1 中有效的对象覆盖、状态时间线和关系收敛能力迁移回真实 detector/RGB-D pipeline，再重新运行结论报告。

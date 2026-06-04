@@ -674,6 +674,16 @@ def test_offline_control_prediction_request_bundle_exports_external_baseline_tem
     assert "answer" not in first_case_request
     assert "required_nodes" not in first_case_request
     assert "required_edges" not in first_case_request
+    forbidden_gold_keys = {
+        "gold_answer",
+        "gold_evidence",
+        "gold_evidence_edges",
+        "gold_evidence_nodes",
+        "required_edges",
+        "required_nodes",
+    }
+    for case_request in bundle["case_inputs"]:
+        assert forbidden_gold_keys.isdisjoint(case_request)
     qa_template = bundle["prediction_templates"]["qa_prediction"][0]
     assert qa_template == {
         "answer": {},

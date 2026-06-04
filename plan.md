@@ -16,6 +16,43 @@ the default runtime and must fail closed or use deterministic mocks.
 
 ---
 
+## Next-Stage Todo: Conclusive DSG-vs-Control Evidence
+
+**Goal:** Turn the ready real-small handoff into an explicit research decision:
+either DSG is superior to VLM/video-memory controls under pre-registered gates,
+or it is not superior for the current package.
+
+Completed in this stage:
+
+- [x] Add a deterministic research conclusion report that consumes existing
+  readiness, offline-control result, QA eval, graph eval, predicted DSG
+  evidence, and error-attribution artifacts.
+- [x] Use paired case-level exact-match comparisons and a one-sided sign test
+  instead of relying only on aggregate exact-match deltas.
+- [x] Require practical superiority floors for candidate exact-match rate,
+  exact-match rate delta, statistical paired lift, and predicted graph object
+  recall.
+- [x] Generate current handoff conclusion artifacts:
+  `handoffs/ai2thor-real-small/outputs/research-conclusion.json` and
+  `handoffs/ai2thor-real-small/outputs/research-conclusion.zh.md`.
+- [x] Record the current formal verdict:
+  `dsg_not_superior` for the current ready package.
+
+Next development priorities:
+
+- [ ] Improve the real detector/RGB-D predicted graph, not the oracle or
+  metadata-assisted diagnostic graph, until object recall and relation quality
+  pass the conclusion gates.
+- [ ] Re-run the four required external controls with the structured JSON
+  prompt and preserved evidence traces.
+- [ ] Expand observation-aware QA coverage with dynamic-memory and
+  GraphTool-query cases that are actually observable from the detector/RGB-D
+  sequence.
+- [ ] Re-run `scripts/conclude_experiment.py` after each candidate update and
+  treat `dsg_not_superior` as the default conclusion until all gates pass.
+- [ ] Only claim DSG superiority when the conclusion report returns
+  `dsg_superior` with `dsg_superiority_claim_allowed=true`.
+
 ## Current State
 
 The project already has the deterministic foundation needed for an offline
