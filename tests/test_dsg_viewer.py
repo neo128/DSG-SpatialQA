@@ -1,8 +1,35 @@
 from __future__ import annotations
 
+import importlib.util
+import json
 from pathlib import Path
+import sys
+from types import ModuleType
+from typing import Protocol, cast
 
+from _pytest.capture import CaptureFixture
 import dsg_spatialqa_lab as lab
+
+
+ROOT = Path(__file__).resolve().parents[1]
+SERVE_DSG_VIEWER_SCRIPT = ROOT / "scripts" / "serve_dsg_viewer.py"
+
+
+class MainFn(Protocol):
+    def __call__(self, argv: list[str] | None = None) -> int: ...
+
+
+def load_serve_dsg_viewer_script() -> ModuleType:
+    spec = importlib.util.spec_from_file_location(
+        "serve_dsg_viewer_script",
+        SERVE_DSG_VIEWER_SCRIPT,
+    )
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 def _single_object_graph() -> lab.DynamicSceneGraph:
@@ -158,3 +185,22 @@ def test_dsg_viewer_path_guard_rejects_paths_outside_workspace(tmp_path: Path) -
         assert "outside workspace" in str(exc)
     else:
         raise AssertionError("expected outside workspace path to be rejected")
+
+
+def test_serve_dsg_viewer_cli_writes_payload_without_starting_server(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_serve_dsg_viewer_script()
+    main = cast(MainFn, getattr(module, "main"))
+    graph_path = tmp_path / "predicted-graph.json"
+    lab.save_graph_json(_single_object_graph(), graph_path)
+    output_path = tmp_path / "payload.json"
+
+    assert main(["--graph", str(graph_path), "--write-payload", str(output_path)]) == 0
+
+    output = json.loads(capsys.readouterr().out)
+    payload = lab.load_dsg_viewer_payload(output_path)
+    assert output["action"] == "write_dsg_viewer_payload"
+    assert output["payload_path"] == str(output_path)
+    assert payload["metrics"]["object_count"] == 1
