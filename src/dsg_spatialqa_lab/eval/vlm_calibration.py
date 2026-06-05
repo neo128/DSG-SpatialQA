@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence
 import hashlib
 import json
+from math import comb
 from pathlib import Path
 import re
 from typing import Any, cast
@@ -3036,6 +3037,17 @@ def vlm_semantic_eval_delta_report(
             "paired_ties": paired_ties,
             "paired_wins": paired_wins,
         },
+        "paired_significance": _paired_significance_report(
+            paired_wins,
+            paired_losses,
+        ),
+        "question_type_groups": _semantic_delta_question_type_groups(
+            candidate_report,
+            baseline_report,
+            candidate_cases,
+            baseline_cases,
+            shared_case_ids,
+        ),
         "decision": _semantic_delta_decision(paired_wins, paired_losses),
     }
     report["report_digest"] = vlm_semantic_eval_delta_report_digest(report)
@@ -3054,6 +3066,7 @@ def vlm_semantic_eval_delta_report_json(report: Mapping[str, Any]) -> str:
 def validate_vlm_semantic_eval_delta_report(report: Mapping[str, Any]) -> dict[str, Any]:
     summary_delta = _mapping(report.get("summary_delta"))
     paired = _mapping(report.get("paired"))
+    paired_significance = _mapping(report.get("paired_significance"))
     expected_digest = vlm_semantic_eval_delta_report_digest(report)
     checks = [
         {
@@ -3097,6 +3110,34 @@ def validate_vlm_semantic_eval_delta_report(report: Mapping[str, Any]) -> dict[s
             and not isinstance(paired.get("case_count"), bool),
             "expected": "integer",
             "actual": paired.get("case_count"),
+        },
+        {
+            "name": "paired_significance_method",
+            "passed": paired_significance.get("method")
+            == "exact_paired_sign_test_mcnemar_like",
+            "expected": "exact_paired_sign_test_mcnemar_like",
+            "actual": paired_significance.get("method"),
+        },
+        {
+            "name": "paired_significance_p_value",
+            "passed": isinstance(
+                paired_significance.get("two_sided_p_value"),
+                (int, float),
+            )
+            and not isinstance(paired_significance.get("two_sided_p_value"), bool),
+            "expected": "number",
+            "actual": paired_significance.get("two_sided_p_value"),
+        },
+        {
+            "name": "question_type_groups",
+            "passed": all(
+                isinstance(row.get("question_type"), str)
+                and isinstance(row.get("paired"), Mapping)
+                and isinstance(row.get("paired_significance"), Mapping)
+                for row in _mapping_rows(report.get("question_type_groups"))
+            ),
+            "expected": "list of question type group rows",
+            "actual": report.get("question_type_groups"),
         },
     ]
     return {
@@ -3365,6 +3406,111 @@ def _semantic_delta_decision(paired_wins: int, paired_losses: int) -> str:
     if paired_losses > paired_wins:
         return "candidate_regressed"
     return "candidate_unchanged"
+
+
+def _paired_significance_report(paired_wins: int, paired_losses: int) -> dict[str, Any]:
+    discordant_count = paired_wins + paired_losses
+    p_value = _exact_two_sided_sign_test_p_value(paired_wins, paired_losses)
+    return {
+        "candidate_loss_count": paired_losses,
+        "candidate_win_count": paired_wins,
+        "discordant_case_count": discordant_count,
+        "method": "exact_paired_sign_test_mcnemar_like",
+        "significant_at_0_05": p_value < 0.05,
+        "two_sided_p_value": _round_float(p_value),
+    }
+
+
+def _exact_two_sided_sign_test_p_value(paired_wins: int, paired_losses: int) -> float:
+    discordant_count = paired_wins + paired_losses
+    if discordant_count == 0:
+        return 1.0
+    smaller_side_count = min(paired_wins, paired_losses)
+    tail_probability = float(
+        sum(
+        comb(discordant_count, count) for count in range(smaller_side_count + 1)
+        )
+    ) / float(2**discordant_count)
+    return min(1.0, 2.0 * tail_probability)
+
+
+def _semantic_delta_question_type_groups(
+    candidate_report: Mapping[str, Any],
+    baseline_report: Mapping[str, Any],
+    candidate_cases: Mapping[str, bool],
+    baseline_cases: Mapping[str, bool],
+    shared_case_ids: Sequence[str],
+) -> list[dict[str, Any]]:
+    candidate_rows = _semantic_case_row_map(candidate_report)
+    baseline_rows = _semantic_case_row_map(baseline_report)
+    grouped_case_ids: dict[str, list[str]] = {}
+    for case_id in shared_case_ids:
+        question_type = _semantic_question_type(
+            candidate_rows.get(case_id),
+            baseline_rows.get(case_id),
+        )
+        grouped_case_ids.setdefault(question_type, []).append(case_id)
+    groups: list[dict[str, Any]] = []
+    for question_type in sorted(grouped_case_ids):
+        case_ids = grouped_case_ids[question_type]
+        paired_wins = sum(
+            1
+            for case_id in case_ids
+            if candidate_cases[case_id] is True and baseline_cases[case_id] is not True
+        )
+        paired_losses = sum(
+            1
+            for case_id in case_ids
+            if candidate_cases[case_id] is not True and baseline_cases[case_id] is True
+        )
+        paired_ties = len(case_ids) - paired_wins - paired_losses
+        candidate_count = sum(1 for case_id in case_ids if candidate_cases[case_id] is True)
+        baseline_count = sum(1 for case_id in case_ids if baseline_cases[case_id] is True)
+        groups.append(
+            {
+                "baseline_semantic_match_count": baseline_count,
+                "candidate_semantic_match_count": candidate_count,
+                "case_count": len(case_ids),
+                "decision": _semantic_delta_decision(paired_wins, paired_losses),
+                "paired": {
+                    "case_count": len(case_ids),
+                    "paired_losses": paired_losses,
+                    "paired_ties": paired_ties,
+                    "paired_wins": paired_wins,
+                },
+                "paired_significance": _paired_significance_report(
+                    paired_wins,
+                    paired_losses,
+                ),
+                "question_type": question_type,
+                "semantic_match_count_delta": candidate_count - baseline_count,
+            }
+        )
+    return groups
+
+
+def _semantic_case_row_map(report: Mapping[str, Any]) -> dict[str, Mapping[str, Any]]:
+    rows: dict[str, Mapping[str, Any]] = {}
+    for row in _mapping_rows(report.get("cases")):
+        case_id = _optional_str(row.get("case_id"))
+        if case_id is not None and case_id not in rows:
+            rows[case_id] = row
+    return rows
+
+
+def _semantic_question_type(
+    candidate_row: Mapping[str, Any] | None,
+    baseline_row: Mapping[str, Any] | None,
+) -> str:
+    if candidate_row is not None:
+        candidate_question_type = _optional_str(candidate_row.get("question_type"))
+        if candidate_question_type is not None:
+            return candidate_question_type
+    if baseline_row is not None:
+        baseline_question_type = _optional_str(baseline_row.get("question_type"))
+        if baseline_question_type is not None:
+            return baseline_question_type
+    return "unknown"
 
 
 def _int_summary_value(summary: Mapping[str, Any], key: str) -> int:

@@ -1,0 +1,59 @@
+{
+  "baseline_name": "graph_tool_only_dsg_p39",
+  "baseline_report_digest": "b500c80c9d45277aa0ca5e12af0601d4a435fe14f5f49746f241dff1e595654e",
+  "baseline_semantic_eval_report_path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-independent-p39-compatible-step-target-alias.jsonl",
+  "candidate_name": "vlm_graph_trusted_fusion_p41",
+  "candidate_report_digest": "8df29b7043eef20d14a3fcf02a3e4eb7690d81e6b21c402c38d69ccc2d31729f",
+  "candidate_semantic_eval_report_path": "handoffs/ai2thor-real-small/inputs/candidate/vlm-graph-fusion-p41-trusted-vlm-p26-dsg-p39.jsonl",
+  "case_count_match": true,
+  "decision": "candidate_improved",
+  "gold_digest_match": true,
+  "paired": {
+    "case_count": 60,
+    "paired_losses": 2,
+    "paired_ties": 32,
+    "paired_wins": 26
+  },
+  "paired_significance": {
+    "candidate_loss_count": 2,
+    "candidate_win_count": 26,
+    "discordant_case_count": 28,
+    "method": "exact_paired_sign_test_mcnemar_like",
+    "significant_at_0_05": true,
+    "two_sided_p_value": 3e-06
+  },
+  "question_type_groups": [
+    {
+      "baseline_semantic_match_count": 27,
+      "candidate_semantic_match_count": 51,
+      "case_count": 60,
+      "decision": "candidate_improved",
+      "paired": {
+        "case_count": 60,
+        "paired_losses": 2,
+        "paired_ties": 32,
+        "paired_wins": 26
+      },
+      "paired_significance": {
+        "candidate_loss_count": 2,
+        "candidate_win_count": 26,
+        "discordant_case_count": 28,
+        "method": "exact_paired_sign_test_mcnemar_like",
+        "significant_at_0_05": true,
+        "two_sided_p_value": 3e-06
+      },
+      "question_type": "object_location",
+      "semantic_match_count_delta": 24
+    }
+  ],
+  "report_digest": "0ce2e193a8a0475b5fcebbd72c7d88ffd2d8b84bf8eb5bf20fd7085494bac518",
+  "schema_version": "dsg-spatialqa-lab.vlm-semantic-eval-delta-report.v1",
+  "summary_delta": {
+    "baseline_semantic_match_count": 27,
+    "baseline_semantic_match_rate": 0.45,
+    "candidate_semantic_match_count": 51,
+    "candidate_semantic_match_rate": 0.85,
+    "semantic_match_count_delta": 24,
+    "semantic_match_rate_delta": 0.4
+  }
+}

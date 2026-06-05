@@ -1,0 +1,430 @@
+{
+  "case_count": 3,
+  "case_inputs": [
+    {
+      "answer_type": "object_location",
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17:observation_aware:200007",
+      "choices": [],
+      "conflict_reason": "vlm_graph_disagreement_graph_plausible",
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "chair_01_86_00_02_01_84",
+          "relation": "ON",
+          "step": 200007
+        },
+        "support_label": "chair",
+        "target_label": "book"
+      },
+      "episode_id": "ai2thor-real-small-episode-002",
+      "frame_refs": [
+        {
+          "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+          "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+          "step": 200007
+        }
+      ],
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17:observation_aware:200007",
+      "graph_reject_reason": null,
+      "graph_trust_score": 1.0,
+      "question": {
+        "object_id": "book_01_87_00_68_01_17",
+        "type": "object_location"
+      },
+      "question_type": "object_location",
+      "scene_id": "FloorPlan201",
+      "step": 200007,
+      "support_object_evidence": {
+        "bbox_2d_xyxy": [
+          62,
+          132,
+          222,
+          232
+        ],
+        "bbox_3d_center": {
+          "x": -2.031558,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.553726
+        },
+        "bbox_3d_size": [
+          0.547931,
+          0.458311,
+          0.547931
+        ],
+        "confidence": 0.95,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:diningtable:004",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "diningtable",
+        "mask_path": null,
+        "object_id": "chair_01_86_00_02_01_84",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          133,
+          193,
+          192,
+          233
+        ],
+        "bbox_3d_center": {
+          "x": -1.922955,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.367035
+        },
+        "bbox_3d_size": [
+          0.165765,
+          0.15103,
+          0.165765
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:book:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "book",
+        "mask_path": null,
+        "object_id": "book_01_87_00_68_01_17",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "vlm_confidence": 0.95,
+      "vlm_initial_answer": {
+        "answer_text": "The book is on the table.",
+        "confidence": 0.95,
+        "current_location": {
+          "dst": "table",
+          "dst_label": "table",
+          "relation": "ON",
+          "step": 200007
+        },
+        "label": "book",
+        "last_seen_step": 0,
+        "object_id": "book_01_87_00_68_01_17",
+        "observability": "fully_observable",
+        "pose": "flat",
+        "reasoning_summary": "The target object 'book' is visible in the image. It is located on top of the table. Therefore, the relation is ON and the destination is table.",
+        "state_step": 0,
+        "visible": true
+      },
+      "vlm_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17:observation_aware:200007"
+    },
+    {
+      "answer_type": "object_location",
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0001:cellphone_00_26_00_56_00_52:observation_aware:100027",
+      "choices": [],
+      "conflict_reason": "vlm_unknown_graph_plausible",
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "bed_00_64_00_01_00_87",
+          "relation": "ON",
+          "step": 27
+        },
+        "support_label": "bed",
+        "target_label": "cellphone"
+      },
+      "episode_id": "ai2thor-real-small-episode-003",
+      "frame_refs": [
+        {
+          "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+          "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+          "step": 27
+        }
+      ],
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0001:cellphone_00_26_00_56_00_52:observation_aware:100027",
+      "graph_reject_reason": null,
+      "graph_trust_score": 1.0,
+      "question": {
+        "object_id": "cellphone_00_26_00_56_00_52",
+        "type": "object_location"
+      },
+      "question_type": "object_location",
+      "scene_id": "FloorPlan301",
+      "step": 100027,
+      "support_object_evidence": {
+        "bbox_2d_xyxy": [
+          170,
+          130,
+          320,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.138568,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": 1.88416
+        },
+        "bbox_3d_size": [
+          1.124973,
+          1.102622,
+          1.124973
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000027:bed:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "bed",
+        "mask_path": null,
+        "object_id": "bed_00_64_00_01_00_87",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 27,
+        "visible": true
+      },
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          290,
+          220,
+          310,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.260014,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": 1.2264
+        },
+        "bbox_3d_size": [
+          0.113286,
+          0.151048,
+          0.113286
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000027:cellphone:002",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "cellphone",
+        "mask_path": null,
+        "object_id": "cellphone_00_26_00_56_00_52",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 27,
+        "visible": true
+      },
+      "vlm_confidence": 0.0,
+      "vlm_initial_answer": {
+        "answer_option_id": "locopt_001",
+        "confidence": 0.0,
+        "current_location": {
+          "dst": "bed",
+          "dst_label": "bed",
+          "relation": "ON",
+          "step": 27
+        },
+        "label": "cellphone",
+        "last_seen_step": 0,
+        "object_id": null,
+        "observability": "not_visible",
+        "pose": null,
+        "reasoning_summary": "The target object 'cellphone' is not visible in the provided image. Therefore, its location cannot be determined.",
+        "state_step": 0,
+        "visible": false,
+        "vlm_affordance_option_fallback": {
+          "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0001:cellphone_00_26_00_56_00_52:observation_aware:100027",
+          "destination_label": "bed",
+          "source": "target_affordance_public_option_prior",
+          "target_label": "cellphone"
+        }
+      },
+      "vlm_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0001:cellphone_00_26_00_56_00_52:observation_aware:100027"
+    },
+    {
+      "answer_type": "object_location",
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0010:laptop_00_50_00_56_00_29:observation_aware:100027",
+      "choices": [],
+      "conflict_reason": "vlm_unknown_graph_plausible",
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "bed_00_64_00_01_00_87",
+          "relation": "ON",
+          "step": 27
+        },
+        "support_label": "bed",
+        "target_label": "laptop"
+      },
+      "episode_id": "ai2thor-real-small-episode-003",
+      "frame_refs": [
+        {
+          "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+          "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+          "step": 27
+        }
+      ],
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0010:laptop_00_50_00_56_00_29:observation_aware:100027",
+      "graph_reject_reason": null,
+      "graph_trust_score": 1.0,
+      "question": {
+        "object_id": "laptop_00_50_00_56_00_29",
+        "type": "object_location"
+      },
+      "question_type": "object_location",
+      "scene_id": "FloorPlan301",
+      "step": 100027,
+      "support_object_evidence": {
+        "bbox_2d_xyxy": [
+          170,
+          130,
+          320,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.138568,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": 1.88416
+        },
+        "bbox_3d_size": [
+          1.124973,
+          1.102622,
+          1.124973
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000027:bed:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "bed",
+        "mask_path": null,
+        "object_id": "bed_00_64_00_01_00_87",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 27,
+        "visible": true
+      },
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          220,
+          160,
+          270,
+          190
+        ],
+        "bbox_3d_center": {
+          "x": 0.142439,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": 1.898612
+        },
+        "bbox_3d_size": [
+          0.382261,
+          0.309806,
+          0.382261
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000027:laptop:003",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "laptop",
+        "mask_path": null,
+        "object_id": "laptop_00_50_00_56_00_29",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 27,
+        "visible": true
+      },
+      "vlm_confidence": 0.0,
+      "vlm_initial_answer": {
+        "answer_option_id": "locopt_001",
+        "answer_text": "The laptop is not visible in the current view.",
+        "confidence": 0.0,
+        "current_location": {
+          "dst": "bed",
+          "dst_label": "bed",
+          "relation": "ON",
+          "step": 27
+        },
+        "label": "laptop",
+        "last_seen_step": 0,
+        "object_id": null,
+        "observability": "not_visible",
+        "pose": null,
+        "reasoning_summary": "The target object 'laptop' is not present in the provided image. Therefore, its location cannot be determined.",
+        "state_step": 0,
+        "visible": false,
+        "vlm_affordance_option_fallback": {
+          "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0010:laptop_00_50_00_56_00_29:observation_aware:100027",
+          "destination_label": "bed",
+          "source": "target_affordance_public_option_prior",
+          "target_label": "laptop"
+        }
+      },
+      "vlm_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0010:laptop_00_50_00_56_00_29:observation_aware:100027"
+    }
+  ],
+  "conflict_report_digest": "bb894955a648cfb2311c24edb57c2fb5c36905c41e3e36962ac69dede7e38e5c",
+  "evidence_score_report_digest": "bab1cbc8ac04e8c5d1ac34820d7ae35738c2928fe39943e7069b5a2b1d51321b",
+  "forbidden_fields_absent": true,
+  "instructions": {
+    "must_not_use": [
+      "evaluator-only answers",
+      "hidden evaluator nodes",
+      "hidden evaluator edges",
+      "semantic evaluator labels"
+    ],
+    "task": "Choose an answer using the image/frame evidence, the initial VLM answer, and the DSG candidate. Return structured JSON only."
+  },
+  "request_bundle_digest": "55a999c080df1a174181ee7e297dfe4e0297a13448f35bf8ccfe610eab06e9a8",
+  "required_output_schema": {
+    "answer_text": "string",
+    "current_location": {
+      "dst": "string or null",
+      "dst_label": "string or null",
+      "relation": "ON|INSIDE|IN_REGION|IN_ROOM|UNKNOWN",
+      "step": "integer or null"
+    },
+    "decision": "accept_vlm|accept_dsg|reject_both|uncertain",
+    "evidence_summary": "string"
+  },
+  "schema_version": "dsg-spatialqa-lab.vlm-graph-evidence-request-bundle.v1"
+}

@@ -1,0 +1,4080 @@
+{
+  "case_count": 60,
+  "cases": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48:observation_aware:100034",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 34
+        },
+        "support_label": "room",
+        "target_label": "apple"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48:observation_aware:100034",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "apple",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          211,
+          141,
+          228,
+          157
+        ],
+        "bbox_3d_center": {
+          "x": -0.696364,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -1.468782
+        },
+        "bbox_3d_size": [
+          0.159141,
+          0.2004,
+          0.159141
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000034:apple:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-001",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "apple",
+        "mask_path": null,
+        "object_id": "apple_00_47_01_15_00_48",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/rgb.ppm",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 34,
+        "visible": true
+      },
+      "target_object_id": "apple_00_47_01_15_00_48",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62:observation_aware:100034",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 34
+        },
+        "support_label": "room",
+        "target_label": "book"
+      },
+      "graph_confidence": 0.95,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62:observation_aware:100034",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "book",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          113,
+          153,
+          263,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.085269,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": 0.571432
+        },
+        "bbox_3d_size": [
+          0.328192,
+          0.255019,
+          0.328192
+        ],
+        "confidence": 0.95,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000034:book:002",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-001",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "book",
+        "mask_path": null,
+        "object_id": "book_00_15_01_10_00_62",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/rgb.ppm",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 34,
+        "visible": true
+      },
+      "target_object_id": "book_00_15_01_10_00_62",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54:observation_aware:100037",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 37
+        },
+        "support_label": "room",
+        "target_label": "bottle"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54:observation_aware:100037",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "bottle",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          12,
+          132,
+          52,
+          182
+        ],
+        "bbox_3d_center": {
+          "x": 0.990996,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -2.798383
+        },
+        "bbox_3d_size": [
+          0.127983,
+          0.212265,
+          0.127983
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000037:bottle:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-001",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "bottle",
+        "mask_path": null,
+        "object_id": "bottle_01_54_00_89_02_54",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/rgb.ppm",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 37,
+        "visible": true
+      },
+      "target_object_id": "bottle_01_54_00_89_02_54",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75:observation_aware:100036",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 36
+        },
+        "support_label": "room",
+        "target_label": "bowl"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75:observation_aware:100036",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "bowl",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          136,
+          192,
+          206,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.296136,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -0.692957
+        },
+        "bbox_3d_size": [
+          0.123937,
+          0.114045,
+          0.123937
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000036:bowl:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-001",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "bowl",
+        "mask_path": null,
+        "object_id": "bowl_00_27_01_10_00_75",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/rgb.ppm",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 36,
+        "visible": true
+      },
+      "target_object_id": "bowl_00_27_01_10_00_75",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03:observation_aware:100036",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 36
+        },
+        "support_label": "room",
+        "target_label": "bread"
+      },
+      "graph_confidence": 0.85,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03:observation_aware:100036",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "bread",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          82,
+          116,
+          126,
+          146
+        ],
+        "bbox_3d_center": {
+          "x": -0.204631,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": 2.348979
+        },
+        "bbox_3d_size": [
+          0.502579,
+          0.461628,
+          0.502579
+        ],
+        "confidence": 0.85,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000036:bread:002",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-001",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "bread",
+        "mask_path": null,
+        "object_id": "bread_00_52_01_17_00_03",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/rgb.ppm",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 36,
+        "visible": true
+      },
+      "target_object_id": "bread_00_52_01_17_00_03",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46:observation_aware:100036",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46:observation_aware:100036",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "butterknife",
+      "target_object_evidence": null,
+      "target_object_id": "butterknife_00_41_01_11_00_46",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20:observation_aware:100037",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 37
+        },
+        "support_label": "room",
+        "target_label": "cabinet"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20:observation_aware:100037",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "cabinet",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          62,
+          0,
+          320,
+          132
+        ],
+        "bbox_3d_center": {
+          "x": 0.574842,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -2.428288
+        },
+        "bbox_3d_size": [
+          0.564255,
+          0.386337,
+          0.564255
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000037:cabinet:002",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-001",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "cabinet",
+        "mask_path": null,
+        "object_id": "cabinet_00_68_00_50_02_20",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/rgb.ppm",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 37,
+        "visible": true
+      },
+      "target_object_id": "cabinet_00_68_00_50_02_20",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46:observation_aware:100040",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 40
+        },
+        "support_label": "room",
+        "target_label": "cabinet"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46:observation_aware:100040",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "cabinet",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          0,
+          63,
+          320,
+          205
+        ],
+        "bbox_3d_center": {
+          "x": -0.724706,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -2.602158
+        },
+        "bbox_3d_size": [
+          0.855196,
+          0.507967,
+          0.855196
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000040/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000040:cabinet:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-001",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "cabinet",
+        "mask_path": null,
+        "object_id": "cabinet_00_68_02_02_02_46",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000040/rgb.ppm",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 40,
+        "visible": true
+      },
+      "target_object_id": "cabinet_00_68_02_02_02_46",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46:observation_aware:100039",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 39
+        },
+        "support_label": "room",
+        "target_label": "cabinet"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46:observation_aware:100039",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "cabinet",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          42,
+          26,
+          320,
+          106
+        ],
+        "bbox_3d_center": {
+          "x": 0.645976,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -2.6959
+        },
+        "bbox_3d_size": [
+          0.827801,
+          0.320439,
+          0.827801
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000039/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000039:cabinet:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-001",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "cabinet",
+        "mask_path": null,
+        "object_id": "cabinet_00_72_02_02_02_46",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000039/rgb.ppm",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 39,
+        "visible": true
+      },
+      "target_object_id": "cabinet_00_72_02_02_02_46",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46:observation_aware:100040",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 40
+        },
+        "support_label": "room",
+        "target_label": "cabinet"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46:observation_aware:100040",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "cabinet",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          0,
+          63,
+          320,
+          205
+        ],
+        "bbox_3d_center": {
+          "x": -0.724706,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -2.602158
+        },
+        "bbox_3d_size": [
+          0.855196,
+          0.507967,
+          0.855196
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000040/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000040:cabinet:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-001",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "cabinet",
+        "mask_path": null,
+        "object_id": "cabinet_00_68_02_02_02_46",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000040/rgb.ppm",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 40,
+        "visible": true
+      },
+      "target_object_id": "cabinet_00_68_02_02_02_46",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98:observation_aware:200001",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200001
+        },
+        "support_label": "room",
+        "target_label": "armchair"
+      },
+      "graph_confidence": 0.85,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98:observation_aware:200001",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "armchair",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          270,
+          170,
+          650,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": -0.18538,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 6.220057
+        },
+        "bbox_3d_size": [
+          0.883816,
+          0.219601,
+          0.883816
+        ],
+        "confidence": 0.85,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200001/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200001:armchair:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "armchair",
+        "mask_path": null,
+        "object_id": "armchair_00_85_00_00_05_98",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200001/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200001,
+        "visible": true
+      },
+      "target_object_id": "armchair_00_85_00_00_05_98",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02:observation_aware:200013",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200013
+        },
+        "support_label": "room",
+        "target_label": "armchair"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02:observation_aware:200013",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "armchair",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          105,
+          185,
+          225,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": -4.399531,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 6.268494
+        },
+        "bbox_3d_size": [
+          0.389189,
+          0.240161,
+          0.389189
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200013/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200013:armchair:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "armchair",
+        "mask_path": null,
+        "object_id": "armchair_04_38_00_00_06_02",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200013/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200013,
+        "visible": true
+      },
+      "target_object_id": "armchair_04_38_00_00_06_02",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17:observation_aware:200007",
+      "checks": {
+        "bbox_available": true,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": true,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": true,
+        "support_label_plausible": true,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "chair_01_86_00_02_01_84",
+          "relation": "ON",
+          "step": 200007
+        },
+        "support_label": "chair",
+        "target_label": "book"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17:observation_aware:200007",
+      "graph_trust_score": 1.0,
+      "reject_reason": null,
+      "relation": "ON",
+      "support_label": "chair",
+      "support_object_evidence": {
+        "bbox_2d_xyxy": [
+          62,
+          132,
+          222,
+          232
+        ],
+        "bbox_3d_center": {
+          "x": -2.031558,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.553726
+        },
+        "bbox_3d_size": [
+          0.547931,
+          0.458311,
+          0.547931
+        ],
+        "confidence": 0.95,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:diningtable:004",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "diningtable",
+        "mask_path": null,
+        "object_id": "chair_01_86_00_02_01_84",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "support_object_id": "chair_01_86_00_02_01_84",
+      "target_label": "book",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          133,
+          193,
+          192,
+          233
+        ],
+        "bbox_3d_center": {
+          "x": -1.922955,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.367035
+        },
+        "bbox_3d_size": [
+          0.165765,
+          0.15103,
+          0.165765
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:book:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "book",
+        "mask_path": null,
+        "object_id": "book_01_87_00_68_01_17",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "target_object_id": "book_01_87_00_68_01_17",
+      "trusted": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79:observation_aware:200002",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200002
+        },
+        "support_label": "room",
+        "target_label": "bowl"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79:observation_aware:200002",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "bowl",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          133,
+          114,
+          146,
+          121
+        ],
+        "bbox_3d_center": {
+          "x": -2.431625,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 6.266024
+        },
+        "bbox_3d_size": [
+          0.088079,
+          0.067108,
+          0.088079
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200002/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200002:bowl:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "bowl",
+        "mask_path": null,
+        "object_id": "bowl_02_45_00_60_04_79",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200002/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200002,
+        "visible": true
+      },
+      "target_object_id": "bowl_02_45_00_60_04_79",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43:observation_aware:200003",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43:observation_aware:200003",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "box",
+      "target_object_evidence": null,
+      "target_object_id": "box_03_36_00_19_06_43",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43:observation_aware:200007",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200007
+        },
+        "support_label": "room",
+        "target_label": "chair"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43:observation_aware:200007",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "chair",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          186,
+          176,
+          256,
+          236
+        ],
+        "bbox_3d_center": {
+          "x": -1.769068,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.703313
+        },
+        "bbox_3d_size": [
+          0.262191,
+          0.30035,
+          0.262191
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:chair:002",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "chair",
+        "mask_path": null,
+        "object_id": "chair_01_34_00_02_01_43",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "target_object_id": "chair_01_34_00_02_01_43",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04:observation_aware:200007",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": false
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200007
+        },
+        "support_label": "room",
+        "target_label": "chair"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04:observation_aware:200007",
+      "graph_trust_score": 0.45,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "chair",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          66,
+          186,
+          86,
+          211
+        ],
+        "bbox_3d_center": {
+          "x": -2.232501,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.468239
+        },
+        "bbox_3d_size": [
+          0.068679,
+          0.113375,
+          0.068679
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:creditcard:003",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "creditcard",
+        "mask_path": null,
+        "object_id": "chair_01_86_00_02_01_04",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "target_object_id": "chair_01_86_00_02_01_04",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84:observation_aware:200007",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": false
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200007
+        },
+        "support_label": "room",
+        "target_label": "chair"
+      },
+      "graph_confidence": 0.95,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84:observation_aware:200007",
+      "graph_trust_score": 0.45,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "chair",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          62,
+          132,
+          222,
+          232
+        ],
+        "bbox_3d_center": {
+          "x": -2.031558,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.553726
+        },
+        "bbox_3d_size": [
+          0.547931,
+          0.458311,
+          0.547931
+        ],
+        "confidence": 0.95,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:diningtable:004",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "diningtable",
+        "mask_path": null,
+        "object_id": "chair_01_86_00_02_01_84",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "target_object_id": "chair_01_86_00_02_01_84",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99:observation_aware:200007",
+      "checks": {
+        "bbox_available": true,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": true,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": true,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": false
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "chair_02_52_00_02_01_88",
+          "relation": "ON",
+          "step": 200007
+        },
+        "support_label": "chair",
+        "target_label": "chair"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99:observation_aware:200007",
+      "graph_trust_score": 0.49,
+      "reject_reason": "target_label_mismatch",
+      "relation": "ON",
+      "support_label": "chair",
+      "support_object_evidence": {
+        "bbox_2d_xyxy": [
+          133,
+          193,
+          192,
+          233
+        ],
+        "bbox_3d_center": {
+          "x": -1.922955,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.367035
+        },
+        "bbox_3d_size": [
+          0.165765,
+          0.15103,
+          0.165765
+        ],
+        "confidence": 0.85,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:newspaper:006",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "newspaper",
+        "mask_path": null,
+        "object_id": "chair_02_52_00_02_01_88",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "support_object_id": "chair_02_52_00_02_01_88",
+      "target_label": "chair",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          162,
+          142,
+          212,
+          182
+        ],
+        "bbox_3d_center": {
+          "x": -1.880734,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.581453
+        },
+        "bbox_3d_size": [
+          0.17297,
+          0.185406,
+          0.17297
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:laptop:005",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "laptop",
+        "mask_path": null,
+        "object_id": "chair_02_51_00_02_00_99",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "target_object_id": "chair_02_51_00_02_00_99",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88:observation_aware:200007",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": false
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200007
+        },
+        "support_label": "room",
+        "target_label": "chair"
+      },
+      "graph_confidence": 0.85,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88:observation_aware:200007",
+      "graph_trust_score": 0.45,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "chair",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          133,
+          193,
+          192,
+          233
+        ],
+        "bbox_3d_center": {
+          "x": -1.922955,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.367035
+        },
+        "bbox_3d_size": [
+          0.165765,
+          0.15103,
+          0.165765
+        ],
+        "confidence": 0.85,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:newspaper:006",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "newspaper",
+        "mask_path": null,
+        "object_id": "chair_02_52_00_02_01_88",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "target_object_id": "chair_02_52_00_02_01_88",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47:observation_aware:100032",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 32
+        },
+        "support_label": "room",
+        "target_label": "alarmclock"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47:observation_aware:100032",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "alarmclock",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          230,
+          130,
+          285,
+          215
+        ],
+        "bbox_3d_center": {
+          "x": -1.476028,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": -0.568476
+        },
+        "bbox_3d_size": [
+          0.125191,
+          0.256344,
+          0.125191
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000032:alarmclock:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "alarmclock",
+        "mask_path": null,
+        "object_id": "alarmclock_01_28_01_24_00_47",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 32,
+        "visible": true
+      },
+      "target_object_id": "alarmclock_01_28_01_24_00_47",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82:observation_aware:200012",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200012
+        },
+        "support_label": "room",
+        "target_label": "baseballbat"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82:observation_aware:200012",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "baseballbat",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          145,
+          155,
+          175,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 2.94919,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": 2.194209
+        },
+        "bbox_3d_size": [
+          0.069965,
+          0.258795,
+          0.069965
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-003/200012/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:200012:baseballbat:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "baseballbat",
+        "mask_path": null,
+        "object_id": "baseballbat_02_84_00_29_01_82",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-003/200012/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200012,
+        "visible": true
+      },
+      "target_object_id": "baseballbat_02_84_00_29_01_82",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24:observation_aware:100021",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24:observation_aware:100021",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "basketball",
+      "target_object_evidence": null,
+      "target_object_id": "basketball_00_24_00_13_01_24",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87:observation_aware:100027",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 27
+        },
+        "support_label": "room",
+        "target_label": "bed"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87:observation_aware:100027",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "bed",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          170,
+          130,
+          320,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.138568,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": 1.88416
+        },
+        "bbox_3d_size": [
+          1.124973,
+          1.102622,
+          1.124973
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000027:bed:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "bed",
+        "mask_path": null,
+        "object_id": "bed_00_64_00_01_00_87",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 27,
+        "visible": true
+      },
+      "target_object_id": "bed_00_64_00_01_00_87",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44:observation_aware:100033",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 33
+        },
+        "support_label": "room",
+        "target_label": "blinds"
+      },
+      "graph_confidence": 0.85,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44:observation_aware:100033",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "blinds",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          133,
+          62,
+          293,
+          113
+        ],
+        "bbox_3d_center": {
+          "x": 0.022,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": -1.688791
+        },
+        "bbox_3d_size": [
+          0.341949,
+          0.147258,
+          0.341949
+        ],
+        "confidence": 0.85,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000033/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000033:blinds:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "blinds",
+        "mask_path": null,
+        "object_id": "blinds_00_11_02_34_01_44",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000033/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 33,
+        "visible": true
+      },
+      "target_object_id": "blinds_00_11_02_34_01_44",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18:observation_aware:100007",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 7
+        },
+        "support_label": "room",
+        "target_label": "book"
+      },
+      "graph_confidence": 0.85,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18:observation_aware:100007",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "book",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          182,
+          116,
+          218,
+          142
+        ],
+        "bbox_3d_center": {
+          "x": -1.628011,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": 0.830404
+        },
+        "bbox_3d_size": [
+          0.247017,
+          0.24034,
+          0.247017
+        ],
+        "confidence": 0.85,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000007:book:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "book",
+        "mask_path": null,
+        "object_id": "book_00_90_00_56_01_18",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000007/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 7,
+        "visible": true
+      },
+      "target_object_id": "book_00_90_00_56_01_18",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34:observation_aware:100016",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 16
+        },
+        "support_label": "room",
+        "target_label": "boots"
+      },
+      "graph_confidence": 0.85,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34:observation_aware:100016",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "boots",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          105,
+          185,
+          165,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": -1.785951,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": -0.929954
+        },
+        "bbox_3d_size": [
+          0.197348,
+          0.241562,
+          0.197348
+        ],
+        "confidence": 0.85,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000016/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000016:boots:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "boots",
+        "mask_path": null,
+        "object_id": "boots_01_28_00_01_01_34",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000016/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 16,
+        "visible": true
+      },
+      "target_object_id": "boots_01_28_00_01_01_34",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21:observation_aware:100029",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21:observation_aware:100029",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "bowl",
+      "target_object_evidence": null,
+      "target_object_id": "bowl_02_45_00_80_01_21",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89:observation_aware:200009",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200009
+        },
+        "support_label": "room",
+        "target_label": "box"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89:observation_aware:200009",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "box",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          135,
+          210,
+          215,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 3.567899,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": 0.090177
+        },
+        "bbox_3d_size": [
+          0.273,
+          0.139309,
+          0.273
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-003/200009/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:200009:box:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "box",
+        "mask_path": null,
+        "object_id": "box_02_73_00_20_00_89",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-003/200009/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200009,
+        "visible": true
+      },
+      "target_object_id": "box_02_73_00_20_00_89",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19:observation_aware:100029",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19:observation_aware:100029",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "cd",
+      "target_object_evidence": null,
+      "target_object_id": "cd_01_62_00_80_01_19",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92:observation_aware:200011",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200011
+        },
+        "support_label": "room",
+        "target_label": "bathtub"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92:observation_aware:200011",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "bathtub",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          0,
+          178,
+          205,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": -0.053103,
+          "y": 0.901616,
+          "yaw": 0.0,
+          "z": -0.055305
+        },
+        "bbox_3d_size": [
+          0.836147,
+          0.340953,
+          0.836147
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200011/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:200011:bathtub:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-004",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "bathtub",
+        "mask_path": null,
+        "object_id": "bathtub_00_21_00_36_00_92",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200011/rgb.ppm",
+        "scene_id": "FloorPlan401",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200011,
+        "visible": true
+      },
+      "target_object_id": "bathtub_00_21_00_36_00_92",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0003:object_location:candle_03_11_00_23_00_05:observation_aware:100043",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 43
+        },
+        "support_label": "room",
+        "target_label": "candle"
+      },
+      "graph_confidence": 0.6,
+      "graph_prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0003:object_location:candle_03_11_00_23_00_05:observation_aware:100043",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "candle",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          146,
+          169,
+          156,
+          186
+        ],
+        "bbox_3d_center": {
+          "x": -3.298159,
+          "y": 0.901616,
+          "yaw": 0.0,
+          "z": -0.081163
+        },
+        "bbox_3d_size": [
+          0.05,
+          0.060149,
+          0.05
+        ],
+        "confidence": 0.6,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000043/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:000043:candle:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-004",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "candle",
+        "mask_path": null,
+        "object_id": "candle_03_11_00_23_00_05",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000043/rgb.ppm",
+        "scene_id": "FloorPlan401",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 43,
+        "visible": true
+      },
+      "target_object_id": "candle_03_11_00_23_00_05",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02:observation_aware:200010",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200010
+        },
+        "support_label": "room",
+        "target_label": "cloth"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02:observation_aware:200010",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "cloth",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          138,
+          213,
+          168,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.114296,
+          "y": 0.901616,
+          "yaw": 0.0,
+          "z": 1.054255
+        },
+        "bbox_3d_size": [
+          0.132243,
+          0.159261,
+          0.132243
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200010/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:200010:cloth:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-004",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "cloth",
+        "mask_path": null,
+        "object_id": "cloth_00_27_00_04_01_02",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200010/rgb.ppm",
+        "scene_id": "FloorPlan401",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200010,
+        "visible": true
+      },
+      "target_object_id": "cloth_00_27_00_04_01_02",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02:observation_aware:100044",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02:observation_aware:100044",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "dishsponge",
+      "target_object_evidence": null,
+      "target_object_id": "dishsponge_03_20_00_86_00_02",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28:observation_aware:200011",
+      "checks": {
+        "bbox_available": true,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": true,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": true,
+        "support_label_plausible": true,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "bathtub_00_21_00_36_00_92",
+          "relation": "ON",
+          "step": 200011
+        },
+        "support_label": "bathtub",
+        "target_label": "faucet"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28:observation_aware:200011",
+      "graph_trust_score": 1.0,
+      "reject_reason": null,
+      "relation": "ON",
+      "support_label": "bathtub",
+      "support_object_evidence": {
+        "bbox_2d_xyxy": [
+          0,
+          178,
+          205,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": -0.053103,
+          "y": 0.901616,
+          "yaw": 0.0,
+          "z": -0.055305
+        },
+        "bbox_3d_size": [
+          0.836147,
+          0.340953,
+          0.836147
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200011/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:200011:bathtub:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-004",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "bathtub",
+        "mask_path": null,
+        "object_id": "bathtub_00_21_00_36_00_92",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200011/rgb.ppm",
+        "scene_id": "FloorPlan401",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200011,
+        "visible": true
+      },
+      "support_object_id": "bathtub_00_21_00_36_00_92",
+      "target_label": "faucet",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          176,
+          188,
+          222,
+          222
+        ],
+        "bbox_3d_center": {
+          "x": -0.810742,
+          "y": 0.901616,
+          "yaw": 0.0,
+          "z": 0.103397
+        },
+        "bbox_3d_size": [
+          0.086264,
+          0.085652,
+          0.086264
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200011/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:200011:faucet:002",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-004",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "faucet",
+        "mask_path": null,
+        "object_id": "faucet_00_14_00_61_00_28",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200011/rgb.ppm",
+        "scene_id": "FloorPlan401",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200011,
+        "visible": true
+      },
+      "target_object_id": "faucet_00_14_00_61_00_28",
+      "trusted": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53:observation_aware:100046",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 46
+        },
+        "support_label": "room",
+        "target_label": "faucet"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53:observation_aware:100046",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "faucet",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          62,
+          773,
+          131,
+          992
+        ],
+        "bbox_3d_center": {
+          "x": -3.482059,
+          "y": 0.901616,
+          "yaw": 0.0,
+          "z": 1.956769
+        },
+        "bbox_3d_size": [
+          0.121088,
+          0.507418,
+          0.121088
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:000046:faucet:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-004",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "faucet",
+        "mask_path": null,
+        "object_id": "faucet_03_40_01_02_01_53",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/rgb.ppm",
+        "scene_id": "FloorPlan401",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 46,
+        "visible": true
+      },
+      "target_object_id": "faucet_03_40_01_02_01_53",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85:observation_aware:100045",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 45
+        },
+        "support_label": "room",
+        "target_label": "floor"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85:observation_aware:100045",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "floor",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          0,
+          228,
+          55,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": -3.19917,
+          "y": 0.901616,
+          "yaw": 0.0,
+          "z": 0.549569
+        },
+        "bbox_3d_size": [
+          0.276844,
+          0.08569,
+          0.276844
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000045/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:000045:floor:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-004",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "floor",
+        "mask_path": null,
+        "object_id": "floor_01_44_00_04_01_85",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000045/rgb.ppm",
+        "scene_id": "FloorPlan401",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 45,
+        "visible": true
+      },
+      "target_object_id": "floor_01_44_00_04_01_85",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88:observation_aware:200014",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200014
+        },
+        "support_label": "room",
+        "target_label": "garbagecan"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88:observation_aware:200014",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "garbagecan",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          133,
+          213,
+          183,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.490615,
+          "y": 0.901616,
+          "yaw": 0.0,
+          "z": 3.988546
+        },
+        "bbox_3d_size": [
+          0.16239,
+          0.118874,
+          0.16239
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200014/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:200014:garbagecan:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-004",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "garbagecan",
+        "mask_path": null,
+        "object_id": "garbagecan_00_05_00_00_03_88",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200014/rgb.ppm",
+        "scene_id": "FloorPlan401",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200014,
+        "visible": true
+      },
+      "target_object_id": "garbagecan_00_05_00_00_03_88",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10:observation_aware:100046",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 46
+        },
+        "support_label": "room",
+        "target_label": "handtowel"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10:observation_aware:100046",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "handtowel",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          430,
+          770,
+          530,
+          1000
+        ],
+        "bbox_3d_center": {
+          "x": -3.422378,
+          "y": 0.901616,
+          "yaw": 0.0,
+          "z": 2.446908
+        },
+        "bbox_3d_size": [
+          0.103763,
+          0.316425,
+          0.103763
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:000046:handtowel:002",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-004",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "handtowel",
+        "mask_path": null,
+        "object_id": "handtowel_03_42_01_34_02_10",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/rgb.ppm",
+        "scene_id": "FloorPlan401",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 46,
+        "visible": true
+      },
+      "target_object_id": "handtowel_03_42_01_34_02_10",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08:observation_aware:100041",
+      "checks": {
+        "bbox_available": true,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": true,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": true,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "egg_00_13_00_95_00_17",
+          "relation": "ON",
+          "step": 41
+        },
+        "support_label": "egg",
+        "target_label": "bread"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08:observation_aware:100041",
+      "graph_trust_score": 0.49,
+      "reject_reason": "implausible_support_label",
+      "relation": "ON",
+      "support_label": "egg",
+      "support_object_evidence": {
+        "bbox_2d_xyxy": [
+          185,
+          225,
+          210,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.040728,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -0.024233
+        },
+        "bbox_3d_size": [
+          0.057257,
+          0.05,
+          0.057257
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-005:FloorPlan2:000041:egg:002",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-005",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "egg",
+        "mask_path": null,
+        "object_id": "egg_00_13_00_95_00_17",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/rgb.ppm",
+        "scene_id": "FloorPlan2",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 41,
+        "visible": true
+      },
+      "support_object_id": "egg_00_13_00_95_00_17",
+      "target_label": "bread",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          210,
+          230,
+          260,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.040734,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": 0.056637
+        },
+        "bbox_3d_size": [
+          0.110351,
+          0.05,
+          0.110351
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-005:FloorPlan2:000041:bread:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-005",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "bread",
+        "mask_path": null,
+        "object_id": "bread_00_26_00_99_00_08",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/rgb.ppm",
+        "scene_id": "FloorPlan2",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 41,
+        "visible": true
+      },
+      "target_object_id": "bread_00_26_00_99_00_08",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45:observation_aware:100047",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 47
+        },
+        "support_label": "room",
+        "target_label": "cabinet"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45:observation_aware:100047",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "cabinet",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          0,
+          0,
+          318,
+          198
+        ],
+        "bbox_3d_center": {
+          "x": -1.510901,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -1.262326
+        },
+        "bbox_3d_size": [
+          0.72127,
+          0.599927,
+          0.72127
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000047/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-005:FloorPlan2:000047:cabinet:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-005",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "cabinet",
+        "mask_path": null,
+        "object_id": "cabinet_00_63_02_02_01_45",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000047/rgb.ppm",
+        "scene_id": "FloorPlan2",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 47,
+        "visible": true
+      },
+      "target_object_id": "cabinet_00_63_02_02_01_45",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45:observation_aware:100047",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 47
+        },
+        "support_label": "room",
+        "target_label": "cabinet"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45:observation_aware:100047",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "cabinet",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          0,
+          0,
+          318,
+          198
+        ],
+        "bbox_3d_center": {
+          "x": -1.510901,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -1.262326
+        },
+        "bbox_3d_size": [
+          0.72127,
+          0.599927,
+          0.72127
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000047/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-005:FloorPlan2:000047:cabinet:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-005",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "cabinet",
+        "mask_path": null,
+        "object_id": "cabinet_00_63_02_02_01_45",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000047/rgb.ppm",
+        "scene_id": "FloorPlan2",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 47,
+        "visible": true
+      },
+      "target_object_id": "cabinet_00_63_02_02_01_45",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0001:cellphone_00_26_00_56_00_52:observation_aware:100027",
+      "checks": {
+        "bbox_available": true,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": true,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": true,
+        "support_label_plausible": true,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "bed_00_64_00_01_00_87",
+          "relation": "ON",
+          "step": 27
+        },
+        "support_label": "bed",
+        "target_label": "cellphone"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0001:cellphone_00_26_00_56_00_52:observation_aware:100027",
+      "graph_trust_score": 1.0,
+      "reject_reason": null,
+      "relation": "ON",
+      "support_label": "bed",
+      "support_object_evidence": {
+        "bbox_2d_xyxy": [
+          170,
+          130,
+          320,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.138568,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": 1.88416
+        },
+        "bbox_3d_size": [
+          1.124973,
+          1.102622,
+          1.124973
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000027:bed:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "bed",
+        "mask_path": null,
+        "object_id": "bed_00_64_00_01_00_87",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 27,
+        "visible": true
+      },
+      "support_object_id": "bed_00_64_00_01_00_87",
+      "target_label": "cellphone",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          290,
+          220,
+          310,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.260014,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": 1.2264
+        },
+        "bbox_3d_size": [
+          0.113286,
+          0.151048,
+          0.113286
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000027:cellphone:002",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "cellphone",
+        "mask_path": null,
+        "object_id": "cellphone_00_26_00_56_00_52",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 27,
+        "visible": true
+      },
+      "target_object_id": "cellphone_00_26_00_56_00_52",
+      "trusted": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0002:creditcard_00_46_01_10_00_87:observation_aware:100034",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0002:creditcard_00_46_01_10_00_87:observation_aware:100034",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "creditcard",
+      "target_object_evidence": null,
+      "target_object_id": "creditcard_00_46_01_10_00_87",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0003:creditcard_01_78_00_80_01_19:observation_aware:100029",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0003:creditcard_01_78_00_80_01_19:observation_aware:100029",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "creditcard",
+      "target_object_evidence": null,
+      "target_object_id": "creditcard_01_78_00_80_01_19",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0004:creditcard_01_94_00_68_01_80:observation_aware:200007",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": false
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200007
+        },
+        "support_label": "room",
+        "target_label": "chair"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0004:creditcard_01_94_00_68_01_80:observation_aware:200007",
+      "graph_trust_score": 0.45,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "chair",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          66,
+          186,
+          86,
+          211
+        ],
+        "bbox_3d_center": {
+          "x": -2.232501,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.468239
+        },
+        "bbox_3d_size": [
+          0.068679,
+          0.113375,
+          0.068679
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:creditcard:003",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "creditcard",
+        "mask_path": null,
+        "object_id": "chair_01_86_00_02_01_04",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "target_object_id": "chair_01_86_00_02_01_04",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0005:desklamp_01_32_01_24_00_99:observation_aware:100032",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 32
+        },
+        "support_label": "room",
+        "target_label": "desklamp"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0005:desklamp_01_32_01_24_00_99:observation_aware:100032",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "desklamp",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          115,
+          120,
+          195,
+          215
+        ],
+        "bbox_3d_center": {
+          "x": -1.330779,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": -0.789066
+        },
+        "bbox_3d_size": [
+          0.147327,
+          0.232813,
+          0.147327
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000032:desklamp:002",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "desklamp",
+        "mask_path": null,
+        "object_id": "desklamp_01_32_01_24_00_99",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 32,
+        "visible": true
+      },
+      "target_object_id": "desklamp_01_32_01_24_00_99",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0006:diningtable_02_27_00_02_01_42:observation_aware:200007",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": false
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200007
+        },
+        "support_label": "room",
+        "target_label": "chair"
+      },
+      "graph_confidence": 0.95,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0006:diningtable_02_27_00_02_01_42:observation_aware:200007",
+      "graph_trust_score": 0.45,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "chair",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          62,
+          132,
+          222,
+          232
+        ],
+        "bbox_3d_center": {
+          "x": -2.031558,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.553726
+        },
+        "bbox_3d_size": [
+          0.547931,
+          0.458311,
+          0.547931
+        ],
+        "confidence": 0.95,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:diningtable:004",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "diningtable",
+        "mask_path": null,
+        "object_id": "chair_01_86_00_02_01_84",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "target_object_id": "chair_01_86_00_02_01_84",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0007:egg_00_13_00_95_00_17:observation_aware:100041",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 41
+        },
+        "support_label": "room",
+        "target_label": "egg"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0007:egg_00_13_00_95_00_17:observation_aware:100041",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "egg",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          185,
+          225,
+          210,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.040728,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -0.024233
+        },
+        "bbox_3d_size": [
+          0.057257,
+          0.05,
+          0.057257
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-005:FloorPlan2:000041:egg:002",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-005",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "egg",
+        "mask_path": null,
+        "object_id": "egg_00_13_00_95_00_17",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/rgb.ppm",
+        "scene_id": "FloorPlan2",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 41,
+        "visible": true
+      },
+      "target_object_id": "egg_00_13_00_95_00_17",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0008:kettle_01_04_00_90_02_60:observation_aware:100037",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 37
+        },
+        "support_label": "room",
+        "target_label": "kettle"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0008:kettle_01_04_00_90_02_60:observation_aware:100037",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "kettle",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          232,
+          135,
+          312,
+          195
+        ],
+        "bbox_3d_center": {
+          "x": 0.227784,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -2.721244
+        },
+        "bbox_3d_size": [
+          0.26324,
+          0.264323,
+          0.26324
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000037:kettle:003",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-001",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "kettle",
+        "mask_path": null,
+        "object_id": "kettle_01_04_00_90_02_60",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/rgb.ppm",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 37,
+        "visible": true
+      },
+      "target_object_id": "kettle_01_04_00_90_02_60",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0009:keychain_01_74_00_80_01_29:observation_aware:100029",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0009:keychain_01_74_00_80_01_29:observation_aware:100029",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "keychain",
+      "target_object_evidence": null,
+      "target_object_id": "keychain_01_74_00_80_01_29",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0010:laptop_00_50_00_56_00_29:observation_aware:100027",
+      "checks": {
+        "bbox_available": true,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": true,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": true,
+        "support_label_plausible": true,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "bed_00_64_00_01_00_87",
+          "relation": "ON",
+          "step": 27
+        },
+        "support_label": "bed",
+        "target_label": "laptop"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0010:laptop_00_50_00_56_00_29:observation_aware:100027",
+      "graph_trust_score": 1.0,
+      "reject_reason": null,
+      "relation": "ON",
+      "support_label": "bed",
+      "support_object_evidence": {
+        "bbox_2d_xyxy": [
+          170,
+          130,
+          320,
+          240
+        ],
+        "bbox_3d_center": {
+          "x": 0.138568,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": 1.88416
+        },
+        "bbox_3d_size": [
+          1.124973,
+          1.102622,
+          1.124973
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000027:bed:001",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "bed",
+        "mask_path": null,
+        "object_id": "bed_00_64_00_01_00_87",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 27,
+        "visible": true
+      },
+      "support_object_id": "bed_00_64_00_01_00_87",
+      "target_label": "laptop",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          220,
+          160,
+          270,
+          190
+        ],
+        "bbox_3d_center": {
+          "x": 0.142439,
+          "y": 0.910416,
+          "yaw": 0.0,
+          "z": 1.898612
+        },
+        "bbox_3d_size": [
+          0.382261,
+          0.309806,
+          0.382261
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000027:laptop:003",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-003",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "laptop",
+        "mask_path": null,
+        "object_id": "laptop_00_50_00_56_00_29",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 27,
+        "visible": true
+      },
+      "target_object_id": "laptop_00_50_00_56_00_29",
+      "trusted": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0011:laptop_01_70_00_68_01_66:observation_aware:200007",
+      "checks": {
+        "bbox_available": true,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": true,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": true,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": false
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "chair_02_52_00_02_01_88",
+          "relation": "ON",
+          "step": 200007
+        },
+        "support_label": "chair",
+        "target_label": "chair"
+      },
+      "graph_confidence": 0.9,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0011:laptop_01_70_00_68_01_66:observation_aware:200007",
+      "graph_trust_score": 0.49,
+      "reject_reason": "target_label_mismatch",
+      "relation": "ON",
+      "support_label": "chair",
+      "support_object_evidence": {
+        "bbox_2d_xyxy": [
+          133,
+          193,
+          192,
+          233
+        ],
+        "bbox_3d_center": {
+          "x": -1.922955,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.367035
+        },
+        "bbox_3d_size": [
+          0.165765,
+          0.15103,
+          0.165765
+        ],
+        "confidence": 0.85,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:newspaper:006",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "newspaper",
+        "mask_path": null,
+        "object_id": "chair_02_52_00_02_01_88",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "support_object_id": "chair_02_52_00_02_01_88",
+      "target_label": "chair",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          162,
+          142,
+          212,
+          182
+        ],
+        "bbox_3d_center": {
+          "x": -1.880734,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.581453
+        },
+        "bbox_3d_size": [
+          0.17297,
+          0.185406,
+          0.17297
+        ],
+        "confidence": 0.9,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:laptop:005",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "laptop",
+        "mask_path": null,
+        "object_id": "chair_02_51_00_02_00_99",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "target_object_id": "chair_02_51_00_02_00_99",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0012:mug_00_24_00_92_00_26:observation_aware:100041",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 41
+        },
+        "support_label": "room",
+        "target_label": "mug"
+      },
+      "graph_confidence": 0.7,
+      "graph_prediction_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0012:mug_00_24_00_92_00_26:observation_aware:100041",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "mug",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          233,
+          163,
+          250,
+          192
+        ],
+        "bbox_3d_center": {
+          "x": -1.428447,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": 0.216131
+        },
+        "bbox_3d_size": [
+          0.119262,
+          0.265027,
+          0.119262
+        ],
+        "confidence": 0.7,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-005:FloorPlan2:000041:mug:003",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-005",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "mug",
+        "mask_path": null,
+        "object_id": "mug_00_24_00_92_00_26",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/rgb.ppm",
+        "scene_id": "FloorPlan2",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 41,
+        "visible": true
+      },
+      "target_object_id": "mug_00_24_00_92_00_26",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0013:mug_02_82_00_80_01_22:observation_aware:100029",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0013:mug_02_82_00_80_01_22:observation_aware:100029",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "mug",
+      "target_object_evidence": null,
+      "target_object_id": "mug_02_82_00_80_01_22",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0014:newspaper_02_76_00_68_01_18:observation_aware:200007",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": false
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 200007
+        },
+        "support_label": "room",
+        "target_label": "chair"
+      },
+      "graph_confidence": 0.85,
+      "graph_prediction_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0014:newspaper_02_76_00_68_01_18:observation_aware:200007",
+      "graph_trust_score": 0.45,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "chair",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          133,
+          193,
+          192,
+          233
+        ],
+        "bbox_3d_center": {
+          "x": -1.922955,
+          "y": 0.902657,
+          "yaw": 0.0,
+          "z": 1.367035
+        },
+        "bbox_3d_size": [
+          0.165765,
+          0.15103,
+          0.165765
+        ],
+        "confidence": 0.85,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:newspaper:006",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-002",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "newspaper",
+        "mask_path": null,
+        "object_id": "chair_02_52_00_02_01_88",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 200007,
+        "visible": true
+      },
+      "target_object_id": "chair_02_52_00_02_01_88",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0015:pan_00_72_00_90_02_42:observation_aware:100037",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": true,
+        "current_location_fresh": true,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": true,
+        "step_compatible": true,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": true,
+        "target_label_match": true
+      },
+      "dsg_candidate": {
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 37
+        },
+        "support_label": "room",
+        "target_label": "pan"
+      },
+      "graph_confidence": 0.8,
+      "graph_prediction_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0015:pan_00_72_00_90_02_42:observation_aware:100037",
+      "graph_trust_score": 0.49,
+      "reject_reason": "room_level_graph_location",
+      "relation": "IN_ROOM",
+      "support_label": "room",
+      "support_object_evidence": null,
+      "support_object_id": "ai2thor_room",
+      "target_label": "pan",
+      "target_object_evidence": {
+        "bbox_2d_xyxy": [
+          140,
+          160,
+          200,
+          210
+        ],
+        "bbox_3d_center": {
+          "x": 0.590681,
+          "y": 0.900999,
+          "yaw": 0.0,
+          "z": -2.59114
+        },
+        "bbox_3d_size": [
+          0.163105,
+          0.181822,
+          0.163105
+        ],
+        "confidence": 0.8,
+        "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/depth.npy",
+        "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000037:pan:004",
+        "detector_name": "qwen37_vlm_rgbd_detector",
+        "episode_id": "ai2thor-real-small-episode-001",
+        "evidence_kinds": [
+          "depth",
+          "detector",
+          "rgb"
+        ],
+        "label": "pan",
+        "mask_path": null,
+        "object_id": "pan_00_72_00_90_02_42",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/rgb.ppm",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "source_name": "qwen37_vlm_rgbd_detector",
+        "step": 37,
+        "visible": true
+      },
+      "target_object_id": "pan_00_72_00_90_02_42",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:supplemental_object_location:0016:papertowelroll_03_15_00_96_00_28:observation_aware:100044",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:supplemental_object_location:0016:papertowelroll_03_15_00_96_00_28:observation_aware:100044",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "papertowelroll",
+      "target_object_evidence": null,
+      "target_object_id": "papertowelroll_03_15_00_96_00_28",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0017:pen_01_93_00_81_01_18:observation_aware:100029",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0017:pen_01_93_00_81_01_18:observation_aware:100029",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "pen",
+      "target_object_evidence": null,
+      "target_object_id": "pen_01_93_00_81_01_18",
+      "trusted": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0018:pencil_02_01_00_81_01_17:observation_aware:100029",
+      "checks": {
+        "bbox_available": false,
+        "confidence_pass": false,
+        "current_location_fresh": false,
+        "relation_explicit": false,
+        "required_evidence_kinds_present": false,
+        "step_compatible": false,
+        "support_frame_available": false,
+        "support_label_plausible": false,
+        "target_frame_available": false,
+        "target_label_match": false
+      },
+      "dsg_candidate": null,
+      "graph_confidence": null,
+      "graph_prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0018:pencil_02_01_00_81_01_17:observation_aware:100029",
+      "graph_trust_score": 0.0,
+      "reject_reason": "missing_graph_current_location",
+      "relation": null,
+      "support_label": null,
+      "support_object_evidence": null,
+      "support_object_id": null,
+      "target_label": "pencil",
+      "target_object_evidence": null,
+      "target_object_id": "pencil_02_01_00_81_01_17",
+      "trusted": false
+    }
+  ],
+  "detector_observation_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-independent-p4-target60.jsonl",
+  "graph_prediction_digest": "115a57dfcb788bdd3f4c556102ae345609ae314375cb4eace90e09c9e0e00340",
+  "graph_prediction_path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-independent-p39-compatible-step-target-alias.jsonl",
+  "qa_digest": "9eb72ebd1f87937faa53be3e9a6ec7dc3d628cd6ec899a1fa02ef61529633115",
+  "report_digest": "bab1cbc8ac04e8c5d1ac34820d7ae35738c2928fe39943e7069b5a2b1d51321b",
+  "schema_version": "dsg-spatialqa-lab.vlm-graph-evidence-score-report.v1",
+  "summary": {
+    "average_graph_trust_score": 0.413833,
+    "case_count": 60,
+    "explicit_trusted_relation_count": 4,
+    "reject_reason_counts": {
+      "implausible_support_label": 1,
+      "missing_graph_current_location": 13,
+      "room_level_graph_location": 40,
+      "target_label_mismatch": 2
+    },
+    "rejected_case_count": 56,
+    "trusted_case_count": 4,
+    "trusted_case_rate": 0.066667
+  },
+  "trust_threshold": 0.75
+}

@@ -1,0 +1,1712 @@
+{
+  "autonomous_exploration": true,
+  "closed_loop_memory_update": true,
+  "collection_kind": "reachable_relation_centric_nbv",
+  "episode_id": "ai2thor-real-small-episode-001",
+  "navigation_validated": true,
+  "real_ai2thor_runtime": false,
+  "rejected_candidates": [],
+  "runtime_kind": "fake_controller",
+  "scene_id": "FloorPlan1",
+  "schema_version": "dsg-spatialqa-lab.reachable-nbv-trajectory.v1",
+  "scoring_mode": "predicted_memory_only",
+  "steps": [
+    {
+      "agent_pose_after": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "yaw": 270.0,
+        "z": 1.0
+      },
+      "agent_pose_before": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "yaw": 270.0,
+        "z": 1.0
+      },
+      "capture_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "LookDown",
+        "LookUp"
+      ],
+      "executed_actions": [],
+      "executed_capture_actions": [],
+      "navigation_success": true,
+      "path_to_reach": {
+        "actions": [],
+        "path_positions": [
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": 1.0
+          }
+        ],
+        "reachable": true,
+        "rejected_reason": null
+      },
+      "planned_actions": [],
+      "selected_viewpoint": {
+        "candidate_id": "vp_-1.00_1.00_270_-30",
+        "pitch": -30.0,
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "yaw": 270.0,
+        "z": 1.0
+      },
+      "step_index": 0
+    },
+    {
+      "agent_pose_after": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "yaw": 180.0,
+        "z": -2.5
+      },
+      "agent_pose_before": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "yaw": 270.0,
+        "z": 1.0
+      },
+      "capture_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "LookDown",
+        "LookUp"
+      ],
+      "executed_actions": [
+        {
+          "action": "RotateLeft",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        }
+      ],
+      "executed_capture_actions": [],
+      "navigation_success": true,
+      "path_to_reach": {
+        "actions": [
+          "RotateLeft",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead"
+        ],
+        "path_positions": [
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": 1.0
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": 0.75
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": 0.5
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": 0.25
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": 0.0
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -0.25
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -0.5
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -0.75
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -1.0
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -1.25
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -1.5
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -1.75
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -2.5
+          }
+        ],
+        "reachable": true,
+        "rejected_reason": null
+      },
+      "planned_actions": [
+        "RotateLeft",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead"
+      ],
+      "selected_viewpoint": {
+        "candidate_id": "vp_-1.00_-2.50_180_-30",
+        "pitch": -30.0,
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "yaw": 180.0,
+        "z": -2.5
+      },
+      "step_index": 1
+    },
+    {
+      "agent_pose_after": {
+        "x": 2.75,
+        "y": 0.900999128818512,
+        "yaw": 90.0,
+        "z": -2.5
+      },
+      "agent_pose_before": {
+        "x": -1.0,
+        "y": 0.900999128818512,
+        "yaw": 180.0,
+        "z": -2.5
+      },
+      "capture_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "LookDown",
+        "LookUp"
+      ],
+      "executed_actions": [
+        {
+          "action": "RotateLeft",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        }
+      ],
+      "executed_capture_actions": [],
+      "navigation_success": true,
+      "path_to_reach": {
+        "actions": [
+          "RotateLeft",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead"
+        ],
+        "path_positions": [
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": -0.75,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": -0.5,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": -0.25,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 0.0,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 0.5,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 0.75,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 1.0,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 1.25,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 1.5,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 1.75,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 2.0,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 2.25,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 2.5,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 2.75,
+            "y": 0.900999128818512,
+            "z": -2.5
+          }
+        ],
+        "reachable": true,
+        "rejected_reason": null
+      },
+      "planned_actions": [
+        "RotateLeft",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead"
+      ],
+      "selected_viewpoint": {
+        "candidate_id": "vp_2.75_-2.50_90_-30",
+        "pitch": -30.0,
+        "x": 2.75,
+        "y": 0.900999128818512,
+        "yaw": 90.0,
+        "z": -2.5
+      },
+      "step_index": 2
+    },
+    {
+      "agent_pose_after": {
+        "x": 1.5,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": -0.75
+      },
+      "agent_pose_before": {
+        "x": 2.75,
+        "y": 0.900999128818512,
+        "yaw": 90.0,
+        "z": -2.5
+      },
+      "capture_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "LookDown",
+        "LookUp"
+      ],
+      "executed_actions": [
+        {
+          "action": "RotateRight",
+          "success": true
+        },
+        {
+          "action": "RotateRight",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "RotateRight",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        }
+      ],
+      "executed_capture_actions": [],
+      "navigation_success": true,
+      "path_to_reach": {
+        "actions": [
+          "RotateRight",
+          "RotateRight",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "RotateRight",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead"
+        ],
+        "path_positions": [
+          {
+            "x": 2.75,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 2.5,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 2.25,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 2.0,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 1.75,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 1.5,
+            "y": 0.900999128818512,
+            "z": -2.5
+          },
+          {
+            "x": 1.5,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": 1.5,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": 1.5,
+            "y": 0.900999128818512,
+            "z": -1.75
+          },
+          {
+            "x": 1.5,
+            "y": 0.900999128818512,
+            "z": -1.5
+          },
+          {
+            "x": 1.5,
+            "y": 0.900999128818512,
+            "z": -1.25
+          },
+          {
+            "x": 1.5,
+            "y": 0.900999128818512,
+            "z": -1.0
+          },
+          {
+            "x": 1.5,
+            "y": 0.900999128818512,
+            "z": -0.75
+          }
+        ],
+        "reachable": true,
+        "rejected_reason": null
+      },
+      "planned_actions": [
+        "RotateRight",
+        "RotateRight",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "RotateRight",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead"
+      ],
+      "selected_viewpoint": {
+        "candidate_id": "vp_1.50_-0.75_0_-30",
+        "pitch": -30.0,
+        "x": 1.5,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": -0.75
+      },
+      "step_index": 3
+    },
+    {
+      "agent_pose_after": {
+        "x": 2.5,
+        "y": 0.900999128818512,
+        "yaw": 180.0,
+        "z": -2.25
+      },
+      "agent_pose_before": {
+        "x": 1.5,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": -0.75
+      },
+      "capture_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "LookDown",
+        "LookUp"
+      ],
+      "executed_actions": [
+        {
+          "action": "RotateRight",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "RotateRight",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        }
+      ],
+      "executed_capture_actions": [],
+      "navigation_success": true,
+      "path_to_reach": {
+        "actions": [
+          "RotateRight",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "RotateRight",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead"
+        ],
+        "path_positions": [
+          {
+            "x": 1.5,
+            "y": 0.900999128818512,
+            "z": -0.75
+          },
+          {
+            "x": 1.75,
+            "y": 0.900999128818512,
+            "z": -0.75
+          },
+          {
+            "x": 2.0,
+            "y": 0.900999128818512,
+            "z": -0.75
+          },
+          {
+            "x": 2.25,
+            "y": 0.900999128818512,
+            "z": -0.75
+          },
+          {
+            "x": 2.5,
+            "y": 0.900999128818512,
+            "z": -0.75
+          },
+          {
+            "x": 2.5,
+            "y": 0.900999128818512,
+            "z": -1.0
+          },
+          {
+            "x": 2.5,
+            "y": 0.900999128818512,
+            "z": -1.25
+          },
+          {
+            "x": 2.5,
+            "y": 0.900999128818512,
+            "z": -1.5
+          },
+          {
+            "x": 2.5,
+            "y": 0.900999128818512,
+            "z": -1.75
+          },
+          {
+            "x": 2.5,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": 2.5,
+            "y": 0.900999128818512,
+            "z": -2.25
+          }
+        ],
+        "reachable": true,
+        "rejected_reason": null
+      },
+      "planned_actions": [
+        "RotateRight",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "RotateRight",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead"
+      ],
+      "selected_viewpoint": {
+        "candidate_id": "vp_2.50_-2.25_180_-30",
+        "pitch": -30.0,
+        "x": 2.5,
+        "y": 0.900999128818512,
+        "yaw": 180.0,
+        "z": -2.25
+      },
+      "step_index": 4
+    },
+    {
+      "agent_pose_after": {
+        "x": -2.5,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": -2.0
+      },
+      "agent_pose_before": {
+        "x": 2.5,
+        "y": 0.900999128818512,
+        "yaw": 180.0,
+        "z": -2.25
+      },
+      "capture_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "LookDown",
+        "LookUp"
+      ],
+      "executed_actions": [
+        {
+          "action": "RotateRight",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "RotateRight",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        }
+      ],
+      "executed_capture_actions": [],
+      "navigation_success": true,
+      "path_to_reach": {
+        "actions": [
+          "RotateRight",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "RotateRight",
+          "MoveAhead"
+        ],
+        "path_positions": [
+          {
+            "x": 2.5,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": 2.25,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": 2.0,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": 1.75,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": 1.5,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": 1.25,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": 1.0,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": 0.75,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": 0.5,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": 0.0,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": -0.25,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": -0.5,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": -0.75,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": -1.25,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": -1.5,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": -1.75,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": -2.0,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": -2.25,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": -2.5,
+            "y": 0.900999128818512,
+            "z": -2.25
+          },
+          {
+            "x": -2.5,
+            "y": 0.900999128818512,
+            "z": -2.0
+          }
+        ],
+        "reachable": true,
+        "rejected_reason": null
+      },
+      "planned_actions": [
+        "RotateRight",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "RotateRight",
+        "MoveAhead"
+      ],
+      "selected_viewpoint": {
+        "candidate_id": "vp_-2.50_-2.00_0_-30",
+        "pitch": -30.0,
+        "x": -2.5,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": -2.0
+      },
+      "step_index": 5
+    },
+    {
+      "agent_pose_after": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": -0.25
+      },
+      "agent_pose_before": {
+        "x": -2.5,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": -2.0
+      },
+      "capture_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "LookDown",
+        "LookUp"
+      ],
+      "executed_actions": [
+        {
+          "action": "RotateRight",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "RotateLeft",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        },
+        {
+          "action": "MoveAhead",
+          "success": true
+        }
+      ],
+      "executed_capture_actions": [],
+      "navigation_success": true,
+      "path_to_reach": {
+        "actions": [
+          "RotateRight",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "RotateLeft",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead",
+          "MoveAhead"
+        ],
+        "path_positions": [
+          {
+            "x": -2.5,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": -2.25,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": -2.0,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": -1.75,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": -1.5,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": -1.25,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": -1.0,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": -0.75,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": -0.5,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": -0.25,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": 0.0,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": -2.0
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": -1.75
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": -1.5
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": -1.25
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": -1.0
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": -0.75
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": -0.5
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": -0.25
+          }
+        ],
+        "reachable": true,
+        "rejected_reason": null
+      },
+      "planned_actions": [
+        "RotateRight",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "RotateLeft",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead",
+        "MoveAhead"
+      ],
+      "selected_viewpoint": {
+        "candidate_id": "vp_0.25_-0.25_0_-30",
+        "pitch": -30.0,
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": -0.25
+      },
+      "step_index": 6
+    },
+    {
+      "agent_pose_after": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 0.0
+      },
+      "agent_pose_before": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": -0.25
+      },
+      "capture_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "LookDown",
+        "LookUp"
+      ],
+      "executed_actions": [
+        {
+          "action": "MoveAhead",
+          "success": true
+        }
+      ],
+      "executed_capture_actions": [],
+      "navigation_success": true,
+      "path_to_reach": {
+        "actions": [
+          "MoveAhead"
+        ],
+        "path_positions": [
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": -0.25
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": 0.0
+          }
+        ],
+        "reachable": true,
+        "rejected_reason": null
+      },
+      "planned_actions": [
+        "MoveAhead"
+      ],
+      "selected_viewpoint": {
+        "candidate_id": "vp_0.25_0.00_0_-30",
+        "pitch": -30.0,
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 0.0
+      },
+      "step_index": 7
+    },
+    {
+      "agent_pose_after": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 0.25
+      },
+      "agent_pose_before": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 0.0
+      },
+      "capture_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "LookDown",
+        "LookUp"
+      ],
+      "executed_actions": [
+        {
+          "action": "MoveAhead",
+          "success": true
+        }
+      ],
+      "executed_capture_actions": [],
+      "navigation_success": true,
+      "path_to_reach": {
+        "actions": [
+          "MoveAhead"
+        ],
+        "path_positions": [
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": 0.0
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": 0.25
+          }
+        ],
+        "reachable": true,
+        "rejected_reason": null
+      },
+      "planned_actions": [
+        "MoveAhead"
+      ],
+      "selected_viewpoint": {
+        "candidate_id": "vp_0.25_0.25_0_-30",
+        "pitch": -30.0,
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 0.25
+      },
+      "step_index": 8
+    },
+    {
+      "agent_pose_after": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 0.5
+      },
+      "agent_pose_before": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 0.25
+      },
+      "capture_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "LookDown",
+        "LookUp"
+      ],
+      "executed_actions": [
+        {
+          "action": "MoveAhead",
+          "success": true
+        }
+      ],
+      "executed_capture_actions": [],
+      "navigation_success": true,
+      "path_to_reach": {
+        "actions": [
+          "MoveAhead"
+        ],
+        "path_positions": [
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": 0.25
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": 0.5
+          }
+        ],
+        "reachable": true,
+        "rejected_reason": null
+      },
+      "planned_actions": [
+        "MoveAhead"
+      ],
+      "selected_viewpoint": {
+        "candidate_id": "vp_0.25_0.50_0_-30",
+        "pitch": -30.0,
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 0.5
+      },
+      "step_index": 9
+    },
+    {
+      "agent_pose_after": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 0.75
+      },
+      "agent_pose_before": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 0.5
+      },
+      "capture_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "LookDown",
+        "LookUp"
+      ],
+      "executed_actions": [
+        {
+          "action": "MoveAhead",
+          "success": true
+        }
+      ],
+      "executed_capture_actions": [],
+      "navigation_success": true,
+      "path_to_reach": {
+        "actions": [
+          "MoveAhead"
+        ],
+        "path_positions": [
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": 0.5
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": 0.75
+          }
+        ],
+        "reachable": true,
+        "rejected_reason": null
+      },
+      "planned_actions": [
+        "MoveAhead"
+      ],
+      "selected_viewpoint": {
+        "candidate_id": "vp_0.25_0.75_0_-30",
+        "pitch": -30.0,
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 0.75
+      },
+      "step_index": 10
+    },
+    {
+      "agent_pose_after": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 1.0
+      },
+      "agent_pose_before": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 0.75
+      },
+      "capture_actions": [
+        "RotateRight",
+        "RotateRight",
+        "RotateRight",
+        "LookDown",
+        "LookUp"
+      ],
+      "executed_actions": [
+        {
+          "action": "MoveAhead",
+          "success": true
+        }
+      ],
+      "executed_capture_actions": [],
+      "navigation_success": true,
+      "path_to_reach": {
+        "actions": [
+          "MoveAhead"
+        ],
+        "path_positions": [
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": 0.75
+          },
+          {
+            "x": 0.25,
+            "y": 0.900999128818512,
+            "z": 1.0
+          }
+        ],
+        "reachable": true,
+        "rejected_reason": null
+      },
+      "planned_actions": [
+        "MoveAhead"
+      ],
+      "selected_viewpoint": {
+        "candidate_id": "vp_0.25_1.00_0_-30",
+        "pitch": -30.0,
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 0.0,
+        "z": 1.0
+      },
+      "step_index": 11
+    }
+  ],
+  "trajectory_id": "reachable_nbv_episode001_v1"
+}

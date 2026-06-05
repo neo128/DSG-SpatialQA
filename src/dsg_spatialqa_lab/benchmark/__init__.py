@@ -11,6 +11,23 @@ from dsg_spatialqa_lab.benchmark.qa_generator import (
     save_qa_dataset,
     validate_qa_dataset,
 )
+from dsg_spatialqa_lab.benchmark.qa_v2 import (
+    QA_V2_CASE_SCHEMA_VERSION as QA_V2_CASE_SCHEMA_VERSION,
+    QA_V2_SPLIT_NAMES as QA_V2_SPLIT_NAMES,
+    QA_V2_SPLIT_REPORT_SCHEMA_VERSION as QA_V2_SPLIT_REPORT_SCHEMA_VERSION,
+    load_qa_v2_split_report as load_qa_v2_split_report,
+    qa_v2_case_record as qa_v2_case_record,
+    qa_v2_records_digest as qa_v2_records_digest,
+    qa_v2_split_report as qa_v2_split_report,
+    qa_v2_split_report_digest as qa_v2_split_report_digest,
+    qa_v2_split_report_json as qa_v2_split_report_json,
+    qa_v2_splits as qa_v2_splits,
+    qa_v2_splits_jsonl as qa_v2_splits_jsonl,
+    save_qa_v2_split_report as save_qa_v2_split_report,
+    save_qa_v2_splits as save_qa_v2_splits,
+    validate_qa_v2_split_report as validate_qa_v2_split_report,
+    validate_qa_v2_splits as validate_qa_v2_splits,
+)
 from dsg_spatialqa_lab.benchmark.manifest import (
     BENCHMARK_MANIFEST_SCHEMA_VERSION as BENCHMARK_MANIFEST_SCHEMA_VERSION,
     benchmark_manifest_digest as benchmark_manifest_digest,

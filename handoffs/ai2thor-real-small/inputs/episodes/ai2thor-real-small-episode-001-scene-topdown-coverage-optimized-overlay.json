@@ -1,0 +1,101 @@
+{
+  "base_scene_topdown_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001-topdown-path.png",
+  "coverage_optimized_candidate_view_count": 7,
+  "coverage_optimized_is_navigation_validated": false,
+  "coverage_optimized_points": [
+    {
+      "detection_count": 6,
+      "step": 34,
+      "target_ids": [
+        "book_00_15_01_10_00_62"
+      ],
+      "target_label": "book",
+      "x": 0.25,
+      "yaw": 188.5399932861328,
+      "z": 1.25
+    },
+    {
+      "detection_count": 6,
+      "step": 35,
+      "target_ids": [
+        "bottle_01_54_00_89_02_54"
+      ],
+      "target_label": "bottle",
+      "x": 1.5,
+      "yaw": 175.75999450683594,
+      "z": -2.0
+    },
+    {
+      "detection_count": 6,
+      "step": 36,
+      "target_ids": [
+        "bowl_00_27_01_10_00_75"
+      ],
+      "target_label": "bowl",
+      "x": 0.25,
+      "yaw": 2.6700000762939453,
+      "z": -1.25
+    },
+    {
+      "detection_count": 21,
+      "step": 37,
+      "target_ids": [
+        "cabinet_00_68_00_50_02_20"
+      ],
+      "target_label": "cabinet",
+      "x": 0.75,
+      "yaw": 188.83999633789062,
+      "z": -1.75
+    },
+    {
+      "detection_count": 4,
+      "step": 38,
+      "target_ids": [
+        "cabinet_00_68_02_02_02_46"
+      ],
+      "target_label": "cabinet",
+      "x": 0.75,
+      "yaw": 185.6300048828125,
+      "z": -1.75
+    },
+    {
+      "detection_count": 4,
+      "step": 39,
+      "target_ids": [
+        "cabinet_00_72_02_02_02_46"
+      ],
+      "target_label": "cabinet",
+      "x": 0.75,
+      "yaw": 182.4199981689453,
+      "z": -1.75
+    },
+    {
+      "detection_count": 4,
+      "step": 40,
+      "target_ids": [
+        "cabinet_00_73_02_02_02_46"
+      ],
+      "target_label": "cabinet",
+      "x": -0.75,
+      "yaw": 178.2100067138672,
+      "z": -1.75
+    }
+  ],
+  "coverage_source_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-ai2thor-visible-p2-schema-fixed-p15.jsonl",
+  "episode_id": "ai2thor-real-small-episode-001",
+  "note": "Purple overlay points are coverage-driven supplemental detector/RGB-D candidate views; dashed connectors show candidate order only, not a validated continuous navigation rollout.",
+  "output_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001-scene-topdown-coverage-optimized-overlay.png",
+  "scene_id": "FloorPlan1",
+  "schema_version": "dsg-spatialqa-lab.scene-topdown-trajectory-overlay.v1",
+  "world_to_pixel_mapping": {
+    "calibration_note": "Calibrated to existing episode-001 scene topdown PNG axis/grid and original path cluster.",
+    "plot_bottom": 1120.0,
+    "plot_left": 80.0,
+    "plot_right": 1240.0,
+    "plot_top": 120.0,
+    "world_x_max": 3.5,
+    "world_x_min": -3.5,
+    "world_z_max": 3.0,
+    "world_z_min": -3.5
+  }
+}

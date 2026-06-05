@@ -31,6 +31,7 @@ DEFAULT_MIN_CANDIDATE_EXACT_MATCH_COUNT = 15
 DEFAULT_MIN_EXACT_MATCH_RATE_DELTA = 0.05
 DEFAULT_MIN_GRAPH_OBJECT_RECALL = 0.3
 DEFAULT_MIN_OBSERVATION_AWARE_CASE_COUNT = 30
+DEFAULT_MIN_CONCLUSION_QUESTION_TYPE_COUNT = 2
 DEFAULT_MAX_UNLOCATED_OBJECT_COUNT = 0
 CONCLUSION_EVALUATION_SCOPES = ("full_oracle", "observation_aware")
 
@@ -57,6 +58,7 @@ def research_conclusion_report(
     min_exact_match_rate_delta: float = DEFAULT_MIN_EXACT_MATCH_RATE_DELTA,
     min_graph_object_recall: float = DEFAULT_MIN_GRAPH_OBJECT_RECALL,
     min_observation_aware_case_count: int = DEFAULT_MIN_OBSERVATION_AWARE_CASE_COUNT,
+    min_question_type_count: int = DEFAULT_MIN_CONCLUSION_QUESTION_TYPE_COUNT,
     max_unlocated_object_count: int = DEFAULT_MAX_UNLOCATED_OBJECT_COUNT,
 ) -> dict[str, Any]:
     required = _unique_strings(required_source_kinds)
@@ -70,6 +72,7 @@ def research_conclusion_report(
         "min_exact_match_rate_delta": _round_float(min_exact_match_rate_delta),
         "min_graph_object_recall": _round_float(min_graph_object_recall),
         "min_observation_aware_case_count": min_observation_aware_case_count,
+        "min_question_type_count": min_question_type_count,
         "max_unlocated_object_count": max_unlocated_object_count,
     }
     comparisons = _control_comparisons(
@@ -89,7 +92,10 @@ def research_conclusion_report(
         "offline_controls_ready": _ready(offline_control_result_report),
         "predicted_dsg_ready": _ready(predicted_dsg_evidence_report),
     }
-    candidate_summary = _candidate_summary(comparisons)
+    candidate_summary = _candidate_summary(
+        comparisons,
+        min_question_type_count=min_question_type_count,
+    )
     aggregate = _aggregate_comparison(comparisons)
     scope_summary = _evaluation_scope_summary(
         qa_observability_report,
@@ -105,6 +111,7 @@ def research_conclusion_report(
         required_source_kinds=required,
         min_candidate_exact_match_rate=min_candidate_exact_match_rate,
         min_candidate_exact_match_count=min_candidate_exact_match_count,
+        min_question_type_count=min_question_type_count,
     )
     report: dict[str, Any] = {
         "schema_version": RESEARCH_CONCLUSION_REPORT_SCHEMA_VERSION,
@@ -368,6 +375,11 @@ def compare_research_conclusion_report(report: Mapping[str, Any]) -> dict[str, A
             "min_observation_aware_case_count",
             DEFAULT_MIN_OBSERVATION_AWARE_CASE_COUNT,
         ),
+        min_question_type_count=_threshold_int(
+            report,
+            "min_question_type_count",
+            DEFAULT_MIN_CONCLUSION_QUESTION_TYPE_COUNT,
+        ),
         max_unlocated_object_count=_threshold_int(
             report,
             "max_unlocated_object_count",
@@ -432,6 +444,7 @@ def _control_comparisons(
         _require_valid_qa_report(candidate_report, candidate_path)
         _require_valid_qa_report(baseline_report, baseline_path)
         paired = _paired_exact_match_counts(candidate_report, baseline_report)
+        question_type_counts = _question_type_counts(candidate_report)
         summary_delta = _mapping(delta_report.get("summary_delta"), "summary_delta")
         candidate_rate = _float_or_zero(
             summary_delta.get("candidate_exact_match_rate")
@@ -496,6 +509,8 @@ def _control_comparisons(
                     delta_report.get("report_digest")
                 ),
                 "qa_eval_delta_report_path": str(delta_path),
+                "question_type_count": len(question_type_counts),
+                "question_type_counts": question_type_counts,
                 "sign_test_p_value": _round_float(p_value, digits=12),
                 "source_key": _required_str(row, "source_key"),
                 "source_kind": source_kind,
@@ -532,6 +547,14 @@ def _paired_exact_match_counts(
     return {"wins": wins, "losses": losses, "ties": ties}
 
 
+def _question_type_counts(report: Mapping[str, Any]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for row in _mapping_sequence(report.get("cases")):
+        question_type = _string_or_none(row.get("question_type")) or "unknown"
+        counts[question_type] = counts.get(question_type, 0) + 1
+    return {key: counts[key] for key in sorted(counts)}
+
+
 def _sign_test_p_value(wins: int, losses: int) -> float:
     discordant = wins + losses
     if discordant <= 0 or wins <= losses:
@@ -540,16 +563,34 @@ def _sign_test_p_value(wins: int, losses: int) -> float:
     return float(tail) / float(2**discordant)
 
 
-def _candidate_summary(comparisons: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
+def _candidate_summary(
+    comparisons: Sequence[Mapping[str, Any]],
+    *,
+    min_question_type_count: int,
+) -> dict[str, Any]:
     if not comparisons:
-        return {"case_count": 0, "exact_match_count": 0, "exact_match_rate": 0.0}
+        return {
+            "case_count": 0,
+            "exact_match_count": 0,
+            "exact_match_rate": 0.0,
+            "min_question_type_count": min_question_type_count,
+            "passes_question_type_floor": False,
+            "question_type_count": 0,
+            "question_type_counts": {},
+        }
     first = comparisons[0]
+    question_type_counts = _int_mapping(first.get("question_type_counts"))
+    question_type_count = len(question_type_counts)
     return {
         "case_count": _int_or_zero(first.get("case_count")),
         "exact_match_count": _int_or_zero(first.get("candidate_exact_match_count")),
         "exact_match_rate": _round_float(
             _float_or_zero(first.get("candidate_exact_match_rate"))
         ),
+        "min_question_type_count": min_question_type_count,
+        "passes_question_type_floor": question_type_count >= min_question_type_count,
+        "question_type_count": question_type_count,
+        "question_type_counts": question_type_counts,
     }
 
 
@@ -619,6 +660,7 @@ def _conclusion(
     required_source_kinds: Sequence[str],
     min_candidate_exact_match_rate: float,
     min_candidate_exact_match_count: int,
+    min_question_type_count: int,
 ) -> dict[str, Any]:
     not_ready_reasons = _not_ready_reasons(readiness_summary)
     not_ready_reasons.extend(
@@ -649,10 +691,18 @@ def _conclusion(
         _int_or_zero(candidate_summary.get("exact_match_count"))
         >= min_candidate_exact_match_count
     )
+    candidate_question_type_passed = (
+        candidate_summary.get("passes_question_type_floor") is True
+    )
     all_controls_passed = (
         len(missing_kinds) == 0 and len(passed_controls) == len(required_source_kinds)
     )
-    if graph_passed and candidate_count_passed and all_controls_passed:
+    if (
+        graph_passed
+        and candidate_count_passed
+        and candidate_question_type_passed
+        and all_controls_passed
+    ):
         return {
             "claim": (
                 "Within this ready experiment package, DSG is superior to all "
@@ -684,6 +734,18 @@ def _conclusion(
                 "detail": (
                     "Candidate exact-match count is below the configured "
                     "observation-aware conclusion floor."
+                ),
+            }
+        )
+    if not candidate_question_type_passed:
+        reasons.append(
+            {
+                "code": "question_type_coverage_below_floor",
+                "detail": (
+                    "Final DSG superiority claims require an expanded QA slice "
+                    "with multiple question types: "
+                    f"{candidate_summary.get('question_type_count')}/"
+                    f"{min_question_type_count}."
                 ),
             }
         )

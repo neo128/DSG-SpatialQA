@@ -1,0 +1,27 @@
+{
+  "baseline_name": "vlm_only_p26",
+  "baseline_report_digest": "51e274a2cdafb8bd13113046c6b6b4971877903ece4db20f5ce6c9f810edda8a",
+  "baseline_semantic_eval_report_path": "handoffs/ai2thor-real-small/inputs/offline-controls/reruns/observation-aware-p4-target60/vlm-p26-affordance-option-fallback.jsonl",
+  "candidate_name": "vlm_graph_fusion_p40",
+  "candidate_report_digest": "c23e35ab1dc71d4833c29a6b92249908433eea7c13bb4f400b9a8de5ab40c347",
+  "candidate_semantic_eval_report_path": "handoffs/ai2thor-real-small/inputs/candidate/vlm-graph-fusion-p40-vlm-p26-dsg-p39.jsonl",
+  "case_count_match": true,
+  "decision": "candidate_unchanged",
+  "gold_digest_match": true,
+  "paired": {
+    "case_count": 60,
+    "paired_losses": 2,
+    "paired_ties": 56,
+    "paired_wins": 2
+  },
+  "report_digest": "69d709545ffd4cf2f5d791f807e5fe381d46dc597e9f37413efe237c2a9be3b6",
+  "schema_version": "dsg-spatialqa-lab.vlm-semantic-eval-delta-report.v1",
+  "summary_delta": {
+    "baseline_semantic_match_count": 49,
+    "baseline_semantic_match_rate": 0.8166666666666667,
+    "candidate_semantic_match_count": 49,
+    "candidate_semantic_match_rate": 0.8166666666666667,
+    "semantic_match_count_delta": 0,
+    "semantic_match_rate_delta": 0.0
+  }
+}

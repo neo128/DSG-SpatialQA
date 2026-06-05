@@ -1,0 +1,32 @@
+{
+  "episode_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl;handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl;handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl;handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-004.jsonl;handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-005.jsonl",
+  "observability_report_path": "handoffs/ai2thor-real-small/outputs/diagnostics/qa-observability-p3-offset.json",
+  "qa_digest": "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf",
+  "qa_path": "handoffs/ai2thor-real-small/inputs/qa.jsonl",
+  "report_digest": "ec7a6cca36d5e7bbff2e78a737da6b7d2744dd60550110db9cd6713e4eb281d6",
+  "schema_version": "dsg-spatialqa-lab.qa-v2-split-report.v1",
+  "split_digests": {
+    "anti_shortcut": "ed355a4d74a030e8c62d4fa418ee0e5fc05f03640a992af64e324e3080409593",
+    "full_oracle": "92ae0dcc3ccd4b9aac962483aa06f4a659b4f80aa6c767f948f34a48b74ee867",
+    "observation_aware": "925b87685355a159ca7ffa3e9a5eae6879bf44e0bcb19a99bf81650a0b1010f3",
+    "situated": "46b15cd26190a3e012dd102de4628a90ba36151c9da461a5c9064a9b5c6959ad",
+    "temporal": "4be56f90fa4e7eabdaa727ca1e61c04d1f3f329995aa887b26879051f1ab6416"
+  },
+  "split_paths": {
+    "anti_shortcut": "handoffs/ai2thor-real-small/inputs/qa-v2/qa-anti-shortcut.jsonl",
+    "full_oracle": "handoffs/ai2thor-real-small/inputs/qa-v2/qa-full-oracle.jsonl",
+    "observation_aware": "handoffs/ai2thor-real-small/inputs/qa-v2/qa-observation-aware.jsonl",
+    "situated": "handoffs/ai2thor-real-small/inputs/qa-v2/qa-situated.jsonl",
+    "temporal": "handoffs/ai2thor-real-small/inputs/qa-v2/qa-temporal.jsonl"
+  },
+  "summary": {
+    "source_case_count": 60,
+    "split_counts": {
+      "anti_shortcut": 25,
+      "full_oracle": 60,
+      "observation_aware": 9,
+      "situated": 4,
+      "temporal": 5
+    }
+  }
+}

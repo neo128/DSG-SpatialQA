@@ -1,0 +1,116 @@
+{
+  "claim_boundary": {
+    "current_conclusion": "VLM+DSG ties VLM-only and improves over GraphTool-only DSG on this 60-QA slice; it does not yet prove DSG improves over VLM-only.",
+    "graph_tool_only_dsg_is_ablation": true,
+    "vlm_graph_fusion_is_the_dsg_plus_vlm_candidate": true
+  },
+  "comparison_name": "p40_vlm_only_vs_graph_tool_only_dsg_vs_vlm_graph_fusion",
+  "deltas": {
+    "vlm_graph_fusion_vs_graph_tool_only_dsg": {
+      "decision": "candidate_improved",
+      "paired": {
+        "case_count": 60,
+        "paired_losses": 2,
+        "paired_ties": 34,
+        "paired_wins": 24
+      },
+      "path": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-graph-fusion-p40-vs-dsg-p39-semantic-delta.json",
+      "report_digest": "18281fd7032c5581a937221fb03cb996719072ecf0ac123002c26bbe9689686e",
+      "summary_delta": {
+        "baseline_semantic_match_count": 27,
+        "baseline_semantic_match_rate": 0.45,
+        "candidate_semantic_match_count": 49,
+        "candidate_semantic_match_rate": 0.8166666666666667,
+        "semantic_match_count_delta": 22,
+        "semantic_match_rate_delta": 0.366667
+      }
+    },
+    "vlm_graph_fusion_vs_vlm_only": {
+      "decision": "candidate_unchanged",
+      "paired": {
+        "case_count": 60,
+        "paired_losses": 2,
+        "paired_ties": 56,
+        "paired_wins": 2
+      },
+      "path": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-graph-fusion-p40-vs-vlm-p26-semantic-delta.json",
+      "report_digest": "69d709545ffd4cf2f5d791f807e5fe381d46dc597e9f37413efe237c2a9be3b6",
+      "summary_delta": {
+        "baseline_semantic_match_count": 49,
+        "baseline_semantic_match_rate": 0.8166666666666667,
+        "candidate_semantic_match_count": 49,
+        "candidate_semantic_match_rate": 0.8166666666666667,
+        "semantic_match_count_delta": 0,
+        "semantic_match_rate_delta": 0.0
+      }
+    }
+  },
+  "groups": [
+    {
+      "name": "VLM-only",
+      "prediction_path": "handoffs/ai2thor-real-small/inputs/offline-controls/reruns/observation-aware-p4-target60/vlm-p26-affordance-option-fallback.jsonl",
+      "run_id": "vlm_p26_affordance_option_fallback",
+      "semantic_eval_report_digest": "51e274a2cdafb8bd13113046c6b6b4971877903ece4db20f5ce6c9f810edda8a",
+      "semantic_eval_report_path": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-semantic-eval-p26-affordance-option-fallback.json",
+      "summary": {
+        "case_count": 60,
+        "excluded_case_count": 0,
+        "matched_prediction_count": 60,
+        "prediction_count": 60,
+        "semantic_match_count": 49,
+        "semantic_match_rate": 0.8166666666666667,
+        "strict_exact_match_count": 0,
+        "strict_exact_match_rate": 0.0
+      }
+    },
+    {
+      "name": "GraphTool-only DSG",
+      "prediction_path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-independent-p39-compatible-step-target-alias.jsonl",
+      "run_id": "graph_tool_only_dsg_p39_compatible_step_target_alias",
+      "semantic_eval_report_digest": "b500c80c9d45277aa0ca5e12af0601d4a435fe14f5f49746f241dff1e595654e",
+      "semantic_eval_report_path": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-candidate-semantic-eval-p39-compatible-step-target-alias-independent.json",
+      "summary": {
+        "case_count": 60,
+        "excluded_case_count": 0,
+        "matched_prediction_count": 60,
+        "prediction_count": 60,
+        "semantic_match_count": 27,
+        "semantic_match_rate": 0.45,
+        "strict_exact_match_count": 0,
+        "strict_exact_match_rate": 0.0
+      }
+    },
+    {
+      "fusion_report_digest": "90d8dbe3b9408164c9762ccac6293ddd1dc9028568ece442ab829aad8f1e2253",
+      "fusion_report_path": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-graph-fusion-p40-vlm-p26-dsg-p39-report.json",
+      "fusion_source_summary": {
+        "fused_prediction_count": 60,
+        "graph_prediction_count": 60,
+        "graph_tool_source_count": 7,
+        "unmatched_graph_prediction_count": 0,
+        "unmatched_vlm_prediction_count": 0,
+        "vlm_prediction_count": 60,
+        "vlm_source_count": 53
+      },
+      "name": "VLM+DSG",
+      "prediction_path": "handoffs/ai2thor-real-small/inputs/candidate/vlm-graph-fusion-p40-vlm-p26-dsg-p39.jsonl",
+      "run_id": "vlm_graph_fusion_p40_vlm_p26_dsg_p39",
+      "semantic_eval_report_digest": "c23e35ab1dc71d4833c29a6b92249908433eea7c13bb4f400b9a8de5ab40c347",
+      "semantic_eval_report_path": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-graph-fusion-semantic-eval-p40-vlm-p26-dsg-p39.json",
+      "summary": {
+        "case_count": 60,
+        "excluded_case_count": 0,
+        "matched_prediction_count": 60,
+        "prediction_count": 60,
+        "semantic_match_count": 49,
+        "semantic_match_rate": 0.8166666666666667,
+        "strict_exact_match_count": 0,
+        "strict_exact_match_rate": 0.0
+      }
+    }
+  ],
+  "qa_gold_digest": "9eb72ebd1f87937faa53be3e9a6ec7dc3d628cd6ec899a1fa02ef61529633115",
+  "qa_path": "handoffs/ai2thor-real-small/inputs/traces/observation-aware-p4-target60-qa.jsonl",
+  "report_digest": "24613c4674cc6618ae2a8be350de8d97c2f17e41fbeeb20d7ee9c24518e625e9",
+  "schema_version": "dsg-spatialqa-lab.three-way-comparison-report.v1"
+}

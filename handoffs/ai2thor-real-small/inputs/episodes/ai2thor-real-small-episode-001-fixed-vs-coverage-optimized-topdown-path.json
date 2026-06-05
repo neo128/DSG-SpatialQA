@@ -1,0 +1,166 @@
+{
+  "coverage_optimized_candidate_view_count": 7,
+  "coverage_optimized_is_navigation_validated": false,
+  "coverage_optimized_points": [
+    {
+      "detection_count": 6,
+      "step": 34,
+      "target_ids": [
+        "book_00_15_01_10_00_62"
+      ],
+      "x": 0.25,
+      "yaw": 188.5399932861328,
+      "z": 1.25
+    },
+    {
+      "detection_count": 6,
+      "step": 35,
+      "target_ids": [
+        "bottle_01_54_00_89_02_54"
+      ],
+      "x": 1.5,
+      "yaw": 175.75999450683594,
+      "z": -2.0
+    },
+    {
+      "detection_count": 6,
+      "step": 36,
+      "target_ids": [
+        "bowl_00_27_01_10_00_75"
+      ],
+      "x": 0.25,
+      "yaw": 2.6700000762939453,
+      "z": -1.25
+    },
+    {
+      "detection_count": 21,
+      "step": 37,
+      "target_ids": [
+        "cabinet_00_68_00_50_02_20"
+      ],
+      "x": 0.75,
+      "yaw": 188.83999633789062,
+      "z": -1.75
+    },
+    {
+      "detection_count": 4,
+      "step": 38,
+      "target_ids": [
+        "cabinet_00_68_02_02_02_46"
+      ],
+      "x": 0.75,
+      "yaw": 185.6300048828125,
+      "z": -1.75
+    },
+    {
+      "detection_count": 4,
+      "step": 39,
+      "target_ids": [
+        "cabinet_00_72_02_02_02_46"
+      ],
+      "x": 0.75,
+      "yaw": 182.4199981689453,
+      "z": -1.75
+    },
+    {
+      "detection_count": 4,
+      "step": 40,
+      "target_ids": [
+        "cabinet_00_73_02_02_02_46"
+      ],
+      "x": -0.75,
+      "yaw": 178.2100067138672,
+      "z": -1.75
+    }
+  ],
+  "coverage_source_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-ai2thor-visible-p2-schema-fixed-p15.jsonl",
+  "episode_id": "ai2thor-real-small-episode-001",
+  "note": "Coverage-optimized points are supplemental detector/RGB-D handoff views connected in candidate order for visual review, not a validated continuous navigation rollout.",
+  "original_episode_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+  "original_frame_count": 10,
+  "original_points": [
+    {
+      "action": "Initialize",
+      "step": 1,
+      "visible_count": 4,
+      "x": -1.0,
+      "yaw": 270.0,
+      "z": 1.0
+    },
+    {
+      "action": "MoveAhead",
+      "step": 2,
+      "visible_count": 1,
+      "x": -1.25,
+      "yaw": 270.0,
+      "z": 1.0
+    },
+    {
+      "action": "RotateRight",
+      "step": 3,
+      "visible_count": 2,
+      "x": -1.25,
+      "yaw": 0.0,
+      "z": 1.0
+    },
+    {
+      "action": "MoveAhead",
+      "step": 4,
+      "visible_count": 0,
+      "x": -1.25,
+      "yaw": 0.0,
+      "z": 1.25
+    },
+    {
+      "action": "RotateLeft",
+      "step": 5,
+      "visible_count": 1,
+      "x": -1.25,
+      "yaw": 270.0,
+      "z": 1.25
+    },
+    {
+      "action": "LookDown",
+      "step": 6,
+      "visible_count": 2,
+      "x": -1.25,
+      "yaw": 270.0,
+      "z": 1.25
+    },
+    {
+      "action": "LookUp",
+      "step": 7,
+      "visible_count": 1,
+      "x": -1.25,
+      "yaw": 270.0,
+      "z": 1.25
+    },
+    {
+      "action": "MoveBack",
+      "step": 8,
+      "visible_count": 1,
+      "x": -1.0,
+      "yaw": 270.0,
+      "z": 1.25
+    },
+    {
+      "action": "RotateLeft",
+      "step": 9,
+      "visible_count": 12,
+      "x": -1.0,
+      "yaw": 180.0,
+      "z": 1.25
+    },
+    {
+      "action": "MoveAhead",
+      "step": 10,
+      "visible_count": 13,
+      "x": -1.0,
+      "yaw": 180.0,
+      "z": 1.0
+    }
+  ],
+  "output_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001-fixed-vs-coverage-optimized-topdown-path.png",
+  "scene_id": "FloorPlan1",
+  "schema_version": "dsg-spatialqa-lab.topdown-trajectory-plot.v1"
+}

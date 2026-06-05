@@ -1,0 +1,20 @@
+{
+  "fused_prediction_path": "handoffs/ai2thor-real-small/inputs/candidate/vlm-graph-fusion-p41-trusted-vlm-p26-dsg-p39.jsonl",
+  "fusion_policy": "trusted_graph_relation_or_vlm_fallback",
+  "graph_prediction_digest": "115a57dfcb788bdd3f4c556102ae345609ae314375cb4eace90e09c9e0e00340",
+  "graph_prediction_path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-independent-p39-compatible-step-target-alias.jsonl",
+  "prediction_digest": "3d294daae685d26ed68258b62b93edd78cc7275130399ff3a9b75df37fadf2ac",
+  "report_digest": "489ab6efffeafa08d705da53cc2a012efccc331b99a832ffd84c68944ea9c687",
+  "schema_version": "dsg-spatialqa-lab.vlm-graph-fusion-report.v1",
+  "summary": {
+    "fused_prediction_count": 60,
+    "graph_prediction_count": 60,
+    "graph_tool_source_count": 5,
+    "unmatched_graph_prediction_count": 0,
+    "unmatched_vlm_prediction_count": 0,
+    "vlm_prediction_count": 60,
+    "vlm_source_count": 55
+  },
+  "vlm_prediction_digest": "e72fab585f6ad0fb27cfeb7bdef012f3266e9dddad078418199b2841a8eccd44",
+  "vlm_prediction_path": "handoffs/ai2thor-real-small/inputs/offline-controls/reruns/observation-aware-p4-target60/vlm-p26-affordance-option-fallback.jsonl"
+}

@@ -29,6 +29,10 @@ def test_research_conclusion_rejects_tiny_current_like_lift(tmp_path: Path) -> N
         "case_count": 60,
         "exact_match_count": 1,
         "exact_match_rate": 0.016667,
+        "min_question_type_count": 2,
+        "passes_question_type_floor": True,
+        "question_type_count": 2,
+        "question_type_counts": {"dynamic_memory": 30, "object_location": 30},
     }
     assert report["aggregate_comparison"] == {
         "control_count": 4,
@@ -65,6 +69,34 @@ def test_research_conclusion_accepts_strong_paired_lift(tmp_path: Path) -> None:
     assert report["conclusion"]["dsg_superiority_claim_allowed"] is True
     assert report["aggregate_comparison"]["passed_control_count"] == 4
     assert all(row["decision"] == "candidate_superior" for row in report["control_comparisons"])
+    assert lab.validate_research_conclusion_report(report)["valid"] is True
+
+
+def test_research_conclusion_blocks_superiority_with_single_question_type(
+    tmp_path: Path,
+) -> None:
+    bundle = _write_conclusion_bundle(
+        tmp_path,
+        candidate_correct=set(range(45)),
+        baseline_correct_by_kind={
+            "vlm": set(range(20)),
+            "multi_frame_vlm": set(range(20)),
+            "caption_memory": set(range(20)),
+            "graph_text": set(range(20)),
+        },
+        object_recall=0.75,
+        question_types=("object_location",),
+    )
+
+    report = lab.research_conclusion_report(**bundle)
+
+    assert report["candidate_summary"]["question_type_count"] == 1
+    assert report["candidate_summary"]["passes_question_type_floor"] is False
+    assert report["conclusion"]["verdict"] == "dsg_not_superior"
+    assert report["conclusion"]["dsg_superiority_claim_allowed"] is False
+    assert {
+        reason["code"] for reason in report["conclusion"]["reasons"]
+    } == {"question_type_coverage_below_floor"}
     assert lab.validate_research_conclusion_report(report)["valid"] is True
 
 
@@ -385,8 +417,9 @@ def _write_conclusion_bundle(
     qa_observability_summary: dict[str, Any] | None = None,
     qa_observability_split_qa_digests: dict[str, str] | None = None,
     evaluation_scope: str = "full_oracle",
+    question_types: tuple[str, ...] = ("object_location", "dynamic_memory"),
 ) -> dict[str, Any]:
-    cases = _qa_cases(case_count)
+    cases = _qa_cases(case_count, question_types=question_types)
     candidate_report = lab.qa_eval_report(
         cases,
         _predictions(cases, candidate_correct),
@@ -472,7 +505,11 @@ def _write_conclusion_bundle(
     return bundle
 
 
-def _qa_cases(count: int) -> tuple[lab.QACase, ...]:
+def _qa_cases(
+    count: int,
+    *,
+    question_types: tuple[str, ...],
+) -> tuple[lab.QACase, ...]:
     return tuple(
         lab.QACase(
             id=f"case-{index:03d}",
@@ -480,10 +517,13 @@ def _qa_cases(count: int) -> tuple[lab.QACase, ...]:
             episode_id="episode",
             graph_digest="graph-digest",
             step=index,
-            question={"type": "object_location", "object_id": f"object-{index:03d}"},
-            question_type="object_location",
+            question={
+                "type": question_types[index % len(question_types)],
+                "object_id": f"object-{index:03d}",
+            },
+            question_type=question_types[index % len(question_types)],
             answer={"object_id": f"object-{index:03d}", "location": "counter"},
-            answer_type="object_location",
+            answer_type=question_types[index % len(question_types)],
             required_nodes=(f"object-{index:03d}",),
             required_edges=(f"edge-{index:03d}",),
             tags=("qa", "spatial_qa", "graph_query"),

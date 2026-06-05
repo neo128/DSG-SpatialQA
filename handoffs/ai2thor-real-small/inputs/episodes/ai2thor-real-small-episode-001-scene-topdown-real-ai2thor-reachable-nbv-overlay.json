@@ -1,0 +1,45 @@
+{
+  "audit_path": "handoffs/ai2thor-real-small/outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode001.json",
+  "audit_summary": {
+    "GraphTool_semantic_match": 9,
+    "convex_hull_area": 1.125,
+    "evidence_observable_qa_count": 12,
+    "missing_relation_count": 3,
+    "missing_support_count": 0,
+    "navigation_validated": true,
+    "target_support_same_frame_rate": 0.75,
+    "visited_grid_ratio": 0.8
+  },
+  "base_scene_topdown_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001-topdown-path.png",
+  "comparison_path": "handoffs/ai2thor-real-small/outputs/navigation/trajectory-protocol-comparison-real-ai2thor-episode001.json",
+  "continuous_path_point_count": 12,
+  "coverage_bbox_area_world_xz": 1.125,
+  "episode_id": "ai2thor-real-small-episode-001",
+  "judgement": {
+    "diagnostic_improves_evidence_coverage": true,
+    "fixed_coverage_insufficient": true,
+    "reachable_nbv_can_be_formal_protocol": true,
+    "reachable_nbv_improves_graphtool_semantic_match": true,
+    "reachable_nbv_navigation_validated": true,
+    "reachable_nbv_reduces_missing_relation": true,
+    "reachable_nbv_reduces_missing_support": true
+  },
+  "output_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001-scene-topdown-real-ai2thor-reachable-nbv-overlay.png",
+  "real_ai2thor_runtime": true,
+  "runtime_kind": "real_ai2thor",
+  "scene_id": "FloorPlan1",
+  "schema_version": "dsg-spatialqa-lab.scene-topdown-real-ai2thor-reachable-nbv-overlay.v1",
+  "selected_viewpoint_count": 12,
+  "trajectory_path": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode001.json",
+  "world_to_pixel_mapping": {
+    "calibration_note": "Calibrated to existing episode-001 scene topdown PNG axis/grid and original path cluster.",
+    "plot_bottom": 1120.0,
+    "plot_left": 80.0,
+    "plot_right": 1240.0,
+    "plot_top": 120.0,
+    "world_x_max": 3.5,
+    "world_x_min": -3.5,
+    "world_z_max": 3.0,
+    "world_z_min": -3.5
+  }
+}

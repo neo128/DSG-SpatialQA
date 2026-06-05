@@ -1,0 +1,1607 @@
+{
+  "cases": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "evidence_observable",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "observation_aware",
+        "target_observable"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "apple"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "book"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "bottle"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "bowl"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "evidence_observable",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "observation_aware",
+        "target_observable"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "bread"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "evidence_observable",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "observation_aware",
+        "target_observable"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "butterknife"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "cabinet"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "cabinet"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "cabinet"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "cabinet"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0131:relative_relation:coffeemachine_01_98_00_90_00_19_ON_countertop_01_87_00_95_01_21",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "low",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "relative_relation",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing",
+        "situated"
+      ],
+      "required_edge_relations": [
+        "ON"
+      ],
+      "target_label": null
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0157:relation_timeline:coffeemachine_01_98_00_90_00_19_ON_countertop_01_87_00_95_01_21",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "low",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "relation_timeline",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing",
+        "situated",
+        "temporal"
+      ],
+      "required_edge_relations": [
+        "ON"
+      ],
+      "target_label": null
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "armchair"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "armchair"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "book"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "bowl"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "box"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "chair"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "chair"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "chair"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "chair"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "chair"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0090:relative_relation:sofa_02_40_00_00_03_42_ON_floor_00_00_00_38_00_00",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "low",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "evidence_observable",
+      "question_type": "relative_relation",
+      "recommended_splits": [
+        "full_oracle",
+        "observation_aware",
+        "target_observable",
+        "situated"
+      ],
+      "required_edge_relations": [
+        "ON"
+      ],
+      "target_label": null
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0137:relation_timeline:sofa_02_40_00_00_03_42_ON_floor_00_00_00_38_00_00",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "low",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "evidence_observable",
+      "question_type": "relation_timeline",
+      "recommended_splits": [
+        "full_oracle",
+        "observation_aware",
+        "target_observable",
+        "situated",
+        "temporal"
+      ],
+      "required_edge_relations": [
+        "ON"
+      ],
+      "target_label": null
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "alarmclock"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "baseballbat"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "basketball"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "bed"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "blinds"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "book"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "boots"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "bowl"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "box"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "cd"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0086:nearest_object:basketball_00_24_00_13_01_24",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "low",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "evidence_observable",
+      "question_type": "nearest_object",
+      "recommended_splits": [
+        "full_oracle",
+        "observation_aware",
+        "target_observable"
+      ],
+      "required_edge_relations": [],
+      "target_label": null
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0087:reobserve_targets:all",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "low",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "evidence_observable",
+      "question_type": "reobserve_targets",
+      "recommended_splits": [
+        "full_oracle",
+        "observation_aware",
+        "target_observable",
+        "temporal"
+      ],
+      "required_edge_relations": [],
+      "target_label": null
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "evidence_observable",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "observation_aware",
+        "target_observable"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "bathtub"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0002:object_location:bathtubbasin_00_16_00_04_00_88",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "evidence_observable",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "observation_aware",
+        "target_observable"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "bathtubbasin"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0003:object_location:candle_03_11_00_23_00_05",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "candle"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "cloth"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "dishsponge"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "faucet"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "faucet"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "floor"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "garbagecan"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "handtowel"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0072:relative_relation:candle_03_11_00_23_00_05_ON_floor_01_44_00_04_01_85",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "low",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "relative_relation",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing",
+        "situated"
+      ],
+      "required_edge_relations": [
+        "ON"
+      ],
+      "target_label": null
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0303:relation_timeline:candle_03_11_00_23_00_05_ON_floor_01_44_00_04_01_85",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "low",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "relation_timeline",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing",
+        "situated",
+        "temporal"
+      ],
+      "required_edge_relations": [
+        "ON"
+      ],
+      "target_label": null
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0001:object_location:apple_01_65_00_81_00_07",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "missing_evidence",
+        "target_missing"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "apple"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0002:object_location:bowl_00_28_00_92_01_09",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "bowl"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "bread"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0004:object_location:butterknife_01_67_00_69_00_11",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "missing_evidence",
+        "target_missing"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "butterknife"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0005:object_location:cabinet_00_41_00_48_00_44",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "medium",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "missing_evidence",
+        "target_missing"
+      ],
+      "required_edge_relations": [
+        "ON",
+        "STATE_CHANGED"
+      ],
+      "target_label": "cabinet"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0006:object_location:cabinet_00_49_00_47_01_15",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "missing_evidence",
+        "target_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "cabinet"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0007:object_location:cabinet_00_50_00_47_01_15",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "missing_evidence",
+        "target_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "cabinet"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "cabinet"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0009:object_location:cabinet_01_39_00_47_01_15",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "missing_evidence",
+        "target_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "cabinet"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "high",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_observable_relation_missing",
+      "question_type": "object_location",
+      "recommended_splits": [
+        "full_oracle",
+        "target_observable",
+        "missing_evidence",
+        "target_observable_relation_missing"
+      ],
+      "required_edge_relations": [
+        "IN_ROOM",
+        "STATE_CHANGED"
+      ],
+      "target_label": "cabinet"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0124:relative_relation:apple_01_65_00_81_00_07_ON_fridge_01_76_00_00_00_00",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "low",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_missing",
+      "question_type": "relative_relation",
+      "recommended_splits": [
+        "full_oracle",
+        "missing_evidence",
+        "target_missing",
+        "situated"
+      ],
+      "required_edge_relations": [
+        "ON"
+      ],
+      "target_label": null
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0455:relation_timeline:apple_01_65_00_81_00_07_ON_fridge_01_76_00_00_00_00",
+      "has_duplicate_target_label": false,
+      "language_prior_risk": "low",
+      "missing_v2_fields": [
+        "question_text",
+        "split",
+        "situation",
+        "answer_options",
+        "observability",
+        "anti_shortcut"
+      ],
+      "observability_status": "target_missing",
+      "question_type": "relation_timeline",
+      "recommended_splits": [
+        "full_oracle",
+        "missing_evidence",
+        "target_missing",
+        "situated",
+        "temporal"
+      ],
+      "required_edge_relations": [
+        "ON"
+      ],
+      "target_label": null
+    }
+  ],
+  "observability_report_path": "handoffs/ai2thor-real-small/outputs/diagnostics/qa-observability-p3-offset.json",
+  "qa_digest": "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf",
+  "qa_path": "handoffs/ai2thor-real-small/inputs/qa.jsonl",
+  "quality_gates": {
+    "question_type_coverage": {
+      "actual": 5,
+      "expected": ">= 2",
+      "passed": true
+    },
+    "relation_balance": {
+      "actual": 0.324074,
+      "expected": "IN_ROOM relation rate <= 0.4",
+      "passed": true
+    }
+  },
+  "report_digest": "a355f61089f7108aa436d2ad93f1c9cdf52c7de5e9bf508c18433cb18994ffea",
+  "schema_version": "dsg-spatialqa-lab.qa-quality-report.v1",
+  "summary": {
+    "case_count": 60,
+    "language_prior_risk_counts": {
+      "high": 35,
+      "low": 10,
+      "medium": 15
+    },
+    "question_type_count": 5,
+    "question_type_counts": {
+      "nearest_object": 1,
+      "object_location": 50,
+      "relation_timeline": 4,
+      "relative_relation": 4,
+      "reobserve_targets": 1
+    },
+    "relation_counts": {
+      "IN_ROOM": 35,
+      "ON": 23,
+      "STATE_CHANGED": 50
+    },
+    "schema_gap_counts": {
+      "answer_options": 60,
+      "anti_shortcut": 60,
+      "observability": 60,
+      "question_text": 60,
+      "situation": 60,
+      "split": 60
+    },
+    "split_counts": {
+      "anti_shortcut_candidate": 25,
+      "full_oracle": 60,
+      "missing_evidence": 51,
+      "observation_aware": 9,
+      "situated": 8,
+      "target_missing": 8,
+      "target_observable": 52,
+      "target_observable_relation_missing": 43,
+      "temporal": 5
+    }
+  },
+  "thresholds": {
+    "max_in_room_relation_rate": 0.4,
+    "min_question_type_count": 2
+  }
+}

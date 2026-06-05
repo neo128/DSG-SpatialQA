@@ -1,0 +1,29 @@
+{
+  "case_count": 0,
+  "case_inputs": [],
+  "conflict_report_digest": "b5d0c8e56ef4ba0c80d339623a4fe012aca5c53982fba6ac7f5993de2cf0e5ce",
+  "evidence_score_report_digest": "48e62f39ab25a65586f9b81f9fd18cfb63edea8251f8fd8c2a798c65e4d604c1",
+  "forbidden_fields_absent": true,
+  "instructions": {
+    "must_not_use": [
+      "evaluator-only answers",
+      "hidden evaluator nodes",
+      "hidden evaluator edges",
+      "semantic evaluator labels"
+    ],
+    "task": "Choose an answer using the image/frame evidence, the initial VLM answer, and the DSG candidate. Return structured JSON only."
+  },
+  "request_bundle_digest": "972b4e81389cb96d1ef320d0dd6bdae44073180f4cdd77ca22a2a21ec37fd8a4",
+  "required_output_schema": {
+    "answer_text": "string",
+    "current_location": {
+      "dst": "string or null",
+      "dst_label": "string or null",
+      "relation": "ON|INSIDE|IN_REGION|IN_ROOM|UNKNOWN",
+      "step": "integer or null"
+    },
+    "decision": "accept_vlm|accept_dsg|reject_both|uncertain",
+    "evidence_summary": "string"
+  },
+  "schema_version": "dsg-spatialqa-lab.vlm-graph-evidence-request-bundle.v1"
+}

@@ -332,8 +332,202 @@ def test_vlm_semantic_eval_delta_report_compares_candidate_to_baseline() -> None
         "paired_ties": 1,
         "paired_wins": 0,
     }
+    assert report["paired_significance"] == {
+        "candidate_loss_count": 1,
+        "candidate_win_count": 0,
+        "discordant_case_count": 1,
+        "method": "exact_paired_sign_test_mcnemar_like",
+        "significant_at_0_05": False,
+        "two_sided_p_value": 1.0,
+    }
     assert report["decision"] == "candidate_regressed"
     assert report["report_digest"] == lab.vlm_semantic_eval_delta_report_digest(report)
+    assert lab.validate_vlm_semantic_eval_delta_report(report)["valid"] is True
+
+
+def test_vlm_semantic_eval_delta_report_flags_strong_paired_lift() -> None:
+    candidate_cases = [
+        {"case_id": f"case-{index}", "semantic_match": True, "strict_exact_match": False}
+        for index in range(10)
+    ]
+    baseline_cases = [
+        {"case_id": f"case-{index}", "semantic_match": False, "strict_exact_match": False}
+        for index in range(10)
+    ]
+    candidate = {
+        "schema_version": "dsg-spatialqa-lab.vlm-semantic-eval-report.v1",
+        "gold_digest": "a" * 64,
+        "prediction_digest": "b" * 64,
+        "summary": {
+            "case_count": 10,
+            "matched_prediction_count": 10,
+            "prediction_count": 10,
+            "semantic_match_count": 10,
+            "semantic_match_rate": 1.0,
+            "strict_exact_match_count": 0,
+            "strict_exact_match_rate": 0.0,
+        },
+        "cases": candidate_cases,
+    }
+    baseline = {
+        "schema_version": "dsg-spatialqa-lab.vlm-semantic-eval-report.v1",
+        "gold_digest": "a" * 64,
+        "prediction_digest": "c" * 64,
+        "summary": {
+            "case_count": 10,
+            "matched_prediction_count": 10,
+            "prediction_count": 10,
+            "semantic_match_count": 0,
+            "semantic_match_rate": 0.0,
+            "strict_exact_match_count": 0,
+            "strict_exact_match_rate": 0.0,
+        },
+        "cases": baseline_cases,
+    }
+    candidate["report_digest"] = lab.vlm_semantic_eval_report_digest(candidate)
+    baseline["report_digest"] = lab.vlm_semantic_eval_report_digest(baseline)
+
+    report = lab.vlm_semantic_eval_delta_report(candidate, baseline)
+
+    assert report["paired"] == {
+        "case_count": 10,
+        "paired_losses": 0,
+        "paired_ties": 0,
+        "paired_wins": 10,
+    }
+    assert report["paired_significance"] == {
+        "candidate_loss_count": 0,
+        "candidate_win_count": 10,
+        "discordant_case_count": 10,
+        "method": "exact_paired_sign_test_mcnemar_like",
+        "significant_at_0_05": True,
+        "two_sided_p_value": 0.001953,
+    }
+    assert lab.validate_vlm_semantic_eval_delta_report(report)["valid"] is True
+
+
+def test_vlm_semantic_eval_delta_report_groups_by_question_type() -> None:
+    candidate_cases = [
+        {
+            "case_id": "case-location-win",
+            "question_type": "object_location",
+            "semantic_match": True,
+            "strict_exact_match": False,
+        },
+        {
+            "case_id": "case-location-tie",
+            "question_type": "object_location",
+            "semantic_match": True,
+            "strict_exact_match": False,
+        },
+        {
+            "case_id": "case-memory-loss",
+            "question_type": "dynamic_memory",
+            "semantic_match": False,
+            "strict_exact_match": False,
+        },
+    ]
+    baseline_cases = [
+        {
+            "case_id": "case-location-win",
+            "question_type": "object_location",
+            "semantic_match": False,
+            "strict_exact_match": False,
+        },
+        {
+            "case_id": "case-location-tie",
+            "question_type": "object_location",
+            "semantic_match": True,
+            "strict_exact_match": False,
+        },
+        {
+            "case_id": "case-memory-loss",
+            "question_type": "dynamic_memory",
+            "semantic_match": True,
+            "strict_exact_match": False,
+        },
+    ]
+    candidate = {
+        "schema_version": "dsg-spatialqa-lab.vlm-semantic-eval-report.v1",
+        "gold_digest": "a" * 64,
+        "prediction_digest": "b" * 64,
+        "summary": {
+            "case_count": 3,
+            "matched_prediction_count": 3,
+            "prediction_count": 3,
+            "semantic_match_count": 2,
+            "semantic_match_rate": 2 / 3,
+            "strict_exact_match_count": 0,
+            "strict_exact_match_rate": 0.0,
+        },
+        "cases": candidate_cases,
+    }
+    baseline = {
+        "schema_version": "dsg-spatialqa-lab.vlm-semantic-eval-report.v1",
+        "gold_digest": "a" * 64,
+        "prediction_digest": "c" * 64,
+        "summary": {
+            "case_count": 3,
+            "matched_prediction_count": 3,
+            "prediction_count": 3,
+            "semantic_match_count": 2,
+            "semantic_match_rate": 2 / 3,
+            "strict_exact_match_count": 0,
+            "strict_exact_match_rate": 0.0,
+        },
+        "cases": baseline_cases,
+    }
+    candidate["report_digest"] = lab.vlm_semantic_eval_report_digest(candidate)
+    baseline["report_digest"] = lab.vlm_semantic_eval_report_digest(baseline)
+
+    report = lab.vlm_semantic_eval_delta_report(candidate, baseline)
+
+    assert report["question_type_groups"] == [
+        {
+            "baseline_semantic_match_count": 1,
+            "candidate_semantic_match_count": 0,
+            "case_count": 1,
+            "decision": "candidate_regressed",
+            "paired": {
+                "case_count": 1,
+                "paired_losses": 1,
+                "paired_ties": 0,
+                "paired_wins": 0,
+            },
+            "paired_significance": {
+                "candidate_loss_count": 1,
+                "candidate_win_count": 0,
+                "discordant_case_count": 1,
+                "method": "exact_paired_sign_test_mcnemar_like",
+                "significant_at_0_05": False,
+                "two_sided_p_value": 1.0,
+            },
+            "question_type": "dynamic_memory",
+            "semantic_match_count_delta": -1,
+        },
+        {
+            "baseline_semantic_match_count": 1,
+            "candidate_semantic_match_count": 2,
+            "case_count": 2,
+            "decision": "candidate_improved",
+            "paired": {
+                "case_count": 2,
+                "paired_losses": 0,
+                "paired_ties": 1,
+                "paired_wins": 1,
+            },
+            "paired_significance": {
+                "candidate_loss_count": 0,
+                "candidate_win_count": 1,
+                "discordant_case_count": 1,
+                "method": "exact_paired_sign_test_mcnemar_like",
+                "significant_at_0_05": False,
+                "two_sided_p_value": 1.0,
+            },
+            "question_type": "object_location",
+            "semantic_match_count_delta": 1,
+        },
+    ]
     assert lab.validate_vlm_semantic_eval_delta_report(report)["valid"] is True
 
 
