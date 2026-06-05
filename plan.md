@@ -3004,3 +3004,31 @@ This does not change the already-saved P30 score by itself. It prepares the
 P31/P33 external detector return path so the next detector-only predicted DSG
 run can preserve support-rich current-location memory instead of degrading to
 `IN_ROOM`.
+
+## P34 Progress: Distance-Based Alias Disambiguation
+
+The detector current-location alias path now handles a more realistic external
+producer output pattern:
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/p34-detector-current-location-alias-distance-report.json
+```
+
+If an external detector returns a common support label such as `countertop` for
+`current_location_id`, and multiple same-label supports are present in the same
+frame, the observation ingestor resolves the alias only when one candidate is
+clearly nearest by bbox surface distance. Near ties still raise
+`SpatialQAError`; the producer must return a stable support id or stronger
+evidence in those cases.
+
+This is a DSG memory/query improvement, not a score claim:
+
+- it keeps explicit `detector_current_location` support edges from being
+  dropped when the returned support label is common but spatially clear;
+- it still uses only same-frame detector/RGB-D observations;
+- it does not read gold answers, oracle required edges, or evaluator-only
+  fields;
+- it does not change already-saved P30 metrics until a new detector-only
+  observation sequence is imported and evaluated.
+- full verification passed with `python scripts/verify.py` after this change
+  (`796` pytest cases passed, evaluation suite `52/52` passed).

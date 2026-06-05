@@ -3084,3 +3084,46 @@ producer 给的是唯一标签，DSG 会拒绝这条 support evidence，后续 G
 
 当前仍不能声称真实 detector-only DSG 已优于 VLM-only；P33 只是把
 support-rich memory 的入口做得更稳。
+
+## P34 进展：同名 support 的距离消歧
+
+P33 解决了唯一标签 alias，例如 `current_location_id="countertop"` 能解析成
+同帧唯一的 `countertop_1`。P34 继续处理更真实的外部 detector/RGB-D 输出：
+同一帧里可能有多个同名 support，例如多个 `countertop`、`chair` 或
+`cabinet`。
+
+新增报告：
+
+`outputs/diagnostics/p34-detector-current-location-alias-distance-report.json`
+
+本轮改动：
+
+- 对显式 detector `current_location_relation=ON/INSIDE`；
+- 如果 `current_location_id` 是同名 support 标签；
+- 且同帧存在多个同标签候选；
+- 则用 target bbox 与 support bbox 的 surface distance 排序；
+- 只有最近候选和第二近候选距离差大于安全 margin 时才接受；
+- 如果距离接近，仍抛出 `SpatialQAError`，要求 producer 返回稳定 support id。
+
+这个改动的意义是：外部 detector 不一定总能输出仓库稳定 object id；但只要它能
+输出 support 标签，并且几何上只有一个明显最近的 support，DSG 就可以保留
+`detector_current_location` edge，而不是丢失 support 证据后退化到 `IN_ROOM`。
+
+验证：
+
+| command | result |
+| --- | --- |
+| `python -m pytest -q tests/test_predicted_graph_builder.py -k "current_location_label_alias or clear_nearest_support"` | 3 passed |
+| `python -m pytest -q tests/test_observations.py tests/test_observations_script.py` | 45 passed |
+| `python -m pytest -q tests/test_predicted_graph_builder.py tests/test_spatial_qa.py -k "current_location or support_fallback or support_like or predicted_graph"` | 28 passed |
+| `python -m ruff check src/dsg_spatialqa_lab/observations.py tests/test_predicted_graph_builder.py` | passed |
+| `python -m mypy src/dsg_spatialqa_lab/observations.py tests/test_predicted_graph_builder.py` | passed |
+| `python scripts/verify.py` | all checks passed；pytest 796 passed；evaluation suite 52 / 52 passed |
+
+阶段边界：
+
+- P34 仍不读取 QA gold answer、oracle required edges 或 evaluator-only 字段；
+- 它只使用同一帧 observation 里的 detector/RGB-D object bbox；
+- 它不会直接改写 P30 已保存分数；
+- 下一步必须用新的外部 detector/RGB-D JSONL 重建 detector-only predicted DSG，
+  再与 VLM P26 做 paired wins/losses 对比。
