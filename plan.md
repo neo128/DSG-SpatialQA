@@ -3063,3 +3063,6 @@ This is a query observability improvement, not a score claim. It should be used
 on the next detector-only DSG rerun to decide whether failures are primarily
 detector recall problems, memory storage problems, or query disambiguation
 problems before changing the answer policy.
+
+Full verification passed with `python scripts/verify.py` after this change
+(`798` pytest cases passed, evaluation suite `52/52` passed).

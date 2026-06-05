@@ -3167,6 +3167,7 @@ P30 detector-only DSG 很多答案退化成 `IN_ROOM`。但同样是房间级 fa
 | `python -m pytest -q tests/test_spatial_qa.py -k 'object_location or support_fallback or current_location'` | 17 passed |
 | `python -m ruff check src/dsg_spatialqa_lab/qa.py tests/test_spatial_qa.py` | passed |
 | `python -m mypy src/dsg_spatialqa_lab/qa.py tests/test_spatial_qa.py` | passed |
+| `python scripts/verify.py` | all checks passed；pytest 798 passed；evaluation suite 52 / 52 passed |
 
 阶段意义：
 
