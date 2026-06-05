@@ -169,18 +169,25 @@ class SpatialQAEngine:
 
     def _answer_object_location(self, question: Mapping[str, Any]) -> QAResponse:
         object_id = self._required_str(question, "object_id")
+        include_diagnostics = self._optional_bool(question, "include_diagnostics") or False
         state = self.graph_tool.get_object(object_id)
         latest_location_edge = self._latest_location_edge(object_id)
         fallback_location: dict[str, Any] | None = None
         fallback_evidence_nodes: list[str] = []
+        support_candidates: list[tuple[float, str]] | None = None
         latest_location_is_visible_frame_anchor = (
             latest_location_edge is not None
             and self._is_visible_frame_region_location_edge(latest_location_edge)
         )
         if latest_location_edge is None or latest_location_is_visible_frame_anchor:
+            support_candidates = self._detector_same_frame_support_candidates(
+                object_id,
+                state.step,
+            )
             fallback_location = self._detector_same_frame_support_fallback_location(
                 object_id,
                 state.step,
+                candidates=support_candidates,
             )
             if fallback_location is not None:
                 fallback_dst_value = fallback_location.get("dst")
@@ -200,31 +207,44 @@ class SpatialQAEngine:
             evidence_edges.append(latest_location_edge.id)
         if latest_state_edge is not None:
             evidence_edges.append(latest_state_edge.id)
+        current_location = (
+            fallback_location
+            if (
+                latest_location_is_visible_frame_anchor
+                and fallback_location is not None
+            )
+            else {
+                "relation": latest_location_edge.relation,
+                "dst": latest_location_edge.dst,
+                "step": latest_location_edge.step,
+            }
+            if latest_location_edge is not None
+            else fallback_location
+        )
+        answer: dict[str, Any] = {
+            "object_id": object_id,
+            "label": state.label,
+            "pose": state.pose.to_dict(),
+            "visible": state.visible,
+            "confidence": state.confidence,
+            "last_seen_step": state.last_seen_step,
+            "state_step": state.step,
+            "current_location": current_location,
+        }
+        if include_diagnostics:
+            if support_candidates is None:
+                support_candidates = self._detector_same_frame_support_candidates(
+                    object_id,
+                    state.step,
+                )
+            answer["query_diagnostics"] = self._object_location_query_diagnostics(
+                current_location=current_location,
+                latest_location_edge=latest_location_edge,
+                support_candidates=support_candidates,
+                fallback_location=fallback_location,
+            )
         return QAResponse(
-            answer={
-                "object_id": object_id,
-                "label": state.label,
-                "pose": state.pose.to_dict(),
-                "visible": state.visible,
-                "confidence": state.confidence,
-                "last_seen_step": state.last_seen_step,
-                "state_step": state.step,
-                "current_location": (
-                    fallback_location
-                    if (
-                        latest_location_is_visible_frame_anchor
-                        and fallback_location is not None
-                    )
-                    else
-                    {
-                        "relation": latest_location_edge.relation,
-                        "dst": latest_location_edge.dst,
-                        "step": latest_location_edge.step,
-                    }
-                    if latest_location_edge is not None
-                    else fallback_location
-                ),
-            },
+            answer=answer,
             evidence_nodes=[
                 object_id,
                 f"state:{object_id}:{state.step}",
@@ -239,13 +259,33 @@ class SpatialQAEngine:
         self,
         object_id: str,
         step: int,
+        *,
+        candidates: list[tuple[float, str]] | None = None,
     ) -> dict[str, Any] | None:
+        if candidates is None:
+            candidates = self._detector_same_frame_support_candidates(object_id, step)
+        if not candidates:
+            return None
+        best_distance, support_id = candidates[0]
+        if (
+            len(candidates) > 1
+            and candidates[1][0] - best_distance
+            <= DETECTOR_SUPPORT_FALLBACK_AMBIGUITY_MARGIN
+        ):
+            return None
+        return {"relation": "ON", "dst": support_id, "step": step}
+
+    def _detector_same_frame_support_candidates(
+        self,
+        object_id: str,
+        step: int,
+    ) -> list[tuple[float, str]]:
         target_node = self.graph_tool.graph.nodes.get(object_id)
         target_state = self.graph_tool.graph.object_states.get(object_id)
         if target_node is None or target_state is None:
-            return None
+            return []
         if not self._has_detector_rgbd_evidence(target_node):
-            return None
+            return []
         target_identity_labels = {
             _normalized_label(target_node.label),
             _normalized_object_id_prefix(object_id),
@@ -255,12 +295,12 @@ class SpatialQAEngine:
             | DETECTOR_SUPPORT_FALLBACK_CONTAINER_LABELS
             | DETECTOR_SUPPORT_FALLBACK_UNSUPPORTED_TARGET_LABELS
         ):
-            return None
+            return []
         scene_value = target_node.attributes.get("scene_id")
         scene_id = scene_value if isinstance(scene_value, str) else None
         target_step = target_node.attributes.get("step")
         if scene_id is None or target_step != step:
-            return None
+            return []
         candidates: list[tuple[float, str]] = []
         for support_id, support_state in self.graph_tool.graph.object_states.items():
             if support_id == object_id:
@@ -281,17 +321,74 @@ class SpatialQAEngine:
             if distance > _detector_support_distance_limit(target_state.bbox.size, support_state.bbox.size):
                 continue
             candidates.append((distance, support_id))
-        candidates = sorted(candidates)
-        if not candidates:
-            return None
-        best_distance, support_id = candidates[0]
-        if (
-            len(candidates) > 1
-            and candidates[1][0] - best_distance
-            <= DETECTOR_SUPPORT_FALLBACK_AMBIGUITY_MARGIN
+        return sorted(candidates)
+
+    def _object_location_query_diagnostics(
+        self,
+        *,
+        current_location: dict[str, Any] | None,
+        latest_location_edge: Edge | None,
+        support_candidates: list[tuple[float, str]],
+        fallback_location: dict[str, Any] | None,
+    ) -> dict[str, Any]:
+        support_fallback_applied = (
+            fallback_location is not None
+            and fallback_location.get("relation") == "ON"
+        )
+        room_fallback_applied = (
+            current_location is not None
+            and current_location.get("relation") == "IN_ROOM"
+            and (
+                latest_location_edge is None
+                or self._is_visible_frame_region_location_edge(latest_location_edge)
+            )
+        )
+        if support_fallback_applied:
+            status = "support_fallback_applied"
+            missing_evidence: list[str] = []
+        elif support_candidates:
+            status = "support_fallback_ambiguous"
+            missing_evidence = ["unambiguous_detector_support"]
+        elif latest_location_edge is not None and not self._is_visible_frame_region_location_edge(
+            latest_location_edge
         ):
-            return None
-        return {"relation": "ON", "dst": support_id, "step": step}
+            status = "explicit_location_edge"
+            missing_evidence = []
+        else:
+            status = "support_fallback_missing"
+            missing_evidence = ["detector_support_candidate"]
+        return {
+            "location_evidence_status": status,
+            "missing_evidence": missing_evidence,
+            "room_fallback_applied": room_fallback_applied,
+            "support_fallback_applied": support_fallback_applied,
+            "support_candidate_count": len(support_candidates),
+            "support_candidates": self._support_candidate_rows(support_candidates),
+        }
+
+    def _support_candidate_rows(
+        self,
+        support_candidates: list[tuple[float, str]],
+    ) -> list[dict[str, Any]]:
+        rows: list[dict[str, Any]] = []
+        for distance, object_id in support_candidates:
+            node = self.graph_tool.graph.nodes.get(object_id)
+            if node is None:
+                continue
+            evidence_kinds = node.attributes.get("evidence_kinds")
+            rows.append(
+                {
+                    "object_id": object_id,
+                    "label": node.label,
+                    "distance": round(distance, 6),
+                    "evidence_kinds": (
+                        list(evidence_kinds)
+                        if isinstance(evidence_kinds, list)
+                        else []
+                    ),
+                }
+            )
+        return rows
 
     def _is_visible_frame_region_location_edge(self, edge: Edge) -> bool:
         if edge.relation != "IN_REGION":

@@ -546,6 +546,122 @@ def test_qa_object_location_does_not_guess_detector_support_when_ambiguous() -> 
     }
 
 
+def test_qa_object_location_diagnostics_reports_ambiguous_support_candidates() -> None:
+    graph = DynamicSceneGraph()
+    support_attributes = {
+        "evidence_kinds": ["rgb", "depth", "detector"],
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+    }
+    graph.upsert_object(
+        "chair_1",
+        "chair",
+        Pose3D(0.0, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.0, 0.9, 0.0), size=(0.7, 0.6, 0.7)),
+        confidence=0.9,
+        visible=True,
+        step=5,
+        attributes=support_attributes,
+    )
+    graph.upsert_object(
+        "diningtable_1",
+        "diningtable",
+        Pose3D(0.2, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.2, 0.9, 0.0), size=(1.2, 0.8, 1.2)),
+        confidence=0.9,
+        visible=True,
+        step=5,
+        attributes=support_attributes,
+    )
+    graph.upsert_object(
+        "book_1",
+        "book",
+        Pose3D(0.1, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.1, 0.9, 0.0), size=(0.2, 0.1, 0.2)),
+        confidence=0.86,
+        visible=True,
+        step=5,
+        attributes=support_attributes,
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {
+            "type": "object_location",
+            "object_id": "book_1",
+            "include_diagnostics": True,
+        }
+    )
+
+    assert response.error is None
+    assert response.answer["current_location"] == {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 5,
+    }
+    assert response.answer["query_diagnostics"] == {
+        "location_evidence_status": "support_fallback_ambiguous",
+        "missing_evidence": ["unambiguous_detector_support"],
+        "room_fallback_applied": True,
+        "support_fallback_applied": False,
+        "support_candidate_count": 2,
+        "support_candidates": [
+            {
+                "object_id": "chair_1",
+                "label": "chair",
+                "distance": 0.1,
+                "evidence_kinds": ["rgb", "depth", "detector"],
+            },
+            {
+                "object_id": "diningtable_1",
+                "label": "diningtable",
+                "distance": 0.1,
+                "evidence_kinds": ["rgb", "depth", "detector"],
+            },
+        ],
+    }
+
+
+def test_qa_object_location_diagnostics_reports_missing_support_candidates() -> None:
+    graph = DynamicSceneGraph()
+    graph.upsert_object(
+        "apple_1",
+        "apple",
+        Pose3D(0.1, 0.9, -0.2),
+        BBox3D(center=Pose3D(0.1, 0.9, -0.2), size=(0.1, 0.1, 0.1)),
+        confidence=0.84,
+        visible=True,
+        step=4,
+        attributes={
+            "evidence_kinds": ["rgb", "depth", "detector"],
+            "scene_id": "FloorPlan1",
+            "source_kind": "detector",
+        },
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {
+            "type": "object_location",
+            "object_id": "apple_1",
+            "include_diagnostics": True,
+        }
+    )
+
+    assert response.error is None
+    assert response.answer["current_location"] == {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 4,
+    }
+    assert response.answer["query_diagnostics"] == {
+        "location_evidence_status": "support_fallback_missing",
+        "missing_evidence": ["detector_support_candidate"],
+        "room_fallback_applied": True,
+        "support_fallback_applied": False,
+        "support_candidate_count": 0,
+        "support_candidates": [],
+    }
+
+
 def test_qa_object_location_uses_nearest_detector_support_when_not_ambiguous() -> None:
     graph = DynamicSceneGraph()
     support_attributes = {
