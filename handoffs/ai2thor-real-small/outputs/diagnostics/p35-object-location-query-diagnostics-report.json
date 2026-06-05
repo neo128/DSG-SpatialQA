@@ -1,0 +1,50 @@
+{
+  "change": {
+    "behavior": "object_location questions can opt in to query_diagnostics by setting include_diagnostics=true. Default QA answers are unchanged.",
+    "diagnostic_fields": [
+      "location_evidence_status",
+      "missing_evidence",
+      "room_fallback_applied",
+      "support_fallback_applied",
+      "support_candidate_count",
+      "support_candidates"
+    ],
+    "production_file": "src/dsg_spatialqa_lab/qa.py",
+    "test_file": "tests/test_spatial_qa.py"
+  },
+  "expected_dsg_effect": {
+    "memory_query_loop": "Failed DSG object-location queries expose whether the system lacked detector support candidates or rejected ambiguous support candidates before falling back to a room-level answer.",
+    "query_behavior": "GraphTool users can request structured diagnostics without changing the default answer schema used by saved prediction JSONL files.",
+    "risk_control": "The diagnostic path reports evidence state only; it does not choose a support when ambiguity remains."
+  },
+  "next_experiment": {
+    "input": "handoffs/ai2thor-real-small/inputs/predicted-dsg/p31-detector-recall-handoff.json",
+    "rerun_needed": "After an external detector/RGB-D return, rebuild the detector-only observation sequence and predicted graph, then run object_location with include_diagnostics=true for remaining DSG misses.",
+    "target": "Use query_diagnostics to separate missing-support recall failures from ambiguous-support query failures before adjusting memory storage or detector prompts."
+  },
+  "not_final_real_detector_only_research_conclusion": true,
+  "objective": "improve DSG query observability after the VLM-only semantic gate has passed",
+  "problem": {
+    "dsg_failure_mode": "When detector-only DSG fell back to IN_ROOM, the saved answer did not explain whether support evidence was absent, ambiguous, or bypassed.",
+    "previous_behavior": "object_location returned the same room-level fallback shape for missing support candidates and ambiguous same-frame support candidates."
+  },
+  "report_digest": "09b35a2f696795539e5f2f47a83972001bb0d5e0608f4f041dc08dc66686cf93",
+  "schema_version": "dsg-spatialqa-lab.object-location-query-diagnostics-report.v1",
+  "stage": "p35_object_location_query_diagnostics",
+  "verification": {
+    "full_verify_run": false,
+    "green_commands": [
+      "python -m pytest -q tests/test_spatial_qa.py -k 'diagnostics_reports'",
+      "python -m pytest -q tests/test_spatial_qa.py -k 'object_location or support_fallback or current_location'",
+      "python -m ruff check src/dsg_spatialqa_lab/qa.py tests/test_spatial_qa.py",
+      "python -m mypy src/dsg_spatialqa_lab/qa.py tests/test_spatial_qa.py"
+    ],
+    "green_result": {
+      "diagnostics_slice": "2 passed, 40 deselected",
+      "mypy": "Success: no issues found in 2 source files",
+      "object_location_slice": "17 passed, 25 deselected",
+      "ruff": "All checks passed"
+    },
+    "red_test": "python -m pytest -q tests/test_spatial_qa.py -k 'diagnostics_reports' failed before implementation with KeyError: query_diagnostics"
+  }
+}
