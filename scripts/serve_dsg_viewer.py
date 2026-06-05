@@ -21,6 +21,7 @@ from dsg_spatialqa_lab import (
     load_qa_eval_report,
     save_dsg_viewer_payload,
 )
+from dsg_spatialqa_lab.benchmark.active_qa_v2 import load_active_qa_v2_records
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -48,6 +49,11 @@ def main(argv: list[str] | None = None) -> int:
         help="Optional predicted DSG evidence report JSON path.",
     )
     parser.add_argument(
+        "--trajectory",
+        type=Path,
+        help="Optional reachable NBV trajectory report JSON path.",
+    )
+    parser.add_argument(
         "--write-payload",
         type=Path,
         help="Write payload JSON to this path and exit without starting a server.",
@@ -65,7 +71,7 @@ def main(argv: list[str] | None = None) -> int:
             predicted_graph=load_graph_json(graph_path),
             oracle_graph=_load_optional_graph(paths.get("oracle_graph_path")),
             qa_cases=(
-                load_qa_dataset(paths["qa_path"])
+                _load_qa_cases(paths["qa_path"])
                 if paths.get("qa_path") is not None
                 else ()
             ),
@@ -78,8 +84,12 @@ def main(argv: list[str] | None = None) -> int:
             evidence_report=_load_optional_json_mapping(
                 paths.get("evidence_report_path")
             ),
+            trajectory_report=_load_optional_json_mapping(
+                paths.get("trajectory_report_path")
+            ),
             predicted_graph_path=graph_path,
             evidence_report_path=paths.get("evidence_report_path"),
+            trajectory_report_path=paths.get("trajectory_report_path"),
         )
         if args.write_payload is not None:
             save_dsg_viewer_payload(payload, args.write_payload)
@@ -115,6 +125,7 @@ def _input_paths(args: argparse.Namespace) -> dict[str, Path]:
         "qa_eval_report_path": args.qa_eval_report,
         "graph_eval_report_path": args.graph_eval_report,
         "evidence_report_path": args.evidence_report,
+        "trajectory_report_path": args.trajectory,
     }
     paths = dict(preset_paths)
     for key, path in explicit_paths.items():
@@ -136,6 +147,15 @@ def _load_optional_graph(path: Path | None) -> Any:
     if path is None:
         return None
     return load_graph_json(path)
+
+
+def _load_qa_cases(path: Path) -> list[Any]:
+    if path.is_dir():
+        rows: list[Any] = []
+        for split_path in sorted(path.glob("qa-*.jsonl")):
+            rows.extend(load_active_qa_v2_records(split_path))
+        return rows
+    return list(load_qa_dataset(path))
 
 
 def _load_optional_qa_eval_report(path: Path | None) -> Mapping[str, Any] | None:

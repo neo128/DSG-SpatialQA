@@ -16,6 +16,9 @@ TRAJECTORY_ARTIFACT_SELF_CHECK_SCHEMA_VERSION = (
 FORBIDDEN_TRAJECTORY_FIELDS = frozenset(
     {"gold_answer", "gold_evidence", "required_edges", "required_nodes"}
 )
+FORMAL_PROTOCOL_GATE_SCHEMA_VERSION = (
+    "dsg-spatialqa-lab.reachable-nbv-formal-protocol-gate.v1"
+)
 
 
 def diagnostic_protocol_metadata() -> dict[str, Any]:
@@ -201,6 +204,83 @@ def compare_trajectory_protocols(
     }
 
 
+def reachable_nbv_formal_protocol_gate(
+    *,
+    episode_id: str,
+    trajectory: Mapping[str, Any],
+    fixed_audit: Mapping[str, Any],
+    nbv_audit: Mapping[str, Any],
+    decisions: Sequence[Mapping[str, Any]] = (),
+) -> dict[str, Any]:
+    checks = [
+        {
+            "name": "real_ai2thor_runtime",
+            "passed": trajectory.get("real_ai2thor_runtime") is True,
+        },
+        {
+            "name": "navigation_validated",
+            "passed": trajectory.get("navigation_validated") is True
+            and nbv_audit.get("navigation_validated") is True,
+        },
+        {
+            "name": "teleport_used_false",
+            "passed": trajectory.get("teleport_used") is False
+            and not _trajectory_uses_action(trajectory, "TeleportFull"),
+        },
+        {
+            "name": "closed_loop_memory_update",
+            "passed": trajectory.get("closed_loop_memory_update") is True
+            and all(
+                isinstance(_mapping(decision).get("memory_before"), Mapping)
+                and isinstance(_mapping(decision).get("memory_after"), Mapping)
+                for decision in decisions
+            ),
+        },
+        {
+            "name": "target_support_same_frame_rate_gt_fixed",
+            "passed": _number(nbv_audit.get("target_support_same_frame_rate"))
+            > _number(fixed_audit.get("target_support_same_frame_rate")),
+        },
+        {
+            "name": "evidence_observable_qa_count_gte_fixed",
+            "passed": _number(nbv_audit.get("evidence_observable_qa_count"))
+            >= _number(fixed_audit.get("evidence_observable_qa_count")),
+        },
+        {
+            "name": "missing_support_count_lte_fixed",
+            "passed": _number(nbv_audit.get("missing_support_count"))
+            <= _number(fixed_audit.get("missing_support_count")),
+        },
+        {
+            "name": "missing_relation_count_lt_fixed",
+            "passed": _number(nbv_audit.get("missing_relation_count"))
+            < _number(fixed_audit.get("missing_relation_count")),
+        },
+        {
+            "name": "graphtool_semantic_match_gte_fixed",
+            "passed": _number(nbv_audit.get("GraphTool_semantic_match"))
+            >= _number(fixed_audit.get("GraphTool_semantic_match")),
+        },
+        {
+            "name": "no_gold_leakage",
+            "passed": trajectory.get("uses_gold_answer") is False
+            and trajectory.get("uses_gold_evidence") is False
+            and trajectory.get("uses_required_edges") is False
+            and trajectory.get("uses_required_nodes") is False
+            and not _forbidden_paths(trajectory)
+            and not any(_forbidden_paths(decision) for decision in decisions),
+        },
+    ]
+    failed = [check["name"] for check in checks if check["passed"] is not True]
+    return {
+        "schema_version": FORMAL_PROTOCOL_GATE_SCHEMA_VERSION,
+        "episode_id": episode_id,
+        "formal_protocol_ready": not failed,
+        "failed_checks": failed,
+        "checks": checks,
+    }
+
+
 def trajectory_artifact_self_check(
     *,
     trajectory: Mapping[str, Any],
@@ -368,3 +448,15 @@ def _forbidden_paths(value: object, *, prefix: str = "$") -> list[str]:
         for index, child in enumerate(value):
             paths.extend(_forbidden_paths(child, prefix=f"{prefix}[{index}]"))
     return paths
+
+
+def _trajectory_uses_action(trajectory: Mapping[str, Any], action_name: str) -> bool:
+    return any(
+        action.get("action") == action_name
+        for step in _steps(trajectory)
+        for action in (
+            *_sequence(step.get("executed_actions")),
+            *_sequence(step.get("executed_capture_actions")),
+        )
+        if isinstance(action, Mapping)
+    )

@@ -1,0 +1,5094 @@
+{
+  "episode_id": "ai2thor-real-small-episode-001",
+  "leak_free": true,
+  "leak_paths": [],
+  "prediction_cases": [
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:object_location:cabinet_01_85_02_02_00_38:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the cabinet?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200001,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:object_location:coffeemachine_01_98_00_90_00_19:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the coffeemachine?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200001,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:object_location:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the fridge?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200001,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:object_location:toaster_01_84_00_90_00_13:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the toaster?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200001,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:object_location:window_02_23_01_43_01_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the window?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200001,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:cabinet_01_55_00_50_00_38:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the cabinet?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:cabinet_01_85_02_02_00_38:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the cabinet?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:coffeemachine_01_98_00_90_00_19:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the coffeemachine?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:countertop_01_87_00_95_01_21:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the countertop?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:drawer_01_56_00_33_00_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the drawer?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:drawer_01_56_00_66_00_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the drawer?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:drawer_01_56_00_84_00_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the drawer?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:floor_00_00_00_00_00_00:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the floor?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the fridge?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:garbagecan_01_94_00_00_02_03:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the garbagecan?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:toaster_01_84_00_90_00_13:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the toaster?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:window_02_23_01_43_01_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the window?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "cabinet",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:support_relation:coffeemachine_01_98_00_90_00_19:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the coffeemachine on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "drawer",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:support_relation:drawer_01_56_00_66_00_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the drawer on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "cabinet",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:support_relation:drawer_01_56_00_84_00_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the drawer on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "floor",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:support_relation:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the fridge on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "floor",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:support_relation:garbagecan_01_94_00_00_02_03:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the garbagecan on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "cabinet",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:support_relation:toaster_01_84_00_90_00_13:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the toaster on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200003:object_location:cabinet_01_85_02_02_00_38:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the cabinet?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200003,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200003:object_location:coffeemachine_01_98_00_90_00_19:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the coffeemachine?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200003,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200003:object_location:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the fridge?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200003,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200004:object_location:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the fridge?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200004,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200004:object_location:garbagecan_01_94_00_00_02_03:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the garbagecan?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200004,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200005:object_location:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the fridge?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200005,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200005:object_location:garbagecan_01_94_00_00_02_03:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the garbagecan?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200005,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200006:object_location:floor_00_00_00_00_00_00:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the floor?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200006,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200006:object_location:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the fridge?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200006,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "visible frame region",
+          "relation": "IN_REGION"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_REGION"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_REGION"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_REGION"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200006:object_location:garbagecan_01_94_00_00_02_03:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the garbagecan?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200006,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "floor",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200006:support_relation:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the fridge on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:object_location:cabinet_01_85_02_02_00_38:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the cabinet?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200001,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:object_location:coffeemachine_01_98_00_90_00_19:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the coffeemachine?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200001,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:object_location:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the fridge?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200001,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:object_location:toaster_01_84_00_90_00_13:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the toaster?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200001,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:object_location:window_02_23_01_43_01_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the window?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200001,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:cabinet_01_55_00_50_00_38:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the cabinet?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:cabinet_01_85_02_02_00_38:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the cabinet?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:coffeemachine_01_98_00_90_00_19:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the coffeemachine?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:countertop_01_87_00_95_01_21:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the countertop?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:drawer_01_56_00_33_00_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the drawer?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:drawer_01_56_00_66_00_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the drawer?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:drawer_01_56_00_84_00_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the drawer?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:floor_00_00_00_00_00_00:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the floor?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the fridge?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:garbagecan_01_94_00_00_02_03:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the garbagecan?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:toaster_01_84_00_90_00_13:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the toaster?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:object_location:window_02_23_01_43_01_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the window?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "cabinet",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:support_relation:coffeemachine_01_98_00_90_00_19:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the coffeemachine on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "drawer",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:support_relation:drawer_01_56_00_66_00_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the drawer on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "cabinet",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:support_relation:drawer_01_56_00_84_00_20:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the drawer on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "floor",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:support_relation:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the fridge on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "floor",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:support_relation:garbagecan_01_94_00_00_02_03:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the garbagecan on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "cabinet",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:support_relation:toaster_01_84_00_90_00_13:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the toaster on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200003:object_location:cabinet_01_85_02_02_00_38:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the cabinet?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200003,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200003:object_location:coffeemachine_01_98_00_90_00_19:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the coffeemachine?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200003,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200003:object_location:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the fridge?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200003,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200004:object_location:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the fridge?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200004,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200004:object_location:garbagecan_01_94_00_00_02_03:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the garbagecan?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200004,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200005:object_location:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the fridge?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200005,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200005:object_location:garbagecan_01_94_00_00_02_03:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the garbagecan?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200005,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200006:object_location:floor_00_00_00_00_00_00:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the floor?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200006,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "FloorPlan1",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_ROOM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_ROOM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200006:object_location:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the fridge?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200006,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "visible frame region",
+          "relation": "IN_REGION"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "IN_REGION"
+        },
+        {
+          "dst_label": "table",
+          "relation": "IN_REGION"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "IN_REGION"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200006:object_location:garbagecan_01_94_00_00_02_03:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "Where is the garbagecan?",
+      "question_type": "object_location",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200006,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "floor",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "table",
+          "relation": "ON"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "ON"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200006:support_relation:fridge_02_10_00_00_01_07:relation_centric",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "What support surface is the fridge on?",
+      "question_type": "support_relation",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": 1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200002,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200070:situated_egocentric:garbagecan_01_94_00_00_02_03:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200070, where is the garbagecan relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": 0.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200070,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200131:situated_egocentric:creditcard_00_46_01_10_00_87:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200131, where is the creditcard relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.0
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200131,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200146:situated_egocentric:fridge_02_10_00_00_01_07:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200146, where is the fridge relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -1.0,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200146,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:cabinet_00_68_00_50_02_20:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the cabinet relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:countertop_00_69_00_95_02_48:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the countertop relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:drawer_00_95_00_22_02_20:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the drawer relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:drawer_00_95_00_39_02_20:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the drawer relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:drawer_00_95_00_56_02_20:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the drawer relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:drawer_00_95_00_71_02_20:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the drawer relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:drawer_00_95_00_83_02_20:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the drawer relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:kettle_01_04_00_90_02_60:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the kettle relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:pan_00_72_00_90_02_42:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the pan relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:peppershaker_00_30_00_90_02_47:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the peppershaker relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:saltshaker_00_35_00_90_02_57:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the saltshaker relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:spatula_00_38_00_91_02_33:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the spatula relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:stoveburner_00_04_00_92_02_37:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the stoveburner relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:stoveburner_00_04_00_92_02_58:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the stoveburner relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:stoveburner_00_47_00_92_02_37:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the stoveburner relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:stoveburner_00_47_00_92_02_58:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the stoveburner relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:stoveknob_00_02_00_88_02_19:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the stoveknob relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:stoveknob_00_18_00_88_02_19:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the stoveknob relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:stoveknob_00_33_00_88_02_19:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the stoveknob relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:situated_egocentric:stoveknob_00_48_00_88_02_19:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200171, where is the stoveknob relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200171,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200172:situated_egocentric:cabinet_00_68_02_02_02_46:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200172, where is the cabinet relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200172,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200172:situated_egocentric:cabinet_00_72_02_02_02_46:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200172, where is the cabinet relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200172,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200172:situated_egocentric:microwave_00_24_01_69_02_53:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200172, where is the microwave relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 180.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200172,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200175:situated_egocentric:cabinet_01_18_00_50_02_20:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200175, where is the cabinet relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200175,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200175:situated_egocentric:cabinet_01_55_00_50_01_97:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200175, where is the cabinet relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200175,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200175:situated_egocentric:lettuce_01_81_00_97_00_94:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200175, where is the lettuce relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200175,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200175:situated_egocentric:mug_01_76_00_90_00_62:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200175, where is the mug relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200175,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200175:situated_egocentric:papertowelroll_02_06_01_01_00_81:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200175, where is the papertowelroll relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200175,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200175:situated_egocentric:pot_01_22_00_90_02_36:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200175, where is the pot relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200175,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200175:situated_egocentric:potato_01_66_00_93_02_15:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200175, where is the potato relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200175,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200175:situated_egocentric:sink_01_90_00_97_01_50_sinkbasin:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200175, where is the sinkbasin relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200175,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200175:situated_egocentric:soapbottle_01_99_00_90_02_03:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200175, where is the soapbottle relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200175,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200176:situated_egocentric:cabinet_00_73_02_02_02_46:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200176, where is the cabinet relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200176,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200176:situated_egocentric:cabinet_01_69_02_02_02_46:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200176, where is the cabinet relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200176,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200176:situated_egocentric:faucet_02_15_00_91_01_50:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200176, where is the faucet relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200176,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200176:situated_egocentric:houseplant_01_95_00_89_02_52:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200176, where is the houseplant relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200176,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200176:situated_egocentric:window_02_23_01_43_01_20:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200176, where is the window relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 270.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200176,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200179:situated_egocentric:bowl_00_27_01_10_00_75:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200179, where is the bowl relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200179:situated_egocentric:bread_00_52_01_17_00_03:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200179, where is the bread relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200179:situated_egocentric:butterknife_00_41_01_11_00_46:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200179, where is the butterknife relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200179:situated_egocentric:cabinet_01_55_00_50_00_38:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200179, where is the cabinet relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200179:situated_egocentric:coffeemachine_01_98_00_90_00_19:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200179, where is the coffeemachine relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200179:situated_egocentric:countertop_01_87_00_95_01_21:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200179, where is the countertop relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200179:situated_egocentric:drawer_01_56_00_33_00_20:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200179, where is the drawer relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200179:situated_egocentric:drawer_01_56_00_66_00_20:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200179, where is the drawer relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200179:situated_egocentric:drawer_01_56_00_84_00_20:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200179, where is the drawer relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200179:situated_egocentric:floor_00_00_00_00_00_00:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200179, where is the floor relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200179:situated_egocentric:toaster_01_84_00_90_00_13:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200179, where is the toaster relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200179:situated_egocentric:tomato_00_39_01_14_00_81:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200179, where is the tomato relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200180:situated_egocentric:apple_00_47_01_15_00_48:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200180, where is the apple relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200180:situated_egocentric:book_00_15_01_10_00_62:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200180, where is the book relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200180:situated_egocentric:cabinet_01_85_02_02_00_38:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200180, where is the cabinet relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": null
+      }
+    },
+    {
+      "answer_options": [
+        {
+          "dst_label": "agent",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "countertop",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "table",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "dst_label": "chair",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200180:situated_egocentric:countertop_00_08_01_15_00_00:temporal",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "question": "From the robot pose at step 200180, where is the countertop relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan1",
+      "situation": {
+        "agent_pose": {
+          "x": -0.5,
+          "y": 0.900999128818512,
+          "yaw": 0.0,
+          "z": -1.25
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": null
+      }
+    }
+  ],
+  "request_bundle_digest": "0d5fae6156646397ae6c68c2faaf3ba0aa704cd2511ccee5ad5e72576a6f979a",
+  "request_count": 124,
+  "schema_version": "dsg-spatialqa-lab.active-qa-v2-vlm-request-bundle.v1"
+}

@@ -247,9 +247,26 @@ def reachable_relation_centric_nbv(
         relation_top_k=2,
         require_detector_state_evidence=False,
     )
+    all_executed_actions = [
+        action
+        for step in trajectory_steps
+        for action in (
+            *step["executed_actions"],
+            *step["executed_capture_actions"],
+        )
+    ]
+    all_actions_success_checked = all(
+        action.get("lastActionSuccess") in {True, False}
+        for action in all_executed_actions
+    )
+    if runtime_kind == "fake_controller":
+        all_actions_success_checked = all(
+            action.get("success") in {True, False}
+            for action in all_executed_actions
+        )
     trajectory = {
         "schema_version": REACHABLE_NBV_TRAJECTORY_SCHEMA_VERSION,
-        "trajectory_id": "reachable_nbv_episode001_v1",
+        "trajectory_id": f"reachable_nbv_{episode_id}_v1",
         "scene_id": scene_id,
         "episode_id": episode_id,
         "collection_kind": "reachable_relation_centric_nbv",
@@ -260,6 +277,24 @@ def reachable_relation_centric_nbv(
         "runtime_kind": runtime_kind,
         "real_ai2thor_runtime": real_ai2thor_runtime,
         "scoring_mode": scoring_mode,
+        "teleport_used": any(
+            action.get("action") == "TeleportFull"
+            for action in all_executed_actions
+        ),
+        "uses_gold_answer": False,
+        "uses_gold_evidence": False,
+        "uses_required_edges": False,
+        "uses_required_nodes": False,
+        "all_actions_last_action_success_checked": all_actions_success_checked,
+        "stations": [
+            {
+                "step_index": step["step_index"],
+                "selected_viewpoint": step["selected_viewpoint"],
+                "agent_pose_after": step["agent_pose_after"],
+                "navigation_success": step["navigation_success"],
+            }
+            for step in trajectory_steps
+        ],
         "rejected_candidates": rejected_candidates,
         "steps": trajectory_steps,
     }

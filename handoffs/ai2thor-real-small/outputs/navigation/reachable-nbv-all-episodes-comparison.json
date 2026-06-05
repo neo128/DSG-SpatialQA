@@ -1,0 +1,184 @@
+{
+  "all_episodes_formal_protocol_ready": false,
+  "episode_count": 5,
+  "episodes": [
+    {
+      "deltas": {
+        "GraphTool_semantic_match": 6.0,
+        "evidence_observable_qa_count": 10.0,
+        "missing_relation_count": -8.0,
+        "missing_support_count": -1.0,
+        "target_support_same_frame_rate": 0.666667
+      },
+      "episode_id": "ai2thor-real-small-episode-001",
+      "failed_checks": [],
+      "fixed": {
+        "GraphTool_semantic_match": 3,
+        "evidence_observable_qa_count": 2,
+        "missing_relation_count": 11,
+        "missing_support_count": 1,
+        "navigation_validated": false,
+        "real_ai2thor_runtime": null,
+        "target_support_same_frame_rate": 0.083333,
+        "visited_grid_ratio": 0.307692
+      },
+      "formal_protocol_ready": true,
+      "nbv": {
+        "GraphTool_semantic_match": 9,
+        "evidence_observable_qa_count": 12,
+        "missing_relation_count": 3,
+        "missing_support_count": 0,
+        "navigation_validated": true,
+        "real_ai2thor_runtime": true,
+        "target_support_same_frame_rate": 0.75,
+        "visited_grid_ratio": 0.8
+      },
+      "scene_id": "FloorPlan1",
+      "short_id": "episode001"
+    },
+    {
+      "deltas": {
+        "GraphTool_semantic_match": 3.0,
+        "evidence_observable_qa_count": 8.0,
+        "missing_relation_count": -4.0,
+        "missing_support_count": -1.0,
+        "target_support_same_frame_rate": 0.333334
+      },
+      "episode_id": "ai2thor-real-small-episode-002",
+      "failed_checks": [],
+      "fixed": {
+        "GraphTool_semantic_match": 2,
+        "evidence_observable_qa_count": 2,
+        "missing_relation_count": 11,
+        "missing_support_count": 1,
+        "navigation_validated": false,
+        "real_ai2thor_runtime": null,
+        "target_support_same_frame_rate": 0.083333,
+        "visited_grid_ratio": 0.307692
+      },
+      "formal_protocol_ready": true,
+      "nbv": {
+        "GraphTool_semantic_match": 5,
+        "evidence_observable_qa_count": 10,
+        "missing_relation_count": 7,
+        "missing_support_count": 0,
+        "navigation_validated": true,
+        "real_ai2thor_runtime": true,
+        "target_support_same_frame_rate": 0.416667,
+        "visited_grid_ratio": 0.8
+      },
+      "scene_id": "FloorPlan201",
+      "short_id": "episode002"
+    },
+    {
+      "deltas": {
+        "GraphTool_semantic_match": 6.0,
+        "evidence_observable_qa_count": 10.0,
+        "missing_relation_count": -5.0,
+        "missing_support_count": -1.0,
+        "target_support_same_frame_rate": 0.416667
+      },
+      "episode_id": "ai2thor-real-small-episode-003",
+      "failed_checks": [],
+      "fixed": {
+        "GraphTool_semantic_match": 0,
+        "evidence_observable_qa_count": 2,
+        "missing_relation_count": 11,
+        "missing_support_count": 1,
+        "navigation_validated": false,
+        "real_ai2thor_runtime": null,
+        "target_support_same_frame_rate": 0.083333,
+        "visited_grid_ratio": 0.307692
+      },
+      "formal_protocol_ready": true,
+      "nbv": {
+        "GraphTool_semantic_match": 6,
+        "evidence_observable_qa_count": 12,
+        "missing_relation_count": 6,
+        "missing_support_count": 0,
+        "navigation_validated": true,
+        "real_ai2thor_runtime": true,
+        "target_support_same_frame_rate": 0.5,
+        "visited_grid_ratio": 0.8
+      },
+      "scene_id": "FloorPlan301",
+      "short_id": "episode003"
+    },
+    {
+      "deltas": {
+        "GraphTool_semantic_match": 4.0,
+        "evidence_observable_qa_count": 5.0,
+        "missing_relation_count": -3.0,
+        "missing_support_count": -3.0,
+        "target_support_same_frame_rate": 0.25
+      },
+      "episode_id": "ai2thor-real-small-episode-004",
+      "failed_checks": [],
+      "fixed": {
+        "GraphTool_semantic_match": 1,
+        "evidence_observable_qa_count": 6,
+        "missing_relation_count": 9,
+        "missing_support_count": 4,
+        "navigation_validated": false,
+        "real_ai2thor_runtime": null,
+        "target_support_same_frame_rate": 0.25,
+        "visited_grid_ratio": 0.384615
+      },
+      "formal_protocol_ready": true,
+      "nbv": {
+        "GraphTool_semantic_match": 5,
+        "evidence_observable_qa_count": 11,
+        "missing_relation_count": 6,
+        "missing_support_count": 1,
+        "navigation_validated": true,
+        "real_ai2thor_runtime": true,
+        "target_support_same_frame_rate": 0.5,
+        "visited_grid_ratio": 0.8
+      },
+      "scene_id": "FloorPlan401",
+      "short_id": "episode004"
+    },
+    {
+      "deltas": {
+        "GraphTool_semantic_match": -1.0,
+        "evidence_observable_qa_count": -4.0,
+        "missing_relation_count": 2.0,
+        "missing_support_count": -1.0,
+        "target_support_same_frame_rate": -0.166667
+      },
+      "episode_id": "ai2thor-real-small-episode-005",
+      "failed_checks": [
+        "target_support_same_frame_rate_gt_fixed",
+        "evidence_observable_qa_count_gte_fixed",
+        "missing_relation_count_lt_fixed",
+        "graphtool_semantic_match_gte_fixed"
+      ],
+      "fixed": {
+        "GraphTool_semantic_match": 1,
+        "evidence_observable_qa_count": 4,
+        "missing_relation_count": 10,
+        "missing_support_count": 3,
+        "navigation_validated": false,
+        "real_ai2thor_runtime": null,
+        "target_support_same_frame_rate": 0.166667,
+        "visited_grid_ratio": 0.307692
+      },
+      "formal_protocol_ready": false,
+      "nbv": {
+        "GraphTool_semantic_match": 0,
+        "evidence_observable_qa_count": 0,
+        "missing_relation_count": 12,
+        "missing_support_count": 2,
+        "navigation_validated": true,
+        "real_ai2thor_runtime": true,
+        "target_support_same_frame_rate": 0.0,
+        "visited_grid_ratio": 0.8
+      },
+      "scene_id": "FloorPlan2",
+      "short_id": "episode005"
+    }
+  ],
+  "fixed_trajectory_still_insufficient": true,
+  "formal_protocol_ready_episode_count": 4,
+  "schema_version": "dsg-spatialqa-lab.reachable-nbv-all-episodes-comparison.v1"
+}

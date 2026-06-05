@@ -33,7 +33,7 @@
   "target_support_same_frame_rate": 0.75,
   "target_visible_count": 9,
   "target_visible_rate": 0.9,
-  "trajectory_id": "reachable_nbv_episode001_v1",
+  "trajectory_id": "reachable_nbv_ai2thor-real-small-episode-001_v1",
   "trajectory_length": 12,
   "unlocated_object_count": 47,
   "viewpoint_count": 12,

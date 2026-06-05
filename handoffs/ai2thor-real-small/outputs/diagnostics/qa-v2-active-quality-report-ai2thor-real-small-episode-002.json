@@ -1,0 +1,65 @@
+{
+  "checks": [
+    {
+      "name": "object_location_lte_60_percent",
+      "passed": true
+    },
+    {
+      "name": "at_least_three_question_types",
+      "passed": true
+    },
+    {
+      "name": "situated_temporal_relation_nonzero",
+      "passed": true
+    },
+    {
+      "name": "observation_aware_aligned",
+      "passed": true
+    },
+    {
+      "name": "anti_shortcut_cases_valid",
+      "passed": true
+    },
+    {
+      "name": "required_quality_fields_present",
+      "passed": true
+    }
+  ],
+  "episode_id": "ai2thor-real-small-episode-002",
+  "report_digest": "e7b3f2ed13bed63a6352351a9a909a61b6296ed8e0fba4f163a87927c86a2f26",
+  "schema_version": "dsg-spatialqa-lab.active-qa-v2-quality-report.v1",
+  "source_paths": {
+    "observation_sequence": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode002.json",
+    "predicted_graph": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-real-ai2thor-reachable-nbv-episode002.json",
+    "trajectory": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode002.json"
+  },
+  "split_paths": {
+    "anti_shortcut": "handoffs/ai2thor-real-small/inputs/qa-v2-active/ai2thor-real-small-episode-002/qa-anti-shortcut.jsonl",
+    "full_oracle": "handoffs/ai2thor-real-small/inputs/qa-v2-active/ai2thor-real-small-episode-002/qa-full-oracle.jsonl",
+    "observation_aware": "handoffs/ai2thor-real-small/inputs/qa-v2-active/ai2thor-real-small-episode-002/qa-observation-aware.jsonl",
+    "relation_centric": "handoffs/ai2thor-real-small/inputs/qa-v2-active/ai2thor-real-small-episode-002/qa-relation-centric.jsonl",
+    "situated": "handoffs/ai2thor-real-small/inputs/qa-v2-active/ai2thor-real-small-episode-002/qa-situated.jsonl",
+    "temporal": "handoffs/ai2thor-real-small/inputs/qa-v2-active/ai2thor-real-small-episode-002/qa-temporal.jsonl"
+  },
+  "summary": {
+    "object_location_rate": 0.243902,
+    "observation_aware_count": 36,
+    "question_type_count": 4,
+    "question_type_counts": {
+      "object_location": 20,
+      "situated_egocentric": 23,
+      "support_relation": 16,
+      "temporal_last_seen": 23
+    },
+    "situated_temporal_relation_count": 82,
+    "split_counts": {
+      "anti_shortcut": 36,
+      "full_oracle": 16,
+      "observation_aware": 36,
+      "relation_centric": 36,
+      "situated": 23,
+      "temporal": 23
+    }
+  },
+  "valid": true
+}

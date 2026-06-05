@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FUSION_SCRIPT = ROOT / "scripts" / "fuse_vlm_graph_predictions.py"
 BUILD_EVIDENCE_SCRIPT = ROOT / "scripts" / "build_vlm_graph_evidence.py"
 ADJUDICATION_SCRIPT = ROOT / "scripts" / "evaluate_vlm_graph_adjudication.py"
+ADJUDICATION_ALL_SCRIPT = ROOT / "scripts" / "evaluate_vlm_graph_adjudication_all_episodes.py"
 
 
 class MainFn(Protocol):
@@ -51,6 +52,19 @@ def load_adjudication_script() -> ModuleType:
     spec = importlib.util.spec_from_file_location(
         "evaluate_vlm_graph_adjudication_test_script",
         ADJUDICATION_SCRIPT,
+    )
+    assert spec is not None
+    assert spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def load_adjudication_all_script() -> ModuleType:
+    spec = importlib.util.spec_from_file_location(
+        "evaluate_vlm_graph_adjudication_all_episodes_test_script",
+        ADJUDICATION_ALL_SCRIPT,
     )
     assert spec is not None
     assert spec.loader is not None
@@ -312,6 +326,35 @@ def test_fuse_vlm_graph_predictions_script_accepts_trusted_policy(
     )
     assert payload["fusion_policy"] == lab.VLM_GRAPH_TRUSTED_FUSION_POLICY
     assert report["fusion_policy"] == lab.VLM_GRAPH_TRUSTED_FUSION_POLICY
+
+
+def test_adjudication_all_episodes_missing_predictions_is_not_ready(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_adjudication_all_script()
+    report_path = tmp_path / "adjudication-readiness.json"
+    missing_path = tmp_path / "missing-adjudicated.jsonl"
+
+    exit_code = module.main(
+        [
+            "--qa-root",
+            str(tmp_path / "qa-v2-active"),
+            "--adjudicated-predictions",
+            str(missing_path),
+            "--report",
+            str(report_path),
+        ]
+    )
+
+    payload = json.loads(capsys.readouterr().out)
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    assert exit_code == 1
+    assert payload["ready"] is False
+    assert payload["research_ready"] is False
+    assert payload["blockers"] == ["missing_adjudicated_predictions"]
+    assert payload["final_record_written"] is False
+    assert report == payload
 
 
 def test_vlm_graph_evidence_score_report_explains_trust_and_reject_reasons() -> None:

@@ -1,0 +1,10 @@
+{
+  "blockers": [
+    "missing_adjudicated_predictions"
+  ],
+  "final_record_written": false,
+  "missing_path": "handoffs/ai2thor-real-small/inputs/candidate/vlm-graph-adjudication-active-qa-v2-all-episodes.jsonl",
+  "ready": false,
+  "research_ready": false,
+  "schema_version": "dsg-spatialqa-lab.vlm-graph-adjudication-all-episodes-readiness.v1"
+}

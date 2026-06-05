@@ -4392,3 +4392,128 @@ episode1 达标指标：
 再做 VLM-only / GraphTool-only DSG / VLM+DSG 三组正式对比；
 只有多 episode ready 后，才给 DSG 是否优于 VLM/视频记忆的研究结论。
 ```
+
+## P47-P50 多 episode reachable NBV 与 active QA v2
+
+本轮把 episode001 的真实 AI2-THOR reachable relation-centric NBV 扩展到 5 个 episode，并接入 active QA v2、三组对比入口和 P46 adjudication readiness。默认项目依赖仍未加入 AI2-THOR；真实 simulator 通过显式 `/home/user/Code/SimTools/.venv-ai2thor` 运行。
+
+新增/更新脚本：
+
+```text
+scripts/run_reachable_nbv_all_episodes.py
+scripts/audit_reachable_nbv_all_episodes.py
+scripts/compare_reachable_nbv_all_episodes.py
+scripts/build_active_exploration_qa_v2.py
+scripts/compare_active_qa_v2_three_way.py
+scripts/evaluate_vlm_graph_adjudication_all_episodes.py
+src/dsg_spatialqa_lab/benchmark/active_qa_v2.py
+```
+
+### P47 real AI2-THOR reachable NBV gate
+
+每个 episode 均输出真实 trajectory、decision trace、observation sequence、predicted graph、audit、topdown path PNG 和 fixed-vs-NBV overlay PNG。多 episode gate 结果：
+
+| episode | scene | formal_ready | target_support_same_frame fixed->NBV | evidence_observable fixed->NBV | missing_support fixed->NBV | missing_relation fixed->NBV | GraphTool semantic fixed->NBV | failed_checks |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| episode001 | FloorPlan1 | true | 0.083333->0.75 | 2->12 | 1->0 | 11->3 | 3->9 | - |
+| episode002 | FloorPlan201 | true | 0.083333->0.416667 | 2->10 | 1->0 | 11->7 | 2->5 | - |
+| episode003 | FloorPlan301 | true | 0.083333->0.5 | 2->12 | 1->0 | 11->6 | 0->6 | - |
+| episode004 | FloorPlan401 | true | 0.25->0.5 | 6->11 | 4->1 | 9->6 | 1->5 | - |
+| episode005 | FloorPlan2 | false | 0.166667->0.0 | 4->0 | 3->2 | 10->12 | 1->0 | target_support_same_frame_rate_gt_fixed, evidence_observable_qa_count_gte_fixed, missing_relation_count_lt_fixed, graphtool_semantic_match_gte_fixed |
+
+结论：episode001-004 可以作为 formal reachable relation-centric NBV protocol；episode005 真实导航成功，但 relation/evidence 收益未超过 fixed，不能伪造成 formal ready。
+
+关键 artifact：
+
+```text
+handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-all-episodes-run-report.json
+handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-formal-gate-all-episodes.json
+handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-all-episodes-comparison.json
+handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-all-episodes-comparison.zh.md
+handoffs/ai2thor-real-small/inputs/episodes/<episode>-real-ai2thor-reachable-nbv-topdown-path.png
+handoffs/ai2thor-real-small/inputs/episodes/<episode>-fixed-vs-real-ai2thor-reachable-nbv-overlay.png
+```
+
+### P48 active QA v2
+
+基于真实 NBV trajectory、observation sequence 和 predicted graph 为 5 个 episode 生成 active QA v2 splits：
+
+```text
+handoffs/ai2thor-real-small/inputs/qa-v2-active/<episode>/qa-full-oracle.jsonl
+handoffs/ai2thor-real-small/inputs/qa-v2-active/<episode>/qa-observation-aware.jsonl
+handoffs/ai2thor-real-small/inputs/qa-v2-active/<episode>/qa-situated.jsonl
+handoffs/ai2thor-real-small/inputs/qa-v2-active/<episode>/qa-temporal.jsonl
+handoffs/ai2thor-real-small/inputs/qa-v2-active/<episode>/qa-anti-shortcut.jsonl
+handoffs/ai2thor-real-small/inputs/qa-v2-active/<episode>/qa-relation-centric.jsonl
+handoffs/ai2thor-real-small/inputs/qa-v2-active/<episode>/vlm-request-bundle.json
+```
+
+QA v2 质量 gate 均为 `valid=true`：
+
+| episode | observation-aware | question_type_count | object_location_rate | situated+temporal+relation |
+| --- | ---: | ---: | ---: | ---: |
+| episode001 | 34 | 4 | 0.184932 | 146 |
+| episode002 | 36 | 4 | 0.243902 | 82 |
+| episode003 | 34 | 4 | 0.245283 | 106 |
+| episode004 | 37 | 4 | 0.264368 | 87 |
+| episode005 | 35 | 4 | 0.373134 | 67 |
+
+解释：QA 已从旧 smoke object_location 为主，升级到包含 `object_location / support_relation / situated_egocentric / temporal_last_seen` 的 active-exploration QA v2。VLM request bundle 标记 leak-free，不包含 gold answer、required nodes/edges 或 visible object list。
+
+### P49 三组对比 readiness
+
+已生成多 episode active QA v2 三组对比入口：
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/three-way-comparison-active-qa-v2-all-episodes.json
+handoffs/ai2thor-real-small/outputs/diagnostics/three-way-comparison-active-qa-v2-all-episodes.zh.md
+```
+
+当前状态：
+
+```json
+{
+  "ready": false,
+  "research_ready": false,
+  "episode_count": 5,
+  "case_count": 488,
+  "question_type_count": 4,
+  "blockers": [
+    "missing_active_vlm_only_predictions",
+    "missing_active_vlm_dsg_trusted_predictions",
+    "vlm_dsg_not_above_vlm_only",
+    "paired_wins_not_above_losses",
+    "directional_not_significant"
+  ]
+}
+```
+
+解释：GraphTool-only 目前可作为 predicted graph 上的机械图查询 sanity，但缺少与 active QA v2 对齐的真实 VLM-only 和 VLM+DSG trusted prediction JSONL，因此不能形成 DSG 优于 VLM-only 的研究结论。
+
+### P50 adjudication readiness
+
+P46 adjudicated VLM+DSG prediction 在 active QA v2 多 episode 版本中仍缺失：
+
+```json
+{
+  "ready": false,
+  "research_ready": false,
+  "blockers": ["missing_adjudicated_predictions"],
+  "final_record_written": false
+}
+```
+
+结论：
+
+```text
+episode001：real reachable NBV 已通过 formal protocol gate；
+episode002-004：也通过 formal protocol gate；
+episode005：navigation validated 但 relation/evidence 收益未达标，不能称为 formal ready；
+fixed trajectory：在 5 个 episode 上仍显示覆盖不足；
+coverage diagnostic：仍只作为上限诊断，不作为自主探索 evidence；
+reachable NBV：已实现多 episode navigation validation，但全 5 episode formal gate 未通过；
+QA v2：已从 smoke QA 升级为 active-exploration QA v2 初版；
+VLM+DSG：缺 active QA v2 对齐真实 VLM-only / VLM+DSG predictions，不能显著超过 VLM-only；
+P46 adjudication：缺 adjudicated structured prediction，not ready；
+最终：当前不允许 DSG superiority claim。
+```

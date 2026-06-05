@@ -148,23 +148,7 @@ def main(argv: list[str] | None = None) -> int:
                 real_ai2thor_runtime=False,
             )
             real_ai2thor_runtime = False
-        args.trajectory_output.parent.mkdir(parents=True, exist_ok=True)
-        args.trajectory_output.write_text(
-            json.dumps(result.trajectory, indent=2, sort_keys=True) + "\n",
-            encoding="utf-8",
-        )
-        args.decision_trace_output.parent.mkdir(parents=True, exist_ok=True)
-        args.decision_trace_output.write_text(
-            "".join(
-                json.dumps(item, separators=(",", ":"), sort_keys=True) + "\n"
-                for item in result.decisions
-            ),
-            encoding="utf-8",
-        )
-        save_scene_observation_sequence(result.observations, args.observation_output)
-        save_graph_json(result.graph, args.graph_output)
-
-        reachable_path = args.output_root / "reachable-positions-episode001.json"
+        reachable_path = args.output_root / f"reachable-positions-{args.episode_id}.json"
         save_reachable_positions_report(
             reachable_positions_report(
                 scene_id=args.scene,
@@ -180,12 +164,36 @@ def main(argv: list[str] | None = None) -> int:
             args.runtime_kind,
             args.output_root,
         )
+        result.trajectory.update(
+            {
+                "decision_trace_path": str(args.decision_trace_output),
+                "observation_sequence_path": str(args.observation_output),
+                "predicted_graph_path": str(args.graph_output),
+                "reachable_positions_path": str(reachable_path),
+                "topdown_path_png": str(topdown_path),
+            }
+        )
+        args.trajectory_output.parent.mkdir(parents=True, exist_ok=True)
+        args.trajectory_output.write_text(
+            json.dumps(result.trajectory, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+        args.decision_trace_output.parent.mkdir(parents=True, exist_ok=True)
+        args.decision_trace_output.write_text(
+            "".join(
+                json.dumps(item, separators=(",", ":"), sort_keys=True) + "\n"
+                for item in result.decisions
+            ),
+            encoding="utf-8",
+        )
+        save_scene_observation_sequence(result.observations, args.observation_output)
+        save_graph_json(result.graph, args.graph_output)
         _write_topdown_trajectory_png(
             reachable,
             result.trajectory,
             topdown_path,
         )
-        self_check_path = args.output_root / "reachable-nbv-self-check-episode001.json"
+        self_check_path = args.output_root / f"reachable-nbv-self-check-{args.episode_id}.json"
         save_json(
             trajectory_artifact_self_check(
                 trajectory=result.trajectory,
@@ -487,7 +495,8 @@ def _write_baseline_audits(
     fixed_visible = {object_id for frame in frames for object_id in frame.visible_object_ids}
     fixed_support_visible = fixed_visible & support_ids
     fixed_trajectory = {
-        "trajectory_id": "fixed_episode001",
+        "trajectory_id": f"fixed_{frames[0].episode_id}",
+        "episode_id": frames[0].episode_id,
         "collection_kind": "fixed_trajectory",
         "navigation_validated": False,
         "steps": [
@@ -522,7 +531,8 @@ def _write_baseline_audits(
         relation_precision=0.5,
     )
     diagnostic = {
-        "trajectory_id": "coverage_diagnostic_episode001",
+        "trajectory_id": f"coverage_diagnostic_{frames[0].episode_id}",
+        "episode_id": frames[0].episode_id,
         **diagnostic_protocol_metadata(),
         "steps": nbv_trajectory.get("steps", [])[:7],
     }
@@ -562,9 +572,16 @@ def _write_baseline_audits(
         relation_recall=0.65,
         relation_precision=0.7,
     )
-    save_json(fixed_audit, output_root / "trajectory-audit-fixed-episode001.json")
-    save_json(diagnostic_audit, output_root / "trajectory-audit-diagnostic-episode001.json")
-    save_json(nbv_audit, output_root / "trajectory-audit-reachable-nbv-episode001.json")
+    episode_id = frames[0].episode_id
+    save_json(fixed_audit, output_root / f"trajectory-audit-fixed-{episode_id}.json")
+    save_json(
+        diagnostic_audit,
+        output_root / f"trajectory-audit-diagnostic-{episode_id}.json",
+    )
+    save_json(
+        nbv_audit,
+        output_root / f"trajectory-audit-reachable-nbv-{episode_id}.json",
+    )
 
 
 def _qa_target_support_ids(cases: Any) -> tuple[set[str], set[str]]:
@@ -590,9 +607,9 @@ def _default_topdown_path(
     if runtime_kind == "real_ai2thor":
         return (
             Path("handoffs/ai2thor-real-small/inputs/episodes")
-            / f"{episode_id}-real-reachable-nbv-topdown-path.png"
+            / f"{episode_id}-real-ai2thor-reachable-nbv-topdown-path.png"
         )
-    return output_root / "reachable-nbv-topdown-path-episode001.png"
+    return output_root / f"reachable-nbv-topdown-path-{episode_id}.png"
 
 
 def _write_topdown_trajectory_png(

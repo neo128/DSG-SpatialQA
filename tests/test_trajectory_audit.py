@@ -1,8 +1,11 @@
+from typing import Any
+
 from dsg_spatialqa_lab.navigation.trajectory_audit import (
     compare_trajectory_protocols,
     diagnostic_protocol_metadata,
     filter_cases_for_trajectory,
     observed_node_ids_from_observations,
+    reachable_nbv_formal_protocol_gate,
     trajectory_coverage_audit,
 )
 from dsg_spatialqa_lab.observations import NodeObservation, ObjectObservation, SceneObservation
@@ -80,6 +83,56 @@ def test_comparison_report_distinguishes_fixed_diagnostic_and_reachable_nbv() ->
     assert report["judgement"]["diagnostic_improves_evidence_coverage"] is True
     assert report["judgement"]["reachable_nbv_navigation_validated"] is True
     assert report["judgement"]["reachable_nbv_can_be_formal_protocol"] is True
+
+
+def test_reachable_nbv_formal_protocol_gate_requires_real_navigation_and_no_leakage() -> None:
+    fixed = {
+        "navigation_validated": False,
+        "target_support_same_frame_rate": 0.1,
+        "evidence_observable_qa_count": 2,
+        "missing_support_count": 3,
+        "missing_relation_count": 8,
+        "GraphTool_semantic_match": 1,
+    }
+    nbv = {
+        "navigation_validated": True,
+        "target_support_same_frame_rate": 0.4,
+        "evidence_observable_qa_count": 5,
+        "missing_support_count": 2,
+        "missing_relation_count": 4,
+        "GraphTool_semantic_match": 2,
+    }
+    trajectory = {
+        "real_ai2thor_runtime": True,
+        "navigation_validated": True,
+        "teleport_used": False,
+        "closed_loop_memory_update": True,
+        "uses_gold_answer": False,
+        "uses_gold_evidence": False,
+        "uses_required_edges": False,
+        "uses_required_nodes": False,
+        "steps": [{"executed_actions": [{"action": "MoveAhead"}]}],
+    }
+    decisions: list[dict[str, Any]] = [{"memory_before": {}, "memory_after": {}, "score_terms": {}}]
+
+    ready = reachable_nbv_formal_protocol_gate(
+        episode_id="episode-001",
+        trajectory=trajectory,
+        fixed_audit=fixed,
+        nbv_audit=nbv,
+        decisions=decisions,
+    )
+    leaked = reachable_nbv_formal_protocol_gate(
+        episode_id="episode-001",
+        trajectory={**trajectory, "gold_answer": "countertop"},
+        fixed_audit=fixed,
+        nbv_audit=nbv,
+        decisions=decisions,
+    )
+
+    assert ready["formal_protocol_ready"] is True
+    assert leaked["formal_protocol_ready"] is False
+    assert "no_gold_leakage" in leaked["failed_checks"]
 
 
 def test_filter_cases_for_trajectory_uses_episode_id() -> None:

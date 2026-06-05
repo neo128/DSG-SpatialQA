@@ -1,0 +1,64 @@
+{
+  "artifact_paths": {
+    "decision_trace": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode002.jsonl",
+    "observation_sequence": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode002.json",
+    "predicted_graph": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-real-ai2thor-reachable-nbv-episode002.json",
+    "reachable_positions": "handoffs/ai2thor-real-small/outputs/navigation/reachable-positions-ai2thor-real-small-episode-002.json",
+    "topdown": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002-real-ai2thor-reachable-nbv-topdown-path.png",
+    "trajectory": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode002.json"
+  },
+  "checks": [
+    {
+      "name": "trajectory_exists",
+      "passed": true
+    },
+    {
+      "name": "decision_trace_non_empty",
+      "passed": true
+    },
+    {
+      "name": "observation_sequence_exists",
+      "passed": true
+    },
+    {
+      "name": "predicted_graph_exists",
+      "passed": true
+    },
+    {
+      "name": "navigation_validated",
+      "passed": true
+    },
+    {
+      "name": "collection_kind",
+      "passed": true
+    },
+    {
+      "name": "autonomous_exploration",
+      "passed": true
+    },
+    {
+      "name": "closed_loop_memory_update",
+      "passed": true
+    },
+    {
+      "name": "no_forbidden_gold_fields",
+      "passed": true
+    },
+    {
+      "name": "no_teleportfull_in_formal_nbv",
+      "passed": true
+    },
+    {
+      "name": "each_selected_viewpoint_has_path",
+      "passed": true
+    },
+    {
+      "name": "each_iteration_has_memory_and_score",
+      "passed": true
+    }
+  ],
+  "real_ai2thor_runtime": true,
+  "runtime_kind": "real_ai2thor",
+  "schema_version": "dsg-spatialqa-lab.trajectory-artifact-self-check.v1",
+  "valid": true
+}

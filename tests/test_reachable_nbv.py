@@ -77,6 +77,13 @@ def test_reachable_nbv_produces_navigation_validated_closed_loop_trajectory() ->
     assert result.trajectory["autonomous_exploration"] is True
     assert result.trajectory["navigation_validated"] is True
     assert result.trajectory["closed_loop_memory_update"] is True
+    assert result.trajectory["teleport_used"] is False
+    assert result.trajectory["uses_gold_answer"] is False
+    assert result.trajectory["uses_gold_evidence"] is False
+    assert result.trajectory["uses_required_edges"] is False
+    assert result.trajectory["uses_required_nodes"] is False
+    assert result.trajectory["all_actions_last_action_success_checked"] is True
+    assert len(result.trajectory["stations"]) == 2
     assert result.trajectory["runtime_kind"] == "fake_controller"
     assert result.trajectory["real_ai2thor_runtime"] is False
     assert len(result.trajectory["steps"]) == 2
