@@ -3032,3 +3032,34 @@ This is a DSG memory/query improvement, not a score claim:
   observation sequence is imported and evaluated.
 - full verification passed with `python scripts/verify.py` after this change
   (`796` pytest cases passed, evaluation suite `52/52` passed).
+
+## P35 Progress: Object-Location Query Diagnostics
+
+The DSG query path now exposes why an object-location query fell back to a
+room-level answer when diagnostics are explicitly requested:
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/p35-object-location-query-diagnostics-report.json
+```
+
+`object_location` accepts `include_diagnostics=true` and then returns a
+`query_diagnostics` object with:
+
+- `location_evidence_status`;
+- `missing_evidence`;
+- whether room fallback or support fallback was applied;
+- same-frame detector/RGB-D support candidate count;
+- stable support candidate rows with id, label, distance, and evidence kinds.
+
+Default answers are unchanged, so saved prediction JSONL and existing QA eval
+schemas are not polluted by diagnostic-only fields. The new diagnostics
+separate two important DSG failure modes that previously looked identical:
+
+- no detector support candidate was stored for the target;
+- multiple same-frame support candidates existed but were too ambiguous to
+  choose safely.
+
+This is a query observability improvement, not a score claim. It should be used
+on the next detector-only DSG rerun to decide whether failures are primarily
+detector recall problems, memory storage problems, or query disambiguation
+problems before changing the answer policy.
