@@ -97,6 +97,14 @@ from dsg_spatialqa_lab.eval.graph_metrics import (
     save_graph_eval_report,
     validate_graph_eval_report,
 )
+from dsg_spatialqa_lab.eval.dsg_query_diagnostics import (
+    OBJECT_LOCATION_QUERY_DIAGNOSTIC_REPORT_SCHEMA_VERSION,
+    load_object_location_query_diagnostic_report,
+    object_location_query_diagnostic_report,
+    object_location_query_diagnostic_report_digest,
+    object_location_query_diagnostic_report_json,
+    save_object_location_query_diagnostic_report,
+)
 from dsg_spatialqa_lab.eval.error_attribution import (
     attribute_qa_errors,
     compare_error_attribution_report,
@@ -375,6 +383,7 @@ __all__ = [
     "OFFLINE_CONTROL_PREDICTION_REQUEST_BUNDLE_SCHEMA_VERSION",
     "OFFLINE_CONTROL_RESULT_REPORT_SCHEMA_VERSION",
     "OFFLINE_PREDICTION_RECORD_INPUT_FORMAT",
+    "OBJECT_LOCATION_QUERY_DIAGNOSTIC_REPORT_SCHEMA_VERSION",
     "QA_PREDICTION_INPUT_FORMAT",
     "QA_OBSERVABILITY_REPORT_SCHEMA_VERSION",
     "QA_OBSERVABILITY_SPLITS",
@@ -460,6 +469,7 @@ __all__ = [
     "load_coverage_collection_request_bundle",
     "load_coverage_collection_top_batch_handoff_tasks",
     "load_coverage_collection_top_batch_return_report",
+    "load_object_location_query_diagnostic_report",
     "load_offline_control_matrix_report",
     "load_offline_control_result_report",
     "load_offline_control_import_manifest",
@@ -510,6 +520,9 @@ __all__ = [
     "offline_prediction_records_from_jsonl",
     "offline_prediction_records_jsonl",
     "offline_prediction_source_profile",
+    "object_location_query_diagnostic_report",
+    "object_location_query_diagnostic_report_digest",
+    "object_location_query_diagnostic_report_json",
     "observation_aware_qa_cases",
     "observation_aware_qa_report",
     "observation_aware_qa_report_digest",
@@ -539,6 +552,7 @@ __all__ = [
     "save_active_task_delta_report",
     "save_active_task_report",
     "save_graph_eval_report",
+    "save_object_location_query_diagnostic_report",
     "save_coverage_collection_acceptance_report",
     "save_coverage_collection_plan",
     "save_coverage_collection_request_bundle",

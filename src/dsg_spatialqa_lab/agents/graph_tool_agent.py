@@ -21,7 +21,7 @@ class GraphToolBaselineAgent:
         qa = SpatialQAEngine(GraphTool(graph))
         predictions: list[QAPrediction] = []
         for case in cases:
-            response = qa.answer(case.question)
+            response = qa.answer(_graph_tool_question(case))
             if response.error is not None:
                 predictions.append(
                     QAPrediction(
@@ -41,3 +41,11 @@ class GraphToolBaselineAgent:
                 )
             )
         return predictions
+
+
+def _graph_tool_question(case: QACase) -> dict[str, object]:
+    question: dict[str, object] = dict(case.question)
+    if case.question_type == "object_location":
+        question.setdefault("scene_id", case.scene_id)
+        question.setdefault("step", case.step)
+    return question

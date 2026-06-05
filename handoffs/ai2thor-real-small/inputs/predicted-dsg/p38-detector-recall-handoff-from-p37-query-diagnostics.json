@@ -1,0 +1,468 @@
+{
+  "gap_report_digest": "8f7df5a061f706e799e9d7183325d33aa977a5dcc35db3870ace9534216b744e",
+  "handoff_digest": "bb007b191634789e3cac492a787a3ba66f2e74e14d533a0d2df90f4243dc849f",
+  "label_sources": {
+    "support_labels": "frame_index_visible_object_labels",
+    "target_labels": "qa_target_labels"
+  },
+  "missing_frame_cases": [],
+  "query_diagnostic_source": {
+    "included_statuses": [
+      "query_error",
+      "support_fallback_missing"
+    ],
+    "report_digest": "8f7df5a061f706e799e9d7183325d33aa977a5dcc35db3870ace9534216b744e"
+  },
+  "required_frames": [
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48:observation_aware:100034",
+        "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62:observation_aware:100034",
+        "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0002:creditcard_00_46_01_10_00_87:observation_aware:100034"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "frame_step": 34,
+      "original_case_steps": [
+        100034
+      ],
+      "requested_detection_labels": [
+        "apple",
+        "book",
+        "countertop",
+        "creditcard"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/rgb.ppm",
+      "scene_id": "FloorPlan1",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/segmentation.ppm",
+      "support_labels": [
+        "countertop"
+      ],
+      "target_labels": [
+        "apple",
+        "book",
+        "creditcard"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75:observation_aware:100036",
+        "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03:observation_aware:100036",
+        "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46:observation_aware:100036"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "frame_step": 36,
+      "original_case_steps": [
+        100036
+      ],
+      "requested_detection_labels": [
+        "bowl",
+        "bread",
+        "butterknife",
+        "countertop"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/rgb.ppm",
+      "scene_id": "FloorPlan1",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/segmentation.ppm",
+      "support_labels": [
+        "countertop"
+      ],
+      "target_labels": [
+        "bowl",
+        "bread",
+        "butterknife"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54:observation_aware:100037",
+        "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0008:kettle_01_04_00_90_02_60:observation_aware:100037",
+        "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0015:pan_00_72_00_90_02_42:observation_aware:100037"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "frame_step": 37,
+      "original_case_steps": [
+        100037
+      ],
+      "requested_detection_labels": [
+        "bottle",
+        "countertop",
+        "kettle",
+        "pan",
+        "shelf"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/rgb.ppm",
+      "scene_id": "FloorPlan1",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/segmentation.ppm",
+      "support_labels": [
+        "countertop",
+        "shelf"
+      ],
+      "target_labels": [
+        "bottle",
+        "kettle",
+        "pan"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46:observation_aware:100040"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000040/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "frame_step": 40,
+      "original_case_steps": [
+        100040
+      ],
+      "requested_detection_labels": [
+        "cabinet"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000040/rgb.ppm",
+      "scene_id": "FloorPlan1",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000040/segmentation.ppm",
+      "support_labels": [],
+      "target_labels": [
+        "cabinet"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79:observation_aware:200002"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200002/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-002",
+      "frame_step": 200002,
+      "original_case_steps": [
+        200002
+      ],
+      "requested_detection_labels": [
+        "bowl",
+        "coffeetable"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200002/rgb.ppm",
+      "scene_id": "FloorPlan201",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200002/segmentation.ppm",
+      "support_labels": [
+        "coffeetable"
+      ],
+      "target_labels": [
+        "bowl"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43:observation_aware:200003"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200003/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-002",
+      "frame_step": 200003,
+      "original_case_steps": [
+        200003
+      ],
+      "requested_detection_labels": [
+        "armchair",
+        "box",
+        "shelf"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200003/rgb.ppm",
+      "scene_id": "FloorPlan201",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200003/segmentation.ppm",
+      "support_labels": [
+        "armchair",
+        "shelf"
+      ],
+      "target_labels": [
+        "box"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0004:creditcard_01_94_00_68_01_80:observation_aware:200007",
+        "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0006:diningtable_02_27_00_02_01_42:observation_aware:200007",
+        "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0014:newspaper_02_76_00_68_01_18:observation_aware:200007"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-002",
+      "frame_step": 200007,
+      "original_case_steps": [
+        200007
+      ],
+      "requested_detection_labels": [
+        "chair",
+        "creditcard",
+        "diningtable",
+        "newspaper"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+      "scene_id": "FloorPlan201",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/segmentation.ppm",
+      "support_labels": [
+        "chair",
+        "diningtable"
+      ],
+      "target_labels": [
+        "creditcard",
+        "diningtable",
+        "newspaper"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18:observation_aware:100007"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000007/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "frame_step": 7,
+      "original_case_steps": [
+        100007
+      ],
+      "requested_detection_labels": [
+        "bed",
+        "book"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000007/rgb.ppm",
+      "scene_id": "FloorPlan301",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000007/segmentation.ppm",
+      "support_labels": [
+        "bed"
+      ],
+      "target_labels": [
+        "book"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24:observation_aware:100021"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000021/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "frame_step": 21,
+      "original_case_steps": [
+        100021
+      ],
+      "requested_detection_labels": [
+        "basketball",
+        "desk",
+        "shelf"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000021/rgb.ppm",
+      "scene_id": "FloorPlan301",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000021/segmentation.ppm",
+      "support_labels": [
+        "desk",
+        "shelf"
+      ],
+      "target_labels": [
+        "basketball"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21:observation_aware:100029",
+        "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19:observation_aware:100029",
+        "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0003:creditcard_01_78_00_80_01_19:observation_aware:100029",
+        "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0009:keychain_01_74_00_80_01_29:observation_aware:100029",
+        "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0013:mug_02_82_00_80_01_22:observation_aware:100029",
+        "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0017:pen_01_93_00_81_01_18:observation_aware:100029",
+        "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0018:pencil_02_01_00_81_01_17:observation_aware:100029"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000029/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "frame_step": 29,
+      "original_case_steps": [
+        100029
+      ],
+      "requested_detection_labels": [
+        "bowl",
+        "cd",
+        "creditcard",
+        "desk",
+        "keychain",
+        "mug",
+        "pen",
+        "pencil",
+        "shelf"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000029/rgb.ppm",
+      "scene_id": "FloorPlan301",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000029/segmentation.ppm",
+      "support_labels": [
+        "desk",
+        "shelf"
+      ],
+      "target_labels": [
+        "bowl",
+        "cd",
+        "creditcard",
+        "keychain",
+        "mug",
+        "pen",
+        "pencil"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47:observation_aware:100032",
+        "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0005:desklamp_01_32_01_24_00_99:observation_aware:100032"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "frame_step": 32,
+      "original_case_steps": [
+        100032
+      ],
+      "requested_detection_labels": [
+        "alarmclock",
+        "desklamp",
+        "dresser"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/rgb.ppm",
+      "scene_id": "FloorPlan301",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/segmentation.ppm",
+      "support_labels": [
+        "dresser"
+      ],
+      "target_labels": [
+        "alarmclock",
+        "desklamp"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02:observation_aware:100044",
+        "ai2thor-real-small-episode-004:FloorPlan401:supplemental_object_location:0016:papertowelroll_03_15_00_96_00_28:observation_aware:100044"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000044/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-004",
+      "frame_step": 44,
+      "original_case_steps": [
+        100044
+      ],
+      "requested_detection_labels": [
+        "dishsponge",
+        "handtowelholder",
+        "papertowelroll",
+        "sidetable"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000044/rgb.ppm",
+      "scene_id": "FloorPlan401",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000044/segmentation.ppm",
+      "support_labels": [
+        "handtowelholder",
+        "sidetable"
+      ],
+      "target_labels": [
+        "dishsponge",
+        "papertowelroll"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10:observation_aware:100046"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-004",
+      "frame_step": 46,
+      "original_case_steps": [
+        100046
+      ],
+      "requested_detection_labels": [
+        "handtowel",
+        "handtowelholder"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/rgb.ppm",
+      "scene_id": "FloorPlan401",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/segmentation.ppm",
+      "support_labels": [
+        "handtowelholder"
+      ],
+      "target_labels": [
+        "handtowel"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02:observation_aware:200010"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200010/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-004",
+      "frame_step": 200010,
+      "original_case_steps": [
+        200010
+      ],
+      "requested_detection_labels": [
+        "bathtub",
+        "cloth"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200010/rgb.ppm",
+      "scene_id": "FloorPlan401",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200010/segmentation.ppm",
+      "support_labels": [
+        "bathtub"
+      ],
+      "target_labels": [
+        "cloth"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0007:egg_00_13_00_95_00_17:observation_aware:100041",
+        "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0012:mug_00_24_00_92_00_26:observation_aware:100041"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-005",
+      "frame_step": 41,
+      "original_case_steps": [
+        100041
+      ],
+      "requested_detection_labels": [
+        "countertop",
+        "egg",
+        "mug"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/rgb.ppm",
+      "scene_id": "FloorPlan2",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/segmentation.ppm",
+      "support_labels": [
+        "countertop"
+      ],
+      "target_labels": [
+        "egg",
+        "mug"
+      ]
+    },
+    {
+      "case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45:observation_aware:100047"
+      ],
+      "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000047/depth.npy",
+      "episode_id": "ai2thor-real-small-episode-005",
+      "frame_step": 47,
+      "original_case_steps": [
+        100047
+      ],
+      "requested_detection_labels": [
+        "cabinet"
+      ],
+      "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000047/rgb.ppm",
+      "scene_id": "FloorPlan2",
+      "segmentation_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000047/segmentation.ppm",
+      "support_labels": [],
+      "target_labels": [
+        "cabinet"
+      ]
+    }
+  ],
+  "schema_version": "dsg-spatialqa-lab.dsg-detector-recall-handoff.v1",
+  "summary": {
+    "case_count": 33,
+    "frame_count": 16,
+    "frames_with_support_labels": 14,
+    "missing_frame_case_count": 0,
+    "requested_detection_label_count": 52,
+    "support_label_count": 20,
+    "target_label_count": 33
+  }
+}

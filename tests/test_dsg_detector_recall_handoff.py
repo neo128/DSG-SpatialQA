@@ -9,6 +9,7 @@ from typing import Protocol, cast
 
 from dsg_spatialqa_lab.eval.dsg_detector_recall import (
     dsg_detector_recall_handoff,
+    dsg_detector_recall_handoff_from_query_diagnostics,
     dsg_detector_recall_handoff_json,
     validate_dsg_detector_recall_handoff,
 )
@@ -125,6 +126,89 @@ def test_dsg_detector_recall_handoff_validation_rejects_evaluator_only_fields() 
     ]
 
 
+def test_dsg_detector_recall_handoff_from_query_diagnostics_targets_unresolved_cases() -> None:
+    query_report = {
+        "schema_version": "dsg-spatialqa-lab.object-location-query-diagnostic-report.v1",
+        "report_digest": "c" * 64,
+        "cases": [
+            {
+                "case_id": "episode-001:FloorPlan1:0001:object_location:apple_00_47:observation_aware:100034",
+                "location_evidence_status": "query_error",
+                "object_id": "apple_00_47",
+                "semantic_match": False,
+            },
+            {
+                "case_id": "episode-001:FloorPlan1:0002:object_location:creditcard_01_94:observation_aware:100034",
+                "location_evidence_status": "support_fallback_missing",
+                "object_id": "creditcard_01_94",
+                "semantic_match": False,
+            },
+            {
+                "case_id": "episode-001:FloorPlan1:0003:object_location:book_00_15:observation_aware:100034",
+                "location_evidence_status": "support_fallback_missing",
+                "object_id": "book_00_15",
+                "semantic_match": True,
+            },
+            {
+                "case_id": "episode-001:FloorPlan1:0004:object_location:mug_01_00:observation_aware:100034",
+                "location_evidence_status": "explicit_location_edge",
+                "object_id": "mug_01_00",
+                "semantic_match": False,
+            },
+        ],
+    }
+    frame_index = [
+        {
+            "asset_paths": {
+                "depth": "depth/000034.npy",
+                "rgb": "rgb/000034.ppm",
+                "segmentation": "segmentation/000034.ppm",
+            },
+            "episode_id": "episode-001",
+            "scene_id": "FloorPlan1",
+            "step": 34,
+            "visible_object_labels": ["countertop", "chair", "floor"],
+        }
+    ]
+
+    handoff = dsg_detector_recall_handoff_from_query_diagnostics(
+        query_report,
+        frame_index,
+    )
+
+    assert handoff["gap_report_digest"] == "c" * 64
+    assert handoff["query_diagnostic_source"] == {
+        "included_statuses": ["query_error", "support_fallback_missing"],
+        "report_digest": "c" * 64,
+    }
+    assert handoff["required_frames"] == [
+        {
+            "case_ids": [
+                "episode-001:FloorPlan1:0001:object_location:apple_00_47:observation_aware:100034",
+                "episode-001:FloorPlan1:0002:object_location:creditcard_01_94:observation_aware:100034",
+            ],
+            "depth_path": "depth/000034.npy",
+            "episode_id": "episode-001",
+            "frame_step": 34,
+            "original_case_steps": [100034],
+            "requested_detection_labels": [
+                "apple",
+                "chair",
+                "countertop",
+                "creditcard",
+            ],
+            "rgb_path": "rgb/000034.ppm",
+            "scene_id": "FloorPlan1",
+            "segmentation_path": "segmentation/000034.ppm",
+            "support_labels": ["chair", "countertop"],
+            "target_labels": ["apple", "creditcard"],
+        }
+    ]
+    serialized = dsg_detector_recall_handoff_json(handoff)
+    assert "gold" not in serialized
+    assert validate_dsg_detector_recall_handoff(handoff)["valid"] is True
+
+
 def test_dsg_detector_recall_handoff_cli_writes_and_validates_without_gold(
     tmp_path: Path,
 ) -> None:
@@ -182,3 +266,58 @@ def test_dsg_detector_recall_handoff_cli_writes_and_validates_without_gold(
     assert json.loads(serialized)["required_frames"][0]["support_labels"] == [
         "countertop"
     ]
+
+
+def test_dsg_detector_recall_handoff_cli_accepts_query_diagnostic_report(
+    tmp_path: Path,
+) -> None:
+    module = load_detector_recall_script()
+    main = cast(MainFn, getattr(module, "main"))
+    query_report = tmp_path / "query-diagnostics.json"
+    frame_index = tmp_path / "frame-index.jsonl"
+    output = tmp_path / "handoff.json"
+    query_report.write_text(
+        json.dumps(
+            {
+                "report_digest": "d" * 64,
+                "cases": [
+                    {
+                        "case_id": "episode-001:FloorPlan1:0001:object_location:apple_00_47:observation_aware:100034",
+                        "location_evidence_status": "query_error",
+                        "object_id": "apple_00_47",
+                        "semantic_match": False,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    frame_index.write_text(
+        json.dumps(
+            {
+                "detector_depth_path": "depth.npy",
+                "detector_rgb_path": "rgb.ppm",
+                "episode_id": "episode-001",
+                "scene_id": "FloorPlan1",
+                "step": 34,
+                "visible_object_labels": ["countertop"],
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    assert main(
+        [
+            "--query-diagnostic-report",
+            str(query_report),
+            "--frame-index-jsonl",
+            str(frame_index),
+            "--output",
+            str(output),
+        ]
+    ) == 0
+
+    handoff = json.loads(output.read_text(encoding="utf-8"))
+    assert handoff["query_diagnostic_source"]["report_digest"] == "d" * 64
+    assert handoff["required_frames"][0]["target_labels"] == ["apple"]

@@ -3066,3 +3066,218 @@ problems before changing the answer policy.
 
 Full verification passed with `python scripts/verify.py` after this change
 (`798` pytest cases passed, evaluation suite `52/52` passed).
+
+## P36 Progress: Apply Query Diagnostics To P30 Detector-Only DSG
+
+The P35 diagnostic path has now been applied to the current detector-only P30
+run:
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/p36-dsg-object-location-query-diagnostics.json
+```
+
+The new reusable API is:
+
+```text
+object_location_query_diagnostic_report
+```
+
+It consumes an explicit predicted graph, QA dataset, and optional semantic eval
+report. It reruns only local GraphTool object-location queries with
+`include_diagnostics=true`, then writes a stable digest-backed report. It does
+not call a model, detector, simulator, or network service.
+
+P36 splits the 60-case object-location slice as follows:
+
+- `query_error`: 19 cases;
+- `support_fallback_missing`: 35 cases;
+- `support_fallback_applied`: 4 cases;
+- `explicit_location_edge`: 2 cases.
+
+The semantic mismatch split is more useful for the next DSG optimization:
+
+- 19 mismatches are `query_error`, matching the target-object-missing failure
+  mode;
+- 15 mismatches are `support_fallback_missing`, meaning the target exists but no
+  same-frame detector/RGB-D support candidate was available to query;
+- 1 mismatch has an explicit location edge but still disagrees semantically.
+
+This makes the next optimization priority concrete:
+
+1. Improve detector/RGB-D target recall for the 19 missing target cases.
+2. Improve support object recall and current-location storage for the 15
+   support-missing mismatch cases.
+3. Inspect the single explicit-edge mismatch before changing query policy.
+
+Full verification passed after P36 with `python scripts/verify.py` (`799`
+pytest cases passed, evaluation suite `52/52` passed).
+
+## P37 Progress: Target-Alias Query Robustness
+
+The current next-stage goal is explicit: VLM-only must first be a meaningful
+baseline, then DSG optimization should focus on memory content, storage,
+query content, and query method.
+
+The VLM gate is already satisfied by the P26 semantic evaluator:
+
+- VLM-only P26 semantic match: `49 / 60 = 0.816667`.
+- VLM-only P26 strict exact match: `0 / 60 = 0.000000`.
+- Stage decision: semantic match is the entry gate; strict exact remains an
+  answer-normalization diagnostic.
+
+P37 adds a conservative target-alias query path for detector-only DSG:
+
+- GraphTool baseline now enriches `object_location` questions with the
+  case-level `scene_id` and `step`.
+- `SpatialQAEngine` can resolve a missing requested object id to exactly one
+  detector/RGB-D object in the same scene and step when the normalized label
+  matches and the candidate has `rgb/depth/detector` evidence.
+- Ambiguous same-label candidates raise `SpatialQAError`; the query path does
+  not guess.
+- The path does not read gold answers, oracle required edges, or
+  evaluator-only fields.
+
+P37 artifacts:
+
+```text
+handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-independent-p37-target-alias.jsonl
+handoffs/ai2thor-real-small/outputs/diagnostics/dsg-candidate-semantic-eval-p37-target-alias-independent.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p37-dsg-target-alias-query-diagnostics.json
+```
+
+P37 result:
+
+- DSG semantic match remains `25 / 60 = 0.416667`.
+- Strict exact match remains `0 / 60 = 0.000000`.
+- Query errors drop from `19` to `15`.
+- `support_fallback_missing` rises from `35` to `38`, showing that some
+  formerly missing targets can now be resolved, but still lack enough support
+  or current-location evidence to answer correctly.
+
+P37 is therefore a robustness improvement, not a DSG success result. The next
+optimization should not be more answer formatting. It should target:
+
+1. Detector/RGB-D target recall for the remaining `15` query-error mismatches.
+2. Support/current-location memory for the `18` support-missing semantic
+   mismatches in P37.
+3. Explicit-edge correctness for the `2` explicit-location mismatches.
+
+Verification after P37:
+
+```text
+python -m ruff check src/dsg_spatialqa_lab/qa.py src/dsg_spatialqa_lab/agents/graph_tool_agent.py src/dsg_spatialqa_lab/eval/dsg_query_diagnostics.py tests/test_spatial_qa.py tests/test_baselines.py tests/test_dsg_query_diagnostics.py
+python -m mypy src/dsg_spatialqa_lab/qa.py src/dsg_spatialqa_lab/agents/graph_tool_agent.py src/dsg_spatialqa_lab/eval/dsg_query_diagnostics.py tests/test_spatial_qa.py tests/test_baselines.py tests/test_dsg_query_diagnostics.py
+python -m pytest -q tests/test_spatial_qa.py tests/test_baselines.py tests/test_dsg_query_diagnostics.py
+python scripts/verify.py
+```
+
+Fresh full verification passed with `802` pytest cases and evaluation suite
+`52/52` passed.
+
+## P38 Progress: Query-Diagnostic Detector Recall Handoff
+
+P37 showed that target aliasing reduces `query_error` but does not improve
+semantic accuracy because the newly resolved cases still lack support or
+current-location evidence. P38 turns that failure split into the next
+detector/RGB-D intake request.
+
+New entry point:
+
+```text
+dsg_detector_recall_handoff_from_query_diagnostics
+scripts/build_dsg_detector_recall_handoff.py --query-diagnostic-report ...
+```
+
+The builder consumes the P37 object-location query diagnostic report and a
+local frame-index JSONL. It includes only unresolved semantic mismatches whose
+query status is:
+
+- `query_error`;
+- `support_fallback_missing`.
+
+It emits the same detector recall handoff schema as the existing P31 path. The
+output is still gold-free: validation checks reject evaluator-only fields such
+as `gold_answer`, `gold_support_label`, `required_edges`, and `evidence_nodes`.
+
+P38 artifact:
+
+```text
+handoffs/ai2thor-real-small/inputs/predicted-dsg/p38-detector-recall-handoff-from-p37-query-diagnostics.json
+```
+
+P38 handoff summary:
+
+- `case_count`: 33;
+- `frame_count`: 16;
+- `frames_with_support_labels`: 14;
+- `missing_frame_case_count`: 0;
+- `requested_detection_label_count`: 52;
+- `support_label_count`: 20;
+- `target_label_count`: 33.
+
+This is the next external detector/RGB-D request: rerun detector outputs on
+these 16 frames, returning stable target object ids plus support/current
+location evidence where visible. After import, rebuild the observation-backed
+predicted graph and rerun the P37 semantic eval plus paired delta against VLM
+P26.
+
+Verification after P38:
+
+```text
+python -m pytest -q tests/test_dsg_detector_recall_handoff.py
+python -m ruff check src/dsg_spatialqa_lab/eval/dsg_detector_recall.py scripts/build_dsg_detector_recall_handoff.py tests/test_dsg_detector_recall_handoff.py
+python -m mypy src/dsg_spatialqa_lab/eval/dsg_detector_recall.py scripts/build_dsg_detector_recall_handoff.py tests/test_dsg_detector_recall_handoff.py
+python scripts/build_dsg_detector_recall_handoff.py --validate-report handoffs/ai2thor-real-small/inputs/predicted-dsg/p38-detector-recall-handoff-from-p37-query-diagnostics.json
+```
+
+## P39 Progress: Compatible-Step Target Alias
+
+P38 identified a remaining query-method defect: some observation-aware QA case
+steps use encoded values such as `100040`, while the detector-only predicted
+graph stores the same frame as step `40`. P37 required exact step equality, so
+valid same-scene/same-label detector nodes were still treated as missing.
+
+P39 updates target alias resolution for `object_location` queries:
+
+- candidate target nodes may match either `step` or `step % 100000`;
+- matching still requires same `scene_id`, normalized label match, and
+  `rgb/depth/detector` evidence;
+- more than one compatible candidate remains an ambiguity error;
+- no gold answer, oracle edge, or evaluator-only field is read.
+
+P39 artifacts:
+
+```text
+handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-independent-p39-compatible-step-target-alias.jsonl
+handoffs/ai2thor-real-small/outputs/diagnostics/dsg-candidate-semantic-eval-p39-compatible-step-target-alias-independent.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p39-dsg-compatible-step-target-alias-query-diagnostics.json
+handoffs/ai2thor-real-small/outputs/diagnostics/dsg-p39-vs-p37-target-alias-semantic-delta.json
+handoffs/ai2thor-real-small/outputs/diagnostics/dsg-p39-vs-vlm-p26-affordance-option-fallback-semantic-delta.json
+```
+
+P39 results:
+
+- semantic match improves from P37 `25 / 60 = 0.416667` to
+  `27 / 60 = 0.450000`;
+- query errors drop from P37 `15` to `13`;
+- P39 vs P37 paired delta: `2` wins, `0` losses, `58` ties;
+- P39 vs VLM P26 remains negative: DSG `27 / 60`, VLM `49 / 60`;
+- P39 vs VLM P26 paired delta: `4` wins, `26` losses, `30` ties.
+
+This is a real DSG query-method improvement, but still not a DSG superiority
+result. The next bottleneck is evidence coverage, not query formatting:
+
+- `13` semantic mismatches remain `query_error`;
+- `18` semantic mismatches remain `support_fallback_missing`;
+- `2` semantic mismatches have explicit location edges and need edge-quality
+  review.
+
+Targeted verification after P39:
+
+```text
+python -m pytest -q tests/test_spatial_qa.py -k 'compatible_step_label'
+python -m pytest -q tests/test_spatial_qa.py -k 'object_location or support_fallback or current_location'
+python -m ruff check src/dsg_spatialqa_lab/qa.py tests/test_spatial_qa.py
+python -m mypy src/dsg_spatialqa_lab/qa.py tests/test_spatial_qa.py
+python -m pytest -q tests/test_spatial_qa.py tests/test_baselines.py tests/test_dsg_query_diagnostics.py tests/test_dsg_detector_recall_handoff.py
+```

@@ -52,6 +52,10 @@ def _normalized_object_id_prefix(object_id: str) -> str:
     return _normalized_label("_".join(parts))
 
 
+def _compatible_query_steps(step: int) -> frozenset[int]:
+    return frozenset({step, step % 100000})
+
+
 def _horizontal_xz_distance(first: Any, second: Any) -> float:
     dx = float(first.x) - float(second.x)
     dz = float(first.z) - float(second.z)
@@ -168,7 +172,11 @@ class SpatialQAEngine:
         )
 
     def _answer_object_location(self, question: Mapping[str, Any]) -> QAResponse:
-        object_id = self._required_str(question, "object_id")
+        requested_object_id = self._required_str(question, "object_id")
+        object_id, target_resolution = self._resolve_object_location_target(
+            requested_object_id,
+            question,
+        )
         include_diagnostics = self._optional_bool(question, "include_diagnostics") or False
         state = self.graph_tool.get_object(object_id)
         latest_location_edge = self._latest_location_edge(object_id)
@@ -242,6 +250,7 @@ class SpatialQAEngine:
                 latest_location_edge=latest_location_edge,
                 support_candidates=support_candidates,
                 fallback_location=fallback_location,
+                target_resolution=target_resolution,
             )
         return QAResponse(
             answer=answer,
@@ -253,6 +262,60 @@ class SpatialQAEngine:
             evidence_edges=evidence_edges,
             confidence=state.confidence,
             needs_reobserve=self.graph_tool.needs_reobserve(object_id),
+        )
+
+    def _resolve_object_location_target(
+        self,
+        object_id: str,
+        question: Mapping[str, Any],
+    ) -> tuple[str, dict[str, Any] | None]:
+        if object_id in self.graph_tool.graph.object_states:
+            return object_id, None
+        scene_id = self._optional_str(question, "scene_id")
+        step = self._optional_int(question, "step")
+        if scene_id is None or step is None:
+            return object_id, None
+        target_label = _normalized_object_id_prefix(object_id)
+        if not target_label:
+            return object_id, None
+        compatible_steps = _compatible_query_steps(step)
+        candidate_steps: dict[str, int] = {}
+        for candidate_id, state in self.graph_tool.graph.object_states.items():
+            node = self.graph_tool.graph.nodes.get(candidate_id)
+            if node is None:
+                continue
+            if (
+                node.attributes.get("scene_id") != scene_id
+                or state.step not in compatible_steps
+            ):
+                continue
+            candidate_labels = {
+                _normalized_label(node.label),
+                _normalized_object_id_prefix(candidate_id),
+            }
+            if target_label not in candidate_labels:
+                continue
+            if not self._has_detector_rgbd_evidence(node):
+                continue
+            candidate_steps[candidate_id] = state.step
+        candidates = sorted(candidate_steps)
+        if not candidates:
+            return object_id, None
+        if len(candidates) > 1:
+            raise SpatialQAError(f"Ambiguous target object label alias: {object_id}")
+        resolved_object_id = candidates[0]
+        status = (
+            "unique_scene_step_label_alias"
+            if candidate_steps[resolved_object_id] == step
+            else "unique_scene_compatible_step_label_alias"
+        )
+        return (
+            resolved_object_id,
+            {
+                "requested_object_id": object_id,
+                "resolved_object_id": resolved_object_id,
+                "status": status,
+            },
         )
 
     def _detector_same_frame_support_fallback_location(
@@ -330,6 +393,7 @@ class SpatialQAEngine:
         latest_location_edge: Edge | None,
         support_candidates: list[tuple[float, str]],
         fallback_location: dict[str, Any] | None,
+        target_resolution: dict[str, Any] | None,
     ) -> dict[str, Any]:
         support_fallback_applied = (
             fallback_location is not None
@@ -357,7 +421,7 @@ class SpatialQAEngine:
         else:
             status = "support_fallback_missing"
             missing_evidence = ["detector_support_candidate"]
-        return {
+        diagnostics: dict[str, Any] = {
             "location_evidence_status": status,
             "missing_evidence": missing_evidence,
             "room_fallback_applied": room_fallback_applied,
@@ -365,6 +429,9 @@ class SpatialQAEngine:
             "support_candidate_count": len(support_candidates),
             "support_candidates": self._support_candidate_rows(support_candidates),
         }
+        if target_resolution is not None:
+            diagnostics["target_resolution"] = target_resolution
+        return diagnostics
 
     def _support_candidate_rows(
         self,

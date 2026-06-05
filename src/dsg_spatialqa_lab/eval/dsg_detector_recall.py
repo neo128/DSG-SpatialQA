@@ -28,6 +28,10 @@ DSG_DETECTOR_RECALL_FORBIDDEN_FIELDS = frozenset(
         "required_nodes",
     }
 )
+DEFAULT_QUERY_DIAGNOSTIC_RECALL_STATUSES = (
+    "query_error",
+    "support_fallback_missing",
+)
 
 
 def dsg_detector_recall_handoff(
@@ -114,6 +118,62 @@ def dsg_detector_recall_handoff(
     return handoff
 
 
+def dsg_detector_recall_handoff_from_query_diagnostics(
+    query_diagnostic_report: Mapping[str, Any],
+    frame_index: Sequence[Mapping[str, Any]],
+    *,
+    included_statuses: Sequence[str] = DEFAULT_QUERY_DIAGNOSTIC_RECALL_STATUSES,
+    support_label_vocabulary: Sequence[str] = tuple(
+        sorted(DETECTOR_SUPPORT_FALLBACK_SUPPORTED_LABELS)
+    ),
+) -> dict[str, Any]:
+    status_set = {status for status in included_statuses if status}
+    cases: list[dict[str, Any]] = []
+    for row in _query_diagnostic_cases(query_diagnostic_report):
+        if row.get("semantic_match") is not False:
+            continue
+        status = _optional_str(row.get("location_evidence_status"))
+        if status not in status_set:
+            continue
+        case_id = _optional_str(row.get("case_id"))
+        object_id = _optional_str(row.get("object_id"))
+        if case_id is None or object_id is None:
+            continue
+        episode_id = _optional_str(row.get("episode_id"))
+        step = row.get("step")
+        if episode_id is None or not isinstance(step, int):
+            parsed = _parse_query_case_id(case_id)
+            if parsed is None:
+                continue
+            episode_id, step = parsed
+        target_label = _target_label_from_object_id(object_id)
+        if not target_label:
+            continue
+        cases.append(
+            {
+                "case_id": case_id,
+                "episode_id": episode_id,
+                "step": step,
+                "target_label": target_label,
+            }
+        )
+    gap_report = {
+        "report_digest": query_diagnostic_report.get("report_digest"),
+        "on_to_none_cases": cases,
+    }
+    handoff = dsg_detector_recall_handoff(
+        gap_report,
+        frame_index,
+        support_label_vocabulary=support_label_vocabulary,
+    )
+    handoff["query_diagnostic_source"] = {
+        "included_statuses": sorted(status_set),
+        "report_digest": query_diagnostic_report.get("report_digest"),
+    }
+    handoff["handoff_digest"] = dsg_detector_recall_handoff_digest(handoff)
+    return handoff
+
+
 def dsg_detector_recall_handoff_digest(handoff: Mapping[str, Any]) -> str:
     payload = {
         key: value for key, value in handoff.items() if key != "handoff_digest"
@@ -189,6 +249,38 @@ def _gap_cases(gap_report: Mapping[str, Any]) -> list[Mapping[str, Any]]:
         if isinstance(value, list):
             cases.extend(item for item in value if isinstance(item, Mapping))
     return cases
+
+
+def _query_diagnostic_cases(
+    query_diagnostic_report: Mapping[str, Any],
+) -> list[Mapping[str, Any]]:
+    value = query_diagnostic_report.get("cases")
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, Mapping)]
+
+
+def _parse_query_case_id(case_id: str) -> tuple[str, int] | None:
+    parts = case_id.split(":")
+    if len(parts) < 2:
+        return None
+    try:
+        step = int(parts[-1])
+    except ValueError:
+        return None
+    episode_id = parts[0]
+    if not episode_id:
+        return None
+    return episode_id, step
+
+
+def _target_label_from_object_id(object_id: str) -> str:
+    parts: list[str] = []
+    for part in object_id.split("_"):
+        if any(char.isdigit() for char in part):
+            break
+        parts.append(part)
+    return _canonical_label("_".join(parts))
 
 
 def _frame_index_rows_by_key(

@@ -662,6 +662,182 @@ def test_qa_object_location_diagnostics_reports_missing_support_candidates() -> 
     }
 
 
+def test_qa_object_location_resolves_missing_target_by_unique_scene_step_label() -> None:
+    graph = DynamicSceneGraph()
+    attributes = {
+        "evidence_kinds": ["rgb", "depth", "detector"],
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "visible": True,
+    }
+    graph.upsert_object(
+        "chair_01_86_00_02_01_04",
+        "creditcard",
+        Pose3D(-2.23, 0.9, 1.47),
+        BBox3D(center=Pose3D(-2.23, 0.9, 1.47), size=(0.1, 0.1, 0.1)),
+        confidence=0.8,
+        visible=True,
+        step=200007,
+        attributes=attributes,
+    )
+    graph.add_edge(
+        "chair_01_86_00_02_01_04",
+        "IN_ROOM",
+        "ai2thor_room",
+        "world",
+        0.8,
+        step=200007,
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {
+            "type": "object_location",
+            "object_id": "creditcard_01_94_00_68_01_80",
+            "scene_id": "FloorPlan201",
+            "step": 200007,
+            "include_diagnostics": True,
+        }
+    )
+
+    assert response.error is None
+    assert response.answer["object_id"] == "chair_01_86_00_02_01_04"
+    assert response.answer["current_location"] == {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200007,
+    }
+    assert response.answer["query_diagnostics"]["target_resolution"] == {
+        "requested_object_id": "creditcard_01_94_00_68_01_80",
+        "resolved_object_id": "chair_01_86_00_02_01_04",
+        "status": "unique_scene_step_label_alias",
+    }
+
+
+def test_qa_object_location_resolves_missing_target_by_unique_compatible_step_label() -> None:
+    graph = DynamicSceneGraph()
+    attributes = {
+        "evidence_kinds": ["rgb", "depth", "detector"],
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "visible": True,
+    }
+    graph.upsert_object(
+        "cabinet_00_68_02_02_02_46",
+        "cabinet",
+        Pose3D(-0.68, 2.02, 2.46),
+        BBox3D(center=Pose3D(-0.68, 2.02, 2.46), size=(0.8, 1.8, 0.6)),
+        confidence=0.82,
+        visible=True,
+        step=40,
+        attributes=attributes,
+    )
+    graph.add_edge(
+        "cabinet_00_68_02_02_02_46",
+        "IN_ROOM",
+        "ai2thor_room",
+        "world",
+        0.8,
+        step=40,
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {
+            "type": "object_location",
+            "object_id": "cabinet_00_73_02_02_02_46",
+            "scene_id": "FloorPlan1",
+            "step": 100040,
+            "include_diagnostics": True,
+        }
+    )
+
+    assert response.error is None
+    assert response.answer["object_id"] == "cabinet_00_68_02_02_02_46"
+    assert response.answer["current_location"] == {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 40,
+    }
+    assert response.answer["query_diagnostics"]["target_resolution"] == {
+        "requested_object_id": "cabinet_00_73_02_02_02_46",
+        "resolved_object_id": "cabinet_00_68_02_02_02_46",
+        "status": "unique_scene_compatible_step_label_alias",
+    }
+
+
+def test_qa_object_location_rejects_ambiguous_missing_target_label_alias() -> None:
+    graph = DynamicSceneGraph()
+    attributes = {
+        "evidence_kinds": ["rgb", "depth", "detector"],
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+        "visible": True,
+    }
+    for object_id, x in (
+        ("chair_01_86_00_02_01_04", -2.23),
+        ("creditcard_detector_2", -2.1),
+    ):
+        graph.upsert_object(
+            object_id,
+            "creditcard",
+            Pose3D(x, 0.9, 1.47),
+            BBox3D(center=Pose3D(x, 0.9, 1.47), size=(0.1, 0.1, 0.1)),
+            confidence=0.8,
+            visible=True,
+            step=200007,
+            attributes=attributes,
+        )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {
+            "type": "object_location",
+            "object_id": "creditcard_01_94_00_68_01_80",
+            "scene_id": "FloorPlan201",
+            "step": 200007,
+        }
+    )
+
+    assert response.error == (
+        "Ambiguous target object label alias: creditcard_01_94_00_68_01_80"
+    )
+
+
+def test_qa_object_location_rejects_ambiguous_compatible_step_label_alias() -> None:
+    graph = DynamicSceneGraph()
+    attributes = {
+        "evidence_kinds": ["rgb", "depth", "detector"],
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "visible": True,
+    }
+    for object_id, step in (
+        ("cabinet_00_68_02_02_02_46", 40),
+        ("cabinet_00_75_02_02_02_46", 100040),
+    ):
+        graph.upsert_object(
+            object_id,
+            "cabinet",
+            Pose3D(-0.68, 2.02, 2.46),
+            BBox3D(center=Pose3D(-0.68, 2.02, 2.46), size=(0.8, 1.8, 0.6)),
+            confidence=0.82,
+            visible=True,
+            step=step,
+            attributes=attributes,
+        )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {
+            "type": "object_location",
+            "object_id": "cabinet_00_73_02_02_02_46",
+            "scene_id": "FloorPlan1",
+            "step": 100040,
+        }
+    )
+
+    assert response.error == (
+        "Ambiguous target object label alias: cabinet_00_73_02_02_02_46"
+    )
+
+
 def test_qa_object_location_uses_nearest_detector_support_when_not_ambiguous() -> None:
     graph = DynamicSceneGraph()
     support_attributes = {

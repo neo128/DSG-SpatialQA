@@ -3177,3 +3177,322 @@ P30 detector-only DSG 很多答案退化成 `IN_ROOM`。但同样是房间级 fa
   detector recall、memory storage，还是 support disambiguation；
 - 当前仍不能声称真实 detector-only DSG 已优于 VLM-only；还需要新的
   observation-backed detector-only run 和 paired delta。
+
+## P36 进展：把查询诊断应用到 P30 detector-only DSG
+
+本轮不是只增加诊断字段，而是把 P35 的诊断能力实际跑在当前 P30
+detector-only predicted graph 上，生成了新的阶段 artifact：
+
+`outputs/diagnostics/p36-dsg-object-location-query-diagnostics.json`
+
+输入：
+
+- predicted graph：
+  `outputs/predicted-dsg/predicted-graph-independent-p4-target60.json`
+- QA：
+  `inputs/traces/observation-aware-p4-target60-qa.jsonl`
+- P30 semantic eval：
+  `outputs/diagnostics/dsg-candidate-semantic-eval-p30-nearest-support-fallback-independent.json`
+
+新增可复用 API：
+
+`object_location_query_diagnostic_report`
+
+它只消费本地 graph / QA / eval artifact，重新用 GraphTool 跑
+`include_diagnostics=true` 的 object-location 查询，不调用 VLM、detector、
+simulator 或网络服务。
+
+P36 统计结果：
+
+| status | count | 含义 |
+| --- | ---: | --- |
+| `query_error` | 19 | target object 不在 predicted graph 中 |
+| `support_fallback_missing` | 35 | target 在图中，但没有可用 same-frame support candidate |
+| `support_fallback_applied` | 4 | support fallback 成功 |
+| `explicit_location_edge` | 2 | 已有显式 location edge |
+
+语义失败的真正拆分：
+
+| semantic mismatch status | count | 下一步含义 |
+| --- | ---: | --- |
+| `query_error` | 19 | 优先提高 target recall |
+| `support_fallback_missing` | 15 | 提高 support recall / current-location 存储 |
+| `explicit_location_edge` | 1 | 单独审查 explicit edge 是否错连或标签归一化失败 |
+
+这给下一步 DSG 优化排了优先级：
+
+1. 先补 19 个 target missing；
+2. 再补 15 个 support/current-location missing；
+3. 最后看 1 个 explicit edge mismatch 是否需要查询策略调整。
+
+当前结论仍然保持谨慎：VLM-only semantic gate 已过；DSG 的失败瓶颈现在更清楚，
+但还没有新的 detector-only run 证明 DSG 已经优于 VLM / 视频记忆。
+
+验证：
+
+| command | result |
+| --- | --- |
+| `python -m pytest -q tests/test_dsg_query_diagnostics.py tests/test_spatial_qa.py -k 'diagnostic or object_location'` | 17 passed |
+| `python -m ruff check src/dsg_spatialqa_lab/eval/dsg_query_diagnostics.py src/dsg_spatialqa_lab/eval/__init__.py src/dsg_spatialqa_lab/__init__.py tests/test_dsg_query_diagnostics.py` | passed |
+| `python -m mypy src/dsg_spatialqa_lab/eval/dsg_query_diagnostics.py tests/test_dsg_query_diagnostics.py` | passed |
+| `python scripts/verify.py` | all checks passed；pytest 799 passed；evaluation suite 52 / 52 passed |
+
+## P37 / 下一阶段 goal：先过 VLM-only gate，再做 DSG memory/query 实验
+
+用户设定的下一阶段目标是：先确保 VLM-only 成功率至少达到 50%，再继续做
+DSG 实验；DSG 实验重点优化记忆存储内容、查询内容、存储方式和查询方式。
+
+当前 gate 状态：
+
+| 项目 | 数值 | 判断 |
+| --- | ---: | --- |
+| VLM-only P26 semantic match | 49/60 = 0.816667 | 已超过 50% entry gate |
+| VLM-only P26 strict exact match | 0/60 = 0.000000 | 作为 answer-normalization 辅助指标 |
+| DSG P30 semantic match | 25/60 = 0.416667 | 尚未超过 VLM-only |
+| DSG 相对 VLM P26 semantic gap | -24 matches | 仍不能声称 DSG 优于 VLM |
+
+因此，下一阶段实验的进入条件已经满足：VLM-only 不是一个过弱的 0 分
+baseline，后续可以用它作为有效对照。与此同时，DSG 仍未达成正向结论；
+当前正式结论仍是 detector-only DSG 不优于 VLM-only / 视频记忆。
+
+下一阶段 DSG 优化轴：
+
+- 记忆存储内容：保存 detector-visible object states、support candidates、
+  object-id/label provenance、last-seen facts、relation hypotheses 和证据路径。
+- 记忆存储方式：保留 append-only observation memory，再折叠为 graph edge；
+  区分 observed facts 与 inferred location hypotheses；保留 top-k support
+  candidates、ambiguity 和 abstain 状态。
+- 查询内容：一次查询同时取 target state、visible-frame evidence、support
+  candidates、room fallback、missing-evidence status 和 rationale。
+- 查询方式：优先使用显式 detector current-location evidence，其次使用 support
+  hypothesis，最后才使用 room fallback；无法回答时返回结构化 blocker，而不是
+  静默猜测。
+
+P37 的执行原则：
+
+- 不读取 gold answer、oracle required edges 或 evaluator-only 字段来改 DSG。
+- 不用 weak VLM baseline 制造 DSG 优势；所有结论继续和 VLM P26 semantic
+  baseline 做 paired wins/losses 对比。
+- 每轮 DSG 更新必须保存 prediction JSONL、semantic eval、query diagnostics、
+  delta report 和中文阶段结论。
+- 只有当 DSG 在 observation-aware QA slice 上稳定超过 VLM-only / video-memory
+  controls，并通过 readiness 与 conclusion gate，才允许写正向研究结论。
+
+### P37 实际执行：target alias 查询鲁棒性
+
+P37 在 GraphTool / SpatialQAEngine 查询层加入一个保守的 target alias 解析：
+
+- 对 `object_location` case，GraphTool baseline 会把 `scene_id` 和 `step`
+  传入查询；
+- 如果 QA 请求的 `object_id` 不在 predicted graph 中；
+- 但同 scene、同 step 中存在唯一一个 label 归一化后匹配的 detector/RGB-D
+  object；
+- 且该 object 有 `rgb/depth/detector` evidence；
+- 则查询解析到该 detector object；
+- 如果有多个同标签候选，则返回 ambiguity error，不静默猜测。
+
+这个改动的边界：
+
+- 不读取 gold answer；
+- 不读取 oracle required edges；
+- 不读取 evaluator-only 字段；
+- 不调用 VLM、detector、simulator 或网络服务；
+- 只使用 predicted graph 里已经存在的 detector/RGB-D evidence。
+
+P37 artifact：
+
+- `inputs/candidate/predicted-graph-tool-independent-p37-target-alias.jsonl`
+- `outputs/diagnostics/dsg-candidate-semantic-eval-p37-target-alias-independent.json`
+- `outputs/diagnostics/p37-dsg-target-alias-query-diagnostics.json`
+
+P37 结果：
+
+| 指标 | P36 / P30 | P37 target alias |
+| --- | ---: | ---: |
+| DSG semantic match | 25/60 = 0.416667 | 25/60 = 0.416667 |
+| Strict exact match | 0/60 = 0.000000 | 0/60 = 0.000000 |
+| Query error | 19 | 15 |
+| Support fallback missing | 35 | 38 |
+| Support fallback applied | 4 | 4 |
+| Explicit location edge | 2 | 3 |
+
+语义失败拆分：
+
+| semantic mismatch status | P36 | P37 |
+| --- | ---: | ---: |
+| `query_error` | 19 | 15 |
+| `support_fallback_missing` | 15 | 18 |
+| `explicit_location_edge` | 1 | 2 |
+
+解释：P37 把 4 个 `Object not found` 查询错误转成了可解析 target，但这些 case
+仍没有足够的 support/current-location 证据，因此 semantic score 没有提升。换句话说，
+target alias 是查询鲁棒性提升，不是最终效果提升。
+
+下一轮优化应转向：
+
+1. 继续提高 target recall，解决剩余 15 个 query-error mismatch；
+2. 提高 support/current-location memory，解决 18 个 support-missing mismatch；
+3. 审查 2 个 explicit-location mismatch，确认是 edge 错连、标签归一化，还是
+   semantic evaluator 对齐问题。
+
+P37 验证：
+
+| command | result |
+| --- | --- |
+| `python -m ruff check src/dsg_spatialqa_lab/qa.py src/dsg_spatialqa_lab/agents/graph_tool_agent.py src/dsg_spatialqa_lab/eval/dsg_query_diagnostics.py tests/test_spatial_qa.py tests/test_baselines.py tests/test_dsg_query_diagnostics.py` | passed |
+| `python -m mypy src/dsg_spatialqa_lab/qa.py src/dsg_spatialqa_lab/agents/graph_tool_agent.py src/dsg_spatialqa_lab/eval/dsg_query_diagnostics.py tests/test_spatial_qa.py tests/test_baselines.py tests/test_dsg_query_diagnostics.py` | passed |
+| `python -m pytest -q tests/test_spatial_qa.py tests/test_baselines.py tests/test_dsg_query_diagnostics.py` | 51 passed |
+| `python scripts/verify.py` | all checks passed；pytest 802 passed；evaluation suite 52 / 52 passed |
+
+## P38 进展：从 P37 查询诊断生成 detector/RGB-D 回补 handoff
+
+P37 证明 target alias 能把一部分 `Object not found` 变成可查询 target，但
+semantic score 没有提升。原因是这些 case 仍缺 support/current-location evidence。
+因此 P38 不再继续改 answer formatting，而是把 P37 的失败拆分转成下一轮外部
+detector/RGB-D 回补请求。
+
+新增入口：
+
+`dsg_detector_recall_handoff_from_query_diagnostics`
+
+CLI：
+
+```bash
+python scripts/build_dsg_detector_recall_handoff.py \
+  --query-diagnostic-report handoffs/ai2thor-real-small/outputs/diagnostics/p37-dsg-target-alias-query-diagnostics.json \
+  --frame-index-jsonl handoffs/ai2thor-real-small/inputs/traces/vlm-frame-index-coverage-p16-schema-fixed-p2-p3.jsonl \
+  --output handoffs/ai2thor-real-small/inputs/predicted-dsg/p38-detector-recall-handoff-from-p37-query-diagnostics.json
+```
+
+它只纳入 P37 中两类 unresolved semantic mismatch：
+
+- `query_error`
+- `support_fallback_missing`
+
+输出仍使用既有 detector recall handoff schema。验证器会拒绝 evaluator-only /
+gold 字段，包括：
+
+- `gold_answer`
+- `gold_support_label`
+- `required_edges`
+- `required_nodes`
+- `evidence_edges`
+- `evidence_nodes`
+
+P38 artifact：
+
+`inputs/predicted-dsg/p38-detector-recall-handoff-from-p37-query-diagnostics.json`
+
+P38 handoff 摘要：
+
+| 指标 | 数值 |
+| --- | ---: |
+| Case count | 33 |
+| Frame count | 16 |
+| Frames with support labels | 14 |
+| Missing frame case count | 0 |
+| Requested detection label count | 52 |
+| Support label count | 20 |
+| Target label count | 33 |
+
+解释：P38 给下一轮 detector/RGB-D producer 的任务是：在这 16 个 frame 上重新
+返回目标对象和可见 support 对象，最好包含稳定 object id、bbox、confidence、
+`current_location_id` 和 `current_location_relation`。这样下一轮 predicted DSG
+才能把 target/support/current-location memory 存起来，而不是继续退化到
+`IN_ROOM`。
+
+P38 验证：
+
+| command | result |
+| --- | --- |
+| `python -m pytest -q tests/test_dsg_detector_recall_handoff.py` | 5 passed |
+| `python -m ruff check src/dsg_spatialqa_lab/eval/dsg_detector_recall.py scripts/build_dsg_detector_recall_handoff.py tests/test_dsg_detector_recall_handoff.py` | passed |
+| `python -m mypy src/dsg_spatialqa_lab/eval/dsg_detector_recall.py scripts/build_dsg_detector_recall_handoff.py tests/test_dsg_detector_recall_handoff.py` | passed |
+| `python scripts/build_dsg_detector_recall_handoff.py --validate-report handoffs/ai2thor-real-small/inputs/predicted-dsg/p38-detector-recall-handoff-from-p37-query-diagnostics.json` | valid=true；forbidden fields absent |
+
+阶段边界：
+
+- P38 不是 DSG 提分结果；
+- P38 不调用 detector，也不生成外部 prediction；
+- P38 是下一轮 detector/RGB-D 输入请求；
+- 下一步需要外部或本地 detector 根据该 handoff 生成 JSONL，再 import observation
+  sequence、build predicted graph、run GraphTool prediction、semantic eval 和
+  paired delta against VLM P26。
+
+## P39 进展：compatible-step target alias
+
+P38 后继续排查 P37 的剩余 `query_error`，发现一个具体 query-method 问题：
+部分 observation-aware QA 的 step 使用编码值，例如 `100040`；而 detector-only
+predicted graph 中同一帧对象状态存成 `40`。P37 只允许 exact step 匹配，因此
+同 scene、同 label、同 evidence 的候选对象仍会被判成 target missing。
+
+P39 修改：
+
+- `object_location` target alias 同时接受 `step` 和 `step % 100000`；
+- 仍要求同 `scene_id`、label 归一化匹配、并且候选对象有
+  `rgb/depth/detector` evidence；
+- 如果 compatible steps 中出现多个同标签候选，仍返回 ambiguity error；
+- 不读取 gold answer、oracle required edges 或 evaluator-only 字段。
+
+P39 artifact：
+
+- `inputs/candidate/predicted-graph-tool-independent-p39-compatible-step-target-alias.jsonl`
+- `outputs/diagnostics/dsg-candidate-semantic-eval-p39-compatible-step-target-alias-independent.json`
+- `outputs/diagnostics/p39-dsg-compatible-step-target-alias-query-diagnostics.json`
+- `outputs/diagnostics/dsg-p39-vs-p37-target-alias-semantic-delta.json`
+- `outputs/diagnostics/dsg-p39-vs-vlm-p26-affordance-option-fallback-semantic-delta.json`
+
+P39 结果：
+
+| 指标 | P37 | P39 |
+| --- | ---: | ---: |
+| DSG semantic match | 25/60 = 0.416667 | 27/60 = 0.450000 |
+| Strict exact match | 0/60 = 0.000000 | 0/60 = 0.000000 |
+| Query error | 15 | 13 |
+| Support fallback missing | 38 | 40 |
+| Support fallback applied | 4 | 4 |
+| Explicit location edge | 3 | 3 |
+
+P39 vs P37 paired delta：
+
+| 指标 | 数值 |
+| --- | ---: |
+| Paired wins | 2 |
+| Paired losses | 0 |
+| Paired ties | 58 |
+| Semantic match delta | +2 |
+
+P39 vs VLM P26：
+
+| 指标 | DSG P39 | VLM P26 |
+| --- | ---: | ---: |
+| Semantic match | 27/60 = 0.450000 | 49/60 = 0.816667 |
+| Paired wins/losses/ties | 4 / 26 / 30 | - |
+| Semantic match delta | -22 | - |
+
+解释：P39 是真实的 DSG query-method 改善，但仍远低于 VLM-only。它把两个
+step 编码不一致造成的 target missing 修掉了，因此语义正确数从 25 提到 27。
+但新增能找到的 target 仍多退化成 room/support fallback，说明剩余瓶颈仍是
+detector/RGB-D evidence coverage 与 current-location memory。
+
+P39 后剩余失败拆分：
+
+| semantic mismatch status | count | 下一步 |
+| --- | ---: | --- |
+| `query_error` | 13 | 提高 target recall |
+| `support_fallback_missing` | 18 | 提高 support/current-location memory |
+| `explicit_location_edge` | 2 | 审查 edge 错连或 semantic 对齐 |
+
+P39 验证：
+
+| command | result |
+| --- | --- |
+| `python -m pytest -q tests/test_spatial_qa.py -k 'compatible_step_label'` | 2 passed |
+| `python -m pytest -q tests/test_spatial_qa.py -k 'object_location or support_fallback or current_location'` | 21 passed |
+| `python -m ruff check src/dsg_spatialqa_lab/qa.py tests/test_spatial_qa.py` | passed |
+| `python -m mypy src/dsg_spatialqa_lab/qa.py tests/test_spatial_qa.py` | passed |
+| `python -m pytest -q tests/test_spatial_qa.py tests/test_baselines.py tests/test_dsg_query_diagnostics.py tests/test_dsg_detector_recall_handoff.py` | 58 passed |
+
+阶段结论：P39 让 DSG 从 41.67% 提升到 45.00%，但仍不能声称 DSG 优于
+VLM-only / 视频记忆。下一步应使用 P38 handoff 回补 detector/RGB-D evidence，
+而不是继续只调查询层。

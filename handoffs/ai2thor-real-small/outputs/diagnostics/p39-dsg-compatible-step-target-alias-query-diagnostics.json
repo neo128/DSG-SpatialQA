@@ -1,0 +1,1174 @@
+{
+  "artifacts": {
+    "graph_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-independent-p4-target60.json",
+    "qa_path": "handoffs/ai2thor-real-small/inputs/traces/observation-aware-p4-target60-qa.jsonl",
+    "semantic_eval_path": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-candidate-semantic-eval-p39-compatible-step-target-alias-independent.json"
+  },
+  "cases": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48:observation_aware:100034",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 34
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "apple_00_47_01_15_00_48",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62:observation_aware:100034",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 34
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "book_00_15_01_10_00_62",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54:observation_aware:100037",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 37
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "bottle_01_54_00_89_02_54",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75:observation_aware:100036",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 36
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "bowl_00_27_01_10_00_75",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03:observation_aware:100036",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 36
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "bread_00_52_01_17_00_03",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46:observation_aware:100036",
+      "current_location": null,
+      "failure_reason": "Object not found: butterknife_00_41_01_11_00_46",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "butterknife_00_41_01_11_00_46",
+      "prediction_error": "Object not found: butterknife_00_41_01_11_00_46",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20:observation_aware:100037",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 37
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "cabinet_00_68_00_50_02_20",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46:observation_aware:100040",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 40
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "cabinet_00_68_02_02_02_46",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46:observation_aware:100039",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 39
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "cabinet_00_72_02_02_02_46",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46:observation_aware:100040",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 40
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "cabinet_00_73_02_02_02_46",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98:observation_aware:200001",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200001
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "armchair_00_85_00_00_05_98",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02:observation_aware:200013",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200013
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "armchair_04_38_00_00_06_02",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17:observation_aware:200007",
+      "current_location": {
+        "dst": "chair_01_86_00_02_01_84",
+        "relation": "ON",
+        "step": 200007
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_applied",
+      "missing_evidence": [],
+      "object_id": "book_01_87_00_68_01_17",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": true,
+      "support_candidate_count": 2,
+      "support_fallback_applied": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79:observation_aware:200002",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200002
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "bowl_02_45_00_60_04_79",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43:observation_aware:200003",
+      "current_location": null,
+      "failure_reason": "Object not found: box_03_36_00_19_06_43",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "box_03_36_00_19_06_43",
+      "prediction_error": "Object not found: box_03_36_00_19_06_43",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43:observation_aware:200007",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200007
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "chair_01_34_00_02_01_43",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04:observation_aware:200007",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200007
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "chair_01_86_00_02_01_04",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84:observation_aware:200007",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200007
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "chair_01_86_00_02_01_84",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99:observation_aware:200007",
+      "current_location": {
+        "dst": "chair_02_52_00_02_01_88",
+        "relation": "ON",
+        "step": 200007
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "explicit_location_edge",
+      "missing_evidence": [],
+      "object_id": "chair_02_51_00_02_00_99",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88:observation_aware:200007",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200007
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "chair_02_52_00_02_01_88",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47:observation_aware:100032",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 32
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "alarmclock_01_28_01_24_00_47",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82:observation_aware:200012",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200012
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "baseballbat_02_84_00_29_01_82",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24:observation_aware:100021",
+      "current_location": null,
+      "failure_reason": "Object not found: basketball_00_24_00_13_01_24",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "basketball_00_24_00_13_01_24",
+      "prediction_error": "Object not found: basketball_00_24_00_13_01_24",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87:observation_aware:100027",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 27
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "bed_00_64_00_01_00_87",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44:observation_aware:100033",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 33
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "blinds_00_11_02_34_01_44",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18:observation_aware:100007",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 7
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "book_00_90_00_56_01_18",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34:observation_aware:100016",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 16
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "boots_01_28_00_01_01_34",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21:observation_aware:100029",
+      "current_location": null,
+      "failure_reason": "Object not found: bowl_02_45_00_80_01_21",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "bowl_02_45_00_80_01_21",
+      "prediction_error": "Object not found: bowl_02_45_00_80_01_21",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89:observation_aware:200009",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200009
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "box_02_73_00_20_00_89",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19:observation_aware:100029",
+      "current_location": null,
+      "failure_reason": "Object not found: cd_01_62_00_80_01_19",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "cd_01_62_00_80_01_19",
+      "prediction_error": "Object not found: cd_01_62_00_80_01_19",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92:observation_aware:200011",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200011
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "bathtub_00_21_00_36_00_92",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0003:object_location:candle_03_11_00_23_00_05:observation_aware:100043",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 43
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "candle_03_11_00_23_00_05",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02:observation_aware:200010",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200010
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "cloth_00_27_00_04_01_02",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02:observation_aware:100044",
+      "current_location": null,
+      "failure_reason": "Object not found: dishsponge_03_20_00_86_00_02",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "dishsponge_03_20_00_86_00_02",
+      "prediction_error": "Object not found: dishsponge_03_20_00_86_00_02",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28:observation_aware:200011",
+      "current_location": {
+        "dst": "bathtub_00_21_00_36_00_92",
+        "relation": "ON",
+        "step": 200011
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_applied",
+      "missing_evidence": [],
+      "object_id": "faucet_00_14_00_61_00_28",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": true,
+      "support_candidate_count": 1,
+      "support_fallback_applied": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53:observation_aware:100046",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 46
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "faucet_03_40_01_02_01_53",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85:observation_aware:100045",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 45
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "floor_01_44_00_04_01_85",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88:observation_aware:200014",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200014
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "garbagecan_00_05_00_00_03_88",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10:observation_aware:100046",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 46
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "handtowel_03_42_01_34_02_10",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08:observation_aware:100041",
+      "current_location": {
+        "dst": "egg_00_13_00_95_00_17",
+        "relation": "ON",
+        "step": 41
+      },
+      "failure_reason": "destination_mismatch",
+      "location_evidence_status": "explicit_location_edge",
+      "missing_evidence": [],
+      "object_id": "bread_00_26_00_99_00_08",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45:observation_aware:100047",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 47
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "cabinet_00_63_02_02_01_45",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45:observation_aware:100047",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 47
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "cabinet_01_70_02_02_01_45",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0001:cellphone_00_26_00_56_00_52:observation_aware:100027",
+      "current_location": {
+        "dst": "bed_00_64_00_01_00_87",
+        "relation": "ON",
+        "step": 27
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_applied",
+      "missing_evidence": [],
+      "object_id": "cellphone_00_26_00_56_00_52",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": true,
+      "support_candidate_count": 1,
+      "support_fallback_applied": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0002:creditcard_00_46_01_10_00_87:observation_aware:100034",
+      "current_location": null,
+      "failure_reason": "Object not found: creditcard_00_46_01_10_00_87",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "creditcard_00_46_01_10_00_87",
+      "prediction_error": "Object not found: creditcard_00_46_01_10_00_87",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0003:creditcard_01_78_00_80_01_19:observation_aware:100029",
+      "current_location": null,
+      "failure_reason": "Object not found: creditcard_01_78_00_80_01_19",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "creditcard_01_78_00_80_01_19",
+      "prediction_error": "Object not found: creditcard_01_78_00_80_01_19",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0004:creditcard_01_94_00_68_01_80:observation_aware:200007",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200007
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "creditcard_01_94_00_68_01_80",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0005:desklamp_01_32_01_24_00_99:observation_aware:100032",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 32
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "desklamp_01_32_01_24_00_99",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0006:diningtable_02_27_00_02_01_42:observation_aware:200007",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200007
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "diningtable_02_27_00_02_01_42",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0007:egg_00_13_00_95_00_17:observation_aware:100041",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 41
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "egg_00_13_00_95_00_17",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0008:kettle_01_04_00_90_02_60:observation_aware:100037",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 37
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "kettle_01_04_00_90_02_60",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0009:keychain_01_74_00_80_01_29:observation_aware:100029",
+      "current_location": null,
+      "failure_reason": "Object not found: keychain_01_74_00_80_01_29",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "keychain_01_74_00_80_01_29",
+      "prediction_error": "Object not found: keychain_01_74_00_80_01_29",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0010:laptop_00_50_00_56_00_29:observation_aware:100027",
+      "current_location": {
+        "dst": "bed_00_64_00_01_00_87",
+        "relation": "ON",
+        "step": 27
+      },
+      "failure_reason": null,
+      "location_evidence_status": "support_fallback_applied",
+      "missing_evidence": [],
+      "object_id": "laptop_00_50_00_56_00_29",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": true,
+      "support_candidate_count": 1,
+      "support_fallback_applied": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0011:laptop_01_70_00_68_01_66:observation_aware:200007",
+      "current_location": {
+        "dst": "chair_02_52_00_02_01_88",
+        "relation": "ON",
+        "step": 200007
+      },
+      "failure_reason": null,
+      "location_evidence_status": "explicit_location_edge",
+      "missing_evidence": [],
+      "object_id": "laptop_01_70_00_68_01_66",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": true,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0012:mug_00_24_00_92_00_26:observation_aware:100041",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 41
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "mug_00_24_00_92_00_26",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0013:mug_02_82_00_80_01_22:observation_aware:100029",
+      "current_location": null,
+      "failure_reason": "Object not found: mug_02_82_00_80_01_22",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "mug_02_82_00_80_01_22",
+      "prediction_error": "Object not found: mug_02_82_00_80_01_22",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0014:newspaper_02_76_00_68_01_18:observation_aware:200007",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200007
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "newspaper_02_76_00_68_01_18",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0015:pan_00_72_00_90_02_42:observation_aware:100037",
+      "current_location": {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 37
+      },
+      "failure_reason": "relation_mismatch",
+      "location_evidence_status": "support_fallback_missing",
+      "missing_evidence": [
+        "detector_support_candidate"
+      ],
+      "object_id": "pan_00_72_00_90_02_42",
+      "prediction_error": null,
+      "question_type": "object_location",
+      "room_fallback_applied": true,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:supplemental_object_location:0016:papertowelroll_03_15_00_96_00_28:observation_aware:100044",
+      "current_location": null,
+      "failure_reason": "Object not found: papertowelroll_03_15_00_96_00_28",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "papertowelroll_03_15_00_96_00_28",
+      "prediction_error": "Object not found: papertowelroll_03_15_00_96_00_28",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0017:pen_01_93_00_81_01_18:observation_aware:100029",
+      "current_location": null,
+      "failure_reason": "Object not found: pen_01_93_00_81_01_18",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "pen_01_93_00_81_01_18",
+      "prediction_error": "Object not found: pen_01_93_00_81_01_18",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0018:pencil_02_01_00_81_01_17:observation_aware:100029",
+      "current_location": null,
+      "failure_reason": "Object not found: pencil_02_01_00_81_01_17",
+      "location_evidence_status": "query_error",
+      "missing_evidence": [
+        "target_object"
+      ],
+      "object_id": "pencil_02_01_00_81_01_17",
+      "prediction_error": "Object not found: pencil_02_01_00_81_01_17",
+      "question_type": "object_location",
+      "room_fallback_applied": false,
+      "semantic_match": false,
+      "support_candidate_count": 0,
+      "support_fallback_applied": false
+    }
+  ],
+  "graph_digest": "faa7d071799d6f1b833510ae381247fde49d28e9ef67f8c35fe81838e61458a3",
+  "qa_digest": "9eb72ebd1f87937faa53be3e9a6ec7dc3d628cd6ec899a1fa02ef61529633115",
+  "report_digest": "0e41f98135d27b289c64e0078d6ea5736ba2a1b209ead4c161a1d43795831819",
+  "schema_version": "dsg-spatialqa-lab.object-location-query-diagnostic-report.v1",
+  "summary": {
+    "object_location_case_count": 60,
+    "query_error_count": 13,
+    "room_fallback_count": 40,
+    "semantic_match_status_counts": {
+      "explicit_location_edge": 1,
+      "support_fallback_applied": 4,
+      "support_fallback_missing": 22
+    },
+    "semantic_mismatch_count": 33,
+    "semantic_mismatch_status_counts": {
+      "explicit_location_edge": 2,
+      "query_error": 13,
+      "support_fallback_missing": 18
+    },
+    "status_counts": {
+      "explicit_location_edge": 3,
+      "query_error": 13,
+      "support_fallback_applied": 4,
+      "support_fallback_missing": 40
+    },
+    "support_candidate_count_histogram": {
+      "0": 43,
+      "1": 3,
+      "2": 1
+    }
+  }
+}

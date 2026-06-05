@@ -67,6 +67,57 @@ def test_graph_tool_baseline_answers_generated_qa_with_full_evidence() -> None:
     assert report["metrics"]["evidence_edge_recall"]["average"] == 1.0
 
 
+def test_graph_tool_baseline_enriches_object_location_with_scene_and_step() -> None:
+    graph = lab.DynamicSceneGraph()
+    attributes = {
+        "evidence_kinds": ["rgb", "depth", "detector"],
+        "scene_id": "FloorPlan201",
+        "source_kind": "detector",
+    }
+    graph.upsert_object(
+        "chair_01_86_00_02_01_04",
+        "creditcard",
+        lab.Pose3D(-2.23, 0.9, 1.47),
+        lab.BBox3D(center=lab.Pose3D(-2.23, 0.9, 1.47), size=(0.1, 0.1, 0.1)),
+        confidence=0.8,
+        visible=True,
+        step=200007,
+        attributes=attributes,
+    )
+    graph.add_edge(
+        "chair_01_86_00_02_01_04",
+        "IN_ROOM",
+        "ai2thor_room",
+        "world",
+        0.8,
+        step=200007,
+    )
+    case = lab.QACase(
+        id="case-1",
+        scene_id="FloorPlan201",
+        episode_id="episode-1",
+        graph_digest="graph-digest",
+        step=200007,
+        question={
+            "type": "object_location",
+            "object_id": "creditcard_01_94_00_68_01_80",
+        },
+        question_type="object_location",
+        answer={},
+        answer_type="object_location",
+    )
+
+    prediction = lab.run_baseline_predictions("graph_tool", graph=graph, cases=[case])[0]
+
+    assert prediction.error is None
+    assert prediction.answer["object_id"] == "chair_01_86_00_02_01_04"
+    assert prediction.answer["current_location"] == {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 200007,
+    }
+
+
 def test_majority_baseline_is_stable_and_uses_first_choice() -> None:
     graph = lab.load_scene_fixture("tabletop")
     cases = baseline_cases()
