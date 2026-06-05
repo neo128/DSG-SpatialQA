@@ -66,3 +66,59 @@ def test_dsg_viewer_payload_exposes_graph_metrics_and_selection_indexes() -> Non
     assert payload["metrics"]["evidence_ready"] is False
     assert payload["diagnostics"]["failed_checks"] == ["non_real_sources_absent"]
     assert payload["indexes"]["qa_case_ids_by_object_id"] == {}
+
+
+def test_dsg_viewer_payload_links_qa_cases_and_oracle_delta() -> None:
+    graph = _single_object_graph()
+    case = lab.QACase(
+        id="case-1",
+        scene_id="FloorPlan1",
+        episode_id="episode-1",
+        graph_digest="graph-digest",
+        step=1,
+        question={"type": "object_location", "object_id": "mug_1"},
+        question_type="object_location",
+        answer={"object_id": "mug_1"},
+        answer_type="object_location",
+    )
+    qa_eval_report = {
+        "cases": [
+            {
+                "case_id": "case-1",
+                "exact_match": False,
+                "prediction": {"object_id": "mug_1"},
+                "gold": {"object_id": "mug_1"},
+            }
+        ]
+    }
+    graph_eval_report = {
+        "comparison": {
+            "object_matches": [
+                {"oracle_object_id": "mug_1", "predicted_object_id": "mug_1"}
+            ],
+            "missing_relations": [{"src": "mug_1", "relation": "ON", "dst": "table_1"}],
+            "extra_relations": [],
+        },
+        "summary": {
+            "object_recall": {"rate": 1.0},
+            "relation_precision": {"rate": 0.5},
+            "relation_recall": {"rate": 0.25},
+            "relation_f1": 0.333333,
+        },
+    }
+
+    payload = lab.dsg_viewer_payload(
+        predicted_graph=graph,
+        qa_cases=(case,),
+        qa_eval_report=qa_eval_report,
+        graph_eval_report=graph_eval_report,
+    )
+
+    assert payload["qa"]["cases"][0]["case_id"] == "case-1"
+    assert payload["qa"]["cases"][0]["target_object_ids"] == ["mug_1"]
+    assert payload["indexes"]["qa_case_ids_by_object_id"] == {"mug_1": ["case-1"]}
+    assert payload["oracle"]["object_matches_by_predicted_id"] == {
+        "mug_1": {"oracle_object_id": "mug_1", "predicted_object_id": "mug_1"}
+    }
+    assert payload["oracle"]["missing_relation_count"] == 1
+    assert payload["metrics"]["relation_f1"] == 0.333333
