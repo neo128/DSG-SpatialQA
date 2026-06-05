@@ -2959,3 +2959,64 @@ DSG 下一阶段实验轴：
 5. 与 VLM-only P26 比较，记录 paired wins/losses/regressions；
 6. 只有当 DSG 在真实 detector-only 或明确标注的 memory-enhanced 条件下超过
    VLM P26，才进入“DSG 优于 VLM”的结论检查。
+
+## P32 进展：DSG memory/query 优化证据门
+
+本轮把“先提高 VLM-only，再优化 DSG”的目标落到一个可复核的证据报告：
+
+`outputs/diagnostics/p32-dsg-memory-query-optimization-evidence.json`
+
+当前 VLM-only P26 已经满足进入 DSG 优化阶段的语义门槛：
+
+| method | semantic match | semantic rate | strict exact |
+| --- | ---: | ---: | ---: |
+| VLM-only P26 | 49 / 60 | 0.816667 | 0 / 60 |
+
+因此，下一阶段可以继续做 DSG 实验。但 P30 detector-only DSG 仍明显落后：
+
+| method | semantic match | semantic rate | gap vs VLM P26 |
+| --- | ---: | ---: | ---: |
+| DSG P30 detector-only | 25 / 60 | 0.416667 | -24 |
+
+P30 的失败根因已经拆成两类：
+
+| root cause | count | 含义 |
+| --- | ---: | --- |
+| relation degraded to `IN_ROOM` | 16 | target 进了图，但 support / container 关系没有进入可查询记忆 |
+| target object missing from predicted graph | 19 | 目标对象本身没有进入 predicted graph |
+
+这说明 DSG 当前不是 GraphTool 查询能力天然失败，而是 predicted graph 的
+memory storage content 不够：目标、support、`current_location_*` 归属和
+显式 evidence 没有稳定进入同一个 observation-backed memory。
+
+对照的正例是 support-rich、metadata-backed coverage DSG P22：
+
+| method | semantic match | semantic rate | paired vs VLM P26 |
+| --- | ---: | ---: | ---: |
+| DSG P22 support-rich coverage diagnostic | 60 / 60 | 1.000000 | +11 wins / 0 losses |
+
+这个结果只能作为 memory/query 优化方向的诊断证据，不能写成最终真实
+external-detector-only 研究结论。原因是 P22 使用的是
+`ai2thor_metadata_backed_coverage_diagnostic`，不是独立外部 detector-only
+观测包。
+
+下一步的可执行优化目标：
+
+1. 用 `inputs/predicted-dsg/p31-detector-recall-handoff.json` 让外部
+   detector/RGB-D producer 返回 target + support detection；
+2. 返回文件必须包含 `attributes.current_location_id` 和
+   `attributes.current_location_relation`，并保留 `rgb/depth/detector`
+   evidence；
+3. DSG 存储方式改成先保留 append-only observation memory，再把 observed
+   facts、support candidates、inferred hypotheses 分层写入 graph；
+4. GraphTool 查询顺序固定为 explicit detector location -> support
+   hypothesis -> room fallback -> structured missing-evidence blocker；
+5. 重新跑 P33 detector-only DSG，与 VLM P26 做 paired wins/losses 对比。
+
+当前阶段结论：
+
+- VLM-only semantic gate 已通过；
+- DSG 的优化方向已经由 P30 失败和 P22 正例共同支持；
+- 还不能声称真实 detector-only DSG 已优于 VLM-only；
+- 若 P33 能在外部 detector/RGB-D evidence 下复现 P22 的 support-rich
+  memory 行为，才进入正式“DSG 是否优于 VLM / 视频记忆”的结论检查。

@@ -2931,3 +2931,42 @@ mock/AI2-THOR episode -> oracle DSG -> predicted DSG -> automatic QA ->
 baseline/model prediction -> QA evaluation -> graph evaluation -> error attribution ->
 active EQA task report -> static review dashboard
 ```
+
+## P32 Progress: DSG Memory/Query Evidence Gate
+
+The next-stage VLM gate is now evidence-backed:
+
+- VLM-only P26 semantic success is 49 / 60 = 0.816667, so the >= 50%
+  semantic gate is satisfied.
+- Strict exact remains 0 / 60 and is tracked as a normalization issue, not as
+  the entry gate for DSG optimization.
+- Detector-only DSG P30 remains below the VLM baseline at 25 / 60 = 0.416667.
+
+The new P32 evidence report is:
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/p32-dsg-memory-query-optimization-evidence.json
+```
+
+It records the current DSG failure split:
+
+- 16 failures are relation degradation to `IN_ROOM`;
+- 19 failures are target objects missing from the predicted graph.
+
+It also records the diagnostic positive control: support-rich, metadata-backed
+coverage DSG P22 reaches 60 / 60 on the same 60-case slice and has +11 paired
+wins / 0 losses against VLM P26. This is useful evidence for the memory/query
+optimization direction, but it is not a final external-detector-only research
+conclusion.
+
+P32/P33 development should therefore focus on reproducing the P22 memory/query
+behavior with explicit external detector/RGB-D artifacts:
+
+1. Store target and support observations as append-only evidence before graph
+   collapse.
+2. Preserve `current_location_id` / `current_location_relation` as detector
+   current-location evidence when supplied.
+3. Query in this order: explicit detector location, support hypothesis, room
+   fallback, structured missing-evidence blocker.
+4. Use the P31 detector recall handoff as the next external detector input
+   contract.

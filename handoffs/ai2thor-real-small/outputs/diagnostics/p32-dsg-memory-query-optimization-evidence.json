@@ -1,0 +1,113 @@
+{
+  "claim_scope": "diagnostic evidence for memory/query optimization; support-rich DSG result is metadata-backed coverage, not final external detector-only proof",
+  "detector_only_dsg_current": {
+    "case_count": 60,
+    "gap_to_vlm_p26_match_count": -24,
+    "name": "p30_nearest_support_fallback_independent_detector",
+    "root_cause_counts": {
+      "failure_reason_counts": {
+        "Object not found: basketball_00_24_00_13_01_24": 1,
+        "Object not found: bowl_02_45_00_80_01_21": 1,
+        "Object not found: box_03_36_00_19_06_43": 1,
+        "Object not found: butterknife_00_41_01_11_00_46": 1,
+        "Object not found: cabinet_00_73_02_02_02_46": 1,
+        "Object not found: cabinet_01_70_02_02_01_45": 1,
+        "Object not found: cd_01_62_00_80_01_19": 1,
+        "Object not found: creditcard_00_46_01_10_00_87": 1,
+        "Object not found: creditcard_01_78_00_80_01_19": 1,
+        "Object not found: creditcard_01_94_00_68_01_80": 1,
+        "Object not found: diningtable_02_27_00_02_01_42": 1,
+        "Object not found: dishsponge_03_20_00_86_00_02": 1,
+        "Object not found: keychain_01_74_00_80_01_29": 1,
+        "Object not found: laptop_01_70_00_68_01_66": 1,
+        "Object not found: mug_02_82_00_80_01_22": 1,
+        "Object not found: newspaper_02_76_00_68_01_18": 1,
+        "Object not found: papertowelroll_03_15_00_96_00_28": 1,
+        "Object not found: pen_01_93_00_81_01_18": 1,
+        "Object not found: pencil_02_01_00_81_01_17": 1,
+        "relation_mismatch": 16
+      },
+      "relation_degraded_to_in_room": 16,
+      "target_object_missing_from_predicted_graph": 19
+    },
+    "semantic_match_count": 25,
+    "semantic_match_rate": 0.4166666666666667
+  },
+  "next_missing_artifacts": [
+    "external detector/RGB-D JSONL that returns P31 target/support labels with attributes.current_location_id and attributes.current_location_relation",
+    "observation sequence built from that external JSONL with detector/rgb/depth evidence for target and support nodes",
+    "P33 detector-only DSG semantic eval and paired delta against VLM P26"
+  ],
+  "not_final_real_detector_only_research_conclusion": true,
+  "objective": "raise VLM-only above 50 percent first, then optimize DSG memory storage and query behavior",
+  "optimization_decision": {
+    "next_gate": "repeat P22-style memory/query behavior with external detector/RGB-D observations from the P31 handoff, not metadata coverage",
+    "optimize_dsg_axis": "memory_storage_content_and_query_priority",
+    "vlm_only_ready_for_dsg_stage": true,
+    "why": "P30 loses mostly from missing target/support memory and IN_ROOM fallback; support-rich explicit current-location memory reaches 60/60 on the same 60-case slice."
+  },
+  "report_digest": "e1106280ece6adfb897269da6c8a2458bb679180d0c082aae51ebd93458fd4d4",
+  "schema_version": "dsg-spatialqa-lab.dsg-memory-query-optimization-evidence.v1",
+  "source_artifacts": {
+    "dsg_p22": {
+      "path": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-semantic-eval-p22-detector-location-priority.json",
+      "report_digest": "e2f24bc5fbfee24d1af01b2cf42904b6b40a89f07ab1002fdd420a8cd154d425",
+      "sha256": "1132432c2b666cc384007dd522d450cb95f78e5bdeec2fb1e87feaa850016f9b"
+    },
+    "dsg_p30": {
+      "path": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-candidate-semantic-eval-p30-nearest-support-fallback-independent.json",
+      "report_digest": "acaab956db6730db31ff3fa36868e0420b83f13e485c7bd1fbf0b8acaef3e942",
+      "sha256": "101cbb8b737a8313c6f0c0c8c24afe3157c17a58201dc49d70e927c2b8b57e11"
+    },
+    "p22_vs_vlm_p26": {
+      "path": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-p22-vs-vlm-p26-affordance-option-fallback-semantic-delta.json",
+      "report_digest": "b193de103e8ca00f062456bb860c44db5440bcd22390dd970d8c44c2e4b74e8c",
+      "sha256": "0bfe32ea8ae96d7fe2000878caf6a11d7cc22525c494f2db998af647993a8384"
+    },
+    "p31_handoff": {
+      "path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/p31-detector-recall-handoff.json",
+      "report_digest": null,
+      "sha256": "35ce153b7460374f73466b2f863e1b00e8df64810eaaf2edb3eddff43ec69406"
+    },
+    "vlm_p26": {
+      "path": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-semantic-eval-p26-affordance-option-fallback.json",
+      "report_digest": "51e274a2cdafb8bd13113046c6b6b4971877903ece4db20f5ce6c9f810edda8a",
+      "sha256": "2c7c1ce170a40fb7b702af160e363bf37baab1388c7df978fc24a6e1b5bb53f7"
+    }
+  },
+  "stage": "p32_dsg_memory_query_optimization_evidence",
+  "support_rich_memory_diagnostic": {
+    "case_count": 60,
+    "data_source_kind": "ai2thor_metadata_backed_coverage_diagnostic",
+    "decision": "candidate_improved",
+    "delta_vs_vlm_p26": {
+      "baseline_semantic_match_count": 49,
+      "baseline_semantic_match_rate": 0.8166666666666667,
+      "candidate_semantic_match_count": 60,
+      "candidate_semantic_match_rate": 1.0,
+      "semantic_match_count_delta": 11,
+      "semantic_match_rate_delta": 0.183333
+    },
+    "memory_storage_content": "explicit detector_current_location edges plus target/support state nodes",
+    "name": "p22_detector_current_location_priority_coverage_merged",
+    "paired": {
+      "case_count": 60,
+      "paired_losses": 0,
+      "paired_ties": 49,
+      "paired_wins": 11
+    },
+    "query_behavior": "prefer explicit detector_current_location before inferred geometry and room fallback",
+    "semantic_match_count": 60,
+    "semantic_match_rate": 1.0,
+    "strict_exact_match_rate": 1.0
+  },
+  "vlm_gate": {
+    "case_count": 60,
+    "passed": true,
+    "primary_metric": "semantic_match_rate",
+    "semantic_match_count": 49,
+    "semantic_match_rate": 0.8166666666666667,
+    "strict_exact_match_rate": 0.0,
+    "threshold": 0.5
+  }
+}
