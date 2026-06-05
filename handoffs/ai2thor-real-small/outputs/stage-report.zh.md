@@ -3020,3 +3020,67 @@ external-detector-only 研究结论。原因是 P22 使用的是
 - 还不能声称真实 detector-only DSG 已优于 VLM-only；
 - 若 P33 能在外部 detector/RGB-D evidence 下复现 P22 的 support-rich
   memory 行为，才进入正式“DSG 是否优于 VLM / 视频记忆”的结论检查。
+
+## P33 进展：detector current-location 标签别名进入 DSG 记忆
+
+本轮做了第一个具体的 DSG memory/query 代码优化，而不是只继续写报告。
+
+新增报告：
+
+`outputs/diagnostics/p33-detector-current-location-label-alias-report.json`
+
+问题背景：
+
+外部 detector/RGB-D producer 返回位置归属时，常见输出可能是：
+
+```json
+{
+  "current_location_id": "countertop",
+  "current_location_relation": "ON"
+}
+```
+
+而不是仓库内部稳定 object id：
+
+```json
+{
+  "current_location_id": "countertop_1",
+  "current_location_relation": "ON"
+}
+```
+
+之前 ingest 对 `ON` / `INSIDE` 要求 destination node 精确存在。如果
+producer 给的是唯一标签，DSG 会拒绝这条 support evidence，后续 GraphTool
+只能退回 `IN_ROOM`。这正对应 P30 的主要失败类型之一。
+
+本轮改动：
+
+- 对显式 detector `current_location_relation=ON/INSIDE`；
+- 如果 `current_location_id` 不是现有 node id；
+- 但能唯一匹配同一帧 observation 中的 object id 或 object label；
+- 则解析到该稳定 object id，并写入显式 `detector_current_location` edge；
+- 如果同帧有多个同标签 support，则抛出 `SpatialQAError`，不静默猜测。
+
+这个改动不读取 QA gold answer、不读取 oracle required edges，也不使用 evaluator-only
+字段。它只使用同一帧 detector/RGB-D observation 中已经返回的对象。
+
+验证：
+
+| command | result |
+| --- | --- |
+| `python -m pytest -q tests/test_predicted_graph_builder.py -k current_location_label_alias` | 2 passed |
+| `python -m pytest -q tests/test_predicted_graph_builder.py` | 18 passed |
+| `python -m pytest -q tests/test_observations.py tests/test_observations_script.py` | 45 passed |
+| `python -m pytest -q tests/test_spatial_qa.py -k 'support_fallback or current_location or support_like'` | 9 passed |
+
+阶段意义：
+
+- 这不会直接改写已保存的 P30 分数，因为 P30 的 detector JSONL 已经固定；
+- 但它降低了 P31/P33 外部 detector 返回包的失败概率；
+- 只要外部 producer 返回唯一 support 标签，DSG 现在可以把它转成可查询的
+  support/current-location memory；
+- 下一轮 detector-only predicted DSG 应重新导入 observation sequence、重建
+  predicted graph，并和 VLM P26 做 paired wins/losses 对比。
+
+当前仍不能声称真实 detector-only DSG 已优于 VLM-only；P33 只是把
+support-rich memory 的入口做得更稳。

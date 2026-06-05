@@ -2970,3 +2970,37 @@ behavior with explicit external detector/RGB-D artifacts:
    fallback, structured missing-evidence blocker.
 4. Use the P31 detector recall handoff as the next external detector input
    contract.
+
+## P33 Progress: Detector Current-Location Label Alias
+
+The first concrete DSG memory/query code change is now in place:
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/p33-detector-current-location-label-alias-report.json
+```
+
+External detector/RGB-D producers may return `current_location_id` as a stable
+object id or as a unique same-frame support label. For `ON` and `INSIDE`
+relations, the observation ingestor now resolves a label alias such as
+`countertop` to the unique same-frame observed object id such as
+`countertop_1`. If the alias is ambiguous, ingestion raises a structured
+`SpatialQAError` instead of guessing.
+
+This improves the memory storage path needed for DSG:
+
+- support/container current-location evidence is less likely to be rejected;
+- GraphTool can query explicit detector current-location edges before room
+  fallback;
+- no QA gold answers, oracle required edges, or evaluator-only fields are read.
+
+Verification completed for this slice:
+
+- `python -m pytest -q tests/test_predicted_graph_builder.py -k current_location_label_alias`
+- `python -m pytest -q tests/test_predicted_graph_builder.py`
+- `python -m pytest -q tests/test_observations.py tests/test_observations_script.py`
+- `python -m pytest -q tests/test_spatial_qa.py -k 'support_fallback or current_location or support_like'`
+
+This does not change the already-saved P30 score by itself. It prepares the
+P31/P33 external detector return path so the next detector-only predicted DSG
+run can preserve support-rich current-location memory instead of degrading to
+`IN_ROOM`.

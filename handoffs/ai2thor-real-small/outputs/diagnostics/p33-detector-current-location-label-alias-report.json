@@ -1,0 +1,43 @@
+{
+  "change": {
+    "behavior": "For explicit detector current_location_relation ON/INSIDE, if current_location_id is not an existing node id but uniquely matches a same-frame observed object id or label, resolve it to that observed object id. Ambiguous aliases raise SpatialQAError instead of guessing.",
+    "evidence_scope": "same-frame SceneObservation objects only; no QA gold answer, oracle required_edges, or evaluator-only fields are read.",
+    "production_file": "src/dsg_spatialqa_lab/observations.py",
+    "test_file": "tests/test_predicted_graph_builder.py"
+  },
+  "expected_dsg_effect": {
+    "memory_storage_content": "preserves support/container current-location edges even when the detector uses a human label alias",
+    "query_content": "GraphTool can now query explicit detector_current_location ON/INSIDE edges instead of falling back to IN_ROOM",
+    "query_order": "explicit detector current-location remains ahead of inferred geometry and room fallback"
+  },
+  "next_experiment": {
+    "input": "handoffs/ai2thor-real-small/inputs/predicted-dsg/p31-detector-recall-handoff.json",
+    "required_external_return": "detector/RGB-D JSONL may use stable object ids or unique same-frame support labels for current_location_id; ambiguous support labels must be disambiguated by the producer",
+    "rerun_needed": "Rebuild detector-only observation sequence and predicted DSG after external detector/RGB-D return, then compare P33 DSG against VLM P26."
+  },
+  "not_final_real_detector_only_research_conclusion": true,
+  "objective": "increase DSG success by making external detector/RGB-D current-location memory easier to ingest without gold answers",
+  "problem": {
+    "related_p32_failure_mode": "relation degraded to IN_ROOM because support/container current-location evidence was not available as a graph edge",
+    "root_cause": "external producers may return a support/container label such as countertop instead of the stable graph object id countertop_1; before this change, ON/INSIDE current_location ingestion rejected that evidence with current_location_id node not found"
+  },
+  "report_digest": "6ea57a6b4a383b8e9c0dd269a38756153067f8f7e193f6ef8f5598a6fd3ac5db",
+  "schema_version": "dsg-spatialqa-lab.dsg-current-location-alias-report.v1",
+  "stage": "p33_detector_current_location_label_alias",
+  "verification": {
+    "full_verify_run": false,
+    "green_commands": [
+      "python -m pytest -q tests/test_predicted_graph_builder.py -k current_location_label_alias",
+      "python -m pytest -q tests/test_predicted_graph_builder.py",
+      "python -m pytest -q tests/test_observations.py tests/test_observations_script.py",
+      "python -m pytest -q tests/test_spatial_qa.py -k 'support_fallback or current_location or support_like'"
+    ],
+    "green_result": {
+      "current_location_label_alias": "2 passed, 16 deselected",
+      "observations_and_script": "45 passed",
+      "predicted_graph_builder": "18 passed",
+      "spatial_qa_current_location_slice": "9 passed, 31 deselected"
+    },
+    "red_test": "python -m pytest -q tests/test_predicted_graph_builder.py -k current_location_label_alias failed before implementation with current_location_id node not found"
+  }
+}

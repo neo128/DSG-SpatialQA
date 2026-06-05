@@ -2510,6 +2510,12 @@ class ObservationIngestor:
                 raise SpatialQAError(
                     "current_location_relation must be a containment relation"
                 )
+            location_id = self._resolve_current_location_id(
+                location_id,
+                normalized_relation,
+                observation,
+                source_object_id=obj.object_id,
+            )
             if location_id not in self.graph.nodes:
                 self._ensure_explicit_current_location_node(
                     location_id,
@@ -2535,8 +2541,36 @@ class ObservationIngestor:
                     step=observation.step,
                     attributes=attributes,
                 )
-            )
+                )
         return added
+
+    @staticmethod
+    def _resolve_current_location_id(
+        location_id: str,
+        relation: str,
+        observation: SceneObservation,
+        *,
+        source_object_id: str,
+    ) -> str:
+        if relation not in {"ON", "INSIDE"}:
+            return location_id
+        normalized_location = _normalized_location_alias(location_id)
+        candidates = [
+            obj.object_id
+            for obj in sorted(observation.objects, key=lambda item: item.object_id)
+            if obj.object_id != source_object_id
+            and (
+                _normalized_location_alias(obj.object_id) == normalized_location
+                or _normalized_location_alias(obj.label) == normalized_location
+            )
+        ]
+        if not candidates:
+            return location_id
+        if len(candidates) > 1:
+            raise SpatialQAError(
+                f"Ambiguous current_location_id label alias: {location_id}"
+            )
+        return candidates[0]
 
     def _ensure_explicit_current_location_node(
         self,
@@ -2732,13 +2766,17 @@ def _on_support_sort_key(
 
 
 def _is_semantically_valid_on(src: ObjectObservation, dst: ObjectObservation) -> bool:
-    src_label = src.label.replace("_", "").replace(" ", "").lower()
-    dst_label = dst.label.replace("_", "").replace(" ", "").lower()
+    src_label = _normalized_location_alias(src.label)
+    dst_label = _normalized_location_alias(dst.label)
     if src_label in OBSERVATION_ON_UNSUPPORTED_SOURCE_LABELS:
         return False
     if dst_label not in OBSERVATION_ON_SUPPORTED_DESTINATION_LABELS:
         return False
     return True
+
+
+def _normalized_location_alias(value: str) -> str:
+    return value.replace("_", "").replace(" ", "").lower()
 
 
 def _explicit_current_location_edge_attributes(

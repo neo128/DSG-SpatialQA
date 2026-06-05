@@ -408,6 +408,207 @@ def test_predicted_graph_uses_explicit_detector_current_location() -> None:
     assert graph.nodes["mug_1"].attributes["current_room_id"] == "kitchen"
 
 
+def test_predicted_graph_resolves_detector_current_location_label_alias() -> None:
+    observations = (
+        lab.SceneObservation(
+            step=1,
+            objects=(
+                lab.ObjectObservation(
+                    "countertop_1",
+                    "countertop",
+                    Pose3D(0.0, 0.0, 0.5),
+                    lab.BBox3D(
+                        center=Pose3D(0.0, 0.0, 0.5),
+                        size=(1.0, 0.4, 1.0),
+                    ),
+                    confidence=0.92,
+                    visible=True,
+                    attributes={
+                        "source": "rgbd_detector",
+                        "source_kind": "detector",
+                        "evidence_kinds": ("rgb", "depth", "detector"),
+                    },
+                ),
+                lab.ObjectObservation(
+                    "apple_1",
+                    "apple",
+                    Pose3D(0.1, 0.0, 0.6),
+                    lab.BBox3D(
+                        center=Pose3D(0.1, 0.0, 0.6),
+                        size=(0.1, 0.1, 0.1),
+                    ),
+                    confidence=0.88,
+                    visible=True,
+                    attributes={
+                        "source": "rgbd_detector",
+                        "source_kind": "detector",
+                        "evidence_kinds": ("rgb", "depth", "detector"),
+                        "current_location_id": "countertop",
+                        "current_location_relation": "ON",
+                    },
+                ),
+            ),
+        ),
+    )
+
+    graph = lab.build_predicted_graph_from_observations(
+        observations,
+        infer_relations=(),
+        infer_containment=False,
+    )
+
+    assert [
+        (edge.src, edge.relation, edge.dst, edge.reference_frame, edge.step)
+        for edge in graph.find_edges(src="apple_1", relation="ON")
+    ] == [("apple_1", "ON", "countertop_1", "world", 1)]
+    assert graph.nodes["apple_1"].attributes["current_location_id"] == "countertop_1"
+    assert graph.nodes["apple_1"].attributes["current_location_relation"] == "ON"
+
+
+def test_predicted_graph_rejects_ambiguous_current_location_label_alias() -> None:
+    observations = (
+        lab.SceneObservation(
+            step=1,
+            objects=(
+                lab.ObjectObservation(
+                    "countertop_1",
+                    "countertop",
+                    Pose3D(0.0, 0.0, 0.5),
+                    lab.BBox3D(
+                        center=Pose3D(0.0, 0.0, 0.5),
+                        size=(1.0, 0.4, 1.0),
+                    ),
+                    confidence=0.92,
+                    visible=True,
+                    attributes={
+                        "source": "rgbd_detector",
+                        "source_kind": "detector",
+                        "evidence_kinds": ("rgb", "depth", "detector"),
+                    },
+                ),
+                lab.ObjectObservation(
+                    "countertop_2",
+                    "countertop",
+                    Pose3D(0.12, 0.0, 0.5),
+                    lab.BBox3D(
+                        center=Pose3D(0.12, 0.0, 0.5),
+                        size=(1.0, 0.4, 1.0),
+                    ),
+                    confidence=0.92,
+                    visible=True,
+                    attributes={
+                        "source": "rgbd_detector",
+                        "source_kind": "detector",
+                        "evidence_kinds": ("rgb", "depth", "detector"),
+                    },
+                ),
+                lab.ObjectObservation(
+                    "apple_1",
+                    "apple",
+                    Pose3D(0.1, 0.0, 0.6),
+                    lab.BBox3D(
+                        center=Pose3D(0.1, 0.0, 0.6),
+                        size=(0.1, 0.1, 0.1),
+                    ),
+                    confidence=0.88,
+                    visible=True,
+                    attributes={
+                        "source": "rgbd_detector",
+                        "source_kind": "detector",
+                        "evidence_kinds": ("rgb", "depth", "detector"),
+                        "current_location_id": "countertop",
+                        "current_location_relation": "ON",
+                    },
+                ),
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        lab.SpatialQAError,
+        match="Ambiguous current_location_id label alias: countertop",
+    ):
+        lab.build_predicted_graph_from_observations(
+            observations,
+            infer_relations=(),
+            infer_containment=False,
+        )
+
+
+def test_predicted_graph_resolves_ambiguous_label_alias_to_clear_nearest_support() -> None:
+    observations = (
+        lab.SceneObservation(
+            step=1,
+            objects=(
+                lab.ObjectObservation(
+                    "countertop_near",
+                    "countertop",
+                    Pose3D(0.0, 0.0, 0.5),
+                    lab.BBox3D(
+                        center=Pose3D(0.0, 0.0, 0.5),
+                        size=(1.0, 0.4, 1.0),
+                    ),
+                    confidence=0.92,
+                    visible=True,
+                    attributes={
+                        "source": "rgbd_detector",
+                        "source_kind": "detector",
+                        "evidence_kinds": ("rgb", "depth", "detector"),
+                    },
+                ),
+                lab.ObjectObservation(
+                    "countertop_far",
+                    "countertop",
+                    Pose3D(3.0, 0.0, 0.5),
+                    lab.BBox3D(
+                        center=Pose3D(3.0, 0.0, 0.5),
+                        size=(1.0, 0.4, 1.0),
+                    ),
+                    confidence=0.92,
+                    visible=True,
+                    attributes={
+                        "source": "rgbd_detector",
+                        "source_kind": "detector",
+                        "evidence_kinds": ("rgb", "depth", "detector"),
+                    },
+                ),
+                lab.ObjectObservation(
+                    "apple_1",
+                    "apple",
+                    Pose3D(0.1, 0.0, 0.6),
+                    lab.BBox3D(
+                        center=Pose3D(0.1, 0.0, 0.6),
+                        size=(0.1, 0.1, 0.1),
+                    ),
+                    confidence=0.88,
+                    visible=True,
+                    attributes={
+                        "source": "rgbd_detector",
+                        "source_kind": "detector",
+                        "evidence_kinds": ("rgb", "depth", "detector"),
+                        "current_location_id": "countertop",
+                        "current_location_relation": "ON",
+                    },
+                ),
+            ),
+        ),
+    )
+
+    graph = lab.build_predicted_graph_from_observations(
+        observations,
+        infer_relations=(),
+        infer_containment=False,
+    )
+
+    assert [
+        (edge.src, edge.relation, edge.dst, edge.reference_frame, edge.step)
+        for edge in graph.find_edges(src="apple_1", relation="ON")
+    ] == [("apple_1", "ON", "countertop_near", "world", 1)]
+    assert graph.nodes["apple_1"].attributes["current_location_id"] == (
+        "countertop_near"
+    )
+
+
 def test_predicted_graph_creates_detector_current_region_when_missing() -> None:
     observations = (
         lab.SceneObservation(
