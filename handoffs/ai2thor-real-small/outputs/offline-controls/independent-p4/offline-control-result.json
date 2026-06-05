@@ -1,0 +1,128 @@
+{
+  "candidate_name": "predicted_graph_tool_independent_p4_target60",
+  "candidate_qa_eval_report_digest": "4c28db0754d6698dce86b59829aa8b5ee97993513b8982425611f7b67b1744cd",
+  "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/independent-p4/qa-eval/candidate/predicted_graph_tool_independent_p4_target60/qa-eval.json",
+  "checks": [
+    {
+      "name": "matrix_report_valid",
+      "passed": true
+    },
+    {
+      "name": "matrix_report_ready",
+      "passed": false
+    },
+    {
+      "name": "candidate_eval_report_valid",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "name": "all_sources_have_delta",
+      "passed": true
+    },
+    {
+      "missing": [],
+      "name": "required_source_kind_deltas_present",
+      "passed": true,
+      "required": [
+        "multi_frame_vlm",
+        "vlm"
+      ]
+    },
+    {
+      "actual": [],
+      "name": "delta_reports_valid",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "name": "same_candidate_report_digest",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "name": "case_counts_match",
+      "passed": true
+    }
+  ],
+  "matrix_readiness": {
+    "failed_check_count": 1,
+    "failed_checks": [
+      "clean_import_diagnostics"
+    ],
+    "ready": false
+  },
+  "matrix_report_digest": "7afa3818ab011918699c30414d5e66c8fe9775a17f48b957acf80f734e5ab384",
+  "matrix_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/independent-p4/offline-control-matrix.json",
+  "readiness": {
+    "failed_check_count": 1,
+    "failed_checks": [
+      "matrix_report_ready"
+    ],
+    "ready": false
+  },
+  "report_digest": "f8ef9d4ccdf3bb6c0c58eb5f90ee3de10bf54e84d095a54e4bcde9d002153889",
+  "required_source_kinds": [
+    "multi_frame_vlm",
+    "vlm"
+  ],
+  "schema_version": "dsg-spatialqa-lab.offline-control-result-report.v1",
+  "source_kind_counts": {
+    "multi_frame_vlm": 1,
+    "vlm": 1
+  },
+  "source_result_matrix": [
+    {
+      "baseline_exact_match_rate": 0.0,
+      "baseline_name": "multi_frame_vlm",
+      "baseline_qa_eval_report_digest": "dff53ea332c52ad3485aa70ddd9fcf3a24750cf8e249720634291782f27270c6",
+      "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/independent-p4/qa-eval/baselines/multi_frame_vlm_multi_frame_vlm_qwen37_window4_p4_target60/qa-eval.json",
+      "candidate_exact_match_rate": 0.0,
+      "candidate_name": "predicted_graph_tool_independent_p4_target60",
+      "candidate_report_digest": "4c28db0754d6698dce86b59829aa8b5ee97993513b8982425611f7b67b1744cd",
+      "case_count_match": true,
+      "dataset_id": "unspecified",
+      "exact_match_count_delta": 0,
+      "exact_match_rate_delta": 0.0,
+      "import_report_digest": "5014013cc0e9ffcdeea12f4185118354979d14b81de83ce163dbe31db1e69ada",
+      "import_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/independent-p4/imports/multi_frame_vlm/multi_frame_vlm_qwen37_window4_p4_target60/import-report.json",
+      "model_id": "unspecified",
+      "prompt_id": "unspecified",
+      "qa_eval_delta_report_digest": "348887c56108e66a382676c3d0f3c8fcae1d50db18e03bc202a72f49ce3c40be",
+      "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/independent-p4/qa-eval/deltas/predicted_graph_tool_independent_p4_target60-vs-multi_frame_vlm_multi_frame_vlm_qwen37_window4_p4_target60.json",
+      "source_key": "multi_frame_vlm:multi_frame_vlm_qwen37_window4_p4_target60",
+      "source_kind": "multi_frame_vlm",
+      "source_name": "multi_frame_vlm_qwen37_window4_p4_target60"
+    },
+    {
+      "baseline_exact_match_rate": 0.0,
+      "baseline_name": "vlm",
+      "baseline_qa_eval_report_digest": "93f8ba2dc8827d90297adc6949b4a6ab9f03ba96221ca4a0460aa69c50abea8d",
+      "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/independent-p4/qa-eval/baselines/vlm_vlm_qwen37_p4_target60/qa-eval.json",
+      "candidate_exact_match_rate": 0.0,
+      "candidate_name": "predicted_graph_tool_independent_p4_target60",
+      "candidate_report_digest": "4c28db0754d6698dce86b59829aa8b5ee97993513b8982425611f7b67b1744cd",
+      "case_count_match": true,
+      "dataset_id": "unspecified",
+      "exact_match_count_delta": 0,
+      "exact_match_rate_delta": 0.0,
+      "import_report_digest": "97fd91e929aa1f3cd29bc3f6b9193223f40482ce004c47b8287f7b8ee9f8b2f5",
+      "import_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/independent-p4/imports/vlm/vlm_qwen37_p4_target60/import-report.json",
+      "model_id": "unspecified",
+      "prompt_id": "unspecified",
+      "qa_eval_delta_report_digest": "2a0bcad6a8f957a900d9419c10bdfc6d764114bc50f54255f316424f761d8cde",
+      "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/independent-p4/qa-eval/deltas/predicted_graph_tool_independent_p4_target60-vs-vlm_vlm_qwen37_p4_target60.json",
+      "source_key": "vlm:vlm_qwen37_p4_target60",
+      "source_kind": "vlm",
+      "source_name": "vlm_qwen37_p4_target60"
+    }
+  ],
+  "summary": {
+    "candidate_exact_match_rate": 0.0,
+    "delta_report_count": 2,
+    "improved_source_count": 0,
+    "regressed_source_count": 0,
+    "source_count": 2,
+    "unchanged_source_count": 2
+  }
+}

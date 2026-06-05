@@ -45,6 +45,14 @@ def main(argv: list[str] | None = None) -> int:
         help="Optional QA JSONL output for cases missing required predicted evidence.",
     )
     parser.add_argument(
+        "--target-observable-relation-missing-qa",
+        type=Path,
+        help=(
+            "Optional QA JSONL output for cases whose target nodes are present "
+            "but required predicted evidence relations are missing."
+        ),
+    )
+    parser.add_argument(
         "--validate-report",
         type=Path,
         help="Validate an explicit QA observability report.",
@@ -118,6 +126,12 @@ def main(argv: list[str] | None = None) -> int:
         _write_split(args.evidence_observable_qa, "evidence_observable", cases, report)
         _write_split(args.target_observable_qa, "target_observable", cases, report)
         _write_split(args.missing_evidence_qa, "missing_evidence", cases, report)
+        _write_split(
+            args.target_observable_relation_missing_qa,
+            "target_observable_relation_missing",
+            cases,
+            report,
+        )
         validation = validate_qa_observability_report(report)
     except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
         _emit_json(_error_payload("qa_observability_report", args.report, exc))

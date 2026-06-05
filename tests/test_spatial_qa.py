@@ -45,6 +45,57 @@ def build_scene_with_history() -> DynamicSceneGraph:
     return graph
 
 
+def build_scene_with_conflicting_location_edges() -> DynamicSceneGraph:
+    graph = DynamicSceneGraph()
+    graph.set_agent_pose("agent", Pose3D(0.0, 0.0, 0.0), step=7)
+    graph.upsert_object(
+        "chair_1",
+        "chair",
+        Pose3D(0.0, 0.0, 0.0),
+        BBox3D(center=Pose3D(0.0, 0.0, 0.0), size=(0.5, 0.5, 0.5)),
+        confidence=1.0,
+        visible=True,
+        step=7,
+    )
+    graph.upsert_object(
+        "diningtable_1",
+        "diningtable",
+        Pose3D(1.0, 0.0, 0.0),
+        BBox3D(center=Pose3D(1.0, 0.0, 0.0), size=(1.0, 1.0, 0.8)),
+        confidence=1.0,
+        visible=True,
+        step=7,
+    )
+    graph.upsert_object(
+        "book_1",
+        "book",
+        Pose3D(0.1, 0.0, 0.6),
+        BBox3D(center=Pose3D(0.1, 0.0, 0.6), size=(0.2, 0.1, 0.05)),
+        confidence=1.0,
+        visible=True,
+        step=7,
+    )
+    graph.add_edge(
+        "book_1",
+        "ON",
+        "chair_1",
+        "world",
+        1.0,
+        step=7,
+        attributes={"source": "detector_current_location", "source_kind": "detector"},
+    )
+    graph.add_edge(
+        "book_1",
+        "ON",
+        "diningtable_1",
+        "world",
+        1.0,
+        step=7,
+        attributes={"source": "containment_inference", "inferred": True},
+    )
+    return graph
+
+
 def test_qa_answers_location_relation_nearest_and_history() -> None:
     graph = build_scene_with_history()
     graph.set_agent_pose("agent", Pose3D(0.5, 0.2, 0.0, yaw=0.25), step=2)
@@ -162,6 +213,584 @@ def test_qa_answers_location_relation_nearest_and_history() -> None:
     history = qa.answer({"type": "object_history", "object_id": "mug_1"})
     assert "MOVED_FROM" in history.answer["relations"]
     assert "MOVED_TO" in history.answer["relations"]
+
+
+def test_qa_object_location_prefers_detector_current_location_over_inferred_same_step() -> None:
+    graph = build_scene_with_conflicting_location_edges()
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "book_1"}
+    )
+
+    assert response.answer["current_location"] == {
+        "dst": "chair_1",
+        "relation": "ON",
+        "step": 7,
+    }
+    assert response.evidence_edges == [
+        "book_1-ON-chair_1-7",
+        "book_1-STATE_CHANGED-state:book_1:7-7",
+    ]
+
+
+def test_qa_object_location_prefers_room_for_support_like_target_over_on_support() -> None:
+    graph = DynamicSceneGraph()
+    graph.upsert_object(
+        "chair_1",
+        "chair",
+        Pose3D(0.0, 0.0, 0.0),
+        BBox3D(center=Pose3D(0.0, 0.0, 0.0), size=(0.5, 0.5, 0.5)),
+        confidence=1.0,
+        visible=True,
+        step=7,
+    )
+    graph.upsert_object(
+        "chair_2",
+        "chair",
+        Pose3D(0.2, 0.0, 0.0),
+        BBox3D(center=Pose3D(0.2, 0.0, 0.0), size=(0.5, 0.5, 0.5)),
+        confidence=1.0,
+        visible=True,
+        step=7,
+    )
+    graph.add_edge("chair_1", "IN_ROOM", "ai2thor_room", "world", 1.0, step=7)
+    graph.add_edge("chair_1", "ON", "chair_2", "world", 1.0, step=7)
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "chair_1"}
+    )
+
+    assert response.answer["current_location"] == {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 7,
+    }
+    assert response.evidence_edges == [
+        "chair_1-IN_ROOM-ai2thor_room-7",
+        "chair_1-STATE_CHANGED-state:chair_1:7-7",
+    ]
+
+
+def test_qa_object_location_prefers_explicit_detector_location_for_support_like_target() -> None:
+    graph = DynamicSceneGraph()
+    graph.upsert_object(
+        "table_1",
+        "diningtable",
+        Pose3D(0.0, 0.7, 0.0),
+        BBox3D(center=Pose3D(0.0, 0.7, 0.0), size=(1.0, 0.7, 1.0)),
+        confidence=1.0,
+        visible=True,
+        step=7,
+    )
+    graph.add_edge("table_1", "IN_ROOM", "ai2thor_room", "world", 1.0, step=7)
+    graph.add_edge(
+        "table_1",
+        "ON",
+        "chair_1",
+        "world",
+        1.0,
+        step=7,
+        attributes={
+            "source": "detector_current_location",
+            "source_kind": "detector",
+        },
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "table_1"}
+    )
+
+    assert response.answer["current_location"] == {
+        "dst": "chair_1",
+        "relation": "ON",
+        "step": 7,
+    }
+    assert response.evidence_edges == [
+        "table_1-ON-chair_1-7",
+        "table_1-STATE_CHANGED-state:table_1:7-7",
+    ]
+
+
+def test_qa_object_location_uses_detector_scene_room_fallback_when_unlocated() -> None:
+    graph = DynamicSceneGraph()
+    graph.upsert_object(
+        "apple_1",
+        "apple",
+        Pose3D(0.1, 0.9, -0.2),
+        BBox3D(center=Pose3D(0.1, 0.9, -0.2), size=(0.1, 0.1, 0.1)),
+        confidence=0.84,
+        visible=True,
+        step=4,
+        attributes={
+            "evidence_kinds": ["rgb", "depth", "detector"],
+            "scene_id": "FloorPlan1",
+            "source_kind": "detector",
+        },
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "apple_1"}
+    )
+
+    assert response.error is None
+    assert response.answer["current_location"] == {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 4,
+    }
+    assert response.evidence_nodes == ["apple_1", "state:apple_1:4"]
+    assert response.evidence_edges == ["apple_1-STATE_CHANGED-state:apple_1:4-4"]
+    assert response.confidence == 0.84
+
+
+def test_qa_object_location_uses_unique_detector_support_fallback_before_room() -> None:
+    graph = DynamicSceneGraph()
+    graph.upsert_object(
+        "bed_1",
+        "bed",
+        Pose3D(0.0, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.0, 0.9, 0.0), size=(1.2, 1.0, 1.2)),
+        confidence=0.9,
+        visible=True,
+        step=4,
+        attributes={
+            "evidence_kinds": ["rgb", "depth", "detector"],
+            "scene_id": "FloorPlan301",
+            "source_kind": "detector",
+        },
+    )
+    graph.upsert_object(
+        "laptop_1",
+        "laptop",
+        Pose3D(0.1, 0.9, 0.1),
+        BBox3D(center=Pose3D(0.1, 0.9, 0.1), size=(0.2, 0.1, 0.2)),
+        confidence=0.86,
+        visible=True,
+        step=4,
+        attributes={
+            "evidence_kinds": ["rgb", "depth", "detector"],
+            "scene_id": "FloorPlan301",
+            "source_kind": "detector",
+        },
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "laptop_1"}
+    )
+
+    assert response.error is None
+    assert response.answer["current_location"] == {
+        "dst": "bed_1",
+        "relation": "ON",
+        "step": 4,
+    }
+    assert response.evidence_nodes == ["laptop_1", "state:laptop_1:4", "bed_1"]
+    assert response.evidence_edges == ["laptop_1-STATE_CHANGED-state:laptop_1:4-4"]
+
+
+def test_qa_object_location_uses_support_fallback_when_only_location_is_visible_frame_region() -> None:
+    graph = DynamicSceneGraph()
+    attributes = {
+        "evidence_kinds": ["rgb", "depth", "detector"],
+        "scene_id": "FloorPlan301",
+        "source_kind": "detector",
+    }
+    graph.add_region(
+        "visible_frame_region:episode-1:0004",
+        "visible frame region",
+        step=4,
+        attributes={"source_kind": "detector", "source_name": "grounded_sam2"},
+    )
+    graph.upsert_object(
+        "bed_1",
+        "bed",
+        Pose3D(0.0, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.0, 0.9, 0.0), size=(1.2, 1.0, 1.2)),
+        confidence=0.9,
+        visible=True,
+        step=4,
+        attributes=attributes,
+    )
+    graph.upsert_object(
+        "laptop_1",
+        "laptop",
+        Pose3D(0.1, 0.9, 0.1),
+        BBox3D(center=Pose3D(0.1, 0.9, 0.1), size=(0.2, 0.1, 0.2)),
+        confidence=0.86,
+        visible=True,
+        step=4,
+        attributes=attributes,
+    )
+    graph.add_edge(
+        "laptop_1",
+        "IN_REGION",
+        "visible_frame_region:episode-1:0004",
+        "world",
+        0.86,
+        step=4,
+        attributes={"source": "detector_current_location", "source_kind": "detector"},
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "laptop_1"}
+    )
+
+    assert response.error is None
+    assert response.answer["current_location"] == {
+        "dst": "bed_1",
+        "relation": "ON",
+        "step": 4,
+    }
+    assert response.evidence_nodes == ["laptop_1", "state:laptop_1:4", "bed_1"]
+    assert response.evidence_edges == [
+        "laptop_1-IN_REGION-visible_frame_region:episode-1:0004-4",
+        "laptop_1-STATE_CHANGED-state:laptop_1:4-4",
+    ]
+
+
+def test_qa_object_location_uses_room_fallback_when_only_location_is_visible_frame_region() -> None:
+    graph = DynamicSceneGraph()
+    graph.add_region(
+        "visible_frame_region:episode-1:0004",
+        "visible frame region",
+        step=4,
+        attributes={"source_kind": "detector", "source_name": "grounded_sam2"},
+    )
+    graph.upsert_object(
+        "apple_1",
+        "apple",
+        Pose3D(0.1, 0.9, -0.2),
+        BBox3D(center=Pose3D(0.1, 0.9, -0.2), size=(0.1, 0.1, 0.1)),
+        confidence=0.84,
+        visible=True,
+        step=4,
+        attributes={
+            "evidence_kinds": ["rgb", "depth", "detector"],
+            "scene_id": "FloorPlan1",
+            "source_kind": "detector",
+        },
+    )
+    graph.add_edge(
+        "apple_1",
+        "IN_REGION",
+        "visible_frame_region:episode-1:0004",
+        "world",
+        0.84,
+        step=4,
+        attributes={"source": "detector_current_location", "source_kind": "detector"},
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "apple_1"}
+    )
+
+    assert response.error is None
+    assert response.answer["current_location"] == {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 4,
+    }
+    assert response.evidence_edges == [
+        "apple_1-IN_REGION-visible_frame_region:episode-1:0004-4",
+        "apple_1-STATE_CHANGED-state:apple_1:4-4",
+    ]
+
+
+def test_qa_object_location_does_not_guess_detector_support_when_ambiguous() -> None:
+    graph = DynamicSceneGraph()
+    support_attributes = {
+        "evidence_kinds": ["rgb", "depth", "detector"],
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+    }
+    graph.upsert_object(
+        "chair_1",
+        "chair",
+        Pose3D(0.0, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.0, 0.9, 0.0), size=(0.7, 0.6, 0.7)),
+        confidence=0.9,
+        visible=True,
+        step=5,
+        attributes=support_attributes,
+    )
+    graph.upsert_object(
+        "diningtable_1",
+        "diningtable",
+        Pose3D(0.2, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.2, 0.9, 0.0), size=(1.2, 0.8, 1.2)),
+        confidence=0.9,
+        visible=True,
+        step=5,
+        attributes=support_attributes,
+    )
+    graph.upsert_object(
+        "book_1",
+        "book",
+        Pose3D(0.1, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.1, 0.9, 0.0), size=(0.2, 0.1, 0.2)),
+        confidence=0.86,
+        visible=True,
+        step=5,
+        attributes=support_attributes,
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "book_1"}
+    )
+
+    assert response.error is None
+    assert response.answer["current_location"] == {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 5,
+    }
+
+
+def test_qa_object_location_uses_nearest_detector_support_when_not_ambiguous() -> None:
+    graph = DynamicSceneGraph()
+    support_attributes = {
+        "evidence_kinds": ["rgb", "depth", "detector"],
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+    }
+    graph.upsert_object(
+        "countertop_1",
+        "countertop",
+        Pose3D(0.0, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.0, 0.9, 0.0), size=(1.2, 0.3, 1.2)),
+        confidence=0.9,
+        visible=True,
+        step=5,
+        attributes=support_attributes,
+    )
+    graph.upsert_object(
+        "chair_1",
+        "chair",
+        Pose3D(0.65, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.65, 0.9, 0.0), size=(0.7, 0.6, 0.7)),
+        confidence=0.9,
+        visible=True,
+        step=5,
+        attributes=support_attributes,
+    )
+    graph.upsert_object(
+        "apple_1",
+        "apple",
+        Pose3D(0.05, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.05, 0.9, 0.0), size=(0.1, 0.1, 0.1)),
+        confidence=0.86,
+        visible=True,
+        step=5,
+        attributes=support_attributes,
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "apple_1"}
+    )
+
+    assert response.error is None
+    assert response.answer["current_location"] == {
+        "dst": "countertop_1",
+        "relation": "ON",
+        "step": 5,
+    }
+    assert response.evidence_nodes == ["apple_1", "state:apple_1:5", "countertop_1"]
+
+
+def test_qa_object_location_does_not_guess_support_for_support_like_detector_target() -> None:
+    graph = DynamicSceneGraph()
+    attributes = {
+        "evidence_kinds": ["rgb", "depth", "detector"],
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+    }
+    graph.upsert_object(
+        "table_1",
+        "diningtable",
+        Pose3D(0.0, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.0, 0.9, 0.0), size=(1.2, 0.8, 1.2)),
+        confidence=0.9,
+        visible=True,
+        step=6,
+        attributes=attributes,
+    )
+    graph.upsert_object(
+        "chair_1",
+        "chair",
+        Pose3D(0.1, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.1, 0.9, 0.0), size=(0.7, 0.6, 0.7)),
+        confidence=0.86,
+        visible=True,
+        step=6,
+        attributes=attributes,
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "chair_1"}
+    )
+
+    assert response.error is None
+    assert response.answer["current_location"] == {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 6,
+    }
+
+
+def test_qa_object_location_uses_object_id_prefix_to_protect_support_like_targets() -> None:
+    graph = DynamicSceneGraph()
+    attributes = {
+        "evidence_kinds": ["rgb", "depth", "detector"],
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+    }
+    graph.upsert_object(
+        "diningtable_1",
+        "diningtable",
+        Pose3D(0.0, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.0, 0.9, 0.0), size=(1.2, 0.8, 1.2)),
+        confidence=0.9,
+        visible=True,
+        step=6,
+        attributes=attributes,
+    )
+    graph.upsert_object(
+        "chair_1",
+        "creditcard",
+        Pose3D(0.1, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.1, 0.9, 0.0), size=(0.7, 0.6, 0.7)),
+        confidence=0.86,
+        visible=True,
+        step=6,
+        attributes=attributes,
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "chair_1"}
+    )
+
+    assert response.error is None
+    assert response.answer["current_location"] == {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 6,
+    }
+
+
+def test_qa_object_location_does_not_treat_container_as_on_support_fallback() -> None:
+    graph = DynamicSceneGraph()
+    attributes = {
+        "evidence_kinds": ["rgb", "depth", "detector"],
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+    }
+    graph.upsert_object(
+        "cabinet_1",
+        "cabinet",
+        Pose3D(0.0, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.0, 0.9, 0.0), size=(1.2, 0.8, 1.2)),
+        confidence=0.9,
+        visible=True,
+        step=7,
+        attributes=attributes,
+    )
+    graph.upsert_object(
+        "bottle_1",
+        "bottle",
+        Pose3D(0.1, 0.9, 0.0),
+        BBox3D(center=Pose3D(0.1, 0.9, 0.0), size=(0.1, 0.1, 0.1)),
+        confidence=0.86,
+        visible=True,
+        step=7,
+        attributes=attributes,
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "bottle_1"}
+    )
+
+    assert response.error is None
+    assert response.answer["current_location"] == {
+        "dst": "ai2thor_room",
+        "relation": "IN_ROOM",
+        "step": 7,
+    }
+
+
+def test_qa_object_location_does_not_fallback_room_for_non_detector_object() -> None:
+    graph = DynamicSceneGraph()
+    graph.upsert_object(
+        "apple_1",
+        "apple",
+        Pose3D(0.1, 0.9, -0.2),
+        BBox3D(center=Pose3D(0.1, 0.9, -0.2), size=(0.1, 0.1, 0.1)),
+        confidence=0.84,
+        visible=True,
+        step=4,
+        attributes={"scene_id": "FloorPlan1"},
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "apple_1"}
+    )
+
+    assert response.error is None
+    assert response.answer["current_location"] is None
+    assert response.evidence_edges == ["apple_1-STATE_CHANGED-state:apple_1:4-4"]
+
+
+def test_qa_object_location_uses_inferred_location_when_no_detector_location_exists() -> None:
+    graph = DynamicSceneGraph()
+    graph.set_agent_pose("agent", Pose3D(0.0, 0.0, 0.0), step=7)
+    graph.upsert_object(
+        "diningtable_1",
+        "diningtable",
+        Pose3D(1.0, 0.0, 0.0),
+        BBox3D(center=Pose3D(1.0, 0.0, 0.0), size=(1.0, 1.0, 0.8)),
+        confidence=1.0,
+        visible=True,
+        step=7,
+    )
+    graph.upsert_object(
+        "book_1",
+        "book",
+        Pose3D(0.1, 0.0, 0.6),
+        BBox3D(center=Pose3D(0.1, 0.0, 0.6), size=(0.2, 0.1, 0.05)),
+        confidence=1.0,
+        visible=True,
+        step=7,
+    )
+    graph.add_edge(
+        "book_1",
+        "ON",
+        "diningtable_1",
+        "world",
+        1.0,
+        step=7,
+        attributes={"source": "containment_inference", "inferred": True},
+    )
+
+    response = SpatialQAEngine(GraphTool(graph)).answer(
+        {"type": "object_location", "object_id": "book_1"}
+    )
+
+    assert response.answer["current_location"] == {
+        "dst": "diningtable_1",
+        "relation": "ON",
+        "step": 7,
+    }
+
+
+def test_graph_tool_object_timeline_prefers_detector_current_location_over_inferred_same_step() -> None:
+    graph = build_scene_with_conflicting_location_edges()
+
+    timeline = GraphTool(graph).object_timeline("book_1")
+
+    assert timeline[0]["current_location"] == {
+        "dst": "chair_1",
+        "relation": "ON",
+        "step": 7,
+    }
 
 
 def test_qa_answers_object_status_with_reobserve_signal() -> None:

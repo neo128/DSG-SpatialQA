@@ -68,6 +68,7 @@ PREDICTED_DSG_DETECTOR_RECEIPT_BUNDLE_SCHEMA_VERSION = (
     "dsg-spatialqa-lab.predicted-dsg-detector-receipt-bundle.v1"
 )
 NON_REAL_PREDICTED_DETECTOR_SOURCE_MARKERS = (
+    "ai2thor",
     "dummy",
     "fake",
     "mock",
@@ -830,6 +831,10 @@ def predicted_dsg_detector_run_manifest_preflight(
         source_path=manifest["output_sequence_path"],
         infer_relations=manifest["infer_relations"],
         reference_frames=manifest["reference_frames"],
+        infer_containment=manifest["infer_containment"],
+        containment_axis=manifest["containment_axis"],
+        relation_top_k=manifest["relation_top_k"],
+        require_detector_state_evidence=manifest["require_detector_state_evidence"],
     )
     predicted_report = predicted_graph_report_from_observations(
         input_path=manifest["output_sequence_path"],
@@ -838,6 +843,10 @@ def predicted_dsg_detector_run_manifest_preflight(
         observations=observations,
         infer_relations=manifest["infer_relations"],
         reference_frames=manifest["reference_frames"],
+        infer_containment=manifest["infer_containment"],
+        containment_axis=manifest["containment_axis"],
+        relation_top_k=manifest["relation_top_k"],
+        require_detector_state_evidence=manifest["require_detector_state_evidence"],
     )
     evidence_summary = _preflight_evidence_summary(predicted_report, observations)
     asset_summary = _preflight_asset_summary(
@@ -920,6 +929,10 @@ def run_predicted_dsg_detector_run_manifest(manifest_path: str | Path) -> dict[s
         ],
         infer_relations=manifest["infer_relations"],
         reference_frames=manifest["reference_frames"],
+        infer_containment=manifest["infer_containment"],
+        containment_axis=manifest["containment_axis"],
+        relation_top_k=manifest["relation_top_k"],
+        require_detector_state_evidence=manifest["require_detector_state_evidence"],
         min_observation_count=manifest["min_observation_count"],
         min_object_observation_count=manifest["min_object_observation_count"],
         required_evidence_kinds=manifest["required_evidence_kinds"],
@@ -943,6 +956,10 @@ def run_predicted_dsg_from_detector_jsonl(
     predicted_dsg_evidence_report_path: str | Path,
     infer_relations: Sequence[str] = OBSERVATION_PREDICTED_RELATIONS,
     reference_frames: Sequence[str] = OBSERVATION_PREDICTED_REFERENCE_FRAMES,
+    infer_containment: bool = False,
+    containment_axis: str = "z",
+    relation_top_k: int | None = None,
+    require_detector_state_evidence: bool = False,
     min_observation_count: int = 2,
     min_object_observation_count: int = 2,
     required_evidence_kinds: Sequence[str] = (
@@ -968,6 +985,10 @@ def run_predicted_dsg_from_detector_jsonl(
         source_path=output_sequence_path,
         infer_relations=infer_relations,
         reference_frames=reference_frames,
+        infer_containment=infer_containment,
+        containment_axis=containment_axis,
+        relation_top_k=relation_top_k,
+        require_detector_state_evidence=require_detector_state_evidence,
     )
     save_graph_json(graph, output_graph_path)
     predicted_report = predicted_graph_report_from_observations(
@@ -977,6 +998,10 @@ def run_predicted_dsg_from_detector_jsonl(
         observations=observations,
         infer_relations=infer_relations,
         reference_frames=reference_frames,
+        infer_containment=infer_containment,
+        containment_axis=containment_axis,
+        relation_top_k=relation_top_k,
+        require_detector_state_evidence=require_detector_state_evidence,
     )
     save_predicted_graph_report(predicted_report, predicted_graph_report_path)
     evidence_report = predicted_dsg_evidence_report(
@@ -1077,6 +1102,24 @@ def _predicted_dsg_detector_run_manifest(
                 "reference_frames",
             )
         ),
+        "infer_containment": _optional_bool(
+            payload.get("infer_containment"),
+            False,
+            "infer_containment",
+        ),
+        "containment_axis": _optional_containment_axis(
+            payload.get("containment_axis"),
+            "containment_axis",
+        ),
+        "relation_top_k": _optional_int_or_none(
+            payload.get("relation_top_k"),
+            "relation_top_k",
+        ),
+        "require_detector_state_evidence": _optional_bool(
+            payload.get("require_detector_state_evidence"),
+            False,
+            "require_detector_state_evidence",
+        ),
         "min_observation_count": _optional_int(
             payload.get("min_observation_count"),
             2,
@@ -1142,6 +1185,12 @@ def _request_bundle_build_requirements(manifest: Mapping[str, Any]) -> dict[str,
         "min_observation_count": _int_value(manifest, "min_observation_count"),
         "reference_frames": list(
             _string_sequence_from_mapping(manifest, "reference_frames")
+        ),
+        "infer_containment": manifest.get("infer_containment") is True,
+        "containment_axis": _required_text(manifest, "containment_axis"),
+        "relation_top_k": manifest.get("relation_top_k"),
+        "require_detector_state_evidence": (
+            manifest.get("require_detector_state_evidence") is True
         ),
         "required_evidence_kinds": list(
             _string_sequence_from_mapping(manifest, "required_evidence_kinds")
@@ -1220,6 +1269,12 @@ def _artifact_contract(
             "min_observation_count": _int_value(manifest, "min_observation_count"),
             "reference_frames": list(
                 _string_sequence_from_mapping(manifest, "reference_frames")
+            ),
+            "infer_containment": manifest.get("infer_containment") is True,
+            "containment_axis": _required_text(manifest, "containment_axis"),
+            "relation_top_k": manifest.get("relation_top_k"),
+            "require_detector_state_evidence": (
+                manifest.get("require_detector_state_evidence") is True
             ),
             "required_evidence_kinds": list(
                 _string_sequence_from_mapping(manifest, "required_evidence_kinds")
@@ -1363,6 +1418,12 @@ def _artifact_launch_build_requirements(
         "min_observation_count": _int_value(manifest, "min_observation_count"),
         "reference_frames": list(
             _string_sequence_from_mapping(manifest, "reference_frames")
+        ),
+        "infer_containment": manifest.get("infer_containment") is True,
+        "containment_axis": _required_text(manifest, "containment_axis"),
+        "relation_top_k": manifest.get("relation_top_k"),
+        "require_detector_state_evidence": (
+            manifest.get("require_detector_state_evidence") is True
         ),
         "required_evidence_kinds": list(
             _string_sequence_from_mapping(manifest, "required_evidence_kinds")
@@ -1636,6 +1697,16 @@ def _artifact_launch_build_command(contract: Mapping[str, Any]) -> str:
         f"--reference-frame {frame}"
         for frame in _string_list(build_requirements.get("reference_frames"))
     )
+    if build_requirements.get("infer_containment") is True:
+        parts.append("--infer-containment")
+        parts.append(
+            f"--containment-axis {_required_text(build_requirements, 'containment_axis')}"
+        )
+    relation_top_k = build_requirements.get("relation_top_k")
+    if isinstance(relation_top_k, int) and not isinstance(relation_top_k, bool):
+        parts.append(f"--relation-top-k {relation_top_k}")
+    if build_requirements.get("require_detector_state_evidence") is True:
+        parts.append("--require-detector-state-evidence")
     parts.extend(
         [
             "--min-observation-count "
@@ -2054,6 +2125,40 @@ def _optional_int(value: object, default: int, field: str) -> int:
     if isinstance(value, bool) or not isinstance(value, int):
         raise SpatialQAError(
             f"Predicted DSG detector run manifest field must be an integer: {field}"
+        )
+    return value
+
+
+def _optional_bool(value: object, default: bool, field: str) -> bool:
+    if value is None:
+        return default
+    if not isinstance(value, bool):
+        raise SpatialQAError(
+            f"Predicted DSG detector run manifest field must be a boolean: {field}"
+        )
+    return value
+
+
+def _optional_containment_axis(value: object, field: str) -> str:
+    if value is None:
+        return "z"
+    if not isinstance(value, str) or value not in ("z", "y"):
+        raise SpatialQAError(
+            f"Predicted DSG detector run manifest field must be z or y: {field}"
+        )
+    return value
+
+
+def _optional_int_or_none(value: object, field: str) -> int | None:
+    if value is None:
+        return None
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise SpatialQAError(
+            f"Predicted DSG detector run manifest field must be an integer or null: {field}"
+        )
+    if value < 0:
+        raise SpatialQAError(
+            f"Predicted DSG detector run manifest field must be non-negative: {field}"
         )
     return value
 

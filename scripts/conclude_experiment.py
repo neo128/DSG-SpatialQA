@@ -30,13 +30,21 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--predicted-dsg-evidence-report", type=Path)
     parser.add_argument("--graph-eval-report", type=Path)
     parser.add_argument("--error-attribution-report", type=Path)
+    parser.add_argument("--qa-observability-report", type=Path)
     parser.add_argument("--report", type=Path)
     parser.add_argument("--markdown-report", type=Path)
     parser.add_argument("--required-source-kind", action="append", dest="required_source_kinds")
+    parser.add_argument(
+        "--evaluation-scope",
+        choices=("full_oracle", "observation_aware"),
+        default="full_oracle",
+    )
     parser.add_argument("--alpha", type=float, default=0.05)
     parser.add_argument("--min-candidate-exact-match-rate", type=float, default=0.2)
+    parser.add_argument("--min-candidate-exact-match-count", type=int, default=15)
     parser.add_argument("--min-exact-match-rate-delta", type=float, default=0.05)
     parser.add_argument("--min-graph-object-recall", type=float, default=0.3)
+    parser.add_argument("--min-observation-aware-case-count", type=int, default=30)
     parser.add_argument("--validate-report", type=Path)
     parser.add_argument("--compare-report", type=Path)
     args = parser.parse_args(argv)
@@ -98,17 +106,24 @@ def main(argv: list[str] | None = None) -> int:
             error_attribution_report=_load_optional_json(
                 args.error_attribution_report
             ),
+            qa_observability_report=_load_optional_json(
+                args.qa_observability_report
+            ),
             real_readiness_report_path=args.real_readiness_report,
             offline_control_result_report_path=args.offline_control_result_report,
             predicted_dsg_evidence_report_path=args.predicted_dsg_evidence_report,
             graph_eval_report_path=args.graph_eval_report,
             error_attribution_report_path=args.error_attribution_report,
+            qa_observability_report_path=args.qa_observability_report,
             required_source_kinds=args.required_source_kinds
             or ("caption_memory", "graph_text", "multi_frame_vlm", "vlm"),
+            evaluation_scope=args.evaluation_scope,
             alpha=args.alpha,
             min_candidate_exact_match_rate=args.min_candidate_exact_match_rate,
+            min_candidate_exact_match_count=args.min_candidate_exact_match_count,
             min_exact_match_rate_delta=args.min_exact_match_rate_delta,
             min_graph_object_recall=args.min_graph_object_recall,
+            min_observation_aware_case_count=args.min_observation_aware_case_count,
         )
     except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
         _emit_json(_error_payload("research_conclusion_report", exc))

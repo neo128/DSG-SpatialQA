@@ -21,6 +21,12 @@ EXAMPLE_TEMPLATE = (
     / "real_small_experiment"
     / "real-small-run-manifest.template.json"
 )
+EXTERNAL_DETECTOR_EXAMPLE = (
+    ROOT
+    / "examples"
+    / "real_small_experiment"
+    / "external-detector-observations.example.jsonl"
+)
 
 
 class MainFn(Protocol):
@@ -85,6 +91,23 @@ def test_real_small_template_manifest_fails_with_missing_artifacts(
         item["role"] for item in report["next_missing_artifacts"]
     }
     assert not (output_dir / "final" / "final-experiment-record.json").exists()
+
+
+def test_real_small_external_detector_example_includes_location_and_state_contract() -> None:
+    payload = EXTERNAL_DETECTOR_EXAMPLE.read_text(encoding="utf-8")
+    observations = lab.detector_observation_sequence_from_jsonl(payload)
+
+    assert len(observations) == 1
+    assert len(observations[0].objects) == 1
+    attributes = observations[0].objects[0].attributes
+    assert attributes["source_kind"] == "detector"
+    assert attributes["source_name"] == "external_detector"
+    assert attributes["evidence_kinds"] == ["depth", "detector", "rgb"]
+    assert attributes["rgb_path"] == "data/real-small/detector/rgb/000001.png"
+    assert attributes["depth_path"] == "data/real-small/detector/depth/000001.npy"
+    assert attributes["current_location_id"] == "counter_region"
+    assert attributes["current_location_relation"] == "ON"
+    assert attributes["states"] == {"isDirty": False, "isOpen": False}
 
 
 def test_real_small_missing_manifest_returns_structured_blocker(

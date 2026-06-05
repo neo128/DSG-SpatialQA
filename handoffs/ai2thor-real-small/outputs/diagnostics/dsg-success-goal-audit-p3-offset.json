@@ -1,0 +1,134 @@
+{
+  "blockers": [
+    "full-oracle QA still encodes original-step hidden/oracle states; p2/p3 offset observations cannot be copied to original steps without cheating",
+    "predicted DSG evidence gate fails non_real_sources_absent because current evidence is simulator-derived ai2thor visibility, not independent external detector/RGB-D",
+    "real VLM/video-memory controls have not yet been rerun on the 42-case observation-aware QA slice"
+  ],
+  "goal_checks": [
+    {
+      "actual": 42,
+      "name": "formal_observation_aware_evidence_observable_at_least_30",
+      "passed": true,
+      "scope": "observation_aware",
+      "threshold": 30
+    },
+    {
+      "actual": 9,
+      "name": "full_oracle_evidence_observable_at_least_30",
+      "passed": false,
+      "scope": "full_oracle",
+      "threshold": 30
+    },
+    {
+      "actual": 0.939394,
+      "name": "object_recall_at_least_0_5",
+      "passed": true,
+      "threshold": 0.5
+    },
+    {
+      "actual": 0,
+      "name": "unlocated_object_zero",
+      "passed": true,
+      "threshold": 0
+    },
+    {
+      "actual": 0,
+      "name": "missing_state_decreased_formal_slice",
+      "passed": true,
+      "scope": "observation_aware"
+    },
+    {
+      "actual": {
+        "case_count": 42,
+        "exact_match_count": 30
+      },
+      "name": "observation_aware_exact_match_at_least_15_on_30_plus",
+      "passed": true,
+      "threshold": {
+        "case_count": 30,
+        "exact_match_count": 15
+      }
+    },
+    {
+      "actual": {
+        "failed_check_count": 1,
+        "failed_checks": [
+          "non_real_sources_absent"
+        ],
+        "ready": false
+      },
+      "name": "real_detector_evidence_gate_ready",
+      "passed": false,
+      "threshold": "ready=true"
+    }
+  ],
+  "metrics": {
+    "evidence_gate": {
+      "evidence_kind_counts": {
+        "depth": 706,
+        "detector": 706,
+        "rgb": 706
+      },
+      "failed_checks": [
+        "non_real_sources_absent"
+      ],
+      "hidden_object_observation_count": 0,
+      "ready": false,
+      "source_counts": {
+        "ai2thor": 123,
+        "ai2thor_visible_segmentation_rgbd": 583
+      },
+      "state_evidence_object_observation_count": 583
+    },
+    "full_oracle": {
+      "case_count": 60,
+      "evidence_observable_count": 9,
+      "missing_required_edge_relations": {
+        "IN_ROOM": 33,
+        "ON": 54,
+        "STATE_CHANGED": 45
+      },
+      "target_missing_count": 8,
+      "target_node_recall": 0.939394,
+      "target_observable_relation_missing_count": 43
+    },
+    "observation_aware": {
+      "base_case_count": 60,
+      "case_count": 42,
+      "evidence_observable_count": 42,
+      "exact_match_case_count": 42,
+      "exact_match_count": 30,
+      "exact_match_rate": 0.714286,
+      "generated_case_count": 42,
+      "missing_required_edge_relations": {},
+      "target_node_recall": 1.0
+    },
+    "p0_to_p3_delta": {
+      "full_oracle_target_node_recall_delta": 0.777778,
+      "object_count_delta": 129,
+      "object_history_count_delta": 583,
+      "on_edge_count_delta": 544,
+      "state_changed_edge_count_delta": 645
+    },
+    "predicted_graph": {
+      "in_room_edge_count": 706,
+      "object_count": 167,
+      "object_history_count": 706,
+      "on_edge_count": 548,
+      "state_changed_edge_count": 818,
+      "unlocated_object_count": 0,
+      "unroomed_object_count": 0,
+      "visible_object_count": 167
+    }
+  },
+  "next_actions": [
+    "Use observation-aware QA as the formal comparison slice and rerun VLM/multi-frame controls on the same 42 cases with no gold leakage",
+    "Import independent external detector/RGB-D outputs for the same target-visible observations to clear non_real_sources_absent",
+    "Keep full-oracle observability as a diagnostic, not as the primary fairness gate for hidden-object questions"
+  ],
+  "not_final_real_research_claim": true,
+  "ready": false,
+  "ready_reason": "formal observation-aware ability targets are met, but full-oracle evidence-observable and real evidence gate remain unresolved",
+  "schema_version": "dsg-spatialqa-lab.dsg-success-goal-audit.v1",
+  "stage": "p3-offset"
+}

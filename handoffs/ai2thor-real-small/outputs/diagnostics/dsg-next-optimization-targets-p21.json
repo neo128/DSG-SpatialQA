@@ -1,0 +1,345 @@
+{
+  "claim_policy": {
+    "not_final_research_claim": true,
+    "reason": "VLM-only retry predictions have not returned yet; this report only prioritizes DSG work once VLM-only is re-scored."
+  },
+  "current_scores": {
+    "dsg_semantic_match_count": 23,
+    "dsg_semantic_match_rate": 0.38333333333333336,
+    "paired_losses": 13,
+    "paired_ties": 35,
+    "paired_wins": 12,
+    "semantic_match_count_delta_dsg_minus_vlm": -1,
+    "vlm_semantic_match_count": 24,
+    "vlm_semantic_match_rate": 0.4
+  },
+  "inputs": {
+    "dsg_semantic_eval": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-candidate-semantic-eval-p13-support-target-room-priority-independent.json",
+    "dsg_support_gap": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-support-gap-p16-independent-p4-target60.json",
+    "dsg_vs_vlm_delta": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-candidate-semantic-delta-vs-vlm-p14-affordance-room-specific-support.json",
+    "vlm_semantic_eval": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-semantic-eval-p14-affordance-room-specific-support.json"
+  },
+  "next_dsg_priorities": [
+    {
+      "cases": [
+        {
+          "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17:observation_aware:200007",
+          "episode_id": "ai2thor-real-small-episode-002",
+          "evaluator_only": true,
+          "failure_reason": "relation_mismatch",
+          "gap_kind": "support_present_but_relation_missing",
+          "gold_location": {
+            "destination_label": "chair",
+            "relation": "ON"
+          },
+          "matching_location_edge_ids": [],
+          "scene_id": "FloorPlan201",
+          "step": 200007,
+          "support_label": "chair",
+          "support_node_ids": [
+            "chair_01_34_00_02_01_43"
+          ],
+          "target_detector_evidence_ready": true,
+          "target_label": "book",
+          "target_object_id": "book_01_87_00_68_01_17",
+          "target_present": true
+        },
+        {
+          "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18:observation_aware:100007",
+          "episode_id": "ai2thor-real-small-episode-003",
+          "evaluator_only": true,
+          "failure_reason": "relation_mismatch",
+          "gap_kind": "support_present_but_relation_missing",
+          "gold_location": {
+            "destination_label": "bed",
+            "relation": "ON"
+          },
+          "matching_location_edge_ids": [],
+          "scene_id": "FloorPlan301",
+          "step": 100007,
+          "support_label": "bed",
+          "support_node_ids": [
+            "bed_00_64_00_01_00_87"
+          ],
+          "target_detector_evidence_ready": true,
+          "target_label": "book",
+          "target_object_id": "book_00_90_00_56_01_18",
+          "target_present": true
+        },
+        {
+          "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02:observation_aware:200010",
+          "episode_id": "ai2thor-real-small-episode-004",
+          "evaluator_only": true,
+          "failure_reason": "relation_mismatch",
+          "gap_kind": "support_present_but_relation_missing",
+          "gold_location": {
+            "destination_label": "bathtub",
+            "relation": "ON"
+          },
+          "matching_location_edge_ids": [],
+          "scene_id": "FloorPlan401",
+          "step": 200010,
+          "support_label": "bathtub",
+          "support_node_ids": [
+            "bathtub_00_21_00_36_00_92"
+          ],
+          "target_detector_evidence_ready": true,
+          "target_label": "cloth",
+          "target_object_id": "cloth_00_27_00_04_01_02",
+          "target_present": true
+        }
+      ],
+      "expected_ceiling_gain_cases": 3,
+      "name": "infer_on_edges_when_target_and_support_are_both_present",
+      "priority": "P0",
+      "rationale": "These cases already have target and support nodes; graph construction only needs the missing ON relation."
+    },
+    {
+      "expected_ceiling_gain_cases": 14,
+      "name": "collect_or_import_missing_support_surfaces",
+      "priority": "P1",
+      "rationale": "Countertop dominates missing support surfaces; improving support-surface detector recall should unlock multiple ON-location answers.",
+      "top_missing_support_labels": [
+        {
+          "count": 9,
+          "support_label": "countertop"
+        },
+        {
+          "count": 2,
+          "support_label": "dresser"
+        },
+        {
+          "count": 1,
+          "support_label": "shelf"
+        },
+        {
+          "count": 1,
+          "support_label": "coffeetable"
+        },
+        {
+          "count": 1,
+          "support_label": "handtowelholder"
+        }
+      ]
+    },
+    {
+      "expected_ceiling_gain_cases": 15,
+      "name": "collect_or_import_missing_target_objects",
+      "priority": "P2",
+      "rationale": "These cases cannot be solved by GraphTool until the target object exists in the observation-backed DSG.",
+      "top_missing_target_labels": [
+        {
+          "count": 3,
+          "target_label": "creditcard"
+        },
+        {
+          "count": 1,
+          "target_label": "butterknife"
+        },
+        {
+          "count": 1,
+          "target_label": "bowl"
+        },
+        {
+          "count": 1,
+          "target_label": "cd"
+        },
+        {
+          "count": 1,
+          "target_label": "dishsponge"
+        },
+        {
+          "count": 1,
+          "target_label": "diningtable"
+        },
+        {
+          "count": 1,
+          "target_label": "keychain"
+        },
+        {
+          "count": 1,
+          "target_label": "laptop"
+        },
+        {
+          "count": 1,
+          "target_label": "mug"
+        },
+        {
+          "count": 1,
+          "target_label": "newspaper"
+        },
+        {
+          "count": 1,
+          "target_label": "papertowelroll"
+        },
+        {
+          "count": 1,
+          "target_label": "pen"
+        },
+        {
+          "count": 1,
+          "target_label": "pencil"
+        }
+      ]
+    }
+  ],
+  "paired_loss_case_count": 13,
+  "paired_losses_first": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48:observation_aware:100034",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62:observation_aware:100034",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75:observation_aware:100036",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03:observation_aware:100036",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0008:kettle_01_04_00_90_02_60:observation_aware:100037",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0015:pan_00_72_00_90_02_42:observation_aware:100037",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99:observation_aware:200007",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47:observation_aware:100032",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18:observation_aware:100007",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0005:desklamp_01_32_01_24_00_99:observation_aware:100032",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10:observation_aware:100046",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0007:egg_00_13_00_95_00_17:observation_aware:100041",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0012:mug_00_24_00_92_00_26:observation_aware:100041",
+      "dsg_failure_reason": "relation_mismatch",
+      "dsg_semantic_match": false,
+      "vlm_semantic_match": true
+    }
+  ],
+  "paired_win_case_count": 12,
+  "paired_wins_first": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46:observation_aware:100040",
+      "dsg_failure_reason": null,
+      "dsg_semantic_match": true,
+      "vlm_semantic_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46:observation_aware:100039",
+      "dsg_failure_reason": null,
+      "dsg_semantic_match": true,
+      "vlm_semantic_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98:observation_aware:200001",
+      "dsg_failure_reason": null,
+      "dsg_semantic_match": true,
+      "vlm_semantic_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02:observation_aware:200013",
+      "dsg_failure_reason": null,
+      "dsg_semantic_match": true,
+      "vlm_semantic_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82:observation_aware:200012",
+      "dsg_failure_reason": null,
+      "dsg_semantic_match": true,
+      "vlm_semantic_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34:observation_aware:100016",
+      "dsg_failure_reason": null,
+      "dsg_semantic_match": true,
+      "vlm_semantic_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89:observation_aware:200009",
+      "dsg_failure_reason": null,
+      "dsg_semantic_match": true,
+      "vlm_semantic_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0001:cellphone_00_26_00_56_00_52:observation_aware:100027",
+      "dsg_failure_reason": null,
+      "dsg_semantic_match": true,
+      "vlm_semantic_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0010:laptop_00_50_00_56_00_29:observation_aware:100027",
+      "dsg_failure_reason": null,
+      "dsg_semantic_match": true,
+      "vlm_semantic_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85:observation_aware:100045",
+      "dsg_failure_reason": null,
+      "dsg_semantic_match": true,
+      "vlm_semantic_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88:observation_aware:200014",
+      "dsg_failure_reason": null,
+      "dsg_semantic_match": true,
+      "vlm_semantic_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45:observation_aware:100047",
+      "dsg_failure_reason": null,
+      "dsg_semantic_match": true,
+      "vlm_semantic_match": false
+    }
+  ],
+  "report_digest": "5fb131fca652aa14a45e7b4e49e761a85e614a21c71db3f7d0588287ff25fde5",
+  "schema_version": "dsg-spatialqa-lab.dsg-next-optimization-targets.v1",
+  "scope": "after_vlm_p21_ready35_handoff_before_next_dsg_optimization"
+}

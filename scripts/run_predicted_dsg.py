@@ -127,6 +127,30 @@ def main(argv: list[str] | None = None) -> int:
         dest="reference_frames",
         help="Reference frame for inferred relations.",
     )
+    parser.add_argument(
+        "--infer-containment",
+        action="store_true",
+        help="Infer room/region containment and current object locations.",
+    )
+    parser.add_argument(
+        "--containment-axis",
+        choices=("z", "y"),
+        default="z",
+        help="Vertical axis used for inferred containment.",
+    )
+    parser.add_argument(
+        "--relation-top-k",
+        type=int,
+        help="Optional per-object top-k cap for NEAR relation inference.",
+    )
+    parser.add_argument(
+        "--require-detector-state-evidence",
+        action="store_true",
+        help=(
+            "Require any imported object attributes.states to be backed by "
+            "visible detector RGB-D evidence."
+        ),
+    )
     parser.add_argument("--min-observation-count", type=int, default=2)
     parser.add_argument("--min-object-observation-count", type=int, default=2)
     parser.add_argument(
@@ -378,6 +402,10 @@ def main(argv: list[str] | None = None) -> int:
                 args.infer_relations or ("LEFT_OF", "RIGHT_OF", "NEAR")
             ),
             reference_frames=tuple(args.reference_frames or ("world",)),
+            infer_containment=args.infer_containment,
+            containment_axis=args.containment_axis,
+            relation_top_k=args.relation_top_k,
+            require_detector_state_evidence=args.require_detector_state_evidence,
             min_observation_count=args.min_observation_count,
             min_object_observation_count=args.min_object_observation_count,
             required_evidence_kinds=tuple(

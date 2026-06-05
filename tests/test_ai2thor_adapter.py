@@ -81,6 +81,13 @@ def test_ai2thor_real_collector_uses_fake_controller_and_writes_artifacts(
     assert frames[0].metadata["source_kind"] == "real_simulator"
     assert frames[0].metadata["simulator"] == "ai2thor"
     assert frames[0].metadata["collection_kind"] == "real"
+    assert frames[0].metadata["segmentation_color_map"] == [
+        {"object_id": "Mug|1", "rgb": [0, 0, 255]},
+        {"object_id": "Floor|1", "rgb": [255, 255, 0]},
+    ]
+    assert frames[0].metadata["segmentation_source"] == (
+        "ai2thor_instance_segmentation_frame"
+    )
     assert frames[0].metadata["objects"] == [
         {
             "bbox": {
@@ -112,6 +119,28 @@ def test_ai2thor_real_collector_uses_fake_controller_and_writes_artifacts(
     ]
     assert Path(frames[0].segmentation_path).exists()
     assert controller.stopped is True
+
+
+def test_ai2thor_real_collector_requires_segmentation_color_map(
+    tmp_path: Path,
+) -> None:
+    config = lab.AI2ThorAdapterConfig(
+        scene_id="FloorPlan1",
+        episode_id="ai2thor_real_smoke_001",
+        steps=(1,),
+        actions=("Initialize",),
+        artifact_root=str(tmp_path / "raw"),
+    )
+
+    with pytest.raises(
+        SpatialQAError,
+        match="AI2-THOR event segmentation color map is required",
+    ):
+        lab.AI2ThorEpisodeCollector(
+            config,
+            ai2thor_available=True,
+            controller_factory=NoColorMapControllerFactory(),
+        ).collect_episode()
 
 
 def test_ai2thor_real_collector_rejects_missing_artifact_root() -> None:
@@ -357,6 +386,32 @@ class FakeEvent:
         self.instance_segmentation_frame = [
             [[0, 0, 255], [255, 255, 0]],
         ]
+        self.color_to_object_id = {
+            (0, 0, 255): "Mug|1",
+            (255, 255, 0): "Floor|1",
+        }
+
+
+class NoColorMapControllerFactory:
+    def __call__(self, *, scene: str) -> "NoColorMapController":
+        return NoColorMapController(scene)
+
+
+class NoColorMapController:
+    def __init__(self, scene: str) -> None:
+        self.scene = scene
+
+    def step(self, *, action: str) -> "NoColorMapEvent":
+        return NoColorMapEvent()
+
+    def stop(self) -> None:
+        return None
+
+
+class NoColorMapEvent(FakeEvent):
+    def __init__(self) -> None:
+        super().__init__("Initialize")
+        del self.color_to_object_id
 
 
 class BrokenControllerFactory:

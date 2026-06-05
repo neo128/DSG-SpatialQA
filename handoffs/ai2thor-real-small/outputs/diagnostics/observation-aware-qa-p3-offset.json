@@ -1,0 +1,371 @@
+{
+  "base_qa_digest": "105cf27fceca4fb71160b2c8942fcdb66dceb5b45019b7710eaa6f0ee4156dbf",
+  "base_qa_path": "handoffs/ai2thor-real-small/inputs/qa.jsonl",
+  "cases": [
+    {
+      "base_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48",
+      "generated_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48:observation_aware:100034",
+      "object_id": "apple_00_47_01_15_00_48",
+      "reason": null,
+      "step": 100034
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62",
+      "generated_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62:observation_aware:100034",
+      "object_id": "book_00_15_01_10_00_62",
+      "reason": null,
+      "step": 100034
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54",
+      "generated_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54:observation_aware:100037",
+      "object_id": "bottle_01_54_00_89_02_54",
+      "reason": null,
+      "step": 100037
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75",
+      "generated_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75:observation_aware:100036",
+      "object_id": "bowl_00_27_01_10_00_75",
+      "reason": null,
+      "step": 100036
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03",
+      "generated_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03:observation_aware:100036",
+      "object_id": "bread_00_52_01_17_00_03",
+      "reason": null,
+      "step": 100036
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46",
+      "generated_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46:observation_aware:100036",
+      "object_id": "butterknife_00_41_01_11_00_46",
+      "reason": null,
+      "step": 100036
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20",
+      "generated_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20:observation_aware:100037",
+      "object_id": "cabinet_00_68_00_50_02_20",
+      "reason": null,
+      "step": 100037
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46",
+      "generated_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46:observation_aware:100040",
+      "object_id": "cabinet_00_68_02_02_02_46",
+      "reason": null,
+      "step": 100040
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46",
+      "generated_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46:observation_aware:100039",
+      "object_id": "cabinet_00_72_02_02_02_46",
+      "reason": null,
+      "step": 100039
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46",
+      "generated_case_id": "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46:observation_aware:100040",
+      "object_id": "cabinet_00_73_02_02_02_46",
+      "reason": null,
+      "step": 100040
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98",
+      "generated_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98:observation_aware:200001",
+      "object_id": "armchair_00_85_00_00_05_98",
+      "reason": null,
+      "step": 200001
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02",
+      "generated_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02:observation_aware:200013",
+      "object_id": "armchair_04_38_00_00_06_02",
+      "reason": null,
+      "step": 200013
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17",
+      "generated_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17:observation_aware:200007",
+      "object_id": "book_01_87_00_68_01_17",
+      "reason": null,
+      "step": 200007
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79",
+      "generated_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79:observation_aware:200002",
+      "object_id": "bowl_02_45_00_60_04_79",
+      "reason": null,
+      "step": 200002
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43",
+      "generated_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43:observation_aware:200003",
+      "object_id": "box_03_36_00_19_06_43",
+      "reason": null,
+      "step": 200003
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43",
+      "generated_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43:observation_aware:200007",
+      "object_id": "chair_01_34_00_02_01_43",
+      "reason": null,
+      "step": 200007
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04",
+      "generated_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04:observation_aware:200007",
+      "object_id": "chair_01_86_00_02_01_04",
+      "reason": null,
+      "step": 200007
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84",
+      "generated_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84:observation_aware:200007",
+      "object_id": "chair_01_86_00_02_01_84",
+      "reason": null,
+      "step": 200007
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99",
+      "generated_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99:observation_aware:200007",
+      "object_id": "chair_02_51_00_02_00_99",
+      "reason": null,
+      "step": 200007
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88",
+      "generated_case_id": "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88:observation_aware:200007",
+      "object_id": "chair_02_52_00_02_01_88",
+      "reason": null,
+      "step": 200007
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47",
+      "generated_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47:observation_aware:100032",
+      "object_id": "alarmclock_01_28_01_24_00_47",
+      "reason": null,
+      "step": 100032
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82",
+      "generated_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82:observation_aware:200012",
+      "object_id": "baseballbat_02_84_00_29_01_82",
+      "reason": null,
+      "step": 200012
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24",
+      "generated_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24:observation_aware:100021",
+      "object_id": "basketball_00_24_00_13_01_24",
+      "reason": null,
+      "step": 100021
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87",
+      "generated_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87:observation_aware:100027",
+      "object_id": "bed_00_64_00_01_00_87",
+      "reason": null,
+      "step": 100027
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44",
+      "generated_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44:observation_aware:100033",
+      "object_id": "blinds_00_11_02_34_01_44",
+      "reason": null,
+      "step": 100033
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18",
+      "generated_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18:observation_aware:100007",
+      "object_id": "book_00_90_00_56_01_18",
+      "reason": null,
+      "step": 100007
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34",
+      "generated_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34:observation_aware:100016",
+      "object_id": "boots_01_28_00_01_01_34",
+      "reason": null,
+      "step": 100016
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21",
+      "generated_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21:observation_aware:100029",
+      "object_id": "bowl_02_45_00_80_01_21",
+      "reason": null,
+      "step": 100029
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89",
+      "generated_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89:observation_aware:200009",
+      "object_id": "box_02_73_00_20_00_89",
+      "reason": null,
+      "step": 200009
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19",
+      "generated_case_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19:observation_aware:100029",
+      "object_id": "cd_01_62_00_80_01_19",
+      "reason": null,
+      "step": 100029
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92",
+      "generated_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92:observation_aware:200011",
+      "object_id": "bathtub_00_21_00_36_00_92",
+      "reason": null,
+      "step": 200011
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0002:object_location:bathtubbasin_00_16_00_04_00_88",
+      "generated_case_id": null,
+      "object_id": "bathtubbasin_00_16_00_04_00_88",
+      "reason": "missing_visible_detector_observation",
+      "step": null
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0003:object_location:candle_03_11_00_23_00_05",
+      "generated_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0003:object_location:candle_03_11_00_23_00_05:observation_aware:100043",
+      "object_id": "candle_03_11_00_23_00_05",
+      "reason": null,
+      "step": 100043
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02",
+      "generated_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02:observation_aware:200010",
+      "object_id": "cloth_00_27_00_04_01_02",
+      "reason": null,
+      "step": 200010
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02",
+      "generated_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02:observation_aware:100044",
+      "object_id": "dishsponge_03_20_00_86_00_02",
+      "reason": null,
+      "step": 100044
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28",
+      "generated_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28:observation_aware:200011",
+      "object_id": "faucet_00_14_00_61_00_28",
+      "reason": null,
+      "step": 200011
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53",
+      "generated_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53:observation_aware:100046",
+      "object_id": "faucet_03_40_01_02_01_53",
+      "reason": null,
+      "step": 100046
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85",
+      "generated_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85:observation_aware:100045",
+      "object_id": "floor_01_44_00_04_01_85",
+      "reason": null,
+      "step": 100045
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88",
+      "generated_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88:observation_aware:200014",
+      "object_id": "garbagecan_00_05_00_00_03_88",
+      "reason": null,
+      "step": 200014
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10",
+      "generated_case_id": "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10:observation_aware:100046",
+      "object_id": "handtowel_03_42_01_34_02_10",
+      "reason": null,
+      "step": 100046
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0001:object_location:apple_01_65_00_81_00_07",
+      "generated_case_id": null,
+      "object_id": "apple_01_65_00_81_00_07",
+      "reason": "missing_visible_detector_observation",
+      "step": null
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0002:object_location:bowl_00_28_00_92_01_09",
+      "generated_case_id": null,
+      "object_id": "bowl_00_28_00_92_01_09",
+      "reason": "missing_visible_detector_observation",
+      "step": null
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08",
+      "generated_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08:observation_aware:100041",
+      "object_id": "bread_00_26_00_99_00_08",
+      "reason": null,
+      "step": 100041
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0004:object_location:butterknife_01_67_00_69_00_11",
+      "generated_case_id": null,
+      "object_id": "butterknife_01_67_00_69_00_11",
+      "reason": "missing_visible_detector_observation",
+      "step": null
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0005:object_location:cabinet_00_41_00_48_00_44",
+      "generated_case_id": null,
+      "object_id": "cabinet_00_41_00_48_00_44",
+      "reason": "missing_visible_detector_observation",
+      "step": null
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0006:object_location:cabinet_00_49_00_47_01_15",
+      "generated_case_id": null,
+      "object_id": "cabinet_00_49_00_47_01_15",
+      "reason": "missing_visible_detector_observation",
+      "step": null
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0007:object_location:cabinet_00_50_00_47_01_15",
+      "generated_case_id": null,
+      "object_id": "cabinet_00_50_00_47_01_15",
+      "reason": "missing_visible_detector_observation",
+      "step": null
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45",
+      "generated_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45:observation_aware:100047",
+      "object_id": "cabinet_00_63_02_02_01_45",
+      "reason": null,
+      "step": 100047
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0009:object_location:cabinet_01_39_00_47_01_15",
+      "generated_case_id": null,
+      "object_id": "cabinet_01_39_00_47_01_15",
+      "reason": "missing_visible_detector_observation",
+      "step": null
+    },
+    {
+      "base_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45",
+      "generated_case_id": "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45:observation_aware:100047",
+      "object_id": "cabinet_01_70_02_02_01_45",
+      "reason": null,
+      "step": 100047
+    }
+  ],
+  "generated_qa_digest": "8d5e5907e223e171852c3f6830bce939bbcf210ef77105ab6108d4658b104e9f",
+  "observation_sequence_digest": "a75025f67d54a7c6f57a69ca7a0de4bce0c2d2dcb218cea1bf21fc3f48b2ede9",
+  "observation_sequence_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-merged-p3-offset.json",
+  "report_digest": "3f5c5df56b18f9dd691548f5537f47fa77db715f15081aa3dc79d58ce5f05ee5",
+  "schema_version": "dsg-spatialqa-lab.observation-aware-qa-report.v1",
+  "summary": {
+    "base_case_count": 60,
+    "generated_case_count": 42,
+    "object_location_case_count": 50,
+    "skipped_case_count": 18,
+    "skipped_reasons": {
+      "missing_visible_detector_observation": 8,
+      "unsupported_question_type": 10
+    }
+  }
+}

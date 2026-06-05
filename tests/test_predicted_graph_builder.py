@@ -8,6 +8,7 @@ from types import ModuleType
 from typing import Protocol, cast
 
 from _pytest.capture import CaptureFixture
+import pytest
 
 import dsg_spatialqa_lab as lab
 from dsg_spatialqa_lab import EpisodeFrame, Pose3D
@@ -114,6 +115,7 @@ def test_predicted_graph_tracks_stable_ids_missing_detections_and_relations() ->
         "oracle_object_count": 2,
         "predicted_object_count": 2,
         "matched_object_count": 2,
+        "predicted_unlocated_object_count": 2,
         "oracle_relation_count": 10,
         "predicted_relation_count": 10,
         "matched_relation_count": 10,
@@ -296,6 +298,344 @@ def test_predicted_graph_can_infer_observation_containment_relations(
     assert comparison["matches"] is True
 
 
+def test_predicted_graph_containment_keeps_single_best_on_support() -> None:
+    observations = (
+        lab.SceneObservation(
+            step=1,
+            objects=(
+                lab.ObjectObservation(
+                    "counter_1",
+                    "countertop",
+                    Pose3D(0.18, 0.0, 0.5),
+                    lab.BBox3D(
+                        center=Pose3D(0.18, 0.0, 0.5),
+                        size=(0.3, 1.0, 1.0),
+                    ),
+                    confidence=0.9,
+                    visible=True,
+                    attributes={"source": "rgbd_detector"},
+                ),
+                lab.ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(0.0, 0.0, 1.15),
+                    lab.BBox3D(
+                        center=Pose3D(0.0, 0.0, 1.15),
+                        size=(0.2, 0.2, 0.3),
+                    ),
+                    confidence=0.88,
+                    visible=True,
+                    attributes={"source": "rgbd_detector"},
+                ),
+                lab.ObjectObservation(
+                    "table_1",
+                    "table",
+                    Pose3D(0.0, 0.0, 0.5),
+                    lab.BBox3D(
+                        center=Pose3D(0.0, 0.0, 0.5),
+                        size=(1.0, 1.0, 1.0),
+                    ),
+                    confidence=0.9,
+                    visible=True,
+                    attributes={"source": "rgbd_detector"},
+                ),
+            ),
+        ),
+    )
+
+    graph = lab.build_predicted_graph_from_observations(
+        observations,
+        infer_relations=(),
+        infer_containment=True,
+        containment_axis="z",
+    )
+
+    assert [
+        (edge.src, edge.relation, edge.dst)
+        for edge in graph.find_edges(src="mug_1", relation="ON")
+    ] == [("mug_1", "ON", "table_1")]
+    assert graph.nodes["mug_1"].attributes["current_location_id"] == "table_1"
+    assert graph.nodes["mug_1"].attributes["current_location_relation"] == "ON"
+
+
+def test_predicted_graph_uses_explicit_detector_current_location() -> None:
+    observations = (
+        lab.SceneObservation(
+            step=1,
+            rooms=(lab.NodeObservation("kitchen", "Kitchen"),),
+            regions=(
+                lab.NodeObservation(
+                    "counter_region",
+                    "Counter region",
+                    attributes={"room_id": "kitchen"},
+                ),
+            ),
+            objects=(
+                lab.ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(0.2, 0.0, 0.8),
+                    lab.BBox3D(
+                        center=Pose3D(0.2, 0.0, 0.8),
+                        size=(0.2, 0.2, 0.3),
+                    ),
+                    confidence=0.86,
+                    visible=True,
+                    attributes={
+                        "source": "rgbd_detector",
+                        "source_kind": "detector",
+                        "evidence_kinds": ("rgb", "depth", "detector"),
+                        "current_location_id": "counter_region",
+                        "current_location_relation": "IN_REGION",
+                    },
+                ),
+            ),
+        ),
+    )
+
+    graph = lab.build_predicted_graph_from_observations(
+        observations,
+        infer_relations=(),
+        infer_containment=False,
+    )
+
+    assert [
+        (edge.src, edge.relation, edge.dst, edge.reference_frame, edge.step)
+        for edge in graph.find_edges(src="mug_1", relation="IN_REGION")
+    ] == [("mug_1", "IN_REGION", "counter_region", "world", 1)]
+    assert graph.nodes["mug_1"].attributes["current_location_id"] == "counter_region"
+    assert graph.nodes["mug_1"].attributes["current_location_relation"] == "IN_REGION"
+    assert graph.nodes["mug_1"].attributes["current_room_id"] == "kitchen"
+
+
+def test_predicted_graph_creates_detector_current_region_when_missing() -> None:
+    observations = (
+        lab.SceneObservation(
+            step=1,
+            objects=(
+                lab.ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(0.2, 0.0, 0.8),
+                    lab.BBox3D(
+                        center=Pose3D(0.2, 0.0, 0.8),
+                        size=(0.2, 0.2, 0.3),
+                    ),
+                    confidence=0.86,
+                    visible=True,
+                    attributes={
+                        "source": "rgbd_detector",
+                        "source_kind": "detector",
+                        "evidence_kinds": ("rgb", "depth", "detector"),
+                        "current_location_id": "visible_frame_region:episode-1:0001",
+                        "current_location_label": "Visible frame region",
+                        "current_location_relation": "IN_REGION",
+                    },
+                ),
+            ),
+        ),
+    )
+
+    graph = lab.build_predicted_graph_from_observations(
+        observations,
+        infer_relations=(),
+        infer_containment=False,
+    )
+
+    region = graph.nodes["visible_frame_region:episode-1:0001"]
+    assert region.type == "region"
+    assert region.label == "Visible frame region"
+    assert region.attributes["source"] == "detector_current_location"
+    assert region.attributes["source_kind"] == "detector"
+    assert [
+        (edge.src, edge.relation, edge.dst, edge.reference_frame, edge.step)
+        for edge in graph.find_edges(src="mug_1", relation="IN_REGION")
+    ] == [("mug_1", "IN_REGION", "visible_frame_region:episode-1:0001", "world", 1)]
+    assert graph.nodes["mug_1"].attributes["current_location_id"] == (
+        "visible_frame_region:episode-1:0001"
+    )
+    assert graph.nodes["mug_1"].attributes["current_location_relation"] == "IN_REGION"
+
+
+def test_predicted_graph_requires_detector_state_evidence_when_enabled() -> None:
+    observations = (
+        lab.SceneObservation(
+            step=1,
+            objects=(
+                lab.ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(0.2, 0.0, 0.8),
+                    lab.BBox3D(
+                        center=Pose3D(0.2, 0.0, 0.8),
+                        size=(0.2, 0.2, 0.3),
+                    ),
+                    confidence=0.86,
+                    visible=True,
+                    attributes={
+                        "source_kind": "ai2thor_metadata_coverage",
+                        "states": {"isOpen": False},
+                    },
+                ),
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        lab.SpatialQAError,
+        match="state evidence requires detector source_kind",
+    ):
+        lab.build_predicted_graph_from_observations(
+            observations,
+            infer_relations=(),
+            infer_containment=False,
+            require_detector_state_evidence=True,
+        )
+
+
+def test_predicted_graph_rejects_non_detector_current_location() -> None:
+    observations = (
+        lab.SceneObservation(
+            step=1,
+            regions=(lab.NodeObservation("counter_region", "Counter region"),),
+            objects=(
+                lab.ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(0.2, 0.0, 0.8),
+                    lab.BBox3D(
+                        center=Pose3D(0.2, 0.0, 0.8),
+                        size=(0.2, 0.2, 0.3),
+                    ),
+                    confidence=0.86,
+                    visible=True,
+                    attributes={
+                        "source_kind": "ai2thor_metadata_coverage",
+                        "current_location_id": "counter_region",
+                        "current_location_relation": "IN_REGION",
+                    },
+                ),
+            ),
+        ),
+    )
+
+    with pytest.raises(
+        lab.SpatialQAError,
+        match="current_location requires detector source_kind",
+    ):
+        lab.build_predicted_graph_from_observations(
+            observations,
+            infer_relations=(),
+            infer_containment=False,
+        )
+
+
+def test_predicted_graph_observation_report_records_relation_top_k(
+    tmp_path: Path,
+) -> None:
+    observations = (
+        lab.SceneObservation(
+            step=1,
+            objects=tuple(
+                lab.ObjectObservation(
+                    f"obj_{index}",
+                    "block",
+                    Pose3D(index * 0.1, 0.0, 0.0),
+                    lab.BBox3D(
+                        center=Pose3D(index * 0.1, 0.0, 0.0),
+                        size=(0.05, 0.05, 0.05),
+                    ),
+                    confidence=0.9,
+                    visible=True,
+                    attributes={"source": "rgbd_detector"},
+                )
+                for index in range(4)
+            ),
+        ),
+    )
+    input_path = tmp_path / "detector-observations.json"
+    graph_path = tmp_path / "observation-predicted-graph.json"
+    lab.save_scene_observation_sequence(observations, input_path)
+
+    graph = lab.build_predicted_graph_from_observations(
+        observations,
+        source_path=input_path,
+        infer_relations=("NEAR",),
+        reference_frames=("world",),
+        relation_top_k=1,
+    )
+    lab.save_graph_json(graph, graph_path)
+    report = lab.predicted_graph_report_from_observations(
+        input_path=input_path,
+        graph_path=graph_path,
+        graph=graph,
+        observations=observations,
+        infer_relations=("NEAR",),
+        reference_frames=("world",),
+        relation_top_k=1,
+    )
+    validation = lab.validate_predicted_graph_report(report)
+    comparison = lab.compare_predicted_graph_report(report)
+
+    assert len([edge for edge in graph.edges if edge.relation == "NEAR"]) == 4
+    assert report["options"]["relation_top_k"] == 1
+    assert validation["valid"] is True
+    assert comparison["matches"] is True
+
+
+def test_predicted_graph_observation_report_records_state_evidence_requirement(
+    tmp_path: Path,
+) -> None:
+    observations = (
+        lab.SceneObservation(
+            step=1,
+            objects=(
+                lab.ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(0.2, 0.0, 0.8),
+                    lab.BBox3D(
+                        center=Pose3D(0.2, 0.0, 0.8),
+                        size=(0.2, 0.2, 0.3),
+                    ),
+                    confidence=0.86,
+                    visible=True,
+                    attributes={
+                        "source_kind": "detector",
+                        "evidence_kinds": ("rgb", "depth", "detector"),
+                        "rgb_path": "rgb/0001.png",
+                        "depth_path": "depth/0001.npy",
+                        "states": {"isOpen": False},
+                    },
+                ),
+            ),
+        ),
+    )
+    input_path = tmp_path / "detector-observations.json"
+    graph_path = tmp_path / "observation-predicted-graph.json"
+    lab.save_scene_observation_sequence(observations, input_path)
+
+    graph = lab.build_predicted_graph_from_observations(
+        observations,
+        source_path=input_path,
+        infer_relations=(),
+        require_detector_state_evidence=True,
+    )
+    lab.save_graph_json(graph, graph_path)
+    report = lab.predicted_graph_report_from_observations(
+        input_path=input_path,
+        graph_path=graph_path,
+        graph=graph,
+        observations=observations,
+        infer_relations=(),
+        require_detector_state_evidence=True,
+    )
+
+    assert report["options"]["require_detector_state_evidence"] is True
+    assert lab.validate_predicted_graph_report(report)["valid"] is True
+    assert lab.compare_predicted_graph_report(report)["matches"] is True
+
+
 def test_predicted_graph_report_save_load_validate_and_compare_explicit_artifacts(
     tmp_path: Path,
 ) -> None:
@@ -429,6 +769,9 @@ def test_predicted_graph_cli_builds_from_observation_sequence(
             "--infer-containment",
             "--containment-axis",
             "z",
+            "--relation-top-k",
+            "1",
+            "--require-detector-state-evidence",
         ]
     ) == 0
 
@@ -444,6 +787,8 @@ def test_predicted_graph_cli_builds_from_observation_sequence(
     }
     assert output["options"]["infer_containment"] is True
     assert output["options"]["containment_axis"] == "z"
+    assert output["options"]["relation_top_k"] == 1
+    assert output["options"]["require_detector_state_evidence"] is True
     assert graph_path.exists()
     assert report_path.exists()
 

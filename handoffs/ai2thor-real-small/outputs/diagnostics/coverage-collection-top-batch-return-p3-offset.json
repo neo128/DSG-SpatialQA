@@ -1,0 +1,852 @@
+{
+  "accepted_location_tasks": [
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "armchair_00_85_00_00_05_98",
+      "task_id": "001:ai2thor-real-small-episode-002:FloorPlan201:000014:armchair_00_85_00_00_05_98"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "armchair_04_38_00_00_06_02",
+      "task_id": "008:ai2thor-real-small-episode-002:FloorPlan201:000012:armchair_04_38_00_00_06_02"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "baseballbat_02_84_00_29_01_82",
+      "task_id": "007:ai2thor-real-small-episode-003:FloorPlan301:000028:baseballbat_02_84_00_29_01_82"
+    },
+    {
+      "current_location_id": "chair_01_86_00_02_01_04",
+      "current_location_relation": "ON",
+      "object_id": "book_01_87_00_68_01_17",
+      "task_id": "004:ai2thor-real-small-episode-002:FloorPlan201:000018:book_01_87_00_68_01_17"
+    },
+    {
+      "current_location_id": "coffeetable_02_33_00_00_04_92",
+      "current_location_relation": "ON",
+      "object_id": "bowl_02_45_00_60_04_79",
+      "task_id": "001:ai2thor-real-small-episode-002:FloorPlan201:000014:bowl_02_45_00_60_04_79"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "box_02_73_00_20_00_89",
+      "task_id": "005:ai2thor-real-small-episode-003:FloorPlan301:000021:box_02_73_00_20_00_89"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "box_03_36_00_19_06_43",
+      "task_id": "001:ai2thor-real-small-episode-002:FloorPlan201:000014:box_03_36_00_19_06_43"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "chair_01_34_00_02_01_43",
+      "task_id": "004:ai2thor-real-small-episode-002:FloorPlan201:000018:chair_01_34_00_02_01_43"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "chair_01_86_00_02_01_04",
+      "task_id": "004:ai2thor-real-small-episode-002:FloorPlan201:000018:chair_01_86_00_02_01_04"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "chair_01_86_00_02_01_84",
+      "task_id": "001:ai2thor-real-small-episode-002:FloorPlan201:000014:chair_01_86_00_02_01_84"
+    },
+    {
+      "current_location_id": "bathtub_00_21_00_36_00_92_bathtubbasin",
+      "current_location_relation": "ON",
+      "object_id": "cloth_00_27_00_04_01_02",
+      "task_id": "006:ai2thor-real-small-episode-004:FloorPlan401:000039:cloth_00_27_00_04_01_02"
+    },
+    {
+      "current_location_id": "bathtub_00_21_00_36_00_92",
+      "current_location_relation": "ON",
+      "object_id": "faucet_00_14_00_61_00_28",
+      "task_id": "006:ai2thor-real-small-episode-004:FloorPlan401:000039:faucet_00_14_00_61_00_28"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "garbagecan_00_05_00_00_03_88",
+      "task_id": "009:ai2thor-real-small-episode-004:FloorPlan401:000037:garbagecan_00_05_00_00_03_88"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "garbagecan_02_84_00_01_00_22",
+      "task_id": "005:ai2thor-real-small-episode-003:FloorPlan301:000021:garbagecan_02_84_00_01_00_22"
+    }
+  ],
+  "accepted_state_tasks": [
+    {
+      "object_id": "armchair_00_85_00_00_05_98",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-002:FloorPlan201:000014:armchair_00_85_00_00_05_98"
+    },
+    {
+      "object_id": "armchair_04_38_00_00_06_02",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02"
+      ],
+      "task_id": "008:ai2thor-real-small-episode-002:FloorPlan201:000012:armchair_04_38_00_00_06_02"
+    },
+    {
+      "object_id": "baseballbat_02_84_00_29_01_82",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82"
+      ],
+      "task_id": "007:ai2thor-real-small-episode-003:FloorPlan301:000028:baseballbat_02_84_00_29_01_82"
+    },
+    {
+      "object_id": "book_01_87_00_68_01_17",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17"
+      ],
+      "task_id": "004:ai2thor-real-small-episode-002:FloorPlan201:000018:book_01_87_00_68_01_17"
+    },
+    {
+      "object_id": "bowl_02_45_00_60_04_79",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-002:FloorPlan201:000014:bowl_02_45_00_60_04_79"
+    },
+    {
+      "object_id": "box_02_73_00_20_00_89",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89"
+      ],
+      "task_id": "005:ai2thor-real-small-episode-003:FloorPlan301:000021:box_02_73_00_20_00_89"
+    },
+    {
+      "object_id": "box_03_36_00_19_06_43",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-002:FloorPlan201:000014:box_03_36_00_19_06_43"
+    },
+    {
+      "object_id": "chair_01_34_00_02_01_43",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43"
+      ],
+      "task_id": "004:ai2thor-real-small-episode-002:FloorPlan201:000018:chair_01_34_00_02_01_43"
+    },
+    {
+      "object_id": "chair_01_86_00_02_01_04",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04"
+      ],
+      "task_id": "004:ai2thor-real-small-episode-002:FloorPlan201:000018:chair_01_86_00_02_01_04"
+    },
+    {
+      "object_id": "chair_01_86_00_02_01_84",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-002:FloorPlan201:000014:chair_01_86_00_02_01_84"
+    },
+    {
+      "object_id": "cloth_00_27_00_04_01_02",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02"
+      ],
+      "task_id": "006:ai2thor-real-small-episode-004:FloorPlan401:000039:cloth_00_27_00_04_01_02"
+    },
+    {
+      "object_id": "faucet_00_14_00_61_00_28",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28"
+      ],
+      "task_id": "006:ai2thor-real-small-episode-004:FloorPlan401:000039:faucet_00_14_00_61_00_28"
+    },
+    {
+      "object_id": "garbagecan_00_05_00_00_03_88",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88"
+      ],
+      "task_id": "009:ai2thor-real-small-episode-004:FloorPlan401:000037:garbagecan_00_05_00_00_03_88"
+    }
+  ],
+  "accepted_target_tasks": [
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "armchair_00_85_00_00_05_98",
+      "observation_steps": [
+        200001
+      ],
+      "observed_object_ids": [
+        "armchair_00_85_00_00_05_98"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-002:FloorPlan201:000014:armchair_00_85_00_00_05_98"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "armchair_04_38_00_00_06_02",
+      "observation_steps": [
+        200003,
+        200013
+      ],
+      "observed_object_ids": [
+        "armchair_04_38_00_00_06_02"
+      ],
+      "task_id": "008:ai2thor-real-small-episode-002:FloorPlan201:000012:armchair_04_38_00_00_06_02"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "baseballbat_02_84_00_29_01_82",
+      "observation_steps": [
+        200012
+      ],
+      "observed_object_ids": [
+        "baseballbat_02_84_00_29_01_82"
+      ],
+      "task_id": "007:ai2thor-real-small-episode-003:FloorPlan301:000028:baseballbat_02_84_00_29_01_82"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "book_01_87_00_68_01_17",
+      "observation_steps": [
+        200004,
+        200005,
+        200006,
+        200007
+      ],
+      "observed_object_ids": [
+        "book_01_87_00_68_01_17"
+      ],
+      "task_id": "004:ai2thor-real-small-episode-002:FloorPlan201:000018:book_01_87_00_68_01_17"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "bowl_02_45_00_60_04_79",
+      "observation_steps": [
+        200002
+      ],
+      "observed_object_ids": [
+        "bowl_02_45_00_60_04_79"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-002:FloorPlan201:000014:bowl_02_45_00_60_04_79"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "box_02_73_00_20_00_89",
+      "observation_steps": [
+        200008,
+        200009
+      ],
+      "observed_object_ids": [
+        "box_02_73_00_20_00_89"
+      ],
+      "task_id": "005:ai2thor-real-small-episode-003:FloorPlan301:000021:box_02_73_00_20_00_89"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "box_03_36_00_19_06_43",
+      "observation_steps": [
+        200003
+      ],
+      "observed_object_ids": [
+        "box_03_36_00_19_06_43"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-002:FloorPlan201:000014:box_03_36_00_19_06_43"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "chair_01_34_00_02_01_43",
+      "observation_steps": [
+        200004,
+        200005,
+        200006,
+        200007
+      ],
+      "observed_object_ids": [
+        "chair_01_34_00_02_01_43"
+      ],
+      "task_id": "004:ai2thor-real-small-episode-002:FloorPlan201:000018:chair_01_34_00_02_01_43"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "chair_01_86_00_02_01_04",
+      "observation_steps": [
+        200004,
+        200007
+      ],
+      "observed_object_ids": [
+        "chair_01_86_00_02_01_04"
+      ],
+      "task_id": "004:ai2thor-real-small-episode-002:FloorPlan201:000018:chair_01_86_00_02_01_04"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "chair_01_86_00_02_01_84",
+      "observation_steps": [
+        200004,
+        200005,
+        200006,
+        200007
+      ],
+      "observed_object_ids": [
+        "chair_01_86_00_02_01_84"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-002:FloorPlan201:000014:chair_01_86_00_02_01_84"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "cloth_00_27_00_04_01_02",
+      "observation_steps": [
+        200010
+      ],
+      "observed_object_ids": [
+        "cloth_00_27_00_04_01_02"
+      ],
+      "task_id": "006:ai2thor-real-small-episode-004:FloorPlan401:000039:cloth_00_27_00_04_01_02"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "faucet_00_14_00_61_00_28",
+      "observation_steps": [
+        200010,
+        200011
+      ],
+      "observed_object_ids": [
+        "faucet_00_14_00_61_00_28"
+      ],
+      "task_id": "006:ai2thor-real-small-episode-004:FloorPlan401:000039:faucet_00_14_00_61_00_28"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "garbagecan_00_05_00_00_03_88",
+      "observation_steps": [
+        200014
+      ],
+      "observed_object_ids": [
+        "garbagecan_00_05_00_00_03_88"
+      ],
+      "task_id": "009:ai2thor-real-small-episode-004:FloorPlan401:000037:garbagecan_00_05_00_00_03_88"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "garbagecan_02_84_00_01_00_22",
+      "observation_steps": [
+        200008,
+        200009
+      ],
+      "observed_object_ids": [
+        "garbagecan_02_84_00_01_00_22"
+      ],
+      "task_id": "005:ai2thor-real-small-episode-003:FloorPlan301:000021:garbagecan_02_84_00_01_00_22"
+    }
+  ],
+  "action": "coverage_collection_top_batch_return_report",
+  "digest": "308b0c305c3db00d916f85a122049cb31b7549756422dce7b76172ca253e9630",
+  "observation_sequence_digest": "1e0b1829a7607f423d0410506d63ea1a74fb98bb249ed4cde92a77580de2c94b",
+  "observation_sequence_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-ai2thor-visible-p3-offset.jsonl",
+  "required_evidence_kinds": [
+    "depth",
+    "detector",
+    "rgb"
+  ],
+  "schema_version": "dsg-spatialqa-lab.coverage-collection-top-batch-return-report.v1",
+  "summary": {
+    "accepted_location_task_count": 14,
+    "accepted_state_task_count": 13,
+    "accepted_target_task_count": 14,
+    "batch_count": 9,
+    "location_evidence_ready": false,
+    "location_required_task_count": 20,
+    "related_case_count": 22,
+    "return_ready": false,
+    "state_evidence_ready": false,
+    "state_required_task_count": 19,
+    "target_acceptance_rate": 0.7,
+    "target_evidence_ready": false,
+    "task_count": 20,
+    "unaccepted_location_task_count": 6,
+    "unaccepted_state_task_count": 6,
+    "unaccepted_target_task_count": 6
+  },
+  "top_batch_handoff_digest": "5d59d1599d796b80e5f259e3af9a127bb5a13a0971881faf15d8470f8932cfdd",
+  "unaccepted_location_tasks": [
+    {
+      "object_id": "butterknife_01_67_00_69_00_11",
+      "reason": "missing_current_location_evidence",
+      "task_id": "002:ai2thor-real-small-episode-005:FloorPlan2:000049:butterknife_01_67_00_69_00_11"
+    },
+    {
+      "object_id": "cabinet_00_41_00_48_00_44",
+      "reason": "missing_current_location_evidence",
+      "task_id": "002:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_41_00_48_00_44"
+    },
+    {
+      "object_id": "cabinet_00_49_00_47_01_15",
+      "reason": "missing_current_location_evidence",
+      "task_id": "002:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_49_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_50_00_47_01_15",
+      "reason": "missing_current_location_evidence",
+      "task_id": "002:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_50_00_47_01_15"
+    },
+    {
+      "object_id": "apple_01_65_00_81_00_07",
+      "reason": "missing_current_location_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000045:apple_01_65_00_81_00_07"
+    },
+    {
+      "object_id": "cabinet_01_39_00_47_01_15",
+      "reason": "missing_current_location_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000045:cabinet_01_39_00_47_01_15"
+    }
+  ],
+  "unaccepted_state_tasks": [
+    {
+      "object_id": "butterknife_01_67_00_69_00_11",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0004:object_location:butterknife_01_67_00_69_00_11"
+      ],
+      "task_id": "002:ai2thor-real-small-episode-005:FloorPlan2:000049:butterknife_01_67_00_69_00_11"
+    },
+    {
+      "object_id": "cabinet_00_41_00_48_00_44",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0005:object_location:cabinet_00_41_00_48_00_44"
+      ],
+      "task_id": "002:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_41_00_48_00_44"
+    },
+    {
+      "object_id": "cabinet_00_49_00_47_01_15",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0006:object_location:cabinet_00_49_00_47_01_15"
+      ],
+      "task_id": "002:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_49_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_50_00_47_01_15",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0007:object_location:cabinet_00_50_00_47_01_15"
+      ],
+      "task_id": "002:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_50_00_47_01_15"
+    },
+    {
+      "object_id": "apple_01_65_00_81_00_07",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0001:object_location:apple_01_65_00_81_00_07"
+      ],
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000045:apple_01_65_00_81_00_07"
+    },
+    {
+      "object_id": "cabinet_01_39_00_47_01_15",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0009:object_location:cabinet_01_39_00_47_01_15"
+      ],
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000045:cabinet_01_39_00_47_01_15"
+    }
+  ],
+  "unaccepted_target_tasks": [
+    {
+      "object_id": "butterknife_01_67_00_69_00_11",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "002:ai2thor-real-small-episode-005:FloorPlan2:000049:butterknife_01_67_00_69_00_11"
+    },
+    {
+      "object_id": "cabinet_00_41_00_48_00_44",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "002:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_41_00_48_00_44"
+    },
+    {
+      "object_id": "cabinet_00_49_00_47_01_15",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "002:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_49_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_50_00_47_01_15",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "002:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_50_00_47_01_15"
+    },
+    {
+      "object_id": "apple_01_65_00_81_00_07",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000045:apple_01_65_00_81_00_07"
+    },
+    {
+      "object_id": "cabinet_01_39_00_47_01_15",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000045:cabinet_01_39_00_47_01_15"
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "candidate_name": "predicted_graph_tool_p4_target60",
+  "candidate_qa_eval_report_digest": "996e8a1a60e290d3f1c367aa6ea2aff358307c020d965238cfdd923e68dc64f5",
+  "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval-observation-aware-p4-target60-vlm-video/candidate/predicted_graph_tool_p4_target60/qa-eval.json",
+  "checks": [
+    {
+      "name": "matrix_report_valid",
+      "passed": true
+    },
+    {
+      "name": "matrix_report_ready",
+      "passed": false
+    },
+    {
+      "name": "candidate_eval_report_valid",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "name": "all_sources_have_delta",
+      "passed": true
+    },
+    {
+      "missing": [],
+      "name": "required_source_kind_deltas_present",
+      "passed": true,
+      "required": [
+        "multi_frame_vlm",
+        "vlm"
+      ]
+    },
+    {
+      "actual": [],
+      "name": "delta_reports_valid",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "name": "same_candidate_report_digest",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "name": "case_counts_match",
+      "passed": true
+    }
+  ],
+  "matrix_readiness": {
+    "failed_check_count": 1,
+    "failed_checks": [
+      "clean_import_diagnostics"
+    ],
+    "ready": false
+  },
+  "matrix_report_digest": "4e92a3152fa9cda279ce532f3f5ad7804380848895ff0bfad0a76cfcadb6eda8",
+  "matrix_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/observation-aware-p4-target60-vlm-video/offline-control-matrix.json",
+  "readiness": {
+    "failed_check_count": 1,
+    "failed_checks": [
+      "matrix_report_ready"
+    ],
+    "ready": false
+  },
+  "report_digest": "c04ca4f0fbbd6b2642913c3f8fd1d59727097615967559feddb761390ec03797",
+  "required_source_kinds": [
+    "multi_frame_vlm",
+    "vlm"
+  ],
+  "schema_version": "dsg-spatialqa-lab.offline-control-result-report.v1",
+  "source_kind_counts": {
+    "multi_frame_vlm": 1,
+    "vlm": 1
+  },
+  "source_result_matrix": [
+    {
+      "baseline_exact_match_rate": 0.0,
+      "baseline_name": "multi_frame_vlm",
+      "baseline_qa_eval_report_digest": "d08351b4f0cd75d60dfed5d20406ec31d55ebca2d1b693caa7ee343b0330cc42",
+      "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval-observation-aware-p4-target60-vlm-video/baselines/multi_frame_vlm_multi_frame_vlm_qwen37_window4_p4_target60/qa-eval.json",
+      "candidate_exact_match_rate": 0.733333,
+      "candidate_name": "predicted_graph_tool_p4_target60",
+      "candidate_report_digest": "996e8a1a60e290d3f1c367aa6ea2aff358307c020d965238cfdd923e68dc64f5",
+      "case_count_match": true,
+      "dataset_id": "ai2thor_real_small_p4_target60",
+      "exact_match_count_delta": 44,
+      "exact_match_rate_delta": 0.733333,
+      "import_report_digest": "d022fee23ba44e864615b940584d1c186961bb6f56165daa4a01b5a16f97f0b2",
+      "import_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/observation-aware-p4-target60-vlm-video/imports/multi_frame_vlm/multi_frame_vlm_qwen37_window4_p4_target60/import-report.json",
+      "model_id": "qwen3.7-plus",
+      "prompt_id": "multi-frame-vlm-spatial-qa-p4-target60-window4",
+      "qa_eval_delta_report_digest": "fd547882b4fa88d12430e63e5ea56e2f1b529238135d31b43c1fc6987ab1d4ee",
+      "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval-observation-aware-p4-target60-vlm-video/deltas/predicted_graph_tool_p4_target60-vs-multi_frame_vlm_multi_frame_vlm_qwen37_window4_p4_target60.json",
+      "source_key": "multi_frame_vlm:multi_frame_vlm_qwen37_window4_p4_target60",
+      "source_kind": "multi_frame_vlm",
+      "source_name": "multi_frame_vlm_qwen37_window4_p4_target60"
+    },
+    {
+      "baseline_exact_match_rate": 0.0,
+      "baseline_name": "vlm",
+      "baseline_qa_eval_report_digest": "04d657f75978db2536ce9f1a0483d805a87aefd2d6e272479c0fcb8c513648c0",
+      "baseline_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval-observation-aware-p4-target60-vlm-video/baselines/vlm_vlm_qwen37_p4_target60/qa-eval.json",
+      "candidate_exact_match_rate": 0.733333,
+      "candidate_name": "predicted_graph_tool_p4_target60",
+      "candidate_report_digest": "996e8a1a60e290d3f1c367aa6ea2aff358307c020d965238cfdd923e68dc64f5",
+      "case_count_match": true,
+      "dataset_id": "ai2thor_real_small_p4_target60",
+      "exact_match_count_delta": 44,
+      "exact_match_rate_delta": 0.733333,
+      "import_report_digest": "f52267e1a8ea6e9db344cb4c1880f4dc25559321053b74ba25207af1b57dbc97",
+      "import_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/observation-aware-p4-target60-vlm-video/imports/vlm/vlm_qwen37_p4_target60/import-report.json",
+      "model_id": "qwen3.7-plus",
+      "prompt_id": "vlm-spatial-qa-p4-target60",
+      "qa_eval_delta_report_digest": "cf45e0c4145a0c9fc09879b2aaecd1f313019190d71ca6f44335fbc4ca168478",
+      "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval-observation-aware-p4-target60-vlm-video/deltas/predicted_graph_tool_p4_target60-vs-vlm_vlm_qwen37_p4_target60.json",
+      "source_key": "vlm:vlm_qwen37_p4_target60",
+      "source_kind": "vlm",
+      "source_name": "vlm_qwen37_p4_target60"
+    }
+  ],
+  "summary": {
+    "candidate_exact_match_rate": 0.733333,
+    "delta_report_count": 2,
+    "improved_source_count": 2,
+    "regressed_source_count": 0,
+    "source_count": 2,
+    "unchanged_source_count": 0
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "candidate_name": "predicted_graph_tool_observation_aware_p3",
+  "candidate_prediction_path": "inputs/candidate/predicted-graph-tool-observation-aware-p4-target60.jsonl",
+  "frame_index_path": "inputs/traces/vlm-frame-index-coverage-p3.jsonl",
+  "matrix_report_path": "outputs/offline-controls/observation-aware-p4-target60/offline-control-matrix.json",
+  "output_dir": "outputs/offline-controls/observation-aware-p4-target60/imports",
+  "qa_eval_output_dir": "outputs/offline-controls/qa-eval-observation-aware-p4-target60",
+  "qa_path": "inputs/traces/observation-aware-p4-target60-qa.jsonl",
+  "required_source_kinds": [
+    "caption_memory",
+    "graph_text",
+    "multi_frame_vlm",
+    "vlm"
+  ],
+  "result_report_path": "outputs/offline-controls/observation-aware-p4-target60/offline-control-result.json",
+  "schema_version": "dsg-spatialqa-lab.offline-control-import-manifest.v1",
+  "sources": [
+    {
+      "import_report_path": "outputs/offline-controls/observation-aware-p4-target60/imports/vlm/import-report.json",
+      "input_format": "qa_prediction",
+      "input_path": "inputs/offline-controls/reruns/observation-aware-p4-target60/vlm.jsonl",
+      "metadata": {
+        "capabilities": [
+          "spatial_qa"
+        ],
+        "dataset_id": "ai2thor_real_small_observation_aware_p4_target60",
+        "model_id": "external-vlm",
+        "prompt_id": "vlm-spatial-qa-observation-aware-p4-target60"
+      },
+      "prediction_path": "outputs/offline-controls/observation-aware-p4-target60/imports/vlm/predictions.jsonl",
+      "source_kind": "vlm",
+      "source_name": "vlm_observation_aware_p4_target60_control"
+    },
+    {
+      "import_report_path": "outputs/offline-controls/observation-aware-p4-target60/imports/multi_frame_vlm/import-report.json",
+      "input_format": "qa_prediction",
+      "input_path": "inputs/offline-controls/reruns/observation-aware-p4-target60/multi_frame_vlm.jsonl",
+      "metadata": {
+        "capabilities": [
+          "spatial_qa",
+          "dynamic_memory"
+        ],
+        "dataset_id": "ai2thor_real_small_observation_aware_p4_target60",
+        "model_id": "external-multi_frame_vlm",
+        "prompt_id": "multi-frame-vlm-spatial-qa-observation-aware-p4-target60"
+      },
+      "prediction_path": "outputs/offline-controls/observation-aware-p4-target60/imports/multi_frame_vlm/predictions.jsonl",
+      "source_kind": "multi_frame_vlm",
+      "source_name": "multi_frame_vlm_observation_aware_p4_target60_control"
+    },
+    {
+      "import_report_path": "outputs/offline-controls/observation-aware-p4-target60/imports/caption_memory/import-report.json",
+      "input_format": "qa_prediction",
+      "input_path": "inputs/offline-controls/reruns/observation-aware-p4-target60/caption_memory.jsonl",
+      "metadata": {
+        "capabilities": [
+          "spatial_qa",
+          "dynamic_memory"
+        ],
+        "dataset_id": "ai2thor_real_small_observation_aware_p4_target60",
+        "model_id": "external-caption_memory",
+        "prompt_id": "caption-memory-spatial-qa-observation-aware-p4-target60"
+      },
+      "prediction_path": "outputs/offline-controls/observation-aware-p4-target60/imports/caption_memory/predictions.jsonl",
+      "source_kind": "caption_memory",
+      "source_name": "caption_memory_observation_aware_p4_target60_control"
+    },
+    {
+      "import_report_path": "outputs/offline-controls/observation-aware-p4-target60/imports/graph_text/import-report.json",
+      "input_format": "qa_prediction",
+      "input_path": "inputs/offline-controls/reruns/observation-aware-p4-target60/graph_text.jsonl",
+      "metadata": {
+        "capabilities": [
+          "spatial_qa",
+          "dynamic_memory",
+          "graph_tool_query"
+        ],
+        "dataset_id": "ai2thor_real_small_observation_aware_p4_target60",
+        "model_id": "external-graph_text",
+        "prompt_id": "graph-text-spatial-qa-observation-aware-p4-target60"
+      },
+      "prediction_path": "outputs/offline-controls/observation-aware-p4-target60/imports/graph_text/predictions.jsonl",
+      "source_kind": "graph_text",
+      "source_name": "graph_text_observation_aware_p4_target60_control"
+    }
+  ]
+}

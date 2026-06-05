@@ -1,0 +1,2948 @@
+{
+  "observation_count": 28,
+  "observations": [
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": 0.5,
+        "y": 0.910415768623352,
+        "yaw": 271.5899963378906,
+        "z": 0.5
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              182,
+              116,
+              218,
+              142
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-003:0007",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000007/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000007:book:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000007/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -1.628011,
+              "y": 0.910416,
+              "yaw": 0.0,
+              "z": 0.830404
+            },
+            "size": [
+              0.247017,
+              0.24034,
+              0.247017
+            ]
+          },
+          "confidence": 0.85,
+          "label": "book",
+          "object_id": "book_00_90_00_56_01_18",
+          "pose": {
+            "x": -1.628011,
+            "y": 0.910416,
+            "yaw": 0.0,
+            "z": 0.830404
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000007/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000007/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-003:0007"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 7
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -0.75,
+        "y": 0.910415768623352,
+        "yaw": 278.260009765625,
+        "z": -1.0
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              105,
+              185,
+              165,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-003:0016",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000016/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000016:boots:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000016/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -1.785951,
+              "y": 0.910416,
+              "yaw": 0.0,
+              "z": -0.929954
+            },
+            "size": [
+              0.197348,
+              0.241562,
+              0.197348
+            ]
+          },
+          "confidence": 0.85,
+          "label": "boots",
+          "object_id": "boots_01_28_00_01_01_34",
+          "pose": {
+            "x": -1.785951,
+            "y": 0.910416,
+            "yaw": 0.0,
+            "z": -0.929954
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000016/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000016/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-003:0016"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 16
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": 1.75,
+        "y": 0.910415768623352,
+        "yaw": 196.4600067138672,
+        "z": -0.75
+      },
+      "objects": [],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000021/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000021/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-003:0021"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 21
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -0.5,
+        "y": 0.910415768623352,
+        "yaw": 359.989990234375,
+        "z": -0.5
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              170,
+              130,
+              320,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-003:0027",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000027:bed:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.138568,
+              "y": 0.910416,
+              "yaw": 0.0,
+              "z": 1.88416
+            },
+            "size": [
+              1.124973,
+              1.102622,
+              1.124973
+            ]
+          },
+          "confidence": 0.9,
+          "label": "bed",
+          "object_id": "bed_00_64_00_01_00_87",
+          "pose": {
+            "x": 0.138568,
+            "y": 0.910416,
+            "yaw": 0.0,
+            "z": 1.88416
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              290,
+              220,
+              310,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-003:0027",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000027:cellphone:002",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.260014,
+              "y": 0.910416,
+              "yaw": 0.0,
+              "z": 1.2264
+            },
+            "size": [
+              0.113286,
+              0.151048,
+              0.113286
+            ]
+          },
+          "confidence": 0.8,
+          "label": "cellphone",
+          "object_id": "cellphone_00_26_00_56_00_52",
+          "pose": {
+            "x": 0.260014,
+            "y": 0.910416,
+            "yaw": 0.0,
+            "z": 1.2264
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              220,
+              160,
+              270,
+              190
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-003:0027",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000027:laptop:003",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.142439,
+              "y": 0.910416,
+              "yaw": 0.0,
+              "z": 1.898612
+            },
+            "size": [
+              0.382261,
+              0.309806,
+              0.382261
+            ]
+          },
+          "confidence": 0.8,
+          "label": "laptop",
+          "object_id": "laptop_00_50_00_56_00_29",
+          "pose": {
+            "x": 0.142439,
+            "y": 0.910416,
+            "yaw": 0.0,
+            "z": 1.898612
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000027/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-003:0027"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 27
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": 2.0,
+        "y": 0.910415768623352,
+        "yaw": 179.27999877929688,
+        "z": -0.75
+      },
+      "objects": [],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000029/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000029/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-003:0029"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 29
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -0.75,
+        "y": 0.910415768623352,
+        "yaw": 266.9599914550781,
+        "z": -0.75
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              230,
+              130,
+              285,
+              215
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-003:0032",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000032:alarmclock:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -1.476028,
+              "y": 0.910416,
+              "yaw": 0.0,
+              "z": -0.568476
+            },
+            "size": [
+              0.125191,
+              0.256344,
+              0.125191
+            ]
+          },
+          "confidence": 0.9,
+          "label": "alarmclock",
+          "object_id": "alarmclock_01_28_01_24_00_47",
+          "pose": {
+            "x": -1.476028,
+            "y": 0.910416,
+            "yaw": 0.0,
+            "z": -0.568476
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              115,
+              120,
+              195,
+              215
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-003:0032",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000032:desklamp:002",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -1.330779,
+              "y": 0.910416,
+              "yaw": 0.0,
+              "z": -0.789066
+            },
+            "size": [
+              0.147327,
+              0.232813,
+              0.147327
+            ]
+          },
+          "confidence": 0.9,
+          "label": "desklamp",
+          "object_id": "desklamp_01_32_01_24_00_99",
+          "pose": {
+            "x": -1.330779,
+            "y": 0.910416,
+            "yaw": 0.0,
+            "z": -0.789066
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000032/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-003:0032"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 32
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": 0.0,
+        "y": 0.910415768623352,
+        "yaw": 168.64999389648438,
+        "z": -1.0
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              133,
+              62,
+              293,
+              113
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-003:0033",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000033/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:000033:blinds:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000033/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.022,
+              "y": 0.910416,
+              "yaw": 0.0,
+              "z": -1.688791
+            },
+            "size": [
+              0.341949,
+              0.147258,
+              0.341949
+            ]
+          },
+          "confidence": 0.85,
+          "label": "blinds",
+          "object_id": "blinds_00_11_02_34_01_44",
+          "pose": {
+            "x": 0.022,
+            "y": 0.910416,
+            "yaw": 0.0,
+            "z": -1.688791
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000033/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-003/000033/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-003:0033"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 33
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 188.5399932861328,
+        "z": 1.25
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              211,
+              141,
+              228,
+              157
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-001:0034",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000034:apple:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -0.696364,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": -1.468782
+            },
+            "size": [
+              0.159141,
+              0.2004,
+              0.159141
+            ]
+          },
+          "confidence": 0.9,
+          "label": "apple",
+          "object_id": "apple_00_47_01_15_00_48",
+          "pose": {
+            "x": -0.696364,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": -1.468782
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              113,
+              153,
+              263,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-001:0034",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000034:book:002",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.085269,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": 0.571432
+            },
+            "size": [
+              0.328192,
+              0.255019,
+              0.328192
+            ]
+          },
+          "confidence": 0.95,
+          "label": "book",
+          "object_id": "book_00_15_01_10_00_62",
+          "pose": {
+            "x": 0.085269,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": 0.571432
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000034/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-001:0034"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 34
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": 0.25,
+        "y": 0.900999128818512,
+        "yaw": 2.6700000762939453,
+        "z": -1.25
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              136,
+              192,
+              206,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-001:0036",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000036:bowl:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.296136,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": -0.692957
+            },
+            "size": [
+              0.123937,
+              0.114045,
+              0.123937
+            ]
+          },
+          "confidence": 0.9,
+          "label": "bowl",
+          "object_id": "bowl_00_27_01_10_00_75",
+          "pose": {
+            "x": 0.296136,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": -0.692957
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              82,
+              116,
+              126,
+              146
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-001:0036",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000036:bread:002",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -0.204631,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": 2.348979
+            },
+            "size": [
+              0.502579,
+              0.461628,
+              0.502579
+            ]
+          },
+          "confidence": 0.85,
+          "label": "bread",
+          "object_id": "bread_00_52_01_17_00_03",
+          "pose": {
+            "x": -0.204631,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": 2.348979
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000036/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-001:0036"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 36
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": 0.75,
+        "y": 0.900999128818512,
+        "yaw": 188.83999633789062,
+        "z": -1.75
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              12,
+              132,
+              52,
+              182
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-001:0037",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000037:bottle:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.990996,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": -2.798383
+            },
+            "size": [
+              0.127983,
+              0.212265,
+              0.127983
+            ]
+          },
+          "confidence": 0.9,
+          "label": "bottle",
+          "object_id": "bottle_01_54_00_89_02_54",
+          "pose": {
+            "x": 0.990996,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": -2.798383
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              62,
+              0,
+              320,
+              132
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-001:0037",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000037:cabinet:002",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.574842,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": -2.428288
+            },
+            "size": [
+              0.564255,
+              0.386337,
+              0.564255
+            ]
+          },
+          "confidence": 0.9,
+          "label": "cabinet",
+          "object_id": "cabinet_00_68_00_50_02_20",
+          "pose": {
+            "x": 0.574842,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": -2.428288
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              232,
+              135,
+              312,
+              195
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-001:0037",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000037:kettle:003",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.227784,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": -2.721244
+            },
+            "size": [
+              0.26324,
+              0.264323,
+              0.26324
+            ]
+          },
+          "confidence": 0.9,
+          "label": "kettle",
+          "object_id": "kettle_01_04_00_90_02_60",
+          "pose": {
+            "x": 0.227784,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": -2.721244
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              140,
+              160,
+              200,
+              210
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-001:0037",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000037:pan:004",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.590681,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": -2.59114
+            },
+            "size": [
+              0.163105,
+              0.181822,
+              0.163105
+            ]
+          },
+          "confidence": 0.8,
+          "label": "pan",
+          "object_id": "pan_00_72_00_90_02_42",
+          "pose": {
+            "x": 0.590681,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": -2.59114
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000037/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-001:0037"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 37
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": 0.75,
+        "y": 0.900999128818512,
+        "yaw": 182.4199981689453,
+        "z": -1.75
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              42,
+              26,
+              320,
+              106
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-001:0039",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000039/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000039:cabinet:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000039/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.645976,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": -2.6959
+            },
+            "size": [
+              0.827801,
+              0.320439,
+              0.827801
+            ]
+          },
+          "confidence": 0.9,
+          "label": "cabinet",
+          "object_id": "cabinet_00_72_02_02_02_46",
+          "pose": {
+            "x": 0.645976,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": -2.6959
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000039/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000039/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-001:0039"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 39
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -0.75,
+        "y": 0.900999128818512,
+        "yaw": 178.2100067138672,
+        "z": -1.75
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              0,
+              63,
+              320,
+              205
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-001:0040",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000040/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-001:FloorPlan1:000040:cabinet:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000040/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -0.724706,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": -2.602158
+            },
+            "size": [
+              0.855196,
+              0.507967,
+              0.855196
+            ]
+          },
+          "confidence": 0.9,
+          "label": "cabinet",
+          "object_id": "cabinet_00_68_02_02_02_46",
+          "pose": {
+            "x": -0.724706,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": -2.602158
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000040/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-001",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-001/000040/rgb.ppm",
+            "scene_id": "FloorPlan1",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-001:0040"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 40
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": 0.75,
+        "y": 0.9009992480278015,
+        "yaw": 261.25,
+        "z": 0.0
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              210,
+              230,
+              260,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-005:0041",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-005:FloorPlan2:000041:bread:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-005",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/rgb.ppm",
+            "scene_id": "FloorPlan2",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.040734,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": 0.056637
+            },
+            "size": [
+              0.110351,
+              0.05,
+              0.110351
+            ]
+          },
+          "confidence": 0.8,
+          "label": "bread",
+          "object_id": "bread_00_26_00_99_00_08",
+          "pose": {
+            "x": 0.040734,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": 0.056637
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              185,
+              225,
+              210,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-005:0041",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-005:FloorPlan2:000041:egg:002",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-005",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/rgb.ppm",
+            "scene_id": "FloorPlan2",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.040728,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": -0.024233
+            },
+            "size": [
+              0.057257,
+              0.05,
+              0.057257
+            ]
+          },
+          "confidence": 0.9,
+          "label": "egg",
+          "object_id": "egg_00_13_00_95_00_17",
+          "pose": {
+            "x": 0.040728,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": -0.024233
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              233,
+              163,
+              250,
+              192
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-005:0041",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-005:FloorPlan2:000041:mug:003",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-005",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/rgb.ppm",
+            "scene_id": "FloorPlan2",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -1.428447,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": 0.216131
+            },
+            "size": [
+              0.119262,
+              0.265027,
+              0.119262
+            ]
+          },
+          "confidence": 0.7,
+          "label": "mug",
+          "object_id": "mug_00_24_00_92_00_26",
+          "pose": {
+            "x": -1.428447,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": 0.216131
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-005",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000041/rgb.ppm",
+            "scene_id": "FloorPlan2",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-005:0041"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 41
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -2.5,
+        "y": 0.9016162753105164,
+        "yaw": 265.719970703125,
+        "z": 0.0
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              146,
+              169,
+              156,
+              186
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-004:0043",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000043/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:000043:candle:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000043/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -3.298159,
+              "y": 0.901616,
+              "yaw": 0.0,
+              "z": -0.081163
+            },
+            "size": [
+              0.05,
+              0.060149,
+              0.05
+            ]
+          },
+          "confidence": 0.6,
+          "label": "candle",
+          "object_id": "candle_03_11_00_23_00_05",
+          "pose": {
+            "x": -3.298159,
+            "y": 0.901616,
+            "yaw": 0.0,
+            "z": -0.081163
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000043/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000043/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-004:0043"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 43
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -2.5,
+        "y": 0.9016162753105164,
+        "yaw": 271.760009765625,
+        "z": 0.0
+      },
+      "objects": [],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000044/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000044/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-004:0044"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 44
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -3.0,
+        "y": 0.9016162753105164,
+        "yaw": 209.16000366210938,
+        "z": 2.25
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              0,
+              228,
+              55,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-004:0045",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000045/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:000045:floor:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000045/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -3.19917,
+              "y": 0.901616,
+              "yaw": 0.0,
+              "z": 0.549569
+            },
+            "size": [
+              0.276844,
+              0.08569,
+              0.276844
+            ]
+          },
+          "confidence": 0.8,
+          "label": "floor",
+          "object_id": "floor_01_44_00_04_01_85",
+          "pose": {
+            "x": -3.19917,
+            "y": 0.901616,
+            "yaw": 0.0,
+            "z": 0.549569
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000045/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000045/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-004:0045"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 45
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -3.0,
+        "y": 0.9016162753105164,
+        "yaw": 249.8599853515625,
+        "z": 2.25
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              62,
+              773,
+              131,
+              992
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-004:0046",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:000046:faucet:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -3.482059,
+              "y": 0.901616,
+              "yaw": 0.0,
+              "z": 1.956769
+            },
+            "size": [
+              0.121088,
+              0.507418,
+              0.121088
+            ]
+          },
+          "confidence": 0.8,
+          "label": "faucet",
+          "object_id": "faucet_03_40_01_02_01_53",
+          "pose": {
+            "x": -3.482059,
+            "y": 0.901616,
+            "yaw": 0.0,
+            "z": 1.956769
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              430,
+              770,
+              530,
+              1000
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-004:0046",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:000046:handtowel:002",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -3.422378,
+              "y": 0.901616,
+              "yaw": 0.0,
+              "z": 2.446908
+            },
+            "size": [
+              0.103763,
+              0.316425,
+              0.103763
+            ]
+          },
+          "confidence": 0.8,
+          "label": "handtowel",
+          "object_id": "handtowel_03_42_01_34_02_10",
+          "pose": {
+            "x": -3.422378,
+            "y": 0.901616,
+            "yaw": 0.0,
+            "z": 2.446908
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-004/000046/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-004:0046"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 46
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -1.0,
+        "y": 0.9009992480278015,
+        "yaw": 225.00999450683594,
+        "z": -0.75
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              0,
+              0,
+              318,
+              198
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-005:0047",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000047/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-005:FloorPlan2:000047:cabinet:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-005",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000047/rgb.ppm",
+            "scene_id": "FloorPlan2",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -1.510901,
+              "y": 0.900999,
+              "yaw": 0.0,
+              "z": -1.262326
+            },
+            "size": [
+              0.72127,
+              0.599927,
+              0.72127
+            ]
+          },
+          "confidence": 0.9,
+          "label": "cabinet",
+          "object_id": "cabinet_00_63_02_02_01_45",
+          "pose": {
+            "x": -1.510901,
+            "y": 0.900999,
+            "yaw": 0.0,
+            "z": -1.262326
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000047/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-005",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p2/ai2thor-real-small-episode-005/000047/rgb.ppm",
+            "scene_id": "FloorPlan2",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-005:0047"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 47
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -0.5,
+        "y": 0.9026566743850708,
+        "yaw": 334.67999267578125,
+        "z": 5.25
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              270,
+              170,
+              650,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-002:200001",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200001/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200001:armchair:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200001/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -0.18538,
+              "y": 0.902657,
+              "yaw": 0.0,
+              "z": 6.220057
+            },
+            "size": [
+              0.883816,
+              0.219601,
+              0.883816
+            ]
+          },
+          "confidence": 0.85,
+          "label": "armchair",
+          "object_id": "armchair_00_85_00_00_05_98",
+          "pose": {
+            "x": -0.18538,
+            "y": 0.902657,
+            "yaw": 0.0,
+            "z": 6.220057
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200001/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200001/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-002:200001"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 200001
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -2.5,
+        "y": 0.9026566743850708,
+        "yaw": 5.53000020980835,
+        "z": 4.25
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              133,
+              114,
+              146,
+              121
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-002:200002",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200002/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200002:bowl:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200002/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -2.431625,
+              "y": 0.902657,
+              "yaw": 0.0,
+              "z": 6.266024
+            },
+            "size": [
+              0.088079,
+              0.067108,
+              0.088079
+            ]
+          },
+          "confidence": 0.8,
+          "label": "bowl",
+          "object_id": "bowl_02_45_00_60_04_79",
+          "pose": {
+            "x": -2.431625,
+            "y": 0.902657,
+            "yaw": 0.0,
+            "z": 6.266024
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200002/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200002/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-002:200002"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 200002
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -3.25,
+        "y": 0.9026566743850708,
+        "yaw": 350.5899963378906,
+        "z": 5.75
+      },
+      "objects": [],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200003/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200003/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-002:200003"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 200003
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -1.75,
+        "y": 0.9026566743850708,
+        "yaw": 348.17999267578125,
+        "z": 0.5
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              133,
+              193,
+              192,
+              233
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-002:200007",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:book:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -1.922955,
+              "y": 0.902657,
+              "yaw": 0.0,
+              "z": 1.367035
+            },
+            "size": [
+              0.165765,
+              0.15103,
+              0.165765
+            ]
+          },
+          "confidence": 0.9,
+          "label": "book",
+          "object_id": "book_01_87_00_68_01_17",
+          "pose": {
+            "x": -1.922955,
+            "y": 0.902657,
+            "yaw": 0.0,
+            "z": 1.367035
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              186,
+              176,
+              256,
+              236
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-002:200007",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:chair:002",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -1.769068,
+              "y": 0.902657,
+              "yaw": 0.0,
+              "z": 1.703313
+            },
+            "size": [
+              0.262191,
+              0.30035,
+              0.262191
+            ]
+          },
+          "confidence": 0.9,
+          "label": "chair",
+          "object_id": "chair_01_34_00_02_01_43",
+          "pose": {
+            "x": -1.769068,
+            "y": 0.902657,
+            "yaw": 0.0,
+            "z": 1.703313
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              66,
+              186,
+              86,
+              211
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-002:200007",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:creditcard:003",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -2.232501,
+              "y": 0.902657,
+              "yaw": 0.0,
+              "z": 1.468239
+            },
+            "size": [
+              0.068679,
+              0.113375,
+              0.068679
+            ]
+          },
+          "confidence": 0.8,
+          "label": "creditcard",
+          "object_id": "chair_01_86_00_02_01_04",
+          "pose": {
+            "x": -2.232501,
+            "y": 0.902657,
+            "yaw": 0.0,
+            "z": 1.468239
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              62,
+              132,
+              222,
+              232
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-002:200007",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:diningtable:004",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -2.031558,
+              "y": 0.902657,
+              "yaw": 0.0,
+              "z": 1.553726
+            },
+            "size": [
+              0.547931,
+              0.458311,
+              0.547931
+            ]
+          },
+          "confidence": 0.95,
+          "label": "diningtable",
+          "object_id": "chair_01_86_00_02_01_84",
+          "pose": {
+            "x": -2.031558,
+            "y": 0.902657,
+            "yaw": 0.0,
+            "z": 1.553726
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              162,
+              142,
+              212,
+              182
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-002:200007",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:laptop:005",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -1.880734,
+              "y": 0.902657,
+              "yaw": 0.0,
+              "z": 1.581453
+            },
+            "size": [
+              0.17297,
+              0.185406,
+              0.17297
+            ]
+          },
+          "confidence": 0.9,
+          "label": "laptop",
+          "object_id": "chair_02_51_00_02_00_99",
+          "pose": {
+            "x": -1.880734,
+            "y": 0.902657,
+            "yaw": 0.0,
+            "z": 1.581453
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              133,
+              193,
+              192,
+              233
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-002:200007",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200007:newspaper:006",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -1.922955,
+              "y": 0.902657,
+              "yaw": 0.0,
+              "z": 1.367035
+            },
+            "size": [
+              0.165765,
+              0.15103,
+              0.165765
+            ]
+          },
+          "confidence": 0.85,
+          "label": "newspaper",
+          "object_id": "chair_02_52_00_02_01_88",
+          "pose": {
+            "x": -1.922955,
+            "y": 0.902657,
+            "yaw": 0.0,
+            "z": 1.367035
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200007/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-002:200007"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 200007
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": 2.5,
+        "y": 0.910415768623352,
+        "yaw": 95.7300033569336,
+        "z": 0.25
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              135,
+              210,
+              215,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-003:200009",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-003/200009/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:200009:box:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-003/200009/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 3.567899,
+              "y": 0.910416,
+              "yaw": 0.0,
+              "z": 0.090177
+            },
+            "size": [
+              0.273,
+              0.139309,
+              0.273
+            ]
+          },
+          "confidence": 0.8,
+          "label": "box",
+          "object_id": "box_02_73_00_20_00_89",
+          "pose": {
+            "x": 3.567899,
+            "y": 0.910416,
+            "yaw": 0.0,
+            "z": 0.090177
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-003/200009/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-003/200009/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-003:200009"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 200009
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -1.25,
+        "y": 0.9016162753105164,
+        "yaw": 88.88999938964844,
+        "z": 1.0
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              138,
+              213,
+              168,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-004:200010",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200010/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:200010:cloth:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200010/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.114296,
+              "y": 0.901616,
+              "yaw": 0.0,
+              "z": 1.054255
+            },
+            "size": [
+              0.132243,
+              0.159261,
+              0.132243
+            ]
+          },
+          "confidence": 0.8,
+          "label": "cloth",
+          "object_id": "cloth_00_27_00_04_01_02",
+          "pose": {
+            "x": 0.114296,
+            "y": 0.901616,
+            "yaw": 0.0,
+            "z": 1.054255
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200010/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200010/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-004:200010"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 200010
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -1.25,
+        "y": 0.9016162753105164,
+        "yaw": 125.02000427246094,
+        "z": 0.5
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              0,
+              178,
+              205,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-004:200011",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200011/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:200011:bathtub:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200011/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -0.053103,
+              "y": 0.901616,
+              "yaw": 0.0,
+              "z": -0.055305
+            },
+            "size": [
+              0.836147,
+              0.340953,
+              0.836147
+            ]
+          },
+          "confidence": 0.9,
+          "label": "bathtub",
+          "object_id": "bathtub_00_21_00_36_00_92",
+          "pose": {
+            "x": -0.053103,
+            "y": 0.901616,
+            "yaw": 0.0,
+            "z": -0.055305
+          },
+          "visible": true
+        },
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              176,
+              188,
+              222,
+              222
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-004:200011",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200011/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:200011:faucet:002",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200011/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -0.810742,
+              "y": 0.901616,
+              "yaw": 0.0,
+              "z": 0.103397
+            },
+            "size": [
+              0.086264,
+              0.085652,
+              0.086264
+            ]
+          },
+          "confidence": 0.9,
+          "label": "faucet",
+          "object_id": "faucet_00_14_00_61_00_28",
+          "pose": {
+            "x": -0.810742,
+            "y": 0.901616,
+            "yaw": 0.0,
+            "z": 0.103397
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200011/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200011/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-004:200011"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 200011
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": 2.75,
+        "y": 0.910415768623352,
+        "yaw": 15.920000076293945,
+        "z": 1.5
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              145,
+              155,
+              175,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-003:200012",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-003/200012/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-003:FloorPlan301:200012:baseballbat:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-003/200012/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 2.94919,
+              "y": 0.910416,
+              "yaw": 0.0,
+              "z": 2.194209
+            },
+            "size": [
+              0.069965,
+              0.258795,
+              0.069965
+            ]
+          },
+          "confidence": 0.8,
+          "label": "baseballbat",
+          "object_id": "baseballbat_02_84_00_29_01_82",
+          "pose": {
+            "x": 2.94919,
+            "y": 0.910416,
+            "yaw": 0.0,
+            "z": 2.194209
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-003/200012/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-003",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-003/200012/rgb.ppm",
+            "scene_id": "FloorPlan301",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-003:200012"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 200012
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -4.25,
+        "y": 0.9026566743850708,
+        "yaw": 350.6600036621094,
+        "z": 5.25
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              105,
+              185,
+              225,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-002:200013",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200013/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-002:FloorPlan201:200013:armchair:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200013/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": -4.399531,
+              "y": 0.902657,
+              "yaw": 0.0,
+              "z": 6.268494
+            },
+            "size": [
+              0.389189,
+              0.240161,
+              0.389189
+            ]
+          },
+          "confidence": 0.9,
+          "label": "armchair",
+          "object_id": "armchair_04_38_00_00_06_02",
+          "pose": {
+            "x": -4.399531,
+            "y": 0.902657,
+            "yaw": 0.0,
+            "z": 6.268494
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200013/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-002",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-002/200013/rgb.ppm",
+            "scene_id": "FloorPlan201",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-002:200013"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 200013
+    },
+    {
+      "agent_id": "agent",
+      "agent_pose": {
+        "x": -0.5,
+        "y": 0.9016162753105164,
+        "yaw": 76.72999572753906,
+        "z": 3.75
+      },
+      "objects": [
+        {
+          "attributes": {
+            "bbox_2d_xyxy": [
+              133,
+              213,
+              183,
+              240
+            ],
+            "current_location_id": "visible_frame_region:ai2thor-real-small-episode-004:200014",
+            "current_location_relation": "IN_REGION",
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200014/depth.npy",
+            "detection_id": "ai2thor-real-small-episode-004:FloorPlan401:200014:garbagecan:001",
+            "detector": "qwen37_vlm_rgbd_detector",
+            "detector_method": "vlm_bbox_depth_projection_v1",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "evidence_kinds": [
+              "depth",
+              "detector",
+              "rgb"
+            ],
+            "model": "qwen3.7-plus",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200014/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source": "qwen37_vlm_rgbd_detector",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector",
+            "targeted_detection": true
+          },
+          "bbox": {
+            "center": {
+              "x": 0.490615,
+              "y": 0.901616,
+              "yaw": 0.0,
+              "z": 3.988546
+            },
+            "size": [
+              0.16239,
+              0.118874,
+              0.16239
+            ]
+          },
+          "confidence": 0.8,
+          "label": "garbagecan",
+          "object_id": "garbagecan_00_05_00_00_03_88",
+          "pose": {
+            "x": 0.490615,
+            "y": 0.901616,
+            "yaw": 0.0,
+            "z": 3.988546
+          },
+          "visible": true
+        }
+      ],
+      "regions": [
+        {
+          "attributes": {
+            "depth_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200014/depth.npy",
+            "episode_id": "ai2thor-real-small-episode-004",
+            "rgb_path": "handoffs/ai2thor-real-small/inputs/frame-assets/coverage-ai2thor-visible-p3-offset/ai2thor-real-small-episode-004/200014/rgb.ppm",
+            "scene_id": "FloorPlan401",
+            "source_kind": "detector",
+            "source_name": "qwen37_vlm_rgbd_detector"
+          },
+          "label": "visible frame region",
+          "node_id": "visible_frame_region:ai2thor-real-small-episode-004:200014"
+        }
+      ],
+      "rooms": [],
+      "schema_version": "dsg-spatialqa-lab.scene-observation.v1",
+      "step": 200014
+    }
+  ],
+  "schema_version": "dsg-spatialqa-lab.scene-observation-sequence.v1",
+  "steps": [
+    7,
+    16,
+    21,
+    27,
+    29,
+    32,
+    33,
+    34,
+    36,
+    37,
+    39,
+    40,
+    41,
+    43,
+    44,
+    45,
+    46,
+    47,
+    200001,
+    200002,
+    200003,
+    200007,
+    200009,
+    200010,
+    200011,
+    200012,
+    200013,
+    200014
+  ]
+}

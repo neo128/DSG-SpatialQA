@@ -24,6 +24,7 @@ PREDICTED_DSG_EVIDENCE_REPORT_SCHEMA_VERSION = (
 )
 DEFAULT_REQUIRED_PREDICTED_DSG_EVIDENCE_KINDS = ("depth", "detector", "rgb")
 NON_REAL_PREDICTED_SOURCE_MARKERS = (
+    "ai2thor",
     "dummy",
     "fake",
     "mock",
@@ -273,6 +274,10 @@ def _evidence_summary(
 ) -> dict[str, Any]:
     objects = [obj for observation in observations for obj in observation.objects]
     evidence_kind_counts = _evidence_kind_counts(objects)
+    state_evidence_objects = [obj for obj in objects if _has_state_evidence(obj)]
+    invalid_state_evidence_object_ids = _invalid_state_evidence_object_ids(
+        state_evidence_objects
+    )
     detector_names = sorted(
         {
             str(obj.attributes["detector"])
@@ -287,6 +292,7 @@ def _evidence_summary(
         "evidence_kind_counts": evidence_kind_counts,
         "hidden_object_observation_count": sum(1 for obj in objects if not obj.visible),
         "input_kind": input_kind,
+        "invalid_state_evidence_object_ids": invalid_state_evidence_object_ids,
         "object_observation_count": len(objects),
         "observation_count": len(observations),
         "observation_sequence_digest": (
@@ -295,6 +301,7 @@ def _evidence_summary(
             else _string_or_none(predicted_graph_report.get("observation_sequence_digest"))
         ),
         "source_counts": _source_counts(objects),
+        "state_evidence_object_observation_count": len(state_evidence_objects),
         "visible_object_observation_count": sum(1 for obj in objects if obj.visible),
     }
 
@@ -322,6 +329,9 @@ def _checks(
         if "mock" in source.lower() or source == "observation_sequence"
     )
     non_real_sources = _non_real_sources(source_counts)
+    invalid_state_evidence_object_ids = _string_tuple_from_value(
+        evidence_summary.get("invalid_state_evidence_object_ids")
+    )
     load_check: dict[str, Any] = {
         "name": "observation_sequence_loads",
         "passed": input_kind == "observation_sequence" and load_error is None,
@@ -381,6 +391,15 @@ def _checks(
             "passed": len(non_real_sources) == 0,
             "actual": non_real_sources,
         },
+        {
+            "name": "detector_state_evidence_valid",
+            "passed": len(invalid_state_evidence_object_ids) == 0,
+            "invalid_object_ids": list(invalid_state_evidence_object_ids),
+            "state_evidence_object_observation_count": _int_value(
+                evidence_summary,
+                "state_evidence_object_observation_count",
+            ),
+        },
     ]
 
 
@@ -398,6 +417,37 @@ def _evidence_kind_counts(objects: Sequence[Any]) -> dict[str, int]:
         if _has_string(attributes, ("rgb_path", "rgb_file", "rgb_image")):
             counts["rgb"] += 1
     return {key: counts[key] for key in sorted(counts)}
+
+
+def _invalid_state_evidence_object_ids(objects: Sequence[Any]) -> list[str]:
+    invalid: list[str] = []
+    for obj in objects:
+        if not _state_evidence_valid(obj):
+            object_id = getattr(obj, "object_id", None)
+            invalid.append(object_id if isinstance(object_id, str) else "unknown")
+    return sorted(set(invalid))
+
+
+def _has_state_evidence(obj: Any) -> bool:
+    states = _attributes(obj).get("states")
+    return isinstance(states, Mapping) and bool(states)
+
+
+def _state_evidence_valid(obj: Any) -> bool:
+    attributes = _attributes(obj)
+    if getattr(obj, "visible", None) is not True:
+        return False
+    source_kind = attributes.get("source_kind")
+    detector_name = attributes.get("detector")
+    source_text = _source(obj).lower()
+    if (
+        source_kind != "detector"
+        and not (isinstance(detector_name, str) and detector_name)
+        and "detector" not in source_text
+    ):
+        return False
+    evidence_kinds = set(_string_tuple_from_value(attributes.get("evidence_kinds")))
+    return {"depth", "detector", "rgb"}.issubset(evidence_kinds)
 
 
 def _source_counts(objects: Sequence[Any]) -> dict[str, int]:

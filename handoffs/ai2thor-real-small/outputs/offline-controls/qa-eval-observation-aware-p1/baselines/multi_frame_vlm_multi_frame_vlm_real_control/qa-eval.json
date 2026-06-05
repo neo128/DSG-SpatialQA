@@ -1,0 +1,246 @@
+{
+  "breakdown": {
+    "by_episode_id": {
+      "ai2thor-real-small-episode-003": {
+        "case_count": 1,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      },
+      "ai2thor-real-small-episode-004": {
+        "case_count": 2,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.0,
+        "mean_evidence_node_recall": 0.0
+      }
+    },
+    "by_question_type": {
+      "object_location": {
+        "case_count": 2,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.0,
+        "mean_evidence_node_recall": 0.0
+      },
+      "reobserve_targets": {
+        "case_count": 1,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      }
+    },
+    "by_reference_frame": {
+      "none": {
+        "case_count": 3,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.333333,
+        "mean_evidence_node_recall": 0.333333
+      }
+    },
+    "by_research_axis": {
+      "dynamic_memory": {
+        "case_count": 0,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.0,
+        "mean_evidence_node_recall": 0.0
+      },
+      "graph_tool_query": {
+        "case_count": 2,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.0,
+        "mean_evidence_node_recall": 0.0
+      },
+      "spatial_qa": {
+        "case_count": 3,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.333333,
+        "mean_evidence_node_recall": 0.333333
+      }
+    },
+    "by_scene_id": {
+      "FloorPlan301": {
+        "case_count": 1,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      },
+      "FloorPlan401": {
+        "case_count": 2,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.0,
+        "mean_evidence_node_recall": 0.0
+      }
+    },
+    "by_tag": {
+      "benchmark": {
+        "case_count": 3,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.333333,
+        "mean_evidence_node_recall": 0.333333
+      },
+      "generated": {
+        "case_count": 3,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.333333,
+        "mean_evidence_node_recall": 0.333333
+      },
+      "object_location": {
+        "case_count": 2,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.0,
+        "mean_evidence_node_recall": 0.0
+      },
+      "qa": {
+        "case_count": 3,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.333333,
+        "mean_evidence_node_recall": 0.333333
+      },
+      "real": {
+        "case_count": 3,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 0.333333,
+        "mean_evidence_node_recall": 0.333333
+      },
+      "reobserve_targets": {
+        "case_count": 1,
+        "exact_match_count": 0,
+        "exact_match_rate": 0.0,
+        "mean_evidence_edge_recall": 1.0,
+        "mean_evidence_node_recall": 1.0
+      }
+    }
+  },
+  "cases": [
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0087:reobserve_targets:all",
+      "confidence": 0.1,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "error": null,
+      "evidence_edge_recall": 1.0,
+      "evidence_node_recall": 1.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-003:FloorPlan301:0087:reobserve_targets:all",
+      "question_type": "reobserve_targets",
+      "reference_frame": null,
+      "scene_id": "FloorPlan301",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "reobserve_targets"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92",
+      "confidence": 0.9,
+      "episode_id": "ai2thor-real-small-episode-004",
+      "error": null,
+      "evidence_edge_recall": 0.0,
+      "evidence_node_recall": 0.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan401",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    },
+    {
+      "answer_graph_consistent": false,
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0002:object_location:bathtubbasin_00_16_00_04_00_88",
+      "confidence": 0.9,
+      "episode_id": "ai2thor-real-small-episode-004",
+      "error": null,
+      "evidence_edge_recall": 0.0,
+      "evidence_node_recall": 0.0,
+      "exact_match": false,
+      "multiple_choice": false,
+      "multiple_choice_correct": null,
+      "numeric_absolute_errors": [],
+      "prediction_id": "ai2thor-real-small-episode-004:FloorPlan401:0002:object_location:bathtubbasin_00_16_00_04_00_88",
+      "question_type": "object_location",
+      "reference_frame": null,
+      "scene_id": "FloorPlan401",
+      "tags": [
+        "generated",
+        "benchmark",
+        "real",
+        "qa",
+        "object_location"
+      ]
+    }
+  ],
+  "gold_digest": "a0704f9aae79ac3b85c5cc4d25b100962cb4d4baaa5fb400647032f2043b76e0",
+  "gold_path": "handoffs/ai2thor-real-small/inputs/traces/evidence-observable-p1-qa.jsonl",
+  "metrics": {
+    "answer_graph_consistency": {
+      "count": 0,
+      "rate": 0.0,
+      "total": 3
+    },
+    "evidence_edge_recall": {
+      "average": 0.333333,
+      "total": 3
+    },
+    "evidence_node_recall": {
+      "average": 0.333333,
+      "total": 3
+    },
+    "exact_match": {
+      "count": 0,
+      "rate": 0.0,
+      "total": 3
+    },
+    "multiple_choice_accuracy": {
+      "count": 0,
+      "rate": 0.0,
+      "total": 0
+    },
+    "numeric_mae": {
+      "count": 0,
+      "mean_absolute_error": null,
+      "total_absolute_error": 0
+    }
+  },
+  "prediction_digest": "640dc0b92593627c41c8602f58ed2d5f6c00c89103cfc054d93f261b665d4474",
+  "prediction_path": "handoffs/ai2thor-real-small/outputs/offline-controls/imports/multi_frame_vlm/predictions.jsonl",
+  "report_digest": "fb9c871122dedcedf79e166dd0cdf1966e0eb5c8f97475db9bebcecfd95d4683",
+  "schema_version": "dsg-spatialqa-lab.qa-eval-report.v1",
+  "summary": {
+    "case_count": 3,
+    "exact_match_count": 0,
+    "exact_match_rate": 0.0,
+    "matched_prediction_count": 3,
+    "missing_prediction_count": 0,
+    "prediction_count": 60
+  }
+}

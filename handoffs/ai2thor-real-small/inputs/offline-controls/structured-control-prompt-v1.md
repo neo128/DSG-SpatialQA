@@ -25,18 +25,28 @@ Each request contains:
 
 - `case_id`: stable QA id.
 - `question_type`: one of the benchmark question types.
+- `question_text`: human-readable question text. Use this as the primary
+  prompt for VLM-only and multi-frame VLM runs.
 - `question`: the exact structured QA question object.
+- `target`: non-gold target identity derived from the question, including
+  object ids and readable labels when present in the question.
 - `answer_type`: expected evaluator answer type.
+- `answer_schema_hint`: evaluator-ready output shape and uncertainty codes.
 - `choices`: candidate choices, if any.
 - `observation_scope`: one of `single_frame`, `multi_frame`, `caption_memory`,
   or `graph_text`.
+- `primary_frame`: the preferred single-frame evidence record for VLM-only,
+  with `frame_id`, `step`, `rgb_path`, `rgb_digest`, optional `depth_path`, and
+  optional `segmentation_path`.
 - `frames`: zero or more frame records with `frame_id`, `step`, `rgb_path`,
-  `rgb_digest`, optional `depth_path`, optional `segmentation_path`, and known
-  visible object ids.
+  `rgb_digest`, optional `depth_path`, and optional `segmentation_path`.
 - `context`: captions, memory entries, detector observations, or graph-text
   evidence. This field is the only non-image context the model may rely on.
-- `required_nodes_hint`: optional object/state ids that the benchmark expects.
-- `required_edges_hint`: optional relation ids that the benchmark expects.
+
+The request must not contain gold answers, gold evidence nodes, gold evidence
+edges, hidden evaluator-only fields, or oracle-only destination ids for
+object-location answers. For VLM-only, it must also avoid simulator or detector
+visibility metadata such as `visible_object_ids` and `visible_object_labels`.
 
 ## Output JSON
 
@@ -96,6 +106,19 @@ Field rules:
   `ambiguous_evidence`; keep `answer` as the best partial structured object or
   `{}`.
 
+## VLM-only Calibration Rules
+
+- Use `question_text` and `target.label` as the visual query. Do not expect a
+  VLM to infer the target class from an opaque simulator object id.
+- For single-frame VLM-only runs, answer only from the provided RGB frame. If
+  the target is not visible, return `error="target_not_observed"` instead of
+  guessing its hidden room-level location.
+- For object-location answers, use `current_location.dst` only when a visible
+  evidence/context object id is available. Otherwise set that id to `null` and
+  provide a readable `answer_text`.
+- Do not convert a natural-language location into an evaluator object id by
+  looking at gold QA answers or oracle graph evidence.
+
 ## Anti-Hallucination Rules
 
 - Do not copy the gold answer.
@@ -117,4 +140,3 @@ The importer should map:
 - `error` -> prediction error.
 - Full JSON object -> prediction metadata under `structured_response`.
 - `evidence` -> prediction metadata under `evidence`.
-

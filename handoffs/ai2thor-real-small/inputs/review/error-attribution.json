@@ -11,7 +11,11 @@
       "missing_required_nodes": [],
       "model_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 10
+        },
         "label": "apple",
         "last_seen_step": 10,
         "object_id": "apple_00_47_01_15_00_48",
@@ -46,7 +50,11 @@
       "oracle_graph_tool_correct": true,
       "predicted_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 10
+        },
         "label": "apple",
         "last_seen_step": 10,
         "object_id": "apple_00_47_01_15_00_48",
@@ -249,7 +257,11 @@
       "missing_required_nodes": [],
       "model_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 10
+        },
         "label": "bread",
         "last_seen_step": 10,
         "object_id": "bread_00_52_01_17_00_03",
@@ -284,7 +296,11 @@
       "oracle_graph_tool_correct": true,
       "predicted_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 10
+        },
         "label": "bread",
         "last_seen_step": 10,
         "object_id": "bread_00_52_01_17_00_03",
@@ -325,7 +341,11 @@
       "missing_required_nodes": [],
       "model_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 10
+        },
         "label": "butterknife",
         "last_seen_step": 10,
         "object_id": "butterknife_00_41_01_11_00_46",
@@ -360,7 +380,11 @@
       "oracle_graph_tool_correct": true,
       "predicted_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 10
+        },
         "label": "butterknife",
         "last_seen_step": 10,
         "object_id": "butterknife_00_41_01_11_00_46",
@@ -1177,7 +1201,11 @@
       ],
       "model_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 14
+        },
         "label": "chair",
         "last_seen_step": 14,
         "object_id": "chair_02_51_00_02_00_99",
@@ -1212,7 +1240,11 @@
       "oracle_graph_tool_correct": true,
       "predicted_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 14
+        },
         "label": "chair",
         "last_seen_step": 14,
         "object_id": "chair_02_51_00_02_00_99",
@@ -1256,7 +1288,11 @@
       ],
       "model_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 14
+        },
         "label": "chair",
         "last_seen_step": 14,
         "object_id": "chair_02_52_00_02_01_88",
@@ -1291,7 +1327,11 @@
       "oracle_graph_tool_correct": true,
       "predicted_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 14
+        },
         "label": "chair",
         "last_seen_step": 14,
         "object_id": "chair_02_52_00_02_01_88",
@@ -2669,14 +2709,16 @@
       "answer_correct": false,
       "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92",
       "error_category": "benchmark_or_engine_error",
-      "evidence_error_category": "missing_relation",
-      "missing_required_edges": [
-        "bathtub_00_21_00_36_00_92-IN_ROOM-ai2thor_room-40"
-      ],
+      "evidence_error_category": "none",
+      "missing_required_edges": [],
       "missing_required_nodes": [],
       "model_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 40
+        },
         "label": "bathtub",
         "last_seen_step": 40,
         "object_id": "bathtub_00_21_00_36_00_92",
@@ -2695,7 +2737,11 @@
       "oracle_graph_tool_correct": false,
       "predicted_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 40
+        },
         "label": "bathtub",
         "last_seen_step": 40,
         "object_id": "bathtub_00_21_00_36_00_92",
@@ -2709,12 +2755,13 @@
         "visible": true
       },
       "predicted_evidence_sources": [
-        "ai2thor"
+        "ai2thor",
+        "containment_inference"
       ],
       "predicted_graph_tool_correct": false,
       "prediction_error": null,
       "question_type": "object_location",
-      "required_edges_present": false,
+      "required_edges_present": true,
       "required_nodes_present": true,
       "tags": [
         "generated",
@@ -2729,14 +2776,16 @@
       "answer_correct": false,
       "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0002:object_location:bathtubbasin_00_16_00_04_00_88",
       "error_category": "benchmark_or_engine_error",
-      "evidence_error_category": "missing_relation",
-      "missing_required_edges": [
-        "bathtubbasin_00_16_00_04_00_88-IN_ROOM-ai2thor_room-40"
-      ],
+      "evidence_error_category": "none",
+      "missing_required_edges": [],
       "missing_required_nodes": [],
       "model_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 40
+        },
         "label": "bathtubbasin",
         "last_seen_step": 40,
         "object_id": "bathtubbasin_00_16_00_04_00_88",
@@ -2755,7 +2804,11 @@
       "oracle_graph_tool_correct": false,
       "predicted_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 40
+        },
         "label": "bathtubbasin",
         "last_seen_step": 40,
         "object_id": "bathtubbasin_00_16_00_04_00_88",
@@ -2769,12 +2822,13 @@
         "visible": true
       },
       "predicted_evidence_sources": [
-        "ai2thor"
+        "ai2thor",
+        "containment_inference"
       ],
       "predicted_graph_tool_correct": false,
       "prediction_error": null,
       "question_type": "object_location",
-      "required_edges_present": false,
+      "required_edges_present": true,
       "required_nodes_present": true,
       "tags": [
         "generated",
@@ -2989,7 +3043,11 @@
       ],
       "model_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 39
+        },
         "label": "floor",
         "last_seen_step": 39,
         "object_id": "floor_01_44_00_04_01_85",
@@ -3008,7 +3066,11 @@
       "oracle_graph_tool_correct": false,
       "predicted_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 39
+        },
         "label": "floor",
         "last_seen_step": 39,
         "object_id": "floor_01_44_00_04_01_85",
@@ -3258,7 +3320,11 @@
       ],
       "model_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 49
+        },
         "label": "bowl",
         "last_seen_step": 49,
         "object_id": "bowl_00_28_00_92_01_09",
@@ -3277,7 +3343,11 @@
       "oracle_graph_tool_correct": false,
       "predicted_answer": {
         "confidence": 0.92,
-        "current_location": null,
+        "current_location": {
+          "dst": "ai2thor_room",
+          "relation": "IN_ROOM",
+          "step": 49
+        },
         "label": "bowl",
         "last_seen_step": 49,
         "object_id": "bowl_00_28_00_92_01_09",
@@ -3710,11 +3780,11 @@
   "gold_path": "handoffs/ai2thor-real-small/inputs/qa.jsonl",
   "oracle_graph_digest": "1a2bcb62cac4d920f7da7ba75ab862d2d8509fb7349ec702d9ba13b08c3d710d",
   "oracle_graph_path": "handoffs/ai2thor-real-small/outputs/oracle/oracle-graph.json",
-  "predicted_graph_digest": "afd68fcdf36058760f7ea0c88f4f7bec7c0da120a46718a2e1a56f539e97fc8c",
+  "predicted_graph_digest": "dca8487a59a5b82f956ec8d553ff89eef381a08c958cfa69214c50e98153344a",
   "predicted_graph_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph.json",
-  "prediction_digest": "f5f256e765140b771038fbaa407693537ae7df853b2b80e1212182b5d279bb8e",
+  "prediction_digest": "1e13f0942b3db0df3ec4a99871428c23356570faa1e26f3529df4c4fd69d5521",
   "prediction_path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool.jsonl",
-  "report_digest": "126b75e4c82079ca8a5c922cd5d2fd1e9a57375b32aa67c6aea51ae2197b292a",
+  "report_digest": "fef0508fc479299381c3e2dae9316db7de381060a206c30770dff8374360f36c",
   "schema_version": "dsg-spatialqa-lab.error-attribution-report.v1",
   "summary": {
     "answer_correct_count": 1,
@@ -3725,9 +3795,9 @@
     },
     "by_evidence_error_category": {
       "missing_object": 26,
-      "missing_relation": 13,
+      "missing_relation": 11,
       "missing_state": 20,
-      "none": 1
+      "none": 3
     },
     "by_predicted_evidence_source": {
       "ai2thor": {
@@ -3737,11 +3807,22 @@
         },
         "by_evidence_error_category": {
           "missing_object": 1,
-          "missing_relation": 11,
-          "missing_state": 4
+          "missing_relation": 9,
+          "missing_state": 4,
+          "none": 2
         },
         "case_count": 16,
         "error_count": 16
+      },
+      "containment_inference": {
+        "by_error_category": {
+          "benchmark_or_engine_error": 2
+        },
+        "by_evidence_error_category": {
+          "none": 2
+        },
+        "case_count": 2,
+        "error_count": 2
       },
       "missing_predicted_evidence": {
         "by_error_category": {
@@ -3778,8 +3859,9 @@
         },
         "by_evidence_error_category": {
           "missing_object": 26,
-          "missing_relation": 9,
-          "missing_state": 20
+          "missing_relation": 7,
+          "missing_state": 20,
+          "none": 2
         },
         "by_predicted_evidence_source": {
           "ai2thor": {
@@ -3789,11 +3871,22 @@
             },
             "by_evidence_error_category": {
               "missing_object": 1,
-              "missing_relation": 8,
-              "missing_state": 4
+              "missing_relation": 6,
+              "missing_state": 4,
+              "none": 2
             },
             "case_count": 13,
             "error_count": 13
+          },
+          "containment_inference": {
+            "by_error_category": {
+              "benchmark_or_engine_error": 2
+            },
+            "by_evidence_error_category": {
+              "none": 2
+            },
+            "case_count": 2,
+            "error_count": 2
           },
           "missing_predicted_evidence": {
             "by_error_category": {
@@ -3823,9 +3916,9 @@
         },
         "by_evidence_error_category": {
           "missing_object": 26,
-          "missing_relation": 13,
+          "missing_relation": 11,
           "missing_state": 20,
-          "none": 1
+          "none": 3
         },
         "by_predicted_evidence_source": {
           "ai2thor": {
@@ -3835,11 +3928,22 @@
             },
             "by_evidence_error_category": {
               "missing_object": 1,
-              "missing_relation": 11,
-              "missing_state": 4
+              "missing_relation": 9,
+              "missing_state": 4,
+              "none": 2
             },
             "case_count": 16,
             "error_count": 16
+          },
+          "containment_inference": {
+            "by_error_category": {
+              "benchmark_or_engine_error": 2
+            },
+            "by_evidence_error_category": {
+              "none": 2
+            },
+            "case_count": 2,
+            "error_count": 2
           },
           "missing_predicted_evidence": {
             "by_error_category": {

@@ -1,0 +1,12 @@
+{
+  "existing_frame_index_path": "handoffs/ai2thor-real-small/inputs/traces/frame-index.jsonl",
+  "frame_index_digest": "3a0bc198fa1626f8336ff195d71cc72312d2675a3a7267fd3eeb048848dffdd0",
+  "report_digest": "2864e0415fc1982d659e4fc54ea76b08d1d7cb6eed5fb342fa40b375fb7d6600",
+  "schema_version": "dsg-spatialqa-lab.vlm-frame-index-report.v1",
+  "summary": {
+    "frame_count": 98,
+    "source_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-ai2thor-visible-p2.jsonl",
+    "target_visible_frame_count": 96,
+    "visible_object_id_count": 137
+  }
+}

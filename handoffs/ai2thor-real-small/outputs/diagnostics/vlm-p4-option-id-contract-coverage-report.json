@@ -1,0 +1,2076 @@
+{
+  "cases": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48:observation_aware:100034",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62:observation_aware:100034",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54:observation_aware:100037",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "shelf",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_002",
+      "matched_option_source": "support_candidate",
+      "option_count": 6,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "stoveburner",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "cabinet",
+          "option_id": "locopt_004",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "microwave",
+          "option_id": "locopt_005",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_006",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75:observation_aware:100036",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03:observation_aware:100036",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46:observation_aware:100036",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20:observation_aware:100037",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_005",
+      "matched_option_source": "fallback_room",
+      "option_count": 5,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "stoveburner",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "microwave",
+          "option_id": "locopt_004",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_005",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46:observation_aware:100040",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_002",
+      "matched_option_source": "fallback_room",
+      "option_count": 2,
+      "options": [
+        {
+          "destination_label": "microwave",
+          "option_id": "locopt_001",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_002",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46:observation_aware:100039",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_002",
+      "matched_option_source": "fallback_room",
+      "option_count": 2,
+      "options": [
+        {
+          "destination_label": "microwave",
+          "option_id": "locopt_001",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_002",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46:observation_aware:100040",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_002",
+      "matched_option_source": "fallback_room",
+      "option_count": 2,
+      "options": [
+        {
+          "destination_label": "microwave",
+          "option_id": "locopt_001",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_002",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98:observation_aware:200001",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_002",
+      "matched_option_source": "fallback_room",
+      "option_count": 2,
+      "options": [
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_002",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02:observation_aware:200013",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "fallback_room",
+      "option_count": 1,
+      "options": [
+        {
+          "destination_label": "room",
+          "option_id": "locopt_001",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17:observation_aware:200007",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "chair",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "chair",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "diningtable",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79:observation_aware:200002",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "coffeetable",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "coffeetable",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43:observation_aware:200003",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_004",
+      "matched_option_source": "fallback_room",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "armchair",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43:observation_aware:200007",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_003",
+      "matched_option_source": "fallback_room",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "diningtable",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04:observation_aware:200007",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_003",
+      "matched_option_source": "fallback_room",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "diningtable",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84:observation_aware:200007",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_003",
+      "matched_option_source": "fallback_room",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "diningtable",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99:observation_aware:200007",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_003",
+      "matched_option_source": "fallback_room",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "diningtable",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88:observation_aware:200007",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_003",
+      "matched_option_source": "fallback_room",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "diningtable",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47:observation_aware:100032",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "dresser",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "dresser",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "drawer",
+          "option_id": "locopt_002",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82:observation_aware:200012",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "fallback_room",
+      "option_count": 1,
+      "options": [
+        {
+          "destination_label": "room",
+          "option_id": "locopt_001",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24:observation_aware:100021",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_005",
+      "matched_option_source": "fallback_room",
+      "option_count": 5,
+      "options": [
+        {
+          "destination_label": "desk",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "drawer",
+          "option_id": "locopt_004",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_005",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87:observation_aware:100027",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_002",
+      "matched_option_source": "fallback_room",
+      "option_count": 2,
+      "options": [
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_002",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44:observation_aware:100033",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "fallback_room",
+      "option_count": 1,
+      "options": [
+        {
+          "destination_label": "room",
+          "option_id": "locopt_001",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18:observation_aware:100007",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "bed",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "bed",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34:observation_aware:100016",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_005",
+      "matched_option_source": "fallback_room",
+      "option_count": 5,
+      "options": [
+        {
+          "destination_label": "bed",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "dresser",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "drawer",
+          "option_id": "locopt_004",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_005",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21:observation_aware:100029",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "desk",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89:observation_aware:200009",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_005",
+      "matched_option_source": "fallback_room",
+      "option_count": 5,
+      "options": [
+        {
+          "destination_label": "desk",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "drawer",
+          "option_id": "locopt_003",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "garbagecan",
+          "option_id": "locopt_004",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_005",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19:observation_aware:100029",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "desk",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92:observation_aware:200011",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "fallback_room",
+      "option_count": 1,
+      "options": [
+        {
+          "destination_label": "room",
+          "option_id": "locopt_001",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0003:object_location:candle_03_11_00_23_00_05:observation_aware:100043",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_004",
+      "matched_option_source": "fallback_room",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "sidetable",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "sink",
+          "option_id": "locopt_003",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02:observation_aware:200010",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "bathtub",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_002",
+      "matched_option_source": "ambiguous_support_relation",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "bathtub",
+          "option_id": "locopt_001",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "bathtub",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "ambiguous_support_relation"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02:observation_aware:100044",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "sidetable",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 2,
+      "options": [
+        {
+          "destination_label": "sidetable",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_002",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28:observation_aware:200011",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "bathtub",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_002",
+      "matched_option_source": "ambiguous_support_relation",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "bathtub",
+          "option_id": "locopt_001",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "bathtub",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "ambiguous_support_relation"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53:observation_aware:100046",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "fallback_room",
+      "option_count": 1,
+      "options": [
+        {
+          "destination_label": "room",
+          "option_id": "locopt_001",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85:observation_aware:100045",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_002",
+      "matched_option_source": "fallback_room",
+      "option_count": 2,
+      "options": [
+        {
+          "destination_label": "sink",
+          "option_id": "locopt_001",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_002",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88:observation_aware:200014",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "fallback_room",
+      "option_count": 1,
+      "options": [
+        {
+          "destination_label": "room",
+          "option_id": "locopt_001",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10:observation_aware:100046",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "handtowelholder",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "target_affordance_prior",
+      "option_count": 2,
+      "options": [
+        {
+          "destination_label": "handtowelholder",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "target_affordance_prior"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_002",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08:observation_aware:100041",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 5,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "cabinet",
+          "option_id": "locopt_003",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "sink",
+          "option_id": "locopt_004",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_005",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45:observation_aware:100047",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_002",
+      "matched_option_source": "fallback_room",
+      "option_count": 2,
+      "options": [
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_002",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45:observation_aware:100047",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "visible": true
+      },
+      "matched_option_id": "locopt_002",
+      "matched_option_source": "fallback_room",
+      "option_count": 2,
+      "options": [
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_002",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0001:cellphone_00_26_00_56_00_52:observation_aware:100027",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "bed",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "bed",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0002:creditcard_00_46_01_10_00_87:observation_aware:100034",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0003:creditcard_01_78_00_80_01_19:observation_aware:100029",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "desk",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0004:creditcard_01_94_00_68_01_80:observation_aware:200007",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "chair",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "chair",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "diningtable",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0005:desklamp_01_32_01_24_00_99:observation_aware:100032",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "dresser",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "dresser",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "drawer",
+          "option_id": "locopt_002",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0006:diningtable_02_27_00_02_01_42:observation_aware:200007",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "chair",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "chair",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0007:egg_00_13_00_95_00_17:observation_aware:100041",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 5,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "cabinet",
+          "option_id": "locopt_003",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "sink",
+          "option_id": "locopt_004",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_005",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0008:kettle_01_04_00_90_02_60:observation_aware:100037",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 6,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "stoveburner",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "cabinet",
+          "option_id": "locopt_004",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "microwave",
+          "option_id": "locopt_005",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_006",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0009:keychain_01_74_00_80_01_29:observation_aware:100029",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "desk",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0010:laptop_00_50_00_56_00_29:observation_aware:100027",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "bed",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 3,
+      "options": [
+        {
+          "destination_label": "bed",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_003",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0011:laptop_01_70_00_68_01_66:observation_aware:200007",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "chair",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "chair",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "diningtable",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0012:mug_00_24_00_92_00_26:observation_aware:100041",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 5,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "cabinet",
+          "option_id": "locopt_003",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "sink",
+          "option_id": "locopt_004",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_005",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0013:mug_02_82_00_80_01_22:observation_aware:100029",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "desk",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0014:newspaper_02_76_00_68_01_18:observation_aware:200007",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "chair",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "chair",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "diningtable",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0015:pan_00_72_00_90_02_42:observation_aware:100037",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 6,
+      "options": [
+        {
+          "destination_label": "countertop",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "stoveburner",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "cabinet",
+          "option_id": "locopt_004",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "microwave",
+          "option_id": "locopt_005",
+          "relation": "INSIDE",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_006",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:supplemental_object_location:0016:papertowelroll_03_15_00_96_00_28:observation_aware:100044",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "sidetable",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 2,
+      "options": [
+        {
+          "destination_label": "sidetable",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_002",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0017:pen_01_93_00_81_01_18:observation_aware:100029",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "desk",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0018:pencil_02_01_00_81_01_17:observation_aware:100029",
+      "covered": true,
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "visible": true
+      },
+      "matched_option_id": "locopt_001",
+      "matched_option_source": "support_candidate",
+      "option_count": 4,
+      "options": [
+        {
+          "destination_label": "desk",
+          "option_id": "locopt_001",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "floor",
+          "option_id": "locopt_002",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "shelf",
+          "option_id": "locopt_003",
+          "relation": "ON",
+          "source": "support_candidate"
+        },
+        {
+          "destination_label": "room",
+          "option_id": "locopt_004",
+          "relation": "IN_ROOM",
+          "source": "fallback_room"
+        }
+      ]
+    }
+  ],
+  "missing_case_ids": [],
+  "qa_digest": "9eb72ebd1f87937faa53be3e9a6ec7dc3d628cd6ec899a1fa02ef61529633115",
+  "qa_path": "handoffs/ai2thor-real-small/inputs/traces/observation-aware-p4-target60-qa.jsonl",
+  "report_digest": "83aa03022b310c923c8c4561e62da1e871892a122c580d48e7cf2f1960118eac",
+  "request_bundle_digest": "2c4f722b3f587b468358f2e32bc5614e01a6b5ca257241b9e7174fb159a7589e",
+  "request_bundle_path": "handoffs/ai2thor-real-small/offline-control-prediction-request-bundle-observation-aware-p4-target60-vlm-p4-option-id-contract.json",
+  "schema_version": "dsg-spatialqa-lab.vlm-answer-option-coverage-report.v1",
+  "summary": {
+    "case_count": 60,
+    "covered_case_count": 60,
+    "covered_case_rate": 1.0,
+    "missing_case_count": 0,
+    "option_count": 193
+  }
+}

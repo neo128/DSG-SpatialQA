@@ -1,0 +1,87 @@
+{
+  "candidate_name": "predicted_graph_tool",
+  "candidate_prediction_path": "inputs/candidate/predicted-graph-tool.jsonl",
+  "matrix_report_path": "outputs/offline-controls/offline-control-matrix.json",
+  "output_dir": "outputs/offline-controls/imports",
+  "qa_eval_output_dir": "outputs/offline-controls/qa-eval",
+  "qa_path": "inputs/qa.jsonl",
+  "required_source_kinds": [
+    "caption_memory",
+    "graph_text",
+    "multi_frame_vlm",
+    "vlm"
+  ],
+  "result_report_path": "outputs/offline-controls/offline-control-result.json",
+  "schema_version": "dsg-spatialqa-lab.offline-control-import-manifest.v1",
+  "sources": [
+    {
+      "import_report_path": "outputs/offline-controls/imports/vlm/import-report.json",
+      "input_format": "qa_prediction",
+      "input_path": "inputs/offline-controls/vlm.jsonl",
+      "metadata": {
+        "capabilities": [
+          "spatial_qa"
+        ],
+        "dataset_id": "ai2thor_real_small",
+        "model_id": "external-vlm",
+        "prompt_id": "vlm-spatial-qa"
+      },
+      "prediction_path": "outputs/offline-controls/imports/vlm/predictions.jsonl",
+      "source_kind": "vlm",
+      "source_name": "vlm_real_control"
+    },
+    {
+      "import_report_path": "outputs/offline-controls/imports/multi_frame_vlm/import-report.json",
+      "input_format": "qa_prediction",
+      "input_path": "inputs/offline-controls/multi_frame_vlm.jsonl",
+      "metadata": {
+        "capabilities": [
+          "spatial_qa",
+          "dynamic_memory"
+        ],
+        "dataset_id": "ai2thor_real_small",
+        "model_id": "external-multi_frame_vlm",
+        "prompt_id": "multi_frame_vlm-spatial-qa"
+      },
+      "prediction_path": "outputs/offline-controls/imports/multi_frame_vlm/predictions.jsonl",
+      "source_kind": "multi_frame_vlm",
+      "source_name": "multi_frame_vlm_real_control"
+    },
+    {
+      "import_report_path": "outputs/offline-controls/imports/caption_memory/import-report.json",
+      "input_format": "qa_prediction",
+      "input_path": "inputs/offline-controls/caption_memory.jsonl",
+      "metadata": {
+        "capabilities": [
+          "spatial_qa",
+          "dynamic_memory"
+        ],
+        "dataset_id": "ai2thor_real_small",
+        "model_id": "external-caption_memory",
+        "prompt_id": "caption_memory-spatial-qa"
+      },
+      "prediction_path": "outputs/offline-controls/imports/caption_memory/predictions.jsonl",
+      "source_kind": "caption_memory",
+      "source_name": "caption_memory_real_control"
+    },
+    {
+      "import_report_path": "outputs/offline-controls/imports/graph_text/import-report.json",
+      "input_format": "qa_prediction",
+      "input_path": "inputs/offline-controls/graph_text.jsonl",
+      "metadata": {
+        "capabilities": [
+          "spatial_qa",
+          "dynamic_memory",
+          "graph_tool_query"
+        ],
+        "dataset_id": "ai2thor_real_small",
+        "model_id": "external-graph_text",
+        "prompt_id": "graph_text-spatial-qa"
+      },
+      "prediction_path": "outputs/offline-controls/imports/graph_text/predictions.jsonl",
+      "source_kind": "graph_text",
+      "source_name": "graph_text_real_control"
+    }
+  ],
+  "frame_index_path": "inputs/traces/vlm-frame-index-coverage-p2.jsonl"
+}

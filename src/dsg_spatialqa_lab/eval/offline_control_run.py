@@ -247,6 +247,8 @@ def offline_control_prediction_request_bundle(
 ) -> dict[str, Any]:
     manifest = load_offline_control_import_manifest(manifest_path)
     cases = tuple(load_qa_dataset(_required_str(manifest, "qa_path")))
+    frame_index_path = _prediction_request_frame_index_path(manifest, Path(manifest_path))
+    frame_index = _load_prediction_request_frame_index(frame_index_path)
     bundle: dict[str, Any] = {
         "schema_version": OFFLINE_CONTROL_PREDICTION_REQUEST_BUNDLE_SCHEMA_VERSION,
         "action": "offline_control_prediction_request_bundle",
@@ -257,8 +259,16 @@ def offline_control_prediction_request_bundle(
             "digest": qa_dataset_digest(cases),
             "path": _required_str(manifest, "qa_path"),
         },
+        "frame_index": {
+            "available": frame_index_path is not None,
+            "frame_count": len(frame_index),
+            "path": str(frame_index_path) if frame_index_path is not None else None,
+        },
         "case_count": len(cases),
-        "case_inputs": [_prediction_request_case(case) for case in cases],
+        "case_inputs": [
+            _prediction_request_case(case, frame_index=frame_index) for case in cases
+        ],
+        "control_prompt_guidance": _control_prompt_guidance(),
         "expected_input_formats": {
             OFFLINE_PREDICTION_RECORD_INPUT_FORMAT: (
                 OFFLINE_PREDICTION_RECORD_SCHEMA_VERSION
@@ -1203,6 +1213,11 @@ def _offline_control_import_manifest(
             "candidate_prediction_path",
             base_dir,
         ),
+        "frame_index_path": _manifest_optional_path(
+            payload,
+            "frame_index_path",
+            base_dir,
+        ),
         "candidate_name": _optional_text(
             payload.get("candidate_name"),
             "predicted_graph_tool",
@@ -1323,21 +1338,419 @@ def _manifest_source_rows(manifest: Mapping[str, Any]) -> tuple[Mapping[str, Any
     )
 
 
-def _prediction_request_case(case: Any) -> dict[str, Any]:
+def _prediction_request_case(
+    case: Any,
+    *,
+    frame_index: Sequence[Mapping[str, Any]] = (),
+) -> dict[str, Any]:
     payload = qa_case_to_dict(case)
+    question = cast(Mapping[str, Any], payload["question"])
+    question_type = str(payload["question_type"])
+    indexed_frames = _prediction_request_case_frames(payload, frame_index)
+    primary_frame = _prediction_request_primary_frame(payload, indexed_frames)
+    frames = [_public_prediction_request_frame(frame) for frame in indexed_frames]
     return {
         "answer_type": payload["answer_type"],
+        "answer_schema_hint": _answer_schema_hint(
+            str(payload["answer_type"]),
+            question_type,
+        ),
         "case_id": payload["id"],
         "choices": payload["choices"],
         "difficulty": payload["difficulty"],
         "episode_id": payload["episode_id"],
+        "frames": frames,
+        "primary_frame": (
+            _public_prediction_request_frame(primary_frame)
+            if primary_frame is not None
+            else None
+        ),
         "question": payload["question"],
+        "question_text": _question_text(
+            question,
+            question_type,
+            reference_frame=payload["reference_frame"],
+        ),
         "question_type": payload["question_type"],
         "reference_frame": payload["reference_frame"],
         "scene_id": payload["scene_id"],
         "step": payload["step"],
         "tags": payload["tags"],
+        "target": _question_target(question, question_type),
     }
+
+
+def _prediction_request_frame_index_path(
+    manifest: Mapping[str, Any],
+    manifest_path: Path,
+) -> Path | None:
+    manifest_value = manifest.get("frame_index_path")
+    if isinstance(manifest_value, str) and manifest_value != "":
+        return Path(manifest_value)
+    fallback = manifest_path.parent / "inputs" / "traces" / "frame-index.jsonl"
+    return fallback if fallback.exists() else None
+
+
+def _load_prediction_request_frame_index(
+    path: Path | None,
+) -> tuple[dict[str, Any], ...]:
+    if path is None:
+        return ()
+    rows: list[dict[str, Any]] = []
+    for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        if line == "":
+            continue
+        item = json.loads(line)
+        if not isinstance(item, Mapping):
+            raise SpatialQAError(f"Frame index line {line_number} must be an object")
+        rows.append(_prediction_request_frame_ref(cast(Mapping[str, Any], item)))
+    return tuple(
+        sorted(
+            rows,
+            key=lambda row: (
+                str(row["episode_id"]),
+                str(row["scene_id"]),
+                _int_value(row["step"]),
+                str(row["rgb_path"]),
+            ),
+        )
+    )
+
+
+def _prediction_request_frame_ref(row: Mapping[str, Any]) -> dict[str, Any]:
+    episode_id = _required_str(row, "episode_id")
+    scene_id = _required_str(row, "scene_id")
+    step = _int_value(row.get("step"))
+    asset_paths = _optional_mapping(row.get("asset_paths"))
+    asset_digests = _optional_mapping(row.get("asset_digests"))
+    rgb_path = _asset_text(row, asset_paths, "rgb", "detector_rgb_path")
+    depth_path = _asset_text(row, asset_paths, "depth", "detector_depth_path")
+    segmentation_path = _asset_text(
+        row,
+        asset_paths,
+        "segmentation",
+        "detector_segmentation_path",
+    )
+    return {
+        "depth_digest": _optional_asset_text(asset_digests, "depth"),
+        "depth_path": depth_path,
+        "episode_id": episode_id,
+        "frame_id": f"{episode_id}:{scene_id}:{step:04d}",
+        "rgb_digest": _optional_asset_text(asset_digests, "rgb"),
+        "rgb_path": rgb_path,
+        "scene_id": scene_id,
+        "segmentation_digest": _optional_asset_text(asset_digests, "segmentation"),
+        "segmentation_path": segmentation_path,
+        "step": step,
+        "_visible_object_ids": _optional_string_items(row.get("visible_object_ids")),
+    }
+
+
+def _prediction_request_case_frames(
+    case_payload: Mapping[str, Any],
+    frame_index: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    episode_id = str(case_payload["episode_id"])
+    scene_id = str(case_payload["scene_id"])
+    return [
+        dict(frame)
+        for frame in frame_index
+        if frame.get("episode_id") == episode_id and frame.get("scene_id") == scene_id
+    ]
+
+
+def _prediction_request_primary_frame(
+    case_payload: Mapping[str, Any],
+    frames: Sequence[Mapping[str, Any]],
+) -> dict[str, Any] | None:
+    step = _int_value(case_payload.get("step"))
+    target_id = _prediction_request_target_object_id(case_payload)
+    if target_id is not None:
+        visible_frames = [
+            dict(frame)
+            for frame in frames
+            if target_id in _optional_string_items(frame.get("_visible_object_ids"))
+        ]
+        if visible_frames:
+            best_frame: dict[str, Any] | None = None
+            best_key: tuple[int, int, str] | None = None
+            for frame in visible_frames:
+                frame_key = (
+                    abs(_int_value(frame.get("step")) - step),
+                    _int_value(frame.get("step")),
+                    str(frame.get("rgb_path")),
+                )
+                if best_key is None or frame_key < best_key:
+                    best_key = frame_key
+                    best_frame = frame
+            if best_frame is not None:
+                return dict(best_frame)
+    for indexed_frame in frames:
+        if indexed_frame.get("step") == step:
+            return dict(indexed_frame)
+    return None
+
+
+def _prediction_request_target_object_id(
+    case_payload: Mapping[str, Any],
+) -> str | None:
+    question = case_payload.get("question")
+    if not isinstance(question, Mapping):
+        return None
+    for key in ("object_id", "target_id", "target", "target_object_id"):
+        value = question.get(key)
+        if isinstance(value, str) and value != "":
+            return value
+    return None
+
+
+def _public_prediction_request_frame(frame: Mapping[str, Any]) -> dict[str, Any]:
+    return {str(key): value for key, value in frame.items() if not str(key).startswith("_")}
+
+
+def _asset_text(
+    row: Mapping[str, Any],
+    asset_paths: Mapping[str, Any],
+    asset_key: str,
+    fallback_key: str,
+) -> str | None:
+    value = asset_paths.get(asset_key)
+    if isinstance(value, str) and value != "":
+        return value
+    fallback = row.get(fallback_key)
+    if isinstance(fallback, str) and fallback != "":
+        return fallback
+    return None
+
+
+def _optional_asset_text(payload: Mapping[str, Any], key: str) -> str | None:
+    value = payload.get(key)
+    return value if isinstance(value, str) and value != "" else None
+
+
+def _optional_mapping(value: object) -> Mapping[str, Any]:
+    return cast(Mapping[str, Any], value) if isinstance(value, Mapping) else {}
+
+
+def _optional_string_items(value: object) -> tuple[str, ...]:
+    if not isinstance(value, Sequence) or isinstance(value, str):
+        return ()
+    return tuple(item for item in value if isinstance(item, str) and item != "")
+
+
+def _control_prompt_guidance() -> dict[str, Any]:
+    return {
+        "caption_memory": {
+            "evidence_scope": "caption_memory",
+            "question_text_required": True,
+            "rule": (
+                "Use only supplied captions or memory snippets; return a structured "
+                "uncertainty error when the target, relation, or state is not present."
+            ),
+        },
+        "graph_text": {
+            "evidence_scope": "graph_text",
+            "question_text_required": True,
+            "rule": (
+                "Use only supplied graph-text context; copy object ids only when they "
+                "appear in that context, never from hidden evaluator fields."
+            ),
+        },
+        "multi_frame_vlm": {
+            "evidence_scope": "multi_frame_rgb",
+            "question_text_required": True,
+            "rule": (
+                "Inspect all provided frames before answering. If the target is not "
+                "visually observed, return target_not_observed instead of guessing."
+            ),
+        },
+        "vlm": {
+            "evidence_scope": "single_rgb_frame",
+            "question_text_required": True,
+            "rule": (
+                "Use question_text and target.label as the visual query. If the target "
+                "or supporting relation is not visible in the single frame, return a "
+                "structured uncertainty error instead of a hidden-object location."
+            ),
+        },
+    }
+
+
+def _answer_schema_hint(answer_type: str, question_type: str) -> dict[str, Any]:
+    if question_type == "object_location":
+        return {
+            "answer_type": answer_type,
+            "required_answer_fields": [
+                "object_id",
+                "label",
+                "current_location",
+                "last_seen_step",
+                "state_step",
+                "visible",
+                "pose",
+                "confidence",
+            ],
+            "current_location_fields": ["relation", "dst", "step"],
+            "relation_values": ["IN_REGION", "IN_ROOM", "INSIDE", "ON"],
+            "uncertainty_errors": [
+                "target_not_observed",
+                "relation_not_observed",
+                "ambiguous_evidence",
+            ],
+            "non_gold_rule": (
+                "The request does not provide the gold destination. Use a destination "
+                "id only if it appears in the visible evidence/context; otherwise use "
+                "null and set a stable uncertainty error."
+            ),
+        }
+    if question_type == "relative_relation":
+        return {
+            "answer_type": answer_type,
+            "required_answer_fields": ["holds", "relation", "src", "dst", "step"],
+            "relation_values": [
+                "ABOVE",
+                "BEHIND",
+                "FRONT_OF",
+                "INSIDE",
+                "LEFT_OF",
+                "NEAR",
+                "ON",
+                "RIGHT_OF",
+            ],
+            "uncertainty_errors": [
+                "target_not_observed",
+                "relation_not_observed",
+                "ambiguous_evidence",
+            ],
+        }
+    if question_type == "relation_timeline":
+        return {
+            "answer_type": answer_type,
+            "required_answer_fields": ["timeline"],
+            "timeline_item_fields": ["relation", "src", "dst", "step", "holds"],
+            "uncertainty_errors": [
+                "target_not_observed",
+                "relation_not_observed",
+                "ambiguous_evidence",
+            ],
+        }
+    if question_type == "nearest_object":
+        return {
+            "answer_type": answer_type,
+            "required_answer_fields": ["object_id", "label", "distance"],
+            "uncertainty_errors": ["target_not_observed", "ambiguous_evidence"],
+        }
+    if question_type == "reobserve_targets":
+        return {
+            "answer_type": answer_type,
+            "required_answer_fields": ["count", "objects"],
+            "object_item_fields": ["object_id", "label", "last_seen_step", "confidence"],
+            "uncertainty_errors": ["target_not_observed", "ambiguous_evidence"],
+        }
+    return {
+        "answer_type": answer_type,
+        "required_answer_fields": [],
+        "uncertainty_errors": ["unsupported_question_type", "ambiguous_evidence"],
+    }
+
+
+def _question_text(
+    question: Mapping[str, Any],
+    question_type: str,
+    *,
+    reference_frame: object,
+) -> str:
+    if question_type == "object_location":
+        object_id = _string_or_empty(question.get("object_id"))
+        label = _label_from_object_id(object_id)
+        return f"Where is the {label}?"
+    if question_type == "relative_relation":
+        src = _string_or_empty(question.get("src"))
+        dst = _string_or_empty(question.get("dst"))
+        relation = _string_or_empty(question.get("relation")).lower().replace("_", " ")
+        frame = str(reference_frame or question.get("reference_frame") or "world")
+        return (
+            f"Is the {_label_from_object_id(src)} {relation} "
+            f"the {_label_from_object_id(dst)} in the {frame} reference frame?"
+        )
+    if question_type == "relation_timeline":
+        src = _string_or_empty(question.get("src"))
+        dst = _string_or_empty(question.get("dst"))
+        relation = _string_or_empty(question.get("relation")).lower().replace("_", " ")
+        return (
+            f"Across the provided evidence, when is the {_label_from_object_id(src)} "
+            f"{relation} the {_label_from_object_id(dst)}?"
+        )
+    if question_type == "nearest_object":
+        object_id = _string_or_empty(
+            question.get("object_id")
+            or question.get("src")
+            or question.get("target")
+            or question.get("target_object_id")
+        )
+        if object_id:
+            return f"Which object is nearest to the {_label_from_object_id(object_id)}?"
+        return "Which object is nearest to the queried target?"
+    if question_type == "reobserve_targets":
+        label = _string_or_empty(question.get("label"))
+        if label:
+            return f"Which {label} objects should be reobserved?"
+        return "Which objects should be reobserved?"
+    return f"Answer the {question_type} question using only the provided evidence."
+
+
+def _question_target(question: Mapping[str, Any], question_type: str) -> dict[str, Any]:
+    if question_type == "object_location":
+        object_id = _string_or_empty(question.get("object_id"))
+        return {"object_id": object_id, "label": _label_from_object_id(object_id)}
+    if question_type in {"relative_relation", "relation_timeline"}:
+        src = _string_or_empty(question.get("src"))
+        dst = _string_or_empty(question.get("dst"))
+        return {
+            "dst": {"object_id": dst, "label": _label_from_object_id(dst)},
+            "relation": _string_or_empty(question.get("relation")),
+            "src": {"object_id": src, "label": _label_from_object_id(src)},
+        }
+    object_id = _string_or_empty(
+        question.get("object_id")
+        or question.get("src")
+        or question.get("target")
+        or question.get("target_object_id")
+    )
+    payload: dict[str, Any] = {}
+    if object_id:
+        payload["object_id"] = object_id
+        payload["label"] = _label_from_object_id(object_id)
+    label = _string_or_empty(question.get("label"))
+    if label:
+        payload["label"] = label
+    return payload
+
+
+def _label_from_object_id(object_id: str) -> str:
+    if object_id == "":
+        return "target object"
+    raw_label = object_id.split("_", 1)[0]
+    replacements = {
+        "butterknife": "butter knife",
+        "coffeemachine": "coffee machine",
+        "desklamp": "desk lamp",
+        "floorlamp": "floor lamp",
+        "garbagecan": "garbage can",
+        "handtowel": "hand towel",
+        "papertowelroll": "paper towel roll",
+        "sidetable": "side table",
+        "spraybottle": "spray bottle",
+        "stoveburner": "stove burner",
+        "teddybear": "teddy bear",
+        "toiletpaper": "toilet paper",
+        "wateringcan": "watering can",
+    }
+    return replacements.get(raw_label.lower(), raw_label.lower())
+
+
+def _string_or_empty(value: object) -> str:
+    return value if isinstance(value, str) else ""
 
 
 def _prediction_request_source(source: Mapping[str, Any]) -> dict[str, Any]:

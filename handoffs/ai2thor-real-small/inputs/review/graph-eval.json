@@ -219,11 +219,11 @@
         "recall": 0.0
       },
       "drawer": {
-        "matched_count": 3,
+        "matched_count": 4,
         "oracle_count": 27,
-        "precision": 0.75,
+        "precision": 1.0,
         "predicted_count": 4,
-        "recall": 0.111111
+        "recall": 0.148148
       },
       "dresser": {
         "matched_count": 0,
@@ -614,28 +614,36 @@
     "by_prediction_source": {
       "objects": {
         "ai2thor": {
-          "confidence_weighted_precision": 0.710526,
-          "matched_count": 27,
-          "matched_weight": 24.84,
-          "precision": 0.710526,
+          "confidence_weighted_precision": 0.736842,
+          "matched_count": 28,
+          "matched_weight": 25.76,
+          "precision": 0.736842,
           "predicted_count": 38,
           "total_weight": 34.96
         }
       },
       "relations": {
+        "containment_inference": {
+          "confidence_weighted_precision": 0.608,
+          "matched_count": 152,
+          "matched_weight": 139.84,
+          "precision": 0.608,
+          "predicted_count": 250,
+          "total_weight": 230.0
+        },
         "geometry_inference": {
-          "confidence_weighted_precision": 0.018595,
-          "matched_count": 9,
-          "matched_weight": 9.0,
-          "precision": 0.018595,
-          "predicted_count": 484,
-          "total_weight": 484.0
+          "confidence_weighted_precision": 0.008547,
+          "matched_count": 2,
+          "matched_weight": 2.0,
+          "precision": 0.008547,
+          "predicted_count": 234,
+          "total_weight": 234.0
         },
         "unknown": {
-          "confidence_weighted_precision": 0.623682,
-          "matched_count": 108,
-          "matched_weight": 101.76,
-          "precision": 0.624277,
+          "confidence_weighted_precision": 0.612405,
+          "matched_count": 106,
+          "matched_weight": 99.92,
+          "precision": 0.612717,
           "predicted_count": 173,
           "total_weight": 163.16
         }
@@ -651,20 +659,20 @@
         "recall": 0.0
       },
       "IN_REGION": {
-        "f1": 0.0,
-        "matched_count": 0,
+        "f1": 0.080296,
+        "matched_count": 76,
         "oracle_count": 1770,
-        "precision": 0.0,
-        "predicted_count": 0,
-        "recall": 0.0
+        "precision": 0.617886,
+        "predicted_count": 123,
+        "recall": 0.042938
       },
       "IN_ROOM": {
-        "f1": 0.0,
-        "matched_count": 0,
+        "f1": 0.077829,
+        "matched_count": 76,
         "oracle_count": 1830,
-        "precision": 0.0,
-        "predicted_count": 0,
-        "recall": 0.0
+        "precision": 0.617886,
+        "predicted_count": 123,
+        "recall": 0.04153
       },
       "MOVED_FROM": {
         "f1": 0.0,
@@ -683,36 +691,193 @@
         "recall": 0.0
       },
       "NEAR": {
-        "f1": 0.036437,
-        "matched_count": 9,
+        "f1": 0.016393,
+        "matched_count": 2,
         "oracle_count": 10,
-        "precision": 0.018595,
-        "predicted_count": 484,
-        "recall": 0.9
+        "precision": 0.008547,
+        "predicted_count": 234,
+        "recall": 0.2
       },
       "ON": {
         "f1": 0.0,
         "matched_count": 0,
         "oracle_count": 61,
         "precision": 0.0,
-        "predicted_count": 0,
+        "predicted_count": 4,
         "recall": 0.0
       },
       "STATE_CHANGED": {
-        "f1": 0.109478,
-        "matched_count": 108,
+        "f1": 0.107451,
+        "matched_count": 106,
         "oracle_count": 1800,
-        "precision": 0.624277,
+        "precision": 0.612717,
         "predicted_count": 173,
-        "recall": 0.06
+        "recall": 0.058889
       }
     }
   },
   "diagnostics": {
-    "duplicate_track_count": 0,
-    "duplicate_tracks": [],
-    "id_fragmentation": [],
-    "id_fragmentation_count": 0
+    "duplicate_track_count": 10,
+    "duplicate_tracks": [
+      {
+        "center_distance": 0.469958,
+        "label": "drawer",
+        "matched_predicted_object_id": "drawer_01_56_00_84_00_20_dup2",
+        "oracle_object_id": "drawer_01_31_00_75_00_58",
+        "predicted_object_id": "drawer_01_56_00_66_00_20"
+      },
+      {
+        "center_distance": 0.0,
+        "label": "drawer",
+        "matched_predicted_object_id": "drawer_01_56_00_66_00_20",
+        "oracle_object_id": "drawer_01_56_00_33_00_20",
+        "predicted_object_id": "drawer_01_56_00_33_00_20"
+      },
+      {
+        "center_distance": 0.3242,
+        "label": "drawer",
+        "matched_predicted_object_id": "drawer_01_56_00_84_00_20",
+        "oracle_object_id": "drawer_01_56_00_66_00_20",
+        "predicted_object_id": "drawer_01_56_00_33_00_20"
+      },
+      {
+        "center_distance": 0.0,
+        "label": "drawer",
+        "matched_predicted_object_id": "drawer_01_56_00_84_00_20",
+        "oracle_object_id": "drawer_01_56_00_66_00_20",
+        "predicted_object_id": "drawer_01_56_00_66_00_20"
+      },
+      {
+        "center_distance": 0.184401,
+        "label": "drawer",
+        "matched_predicted_object_id": "drawer_01_56_00_84_00_20",
+        "oracle_object_id": "drawer_01_56_00_66_00_20",
+        "predicted_object_id": "drawer_01_56_00_84_00_20_dup2"
+      },
+      {
+        "center_distance": 0.184401,
+        "label": "drawer",
+        "matched_predicted_object_id": null,
+        "oracle_object_id": "drawer_01_56_00_84_00_20",
+        "predicted_object_id": "drawer_01_56_00_66_00_20"
+      },
+      {
+        "center_distance": 0.4016,
+        "label": "drawer",
+        "matched_predicted_object_id": null,
+        "oracle_object_id": "drawer_01_56_00_84_00_20",
+        "predicted_object_id": "drawer_01_56_00_84_00_20"
+      },
+      {
+        "center_distance": 0.0,
+        "label": "drawer",
+        "matched_predicted_object_id": null,
+        "oracle_object_id": "drawer_01_56_00_84_00_20",
+        "predicted_object_id": "drawer_01_56_00_84_00_20_dup2"
+      },
+      {
+        "center_distance": 0.377,
+        "label": "floor",
+        "matched_predicted_object_id": "floor_00_00_00_00_00_00",
+        "oracle_object_id": "floor_00_00_00_00_00_00",
+        "predicted_object_id": "floor_00_00_00_38_00_00"
+      },
+      {
+        "center_distance": 0.377,
+        "label": "floor",
+        "matched_predicted_object_id": "floor_00_00_00_38_00_00",
+        "oracle_object_id": "floor_00_00_00_38_00_00",
+        "predicted_object_id": "floor_00_00_00_00_00_00"
+      }
+    ],
+    "id_fragmentation": [
+      {
+        "candidate_count": 2,
+        "candidate_predicted_object_ids": [
+          "drawer_01_56_00_66_00_20",
+          "drawer_01_56_00_84_00_20_dup2"
+        ],
+        "extra_predicted_object_ids": [
+          "drawer_01_56_00_66_00_20"
+        ],
+        "label": "drawer",
+        "matched_predicted_object_id": "drawer_01_56_00_84_00_20_dup2",
+        "oracle_object_id": "drawer_01_31_00_75_00_58"
+      },
+      {
+        "candidate_count": 2,
+        "candidate_predicted_object_ids": [
+          "drawer_01_56_00_33_00_20",
+          "drawer_01_56_00_66_00_20"
+        ],
+        "extra_predicted_object_ids": [
+          "drawer_01_56_00_33_00_20"
+        ],
+        "label": "drawer",
+        "matched_predicted_object_id": "drawer_01_56_00_66_00_20",
+        "oracle_object_id": "drawer_01_56_00_33_00_20"
+      },
+      {
+        "candidate_count": 4,
+        "candidate_predicted_object_ids": [
+          "drawer_01_56_00_33_00_20",
+          "drawer_01_56_00_66_00_20",
+          "drawer_01_56_00_84_00_20",
+          "drawer_01_56_00_84_00_20_dup2"
+        ],
+        "extra_predicted_object_ids": [
+          "drawer_01_56_00_33_00_20",
+          "drawer_01_56_00_66_00_20",
+          "drawer_01_56_00_84_00_20_dup2"
+        ],
+        "label": "drawer",
+        "matched_predicted_object_id": "drawer_01_56_00_84_00_20",
+        "oracle_object_id": "drawer_01_56_00_66_00_20"
+      },
+      {
+        "candidate_count": 3,
+        "candidate_predicted_object_ids": [
+          "drawer_01_56_00_66_00_20",
+          "drawer_01_56_00_84_00_20",
+          "drawer_01_56_00_84_00_20_dup2"
+        ],
+        "extra_predicted_object_ids": [
+          "drawer_01_56_00_66_00_20",
+          "drawer_01_56_00_84_00_20",
+          "drawer_01_56_00_84_00_20_dup2"
+        ],
+        "label": "drawer",
+        "matched_predicted_object_id": null,
+        "oracle_object_id": "drawer_01_56_00_84_00_20"
+      },
+      {
+        "candidate_count": 2,
+        "candidate_predicted_object_ids": [
+          "floor_00_00_00_00_00_00",
+          "floor_00_00_00_38_00_00"
+        ],
+        "extra_predicted_object_ids": [
+          "floor_00_00_00_38_00_00"
+        ],
+        "label": "floor",
+        "matched_predicted_object_id": "floor_00_00_00_00_00_00",
+        "oracle_object_id": "floor_00_00_00_00_00_00"
+      },
+      {
+        "candidate_count": 2,
+        "candidate_predicted_object_ids": [
+          "floor_00_00_00_00_00_00",
+          "floor_00_00_00_38_00_00"
+        ],
+        "extra_predicted_object_ids": [
+          "floor_00_00_00_00_00_00"
+        ],
+        "label": "floor",
+        "matched_predicted_object_id": "floor_00_00_00_38_00_00",
+        "oracle_object_id": "floor_00_00_00_38_00_00"
+      }
+    ],
+    "id_fragmentation_count": 6
   },
   "differences": {
     "extra_object_ids": [
@@ -722,7 +887,6 @@
       "cellphone_00_31_00_92_01_29",
       "chair_00_00_00_00_01_24",
       "countertop_00_01_00_96_00_51",
-      "drawer_01_56_00_84_00_20_dup2",
       "floor_01_44_00_04_01_85",
       "potato_00_33_00_94_01_31",
       "showerhead_00_07_00_91_02_14",
@@ -884,13 +1048,6 @@
         "step": 10
       },
       {
-        "dst": "butterknife_00_41_01_11_00_46",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "apple_00_47_01_15_00_48",
-        "step": 10
-      },
-      {
         "dst": "countertop_00_08_01_15_00_00",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -919,46 +1076,102 @@
         "step": 10
       },
       {
-        "dst": "drawer_01_56_00_66_00_20",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "apple_00_47_01_15_00_48",
-        "step": 9
+        "relation": "IN_REGION",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 32
       },
       {
-        "dst": "drawer_01_56_00_66_00_20",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "apple_00_47_01_15_00_48",
-        "step": 10
+        "relation": "IN_REGION",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 33
       },
       {
-        "dst": "drawer_01_56_00_84_00_20",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "apple_00_47_01_15_00_48",
-        "step": 9
+        "relation": "IN_REGION",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 36
       },
       {
-        "dst": "drawer_01_56_00_84_00_20",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "apple_00_47_01_15_00_48",
-        "step": 10
+        "relation": "IN_REGION",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 37
       },
       {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "apple_00_47_01_15_00_48",
-        "step": 9
+        "relation": "IN_REGION",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 38
       },
       {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "apple_00_47_01_15_00_48",
-        "step": 10
+        "relation": "IN_REGION",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 39
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 40
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 32
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 33
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 36
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 37
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 38
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 39
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "bathtub_00_21_00_36_00_92",
+        "step": 40
       },
       {
         "dst": "bathtubbasin_00_16_00_04_00_88",
@@ -1087,6 +1300,34 @@
         "step": 40
       },
       {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "bathtubbasin_00_16_00_04_00_88",
+        "step": 37
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "bathtubbasin_00_16_00_04_00_88",
+        "step": 40
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "bathtubbasin_00_16_00_04_00_88",
+        "step": 37
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "bathtubbasin_00_16_00_04_00_88",
+        "step": 40
+      },
+      {
         "dst": "bathtub_00_21_00_36_00_92",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -1136,9 +1377,16 @@
         "step": 40
       },
       {
-        "dst": "cellphone_00_31_00_92_01_29",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
+        "relation": "IN_REGION",
+        "src": "bowl_00_28_00_92_01_09",
+        "step": 49
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
         "src": "bowl_00_28_00_92_01_09",
         "step": 49
       },
@@ -1151,13 +1399,6 @@
       },
       {
         "dst": "countertop_00_01_00_96_00_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "bowl_00_28_00_92_01_09",
-        "step": 49
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "bowl_00_28_00_92_01_09",
@@ -1183,13 +1424,6 @@
         "relation": "NEAR",
         "src": "bread_00_52_01_17_00_03",
         "step": 9
-      },
-      {
-        "dst": "apple_00_47_01_15_00_48",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 10
       },
       {
         "dst": "butterknife_00_41_01_11_00_46",
@@ -1227,69 +1461,6 @@
         "step": 10
       },
       {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 10
-      },
-      {
-        "dst": "apple_00_47_01_15_00_48",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "butterknife_00_41_01_11_00_46",
-        "step": 10
-      },
-      {
         "dst": "bread_00_52_01_17_00_03",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -1311,104 +1482,6 @@
         "step": 10
       },
       {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "butterknife_00_41_01_11_00_46",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "butterknife_00_41_01_11_00_46",
-        "step": 10
-      },
-      {
-        "dst": "apple_00_47_01_15_00_48",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 9
-      },
-      {
-        "dst": "apple_00_47_01_15_00_48",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 10
-      },
-      {
-        "dst": "bread_00_52_01_17_00_03",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 9
-      },
-      {
-        "dst": "bread_00_52_01_17_00_03",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 10
-      },
-      {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 10
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 9
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 10
-      },
-      {
-        "dst": "countertop_00_08_01_15_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 9
-      },
-      {
-        "dst": "countertop_00_08_01_15_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 10
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 9
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 10
-      },
-      {
         "dst": "drawer_01_56_00_33_00_20",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -1451,59 +1524,17 @@
         "step": 10
       },
       {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
+        "dst": "drawer_01_56_00_33_00_20",
         "reference_frame": "world",
-        "relation": "NEAR",
+        "relation": "ON",
         "src": "cabinet_01_55_00_50_00_38",
         "step": 9
       },
       {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
+        "dst": "drawer_01_56_00_33_00_20",
         "reference_frame": "world",
-        "relation": "NEAR",
+        "relation": "ON",
         "src": "cabinet_01_55_00_50_00_38",
-        "step": 10
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 9
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 10
-      },
-      {
-        "dst": "toaster_01_84_00_90_00_13",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 9
-      },
-      {
-        "dst": "toaster_01_84_00_90_00_13",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 10
-      },
-      {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_85_02_02_00_38",
         "step": 10
       },
       {
@@ -1536,48 +1567,6 @@
       },
       {
         "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "cabinet_01_85_02_02_00_38",
@@ -1610,6 +1599,48 @@
         "relation": "NEAR",
         "src": "cabinet_01_85_02_02_00_38",
         "step": 10
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "cellphone_00_31_00_92_01_29",
+        "step": 41
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "cellphone_00_31_00_92_01_29",
+        "step": 48
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "cellphone_00_31_00_92_01_29",
+        "step": 49
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "cellphone_00_31_00_92_01_29",
+        "step": 41
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "cellphone_00_31_00_92_01_29",
+        "step": 48
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "cellphone_00_31_00_92_01_29",
+        "step": 49
       },
       {
         "dst": "bowl_00_28_00_92_01_09",
@@ -1666,20 +1697,6 @@
         "relation": "NEAR",
         "src": "cellphone_00_31_00_92_01_29",
         "step": 48
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cellphone_00_31_00_92_01_29",
-        "step": 49
-      },
-      {
-        "dst": "potato_00_33_00_94_01_31",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "cellphone_00_31_00_92_01_29",
-        "step": 49
       },
       {
         "dst": "state:cellphone_00_31_00_92_01_29:41",
@@ -1703,6 +1720,34 @@
         "step": 49
       },
       {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "chair_00_00_00_00_01_24",
+        "step": 48
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "chair_00_00_00_00_01_24",
+        "step": 49
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "chair_00_00_00_00_01_24",
+        "step": 48
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "chair_00_00_00_00_01_24",
+        "step": 49
+      },
+      {
         "dst": "bowl_00_28_00_92_01_09",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -1717,13 +1762,6 @@
         "step": 48
       },
       {
-        "dst": "cellphone_00_31_00_92_01_29",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_00_00_00_00_01_24",
-        "step": 49
-      },
-      {
         "dst": "countertop_00_01_00_96_00_51",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -1746,13 +1784,6 @@
       },
       {
         "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_00_00_00_00_01_24",
-        "step": 49
-      },
-      {
-        "dst": "potato_00_33_00_94_01_31",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "chair_00_00_00_00_01_24",
@@ -1773,20 +1804,6 @@
         "step": 49
       },
       {
-        "dst": "chair_02_52_00_02_01_88",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_51_00_02_00_99",
-        "step": 13
-      },
-      {
-        "dst": "chair_02_52_00_02_01_88",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_51_00_02_00_99",
-        "step": 14
-      },
-      {
         "dst": "diningtable_02_27_00_02_01_42",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -1829,55 +1846,6 @@
         "step": 14
       },
       {
-        "dst": "pen_03_00_00_69_01_46",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_51_00_02_00_99",
-        "step": 13
-      },
-      {
-        "dst": "pencil_02_83_00_68_01_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_51_00_02_00_99",
-        "step": 13
-      },
-      {
-        "dst": "pencil_02_83_00_68_01_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_51_00_02_00_99",
-        "step": 14
-      },
-      {
-        "dst": "plate_02_40_00_68_01_68",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_51_00_02_00_99",
-        "step": 13
-      },
-      {
-        "dst": "plate_02_40_00_68_01_68",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_51_00_02_00_99",
-        "step": 14
-      },
-      {
-        "dst": "chair_02_51_00_02_00_99",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 13
-      },
-      {
-        "dst": "chair_02_51_00_02_00_99",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 14
-      },
-      {
         "dst": "diningtable_02_27_00_02_01_42",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -1906,41 +1874,6 @@
         "step": 14
       },
       {
-        "dst": "newspaper_02_76_00_68_01_18",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 13
-      },
-      {
-        "dst": "newspaper_02_76_00_68_01_18",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 14
-      },
-      {
-        "dst": "pen_03_00_00_69_01_46",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 13
-      },
-      {
-        "dst": "pencil_02_83_00_68_01_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 13
-      },
-      {
-        "dst": "pencil_02_83_00_68_01_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 14
-      },
-      {
         "dst": "plate_02_40_00_68_01_68",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -1953,34 +1886,6 @@
         "relation": "NEAR",
         "src": "chair_02_52_00_02_01_88",
         "step": 14
-      },
-      {
-        "dst": "sofa_02_40_00_00_03_42",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 13
-      },
-      {
-        "dst": "sofa_02_40_00_00_03_42",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 14
-      },
-      {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 10
       },
       {
         "dst": "cabinet_01_85_02_02_00_38",
@@ -1990,20 +1895,6 @@
         "step": 1
       },
       {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 10
-      },
-      {
         "dst": "countertop_01_87_00_95_01_21",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -2012,48 +1903,6 @@
       },
       {
         "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "coffeemachine_01_98_00_90_00_19",
@@ -2074,14 +1923,14 @@
         "step": 10
       },
       {
-        "dst": "floor_00_00_00_00_00_00",
+        "dst": "drawer_01_56_00_84_00_20",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "coffeemachine_01_98_00_90_00_19",
         "step": 9
       },
       {
-        "dst": "floor_00_00_00_00_00_00",
+        "dst": "drawer_01_56_00_84_00_20",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "coffeemachine_01_98_00_90_00_19",
@@ -2102,18 +1951,74 @@
         "step": 1
       },
       {
-        "dst": "toaster_01_84_00_90_00_13",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 9
+        "relation": "IN_REGION",
+        "src": "countertop_00_01_00_96_00_51",
+        "step": 41
       },
       {
-        "dst": "toaster_01_84_00_90_00_13",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 10
+        "relation": "IN_REGION",
+        "src": "countertop_00_01_00_96_00_51",
+        "step": 44
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "countertop_00_01_00_96_00_51",
+        "step": 45
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "countertop_00_01_00_96_00_51",
+        "step": 48
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "countertop_00_01_00_96_00_51",
+        "step": 49
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "countertop_00_01_00_96_00_51",
+        "step": 41
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "countertop_00_01_00_96_00_51",
+        "step": 44
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "countertop_00_01_00_96_00_51",
+        "step": 45
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "countertop_00_01_00_96_00_51",
+        "step": 48
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "countertop_00_01_00_96_00_51",
+        "step": 49
       },
       {
         "dst": "bowl_00_28_00_92_01_09",
@@ -2149,13 +2054,6 @@
         "relation": "NEAR",
         "src": "countertop_00_01_00_96_00_51",
         "step": 48
-      },
-      {
-        "dst": "chair_00_00_00_00_01_24",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_01_00_96_00_51",
-        "step": 49
       },
       {
         "dst": "floor_00_00_00_00_00_00",
@@ -2184,13 +2082,6 @@
         "relation": "NEAR",
         "src": "countertop_00_01_00_96_00_51",
         "step": 48
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_01_00_96_00_51",
-        "step": 49
       },
       {
         "dst": "potato_00_33_00_94_01_31",
@@ -2270,151 +2161,11 @@
         "step": 10
       },
       {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 10
-      },
-      {
         "dst": "countertop_01_87_00_95_01_21",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "countertop_00_08_01_15_00_00",
         "step": 9
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 10
-      },
-      {
-        "dst": "apple_00_47_01_15_00_48",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 9
-      },
-      {
-        "dst": "apple_00_47_01_15_00_48",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 10
-      },
-      {
-        "dst": "bread_00_52_01_17_00_03",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 9
-      },
-      {
-        "dst": "bread_00_52_01_17_00_03",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 10
-      },
-      {
-        "dst": "butterknife_00_41_01_11_00_46",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 10
-      },
-      {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 10
-      },
-      {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 10
       },
       {
         "dst": "coffeemachine_01_98_00_90_00_19",
@@ -2431,48 +2182,6 @@
         "step": 10
       },
       {
-        "dst": "countertop_00_08_01_15_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 9
-      },
-      {
-        "dst": "countertop_00_08_01_15_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 10
-      },
-      {
         "dst": "drawer_01_56_00_84_00_20",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -2481,34 +2190,6 @@
       },
       {
         "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 10
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 9
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "countertop_01_87_00_95_01_21",
@@ -2571,65 +2252,30 @@
         "step": 14
       },
       {
-        "dst": "newspaper_02_76_00_68_01_18",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "diningtable_02_27_00_02_01_42",
-        "step": 13
-      },
-      {
-        "dst": "newspaper_02_76_00_68_01_18",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "diningtable_02_27_00_02_01_42",
-        "step": 14
-      },
-      {
-        "dst": "pen_03_00_00_69_01_46",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "diningtable_02_27_00_02_01_42",
-        "step": 13
-      },
-      {
-        "dst": "pencil_02_83_00_68_01_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "diningtable_02_27_00_02_01_42",
-        "step": 13
-      },
-      {
-        "dst": "pencil_02_83_00_68_01_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "diningtable_02_27_00_02_01_42",
-        "step": 14
-      },
-      {
-        "dst": "plate_02_40_00_68_01_68",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "diningtable_02_27_00_02_01_42",
-        "step": 13
-      },
-      {
-        "dst": "plate_02_40_00_68_01_68",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "diningtable_02_27_00_02_01_42",
-        "step": 14
-      },
-      {
-        "dst": "bread_00_52_01_17_00_03",
-        "reference_frame": "world",
-        "relation": "NEAR",
+        "relation": "IN_REGION",
         "src": "drawer_01_56_00_33_00_20",
         "step": 9
       },
       {
-        "dst": "bread_00_52_01_17_00_03",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
+        "relation": "IN_REGION",
+        "src": "drawer_01_56_00_33_00_20",
+        "step": 10
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "drawer_01_56_00_33_00_20",
+        "step": 9
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
         "src": "drawer_01_56_00_33_00_20",
         "step": 10
       },
@@ -2642,48 +2288,6 @@
       },
       {
         "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 10
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 9
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 10
-      },
-      {
-        "dst": "countertop_00_08_01_15_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 9
-      },
-      {
-        "dst": "countertop_00_08_01_15_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 10
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 9
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "drawer_01_56_00_33_00_20",
@@ -2704,34 +2308,6 @@
         "step": 10
       },
       {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 10
-      },
-      {
         "dst": "floor_00_00_00_00_00_00",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -2746,394 +2322,44 @@
         "step": 10
       },
       {
-        "dst": "toaster_01_84_00_90_00_13",
+        "dst": "state:drawer_01_56_00_33_00_20:10",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 9
-      },
-      {
-        "dst": "toaster_01_84_00_90_00_13",
-        "reference_frame": "world",
-        "relation": "NEAR",
+        "relation": "STATE_CHANGED",
         "src": "drawer_01_56_00_33_00_20",
         "step": 10
       },
       {
-        "dst": "apple_00_47_01_15_00_48",
+        "dst": "state:drawer_01_56_00_33_00_20:9",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
+        "relation": "STATE_CHANGED",
+        "src": "drawer_01_56_00_33_00_20",
         "step": 9
       },
       {
-        "dst": "apple_00_47_01_15_00_48",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "bread_00_52_01_17_00_03",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "bread_00_52_01_17_00_03",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "butterknife_00_41_01_11_00_46",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "countertop_00_08_01_15_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "countertop_00_08_01_15_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "toaster_01_84_00_90_00_13",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "toaster_01_84_00_90_00_13",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
-        "dst": "apple_00_47_01_15_00_48",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 9
-      },
-      {
-        "dst": "apple_00_47_01_15_00_48",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 10
-      },
-      {
-        "dst": "bread_00_52_01_17_00_03",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 9
-      },
-      {
-        "dst": "bread_00_52_01_17_00_03",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 10
-      },
-      {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 10
-      },
-      {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 10
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 9
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 10
-      },
-      {
-        "dst": "countertop_00_08_01_15_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 9
-      },
-      {
-        "dst": "countertop_00_08_01_15_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 10
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 9
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 10
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 9
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 10
-      },
-      {
-        "dst": "toaster_01_84_00_90_00_13",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 9
-      },
-      {
-        "dst": "toaster_01_84_00_90_00_13",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20",
-        "step": 10
-      },
-      {
-        "dst": "apple_00_47_01_15_00_48",
-        "reference_frame": "world",
-        "relation": "NEAR",
+        "relation": "IN_REGION",
         "src": "drawer_01_56_00_84_00_20_dup2",
         "step": 9
       },
       {
-        "dst": "apple_00_47_01_15_00_48",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
+        "relation": "IN_REGION",
         "src": "drawer_01_56_00_84_00_20_dup2",
         "step": 10
       },
       {
-        "dst": "bread_00_52_01_17_00_03",
+        "dst": "ai2thor_room",
         "reference_frame": "world",
-        "relation": "NEAR",
+        "relation": "IN_ROOM",
         "src": "drawer_01_56_00_84_00_20_dup2",
         "step": 9
       },
       {
-        "dst": "bread_00_52_01_17_00_03",
+        "dst": "ai2thor_room",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 10
-      },
-      {
-        "dst": "butterknife_00_41_01_11_00_46",
-        "reference_frame": "world",
-        "relation": "NEAR",
+        "relation": "IN_ROOM",
         "src": "drawer_01_56_00_84_00_20_dup2",
         "step": 10
       },
@@ -3146,76 +2372,6 @@
       },
       {
         "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 10
-      },
-      {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 10
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 9
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 10
-      },
-      {
-        "dst": "countertop_00_08_01_15_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 9
-      },
-      {
-        "dst": "countertop_00_08_01_15_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 10
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 9
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "drawer_01_56_00_84_00_20_dup2",
@@ -3244,34 +2400,6 @@
       },
       {
         "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 10
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 9
-      },
-      {
-        "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 10
-      },
-      {
-        "dst": "toaster_01_84_00_90_00_13",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "drawer_01_56_00_84_00_20_dup2",
-        "step": 9
-      },
-      {
-        "dst": "toaster_01_84_00_90_00_13",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "drawer_01_56_00_84_00_20_dup2",
@@ -3292,11 +2420,242 @@
         "step": 9
       },
       {
-        "dst": "bowl_00_28_00_92_01_09",
+        "dst": "cabinet_01_55_00_50_00_38",
         "reference_frame": "world",
         "relation": "NEAR",
+        "src": "drawer_01_56_00_66_00_20",
+        "step": 9
+      },
+      {
+        "dst": "cabinet_01_55_00_50_00_38",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "drawer_01_56_00_66_00_20",
+        "step": 10
+      },
+      {
+        "dst": "drawer_01_56_00_33_00_20",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "drawer_01_56_00_66_00_20",
+        "step": 9
+      },
+      {
+        "dst": "drawer_01_56_00_33_00_20",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "drawer_01_56_00_66_00_20",
+        "step": 10
+      },
+      {
+        "dst": "drawer_01_56_00_84_00_20_dup2",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "drawer_01_56_00_66_00_20",
+        "step": 9
+      },
+      {
+        "dst": "drawer_01_56_00_84_00_20_dup2",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "drawer_01_56_00_66_00_20",
+        "step": 10
+      },
+      {
+        "dst": "cabinet_01_55_00_50_00_38",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "drawer_01_56_00_84_00_20",
+        "step": 9
+      },
+      {
+        "dst": "cabinet_01_55_00_50_00_38",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "drawer_01_56_00_84_00_20",
+        "step": 10
+      },
+      {
+        "dst": "drawer_01_56_00_84_00_20_dup2",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "drawer_01_56_00_84_00_20",
+        "step": 9
+      },
+      {
+        "dst": "drawer_01_56_00_84_00_20_dup2",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "drawer_01_56_00_84_00_20",
+        "step": 10
+      },
+      {
+        "dst": "drawer_01_56_00_66_00_20",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "drawer_01_56_00_84_00_20",
+        "step": 9
+      },
+      {
+        "dst": "drawer_01_56_00_66_00_20",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "drawer_01_56_00_84_00_20",
+        "step": 10
+      },
+      {
+        "dst": "drawer_01_56_00_66_00_20",
+        "reference_frame": "world",
+        "relation": "ON",
+        "src": "drawer_01_56_00_84_00_20",
+        "step": 9
+      },
+      {
+        "dst": "drawer_01_56_00_66_00_20",
+        "reference_frame": "world",
+        "relation": "ON",
+        "src": "drawer_01_56_00_84_00_20",
+        "step": 10
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 41
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 42
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 43
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 44
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 45
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 46
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 47
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 48
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
         "src": "floor_00_00_00_00_00_00",
         "step": 49
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 50
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 41
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 42
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 43
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 44
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 45
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 46
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 47
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 48
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 49
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_00_00_00_00_00_00",
+        "step": 50
       },
       {
         "dst": "cabinet_01_55_00_50_00_38",
@@ -3346,20 +2705,6 @@
         "relation": "NEAR",
         "src": "floor_00_00_00_00_00_00",
         "step": 49
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 9
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 10
       },
       {
         "dst": "countertop_00_01_00_96_00_51",
@@ -3390,27 +2735,6 @@
         "step": 48
       },
       {
-        "dst": "countertop_00_01_00_96_00_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 49
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 9
-      },
-      {
-        "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 10
-      },
-      {
         "dst": "drawer_01_56_00_33_00_20",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -3433,34 +2757,6 @@
       },
       {
         "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20_dup2",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "floor_00_00_00_00_00_00",
@@ -3472,20 +2768,6 @@
         "relation": "NEAR",
         "src": "floor_00_00_00_00_00_00",
         "step": 49
-      },
-      {
-        "dst": "toaster_01_84_00_90_00_13",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 9
-      },
-      {
-        "dst": "toaster_01_84_00_90_00_13",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 10
       },
       {
         "dst": "state:floor_00_00_00_00_00_00:41",
@@ -3572,20 +2854,6 @@
         "step": 14
       },
       {
-        "dst": "chair_02_52_00_02_01_88",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 13
-      },
-      {
-        "dst": "chair_02_52_00_02_01_88",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 14
-      },
-      {
         "dst": "diningtable_02_27_00_02_01_42",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -3594,55 +2862,6 @@
       },
       {
         "dst": "diningtable_02_27_00_02_01_42",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 14
-      },
-      {
-        "dst": "newspaper_02_76_00_68_01_18",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 13
-      },
-      {
-        "dst": "newspaper_02_76_00_68_01_18",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 14
-      },
-      {
-        "dst": "pen_03_00_00_69_01_46",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 13
-      },
-      {
-        "dst": "pencil_02_83_00_68_01_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 13
-      },
-      {
-        "dst": "pencil_02_83_00_68_01_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 14
-      },
-      {
-        "dst": "plate_02_40_00_68_01_68",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 13
-      },
-      {
-        "dst": "plate_02_40_00_68_01_68",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "floor_00_00_00_38_00_00",
@@ -3703,6 +2922,104 @@
         "relation": "NEAR",
         "src": "floor_00_00_00_38_00_00",
         "step": 18
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 31
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 32
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 34
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 35
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 36
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 38
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 39
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 31
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 32
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 34
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 35
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 36
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 38
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "floor_01_44_00_04_01_85",
+        "step": 39
       },
       {
         "dst": "bathtub_00_21_00_36_00_92",
@@ -3880,20 +3197,6 @@
         "step": 14
       },
       {
-        "dst": "floor_00_00_00_38_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "newspaper_02_76_00_68_01_18",
-        "step": 13
-      },
-      {
-        "dst": "floor_00_00_00_38_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "newspaper_02_76_00_68_01_18",
-        "step": 14
-      },
-      {
         "dst": "pen_03_00_00_69_01_46",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -3905,45 +3208,10 @@
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "newspaper_02_76_00_68_01_18",
-        "step": 13
-      },
-      {
-        "dst": "pencil_02_83_00_68_01_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "newspaper_02_76_00_68_01_18",
         "step": 14
-      },
-      {
-        "dst": "plate_02_40_00_68_01_68",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "newspaper_02_76_00_68_01_18",
-        "step": 13
-      },
-      {
-        "dst": "plate_02_40_00_68_01_68",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "newspaper_02_76_00_68_01_18",
-        "step": 14
-      },
-      {
-        "dst": "chair_02_51_00_02_00_99",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "pen_03_00_00_69_01_46",
-        "step": 13
       },
       {
         "dst": "diningtable_02_27_00_02_01_42",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "pen_03_00_00_69_01_46",
-        "step": 13
-      },
-      {
-        "dst": "floor_00_00_00_38_00_00",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "pen_03_00_00_69_01_46",
@@ -3964,13 +3232,6 @@
         "step": 13
       },
       {
-        "dst": "plate_02_40_00_68_01_68",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "pen_03_00_00_69_01_46",
-        "step": 13
-      },
-      {
         "dst": "chair_02_51_00_02_00_99",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -3993,55 +3254,6 @@
       },
       {
         "dst": "diningtable_02_27_00_02_01_42",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "pencil_02_83_00_68_01_51",
-        "step": 14
-      },
-      {
-        "dst": "floor_00_00_00_38_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "pencil_02_83_00_68_01_51",
-        "step": 13
-      },
-      {
-        "dst": "floor_00_00_00_38_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "pencil_02_83_00_68_01_51",
-        "step": 14
-      },
-      {
-        "dst": "newspaper_02_76_00_68_01_18",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "pencil_02_83_00_68_01_51",
-        "step": 13
-      },
-      {
-        "dst": "newspaper_02_76_00_68_01_18",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "pencil_02_83_00_68_01_51",
-        "step": 14
-      },
-      {
-        "dst": "pen_03_00_00_69_01_46",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "pencil_02_83_00_68_01_51",
-        "step": 13
-      },
-      {
-        "dst": "plate_02_40_00_68_01_68",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "pencil_02_83_00_68_01_51",
-        "step": 13
-      },
-      {
-        "dst": "plate_02_40_00_68_01_68",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "pencil_02_83_00_68_01_51",
@@ -4090,63 +3302,21 @@
         "step": 14
       },
       {
-        "dst": "floor_00_00_00_38_00_00",
+        "dst": "visible_region",
         "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "plate_02_40_00_68_01_68",
-        "step": 13
-      },
-      {
-        "dst": "floor_00_00_00_38_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "plate_02_40_00_68_01_68",
-        "step": 14
-      },
-      {
-        "dst": "newspaper_02_76_00_68_01_18",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "plate_02_40_00_68_01_68",
-        "step": 13
-      },
-      {
-        "dst": "newspaper_02_76_00_68_01_18",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "plate_02_40_00_68_01_68",
-        "step": 14
-      },
-      {
-        "dst": "pen_03_00_00_69_01_46",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "plate_02_40_00_68_01_68",
-        "step": 13
-      },
-      {
-        "dst": "pencil_02_83_00_68_01_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "plate_02_40_00_68_01_68",
-        "step": 13
-      },
-      {
-        "dst": "pencil_02_83_00_68_01_51",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "plate_02_40_00_68_01_68",
-        "step": 14
-      },
-      {
-        "dst": "bowl_00_28_00_92_01_09",
-        "reference_frame": "world",
-        "relation": "NEAR",
+        "relation": "IN_REGION",
         "src": "potato_00_33_00_94_01_31",
         "step": 49
       },
       {
-        "dst": "cellphone_00_31_00_92_01_29",
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "potato_00_33_00_94_01_31",
+        "step": 49
+      },
+      {
+        "dst": "bowl_00_28_00_92_01_09",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "potato_00_33_00_94_01_31",
@@ -4167,18 +3337,25 @@
         "step": 49
       },
       {
-        "dst": "floor_00_00_00_00_00_00",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "potato_00_33_00_94_01_31",
-        "step": 49
-      },
-      {
         "dst": "state:potato_00_33_00_94_01_31:49",
         "reference_frame": "world",
         "relation": "STATE_CHANGED",
         "src": "potato_00_33_00_94_01_31",
         "step": 49
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "showerhead_00_07_00_91_02_14",
+        "step": 37
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "showerhead_00_07_00_91_02_14",
+        "step": 37
       },
       {
         "dst": "bathtub_00_21_00_36_00_92",
@@ -4207,6 +3384,62 @@
         "relation": "STATE_CHANGED",
         "src": "showerhead_00_07_00_91_02_14",
         "step": 37
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "soapbar_00_69_00_62_01_99",
+        "step": 33
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "soapbar_00_69_00_62_01_99",
+        "step": 36
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "soapbar_00_69_00_62_01_99",
+        "step": 37
+      },
+      {
+        "dst": "visible_region",
+        "reference_frame": "world",
+        "relation": "IN_REGION",
+        "src": "soapbar_00_69_00_62_01_99",
+        "step": 40
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "soapbar_00_69_00_62_01_99",
+        "step": 33
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "soapbar_00_69_00_62_01_99",
+        "step": 36
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "soapbar_00_69_00_62_01_99",
+        "step": 37
+      },
+      {
+        "dst": "ai2thor_room",
+        "reference_frame": "world",
+        "relation": "IN_ROOM",
+        "src": "soapbar_00_69_00_62_01_99",
+        "step": 40
       },
       {
         "dst": "bathtub_00_21_00_36_00_92",
@@ -4307,6 +3540,20 @@
         "step": 14
       },
       {
+        "dst": "diningtable_02_27_00_02_01_42",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "sofa_02_40_00_00_03_42",
+        "step": 13
+      },
+      {
+        "dst": "diningtable_02_27_00_02_01_42",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "sofa_02_40_00_00_03_42",
+        "step": 14
+      },
+      {
         "dst": "floor_00_00_00_38_00_00",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -4363,20 +3610,6 @@
         "step": 18
       },
       {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_55_00_50_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 10
-      },
-      {
         "dst": "cabinet_01_85_02_02_00_38",
         "reference_frame": "world",
         "relation": "NEAR",
@@ -4384,39 +3617,11 @@
         "step": 1
       },
       {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 9
-      },
-      {
-        "dst": "cabinet_01_85_02_02_00_38",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 10
-      },
-      {
         "dst": "coffeemachine_01_98_00_90_00_19",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "toaster_01_84_00_90_00_13",
         "step": 1
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 9
-      },
-      {
-        "dst": "coffeemachine_01_98_00_90_00_19",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 10
       },
       {
         "dst": "countertop_01_87_00_95_01_21",
@@ -4427,48 +3632,6 @@
       },
       {
         "dst": "countertop_01_87_00_95_01_21",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_33_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_66_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 10
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
-        "reference_frame": "world",
-        "relation": "NEAR",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 9
-      },
-      {
-        "dst": "drawer_01_56_00_84_00_20",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "toaster_01_84_00_90_00_13",
@@ -4489,14 +3652,14 @@
         "step": 10
       },
       {
-        "dst": "floor_00_00_00_00_00_00",
+        "dst": "drawer_01_56_00_84_00_20",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "toaster_01_84_00_90_00_13",
         "step": 9
       },
       {
-        "dst": "floor_00_00_00_00_00_00",
+        "dst": "drawer_01_56_00_84_00_20",
         "reference_frame": "world",
         "relation": "NEAR",
         "src": "toaster_01_84_00_90_00_13",
@@ -4560,14 +3723,13 @@
       "drawer_00_95_00_56_02_20",
       "drawer_00_95_00_71_02_20",
       "drawer_00_95_00_83_02_20",
-      "drawer_01_31_00_18_00_58",
       "drawer_01_31_00_18_00_92",
       "drawer_01_31_00_45_00_58",
       "drawer_01_31_00_45_00_92",
-      "drawer_01_31_00_75_00_58",
       "drawer_01_31_00_75_00_92",
       "drawer_01_31_01_03_00_58",
       "drawer_01_31_01_03_00_92",
+      "drawer_01_56_00_84_00_20",
       "drawer_01_62_00_19_01_18",
       "drawer_01_62_00_41_01_18",
       "drawer_01_62_00_63_01_18",
@@ -16220,20 +15382,6 @@
         "step": 8
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "apple_00_47_01_15_00_48",
-        "step": 9
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "apple_00_47_01_15_00_48",
-        "step": 10
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -16288,20 +15436,6 @@
         "relation": "IN_ROOM",
         "src": "apple_00_47_01_15_00_48",
         "step": 8
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "apple_00_47_01_15_00_48",
-        "step": 9
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "apple_00_47_01_15_00_48",
-        "step": 10
       },
       {
         "dst": "ai2thor_room",
@@ -16426,6 +15560,20 @@
         "dst": "visible_region",
         "reference_frame": "world",
         "relation": "MOVED_TO",
+        "src": "apple_00_47_01_15_00_48",
+        "step": 10
+      },
+      {
+        "dst": "cabinet_01_55_00_50_00_38",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "apple_00_47_01_15_00_48",
+        "step": 9
+      },
+      {
+        "dst": "cabinet_01_55_00_50_00_38",
+        "reference_frame": "world",
+        "relation": "NEAR",
         "src": "apple_00_47_01_15_00_48",
         "step": 10
       },
@@ -21932,20 +21080,6 @@
         "step": 8
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 9
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 10
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -22000,20 +21134,6 @@
         "relation": "IN_ROOM",
         "src": "bread_00_52_01_17_00_03",
         "step": 8
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 9
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "bread_00_52_01_17_00_03",
-        "step": 10
       },
       {
         "dst": "ai2thor_room",
@@ -22138,6 +21258,20 @@
         "dst": "visible_region",
         "reference_frame": "world",
         "relation": "MOVED_TO",
+        "src": "bread_00_52_01_17_00_03",
+        "step": 10
+      },
+      {
+        "dst": "cabinet_01_55_00_50_00_38",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "bread_00_52_01_17_00_03",
+        "step": 9
+      },
+      {
+        "dst": "cabinet_01_55_00_50_00_38",
+        "reference_frame": "world",
+        "relation": "NEAR",
         "src": "bread_00_52_01_17_00_03",
         "step": 10
       },
@@ -22275,13 +21409,6 @@
         "step": 9
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "butterknife_00_41_01_11_00_46",
-        "step": 10
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -22343,13 +21470,6 @@
         "relation": "IN_ROOM",
         "src": "butterknife_00_41_01_11_00_46",
         "step": 9
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "butterknife_00_41_01_11_00_46",
-        "step": 10
       },
       {
         "dst": "ai2thor_room",
@@ -24291,20 +23411,6 @@
         "step": 8
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 9
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 10
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -24359,20 +23465,6 @@
         "relation": "IN_ROOM",
         "src": "cabinet_01_55_00_50_00_38",
         "step": 8
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 9
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "cabinet_01_55_00_50_00_38",
-        "step": 10
       },
       {
         "dst": "ai2thor_room",
@@ -25278,34 +24370,6 @@
         "step": 8
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 1
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 9
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 10
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 1
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -25353,20 +24417,6 @@
         "relation": "IN_ROOM",
         "src": "cabinet_01_85_02_02_00_38",
         "step": 8
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 9
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "cabinet_01_85_02_02_00_38",
-        "step": 10
       },
       {
         "dst": "ai2thor_room",
@@ -27616,20 +26666,6 @@
         "step": 20
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "chair_02_51_00_02_00_99",
-        "step": 13
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "chair_02_51_00_02_00_99",
-        "step": 14
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -27642,20 +26678,6 @@
         "relation": "IN_ROOM",
         "src": "chair_02_51_00_02_00_99",
         "step": 12
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "chair_02_51_00_02_00_99",
-        "step": 13
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "chair_02_51_00_02_00_99",
-        "step": 14
       },
       {
         "dst": "ai2thor_room",
@@ -27952,20 +26974,6 @@
         "step": 20
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 13
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 14
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -27978,20 +26986,6 @@
         "relation": "IN_ROOM",
         "src": "chair_02_52_00_02_01_88",
         "step": 12
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 13
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "chair_02_52_00_02_01_88",
-        "step": 14
       },
       {
         "dst": "ai2thor_room",
@@ -28617,34 +27611,6 @@
         "step": 8
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 1
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 9
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 10
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 1
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -28692,20 +27658,6 @@
         "relation": "IN_ROOM",
         "src": "coffeemachine_01_98_00_90_00_19",
         "step": 8
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 9
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "coffeemachine_01_98_00_90_00_19",
-        "step": 10
       },
       {
         "dst": "ai2thor_room",
@@ -29296,20 +28248,6 @@
         "step": 8
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 9
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 10
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -29364,20 +28302,6 @@
         "relation": "IN_ROOM",
         "src": "countertop_00_08_01_15_00_00",
         "step": 8
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 9
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "countertop_00_08_01_15_00_00",
-        "step": 10
       },
       {
         "dst": "ai2thor_room",
@@ -29954,20 +28878,6 @@
         "step": 8
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 9
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 10
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -30022,20 +28932,6 @@
         "relation": "IN_ROOM",
         "src": "countertop_01_87_00_95_01_21",
         "step": 8
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 9
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "countertop_01_87_00_95_01_21",
-        "step": 10
       },
       {
         "dst": "ai2thor_room",
@@ -32964,20 +31860,6 @@
         "step": 20
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "diningtable_02_27_00_02_01_42",
-        "step": 13
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "diningtable_02_27_00_02_01_42",
-        "step": 14
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -32990,20 +31872,6 @@
         "relation": "IN_ROOM",
         "src": "diningtable_02_27_00_02_01_42",
         "step": 12
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "diningtable_02_27_00_02_01_42",
-        "step": 13
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "diningtable_02_27_00_02_01_42",
-        "step": 14
       },
       {
         "dst": "ai2thor_room",
@@ -38760,20 +37628,6 @@
         "step": 8
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 9
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 10
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -38828,20 +37682,6 @@
         "relation": "IN_ROOM",
         "src": "drawer_01_56_00_33_00_20",
         "step": 8
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 9
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "drawer_01_56_00_33_00_20",
-        "step": 10
       },
       {
         "dst": "ai2thor_room",
@@ -39082,20 +37922,6 @@
         "step": 8
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -39150,20 +37976,6 @@
         "relation": "IN_ROOM",
         "src": "drawer_01_56_00_66_00_20",
         "step": 8
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 9
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "drawer_01_56_00_66_00_20",
-        "step": 10
       },
       {
         "dst": "ai2thor_room",
@@ -39635,6 +38447,13 @@
         "step": 1
       },
       {
+        "dst": "state:drawer_01_56_00_84_00_20:10",
+        "reference_frame": "world",
+        "relation": "STATE_CHANGED",
+        "src": "drawer_01_56_00_84_00_20",
+        "step": 10
+      },
+      {
         "dst": "state:drawer_01_56_00_84_00_20:2",
         "reference_frame": "world",
         "relation": "STATE_CHANGED",
@@ -39682,6 +38501,13 @@
         "relation": "STATE_CHANGED",
         "src": "drawer_01_56_00_84_00_20",
         "step": 8
+      },
+      {
+        "dst": "state:drawer_01_56_00_84_00_20:9",
+        "reference_frame": "world",
+        "relation": "STATE_CHANGED",
+        "src": "drawer_01_56_00_84_00_20",
+        "step": 9
       },
       {
         "dst": "scene_region",
@@ -44122,76 +42948,6 @@
         "step": 24
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 9
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 10
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 21
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 22
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 25
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 26
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 27
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 28
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 29
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 30
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -44252,34 +43008,6 @@
         "reference_frame": "world",
         "relation": "IN_ROOM",
         "src": "floor_00_00_00_00_00_00",
-        "step": 9
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 10
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 21
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 22
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_00_00_00",
         "step": 23
       },
       {
@@ -44288,48 +43016,6 @@
         "relation": "IN_ROOM",
         "src": "floor_00_00_00_00_00_00",
         "step": 24
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 25
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 26
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 27
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 28
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 29
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_00_00_00",
-        "step": 30
       },
       {
         "dst": "ai2thor_room",
@@ -44680,118 +43366,6 @@
         "relation": "IN_REGION",
         "src": "floor_00_00_00_38_00_00",
         "step": 20
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 11
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 12
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 13
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 14
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 15
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 16
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 17
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 18
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 11
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 12
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 13
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 14
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 15
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 16
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 17
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "floor_00_00_00_38_00_00",
-        "step": 18
       },
       {
         "dst": "ai2thor_room",
@@ -45641,109 +44215,11 @@
         "step": 10
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 1
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 2
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 3
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 5
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 6
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 7
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 8
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 1
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 2
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 3
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
         "src": "fridge_02_10_00_00_01_07",
         "step": 4
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 5
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 6
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 7
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "fridge_02_10_00_00_01_07",
-        "step": 8
       },
       {
         "dst": "ai2thor_room",
@@ -46012,20 +44488,6 @@
         "step": 10
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "garbagecan_01_94_00_00_02_03",
-        "step": 3
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "garbagecan_01_94_00_00_02_03",
-        "step": 6
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -46044,13 +44506,6 @@
         "reference_frame": "world",
         "relation": "IN_ROOM",
         "src": "garbagecan_01_94_00_00_02_03",
-        "step": 3
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "garbagecan_01_94_00_00_02_03",
         "step": 4
       },
       {
@@ -46059,13 +44514,6 @@
         "relation": "IN_ROOM",
         "src": "garbagecan_01_94_00_00_02_03",
         "step": 5
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "garbagecan_01_94_00_00_02_03",
-        "step": 6
       },
       {
         "dst": "ai2thor_room",
@@ -46691,13 +45139,6 @@
         "step": 20
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "garbagecan_04_86_00_00_00_27",
-        "step": 19
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -46752,13 +45193,6 @@
         "relation": "IN_ROOM",
         "src": "garbagecan_04_86_00_00_00_27",
         "step": 18
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "garbagecan_04_86_00_00_00_27",
-        "step": 19
       },
       {
         "dst": "ai2thor_room",
@@ -50387,13 +48821,6 @@
         "step": 30
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "lightswitch_02_66_01_28_01_90",
-        "step": 23
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -50406,13 +48833,6 @@
         "relation": "IN_ROOM",
         "src": "lightswitch_02_66_01_28_01_90",
         "step": 22
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "lightswitch_02_66_01_28_01_90",
-        "step": 23
       },
       {
         "dst": "ai2thor_room",
@@ -51381,20 +49801,6 @@
         "step": 30
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "mirror_01_99_01_38_01_88",
-        "step": 23
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "mirror_01_99_01_38_01_88",
-        "step": 24
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -51407,20 +49813,6 @@
         "relation": "IN_ROOM",
         "src": "mirror_01_99_01_38_01_88",
         "step": 22
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "mirror_01_99_01_38_01_88",
-        "step": 23
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "mirror_01_99_01_38_01_88",
-        "step": 24
       },
       {
         "dst": "ai2thor_room",
@@ -52375,20 +50767,6 @@
         "step": 20
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "newspaper_02_76_00_68_01_18",
-        "step": 13
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "newspaper_02_76_00_68_01_18",
-        "step": 14
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -52407,20 +50785,6 @@
         "reference_frame": "world",
         "relation": "IN_ROOM",
         "src": "newspaper_02_76_00_68_01_18",
-        "step": 13
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "newspaper_02_76_00_68_01_18",
-        "step": 14
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "newspaper_02_76_00_68_01_18",
         "step": 15
       },
       {
@@ -52581,6 +50945,20 @@
         "dst": "visible_region",
         "reference_frame": "world",
         "relation": "MOVED_TO",
+        "src": "newspaper_02_76_00_68_01_18",
+        "step": 14
+      },
+      {
+        "dst": "chair_02_52_00_02_01_88",
+        "reference_frame": "world",
+        "relation": "NEAR",
+        "src": "newspaper_02_76_00_68_01_18",
+        "step": 13
+      },
+      {
+        "dst": "chair_02_52_00_02_01_88",
+        "reference_frame": "world",
+        "relation": "NEAR",
         "src": "newspaper_02_76_00_68_01_18",
         "step": 14
       },
@@ -54076,13 +52454,6 @@
         "step": 20
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "pen_03_00_00_69_01_46",
-        "step": 13
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -54095,13 +52466,6 @@
         "relation": "IN_ROOM",
         "src": "pen_03_00_00_69_01_46",
         "step": 12
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "pen_03_00_00_69_01_46",
-        "step": 13
       },
       {
         "dst": "ai2thor_room",
@@ -54275,6 +52639,13 @@
         "dst": "visible_region",
         "reference_frame": "world",
         "relation": "MOVED_TO",
+        "src": "pen_03_00_00_69_01_46",
+        "step": 13
+      },
+      {
+        "dst": "chair_02_52_00_02_01_88",
+        "reference_frame": "world",
+        "relation": "NEAR",
         "src": "pen_03_00_00_69_01_46",
         "step": 13
       },
@@ -54748,20 +53119,6 @@
         "step": 20
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "pencil_02_83_00_68_01_51",
-        "step": 13
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "pencil_02_83_00_68_01_51",
-        "step": 14
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -54774,20 +53131,6 @@
         "relation": "IN_ROOM",
         "src": "pencil_02_83_00_68_01_51",
         "step": 12
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "pencil_02_83_00_68_01_51",
-        "step": 13
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "pencil_02_83_00_68_01_51",
-        "step": 14
       },
       {
         "dst": "ai2thor_room",
@@ -56442,20 +54785,6 @@
         "step": 20
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "plate_02_40_00_68_01_68",
-        "step": 13
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "plate_02_40_00_68_01_68",
-        "step": 14
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -56468,20 +54797,6 @@
         "relation": "IN_ROOM",
         "src": "plate_02_40_00_68_01_68",
         "step": 12
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "plate_02_40_00_68_01_68",
-        "step": 13
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "plate_02_40_00_68_01_68",
-        "step": 14
       },
       {
         "dst": "ai2thor_room",
@@ -64688,118 +63003,6 @@
         "step": 20
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 11
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 12
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 13
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 14
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 15
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 16
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 17
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 18
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 11
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 12
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 13
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 14
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 15
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 16
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 17
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "sofa_02_40_00_00_03_42",
-        "step": 18
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -71107,34 +69310,6 @@
         "step": 8
       },
       {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 1
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 9
-      },
-      {
-        "dst": "visible_region",
-        "reference_frame": "world",
-        "relation": "IN_REGION",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 10
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 1
-      },
-      {
         "dst": "ai2thor_room",
         "reference_frame": "world",
         "relation": "IN_ROOM",
@@ -71182,20 +69357,6 @@
         "relation": "IN_ROOM",
         "src": "toaster_01_84_00_90_00_13",
         "step": 8
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 9
-      },
-      {
-        "dst": "ai2thor_room",
-        "reference_frame": "world",
-        "relation": "IN_ROOM",
-        "src": "toaster_01_84_00_90_00_13",
-        "step": 10
       },
       {
         "dst": "ai2thor_room",
@@ -75704,21 +73865,27 @@
         "predicted_object_id": "diningtable_02_27_00_02_01_42"
       },
       {
-        "center_distance": 0.0,
+        "center_distance": 0.483582,
         "label": "drawer",
-        "oracle_object_id": "drawer_01_56_00_33_00_20",
+        "oracle_object_id": "drawer_01_31_00_18_00_58",
         "predicted_object_id": "drawer_01_56_00_33_00_20"
       },
       {
-        "center_distance": 0.0,
+        "center_distance": 0.468057,
         "label": "drawer",
-        "oracle_object_id": "drawer_01_56_00_66_00_20",
+        "oracle_object_id": "drawer_01_31_00_75_00_58",
+        "predicted_object_id": "drawer_01_56_00_84_00_20_dup2"
+      },
+      {
+        "center_distance": 0.3242,
+        "label": "drawer",
+        "oracle_object_id": "drawer_01_56_00_33_00_20",
         "predicted_object_id": "drawer_01_56_00_66_00_20"
       },
       {
-        "center_distance": 0.4016,
+        "center_distance": 0.441821,
         "label": "drawer",
-        "oracle_object_id": "drawer_01_56_00_84_00_20",
+        "oracle_object_id": "drawer_01_56_00_66_00_20",
         "predicted_object_id": "drawer_01_56_00_84_00_20"
       },
       {
@@ -75799,87 +73966,97 @@
         "oracle_object_id": "toaster_01_84_00_90_00_13",
         "predicted_object_id": "toaster_01_84_00_90_00_13"
       }
-    ]
+    ],
+    "unlocated_object_ids": []
+  },
+  "matching": {
+    "center_distance_threshold": 0.5,
+    "strategy": "label_center_room"
   },
   "metrics": {
     "bbox_center_error": {
-      "average": 0.014875,
-      "count": 27,
-      "total": 0.401613
+      "average": 0.061345,
+      "count": 28,
+      "total": 1.717673
     },
     "object_confidence_weighted_f1": {
-      "rate": 0.285463
+      "rate": 0.291687
     },
     "object_confidence_weighted_precision": {
-      "matched_weight": 24.84,
-      "rate": 0.710526,
+      "matched_weight": 25.76,
+      "rate": 0.736842,
       "total_weight": 34.96
     },
     "object_confidence_weighted_recall": {
-      "matched_weight": 21.06,
-      "rate": 0.178611,
+      "matched_weight": 21.44,
+      "rate": 0.181834,
       "total_weight": 117.91
     },
     "object_label_accuracy": {
-      "count": 27,
+      "count": 28,
       "rate": 1.0,
-      "total": 27
+      "total": 28
     },
     "object_precision": {
-      "count": 27,
-      "rate": 0.710526,
+      "count": 28,
+      "rate": 0.736842,
       "total": 38
     },
     "object_recall": {
-      "count": 27,
-      "rate": 0.153409,
+      "count": 28,
+      "rate": 0.159091,
       "total": 176
     },
     "relation_confidence_weighted_f1": {
-      "rate": 0.027022
+      "rate": 0.060349
     },
     "relation_confidence_weighted_precision": {
-      "matched_weight": 110.76,
-      "rate": 0.171148,
-      "total_weight": 647.16
+      "matched_weight": 241.76,
+      "rate": 0.385484,
+      "total_weight": 627.16
     },
     "relation_confidence_weighted_recall": {
-      "matched_weight": 108.06,
-      "rate": 0.014669,
+      "matched_weight": 241.16,
+      "rate": 0.032737,
       "total_weight": 7366.7
     },
     "relation_f1": {
-      "rate": 0.021442
+      "rate": 0.04765
     },
     "relation_precision": {
-      "count": 117,
-      "rate": 0.178082,
+      "count": 260,
+      "rate": 0.395738,
       "total": 657
     },
     "relation_recall": {
-      "count": 117,
-      "rate": 0.011408,
+      "count": 260,
+      "rate": 0.025351,
       "total": 10256
     },
     "state_accuracy": {
-      "count": 12,
+      "count": 10,
       "mode": "matched_object_state",
-      "rate": 0.444444,
-      "total": 27
+      "rate": 0.357143,
+      "total": 28
+    },
+    "unlocated_object_count": {
+      "count": 0,
+      "total": 38
     }
   },
   "oracle_digest": "1a2bcb62cac4d920f7da7ba75ab862d2d8509fb7349ec702d9ba13b08c3d710d",
   "oracle_path": "handoffs/ai2thor-real-small/outputs/oracle/oracle-graph.json",
-  "predicted_digest": "afd68fcdf36058760f7ea0c88f4f7bec7c0da120a46718a2e1a56f539e97fc8c",
+  "predicted_digest": "dca8487a59a5b82f956ec8d553ff89eef381a08c958cfa69214c50e98153344a",
   "predicted_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph.json",
-  "report_digest": "4923a001710cc798958c6a2c54c60d5747a7d1c59aa1c288b879bc707816e341",
+  "report_digest": "340b37777cae36b8280ea447c5b8508c7b7a0e3e03ff9845dc5e278ecd35e4dc",
   "schema_version": "dsg-spatialqa-lab.graph-eval-report.v1",
   "summary": {
-    "matched_object_count": 27,
-    "matched_relation_count": 117,
+    "matched_object_count": 28,
+    "matched_relation_count": 260,
     "oracle_object_count": 176,
     "oracle_relation_count": 10256,
     "predicted_object_count": 38,
-    "predicted_relation_count": 657
+    "predicted_relation_count": 657,
+    "predicted_unlocated_object_count": 0
   }
 }

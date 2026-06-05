@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Iterable, Mapping, Sequence
 import hashlib
 import json
 from pathlib import Path
 from typing import Any, cast
 
 from dsg_spatialqa_lab.benchmark import QACase, load_qa_dataset, qa_dataset_digest
-from dsg_spatialqa_lab.memory import DynamicSceneGraph
+from dsg_spatialqa_lab.memory import DynamicSceneGraph, VALID_RELATIONS
 from dsg_spatialqa_lab.scene_io import graph_json_digest, load_graph_json
 from dsg_spatialqa_lab.schema import SpatialQAError
 
@@ -40,16 +40,8 @@ def qa_observability_report(
         ]
         for split in QA_OBSERVABILITY_SPLITS
     }
-    summary = {
-        "case_count": len(case_results),
-        "evidence_observable_count": len(splits["evidence_observable"]),
-        "missing_evidence_count": len(splits["missing_evidence"]),
-        "target_observable_count": len(splits["target_observable"]),
-        "target_observable_relation_missing_count": len(
-            splits["target_observable_relation_missing"]
-        ),
-        "target_missing_count": len(splits["target_missing"]),
-    }
+    split_qa_digests = _split_qa_digests(cases, splits)
+    summary = _observability_summary(case_results, splits)
     report: dict[str, Any] = {
         "schema_version": QA_OBSERVABILITY_REPORT_SCHEMA_VERSION,
         "qa_path": str(qa_path) if qa_path is not None else None,
@@ -58,6 +50,7 @@ def qa_observability_report(
         "graph_digest": graph_json_digest(graph),
         "summary": summary,
         "splits": splits,
+        "split_qa_digests": split_qa_digests,
         "cases": case_results,
     }
     report["report_digest"] = qa_observability_report_digest(report)
@@ -104,6 +97,12 @@ def validate_qa_observability_report(report: Mapping[str, Any]) -> dict[str, Any
     )
     splits_value = report.get("splits")
     splits = splits_value if isinstance(splits_value, Mapping) else {}
+    split_qa_digests_value = report.get("split_qa_digests")
+    split_qa_digests = (
+        split_qa_digests_value
+        if isinstance(split_qa_digests_value, Mapping)
+        else {}
+    )
     summary = report.get("summary")
     expected_splits = {
         split: [
@@ -135,6 +134,12 @@ def validate_qa_observability_report(report: Mapping[str, Any]) -> dict[str, Any
             "passed": splits == expected_splits,
             "expected": expected_splits,
             "actual": splits,
+        },
+        {
+            "name": "split_qa_digests_shape",
+            "passed": _split_qa_digests_shape_ok(split_qa_digests),
+            "expected": list(QA_OBSERVABILITY_SPLITS),
+            "actual": sorted(str(key) for key in split_qa_digests),
         },
         {
             "name": "summary_matches_cases",
@@ -176,6 +181,11 @@ def compare_qa_observability_report(report: Mapping[str, Any]) -> dict[str, Any]
         },
         _equality_check("summary_matches_current", report.get("summary"), current_report["summary"]),
         _equality_check("splits_match_current", report.get("splits"), current_report["splits"]),
+        _equality_check(
+            "split_qa_digests_match_current",
+            report.get("split_qa_digests"),
+            current_report["split_qa_digests"],
+        ),
         _equality_check("cases_match_current", report.get("cases"), current_report["cases"]),
     ]
     return {
@@ -212,6 +222,24 @@ def filter_qa_cases_by_ids(
     return tuple(case for case in cases if case.id in selected)
 
 
+def _split_qa_digests(
+    cases: Sequence[QACase],
+    splits: Mapping[str, Sequence[str]],
+) -> dict[str, str]:
+    return {
+        split: qa_dataset_digest(filter_qa_cases_by_ids(cases, splits.get(split, ())))
+        for split in QA_OBSERVABILITY_SPLITS
+    }
+
+
+def _split_qa_digests_shape_ok(split_qa_digests: Mapping[object, object]) -> bool:
+    return all(
+        isinstance(split_qa_digests.get(split), str)
+        and str(split_qa_digests.get(split)) != ""
+        for split in QA_OBSERVABILITY_SPLITS
+    )
+
+
 def _case_observability(case: QACase, graph: DynamicSceneGraph) -> dict[str, Any]:
     node_ids = set(graph.nodes)
     edge_ids = {edge.id for edge in graph.edges}
@@ -224,6 +252,16 @@ def _case_observability(case: QACase, graph: DynamicSceneGraph) -> dict[str, Any
     ]
     missing_required_edges = [
         edge_id for edge_id in case.required_edges if edge_id not in edge_ids
+    ]
+    required_edge_relations = [
+        relation
+        for relation in (_edge_relation(edge_id) for edge_id in case.required_edges)
+        if relation is not None
+    ]
+    missing_required_edge_relations = [
+        relation
+        for relation in (_edge_relation(edge_id) for edge_id in missing_required_edges)
+        if relation is not None
     ]
     target_observable = not missing_target_nodes
     required_nodes_present = not missing_required_nodes
@@ -239,14 +277,20 @@ def _case_observability(case: QACase, graph: DynamicSceneGraph) -> dict[str, Any
         "case_id": case.id,
         "question_type": case.question_type,
         "target_nodes": list(target_nodes),
+        "target_node_count": len(target_nodes),
         "target_observable": target_observable,
         "required_nodes_present": required_nodes_present,
         "required_edges_present": required_edges_present,
         "evidence_observable": evidence_observable,
         "observability_status": status,
         "missing_target_nodes": missing_target_nodes,
+        "missing_target_node_count": len(missing_target_nodes),
         "missing_required_nodes": missing_required_nodes,
+        "missing_required_node_count": len(missing_required_nodes),
         "missing_required_edges": missing_required_edges,
+        "missing_required_edge_count": len(missing_required_edges),
+        "missing_required_edge_relations": missing_required_edge_relations,
+        "required_edge_relations": required_edge_relations,
     }
 
 
@@ -312,6 +356,123 @@ def _summary_matches_cases(
         "target_missing_count": len(splits["target_missing"]),
     }
     return all(summary.get(key) == value for key, value in expected.items())
+
+
+def _observability_summary(
+    case_results: Sequence[Mapping[str, Any]],
+    splits: Mapping[str, Sequence[str]],
+) -> dict[str, Any]:
+    target_nodes = sorted(
+        {
+            str(node_id)
+            for result in case_results
+            for node_id in _string_sequence(result.get("target_nodes"))
+        }
+    )
+    missing_target_nodes = sorted(
+        {
+            str(node_id)
+            for result in case_results
+            for node_id in _string_sequence(result.get("missing_target_nodes"))
+        }
+    )
+    required_edges = sorted(
+        {
+            str(edge_id)
+            for result in case_results
+            for edge_id in _string_sequence(result.get("missing_required_edges"))
+        }
+    )
+    observed_target_count = len(set(target_nodes) - set(missing_target_nodes))
+    return {
+        "case_count": len(case_results),
+        "evidence_observable_count": len(splits["evidence_observable"]),
+        "missing_evidence_count": len(splits["missing_evidence"]),
+        "target_observable_count": len(splits["target_observable"]),
+        "target_observable_relation_missing_count": len(
+            splits["target_observable_relation_missing"]
+        ),
+        "target_missing_count": len(splits["target_missing"]),
+        "target_node_count": len(target_nodes),
+        "target_node_observed_count": observed_target_count,
+        "target_node_missing_count": len(missing_target_nodes),
+        "target_node_recall": _rate(observed_target_count, len(target_nodes)),
+        "missing_target_nodes": missing_target_nodes,
+        "missing_required_edge_count": len(required_edges),
+        "missing_required_edge_relations": _sorted_counts(
+            relation
+            for result in case_results
+            for relation in _string_sequence(
+                result.get("missing_required_edge_relations")
+            )
+        ),
+        "by_question_type": _breakdown(case_results, "question_type"),
+        "by_observability_status": _sorted_counts(
+            str(result.get("observability_status")) for result in case_results
+        ),
+    }
+
+
+def _breakdown(
+    case_results: Sequence[Mapping[str, Any]],
+    field_name: str,
+) -> dict[str, dict[str, Any]]:
+    by_key: dict[str, list[Mapping[str, Any]]] = {}
+    for result in case_results:
+        key = str(result.get(field_name) or "unknown")
+        by_key.setdefault(key, []).append(result)
+    return {
+        key: {
+            "case_count": len(rows),
+            "evidence_observable_count": sum(
+                1 for row in rows if row.get("evidence_observable") is True
+            ),
+            "missing_evidence_count": sum(
+                1 for row in rows if row.get("evidence_observable") is not True
+            ),
+            "target_observable_count": sum(
+                1 for row in rows if row.get("target_observable") is True
+            ),
+            "target_missing_count": sum(
+                1 for row in rows if row.get("target_observable") is not True
+            ),
+            "target_observable_relation_missing_count": sum(
+                1
+                for row in rows
+                if row.get("observability_status")
+                == "target_observable_relation_missing"
+            ),
+        }
+        for key, rows in sorted(by_key.items())
+    }
+
+
+def _edge_relation(edge_id: str) -> str | None:
+    parts = edge_id.split("-")
+    for part in parts:
+        candidate = part.upper()
+        if candidate in VALID_RELATIONS:
+            return candidate
+    return None
+
+
+def _rate(count: int, total: int) -> float:
+    if total <= 0:
+        return 0.0
+    return round(count / total, 6)
+
+
+def _sorted_counts(values: Iterable[str]) -> dict[str, int]:
+    counts: dict[str, int] = {}
+    for value in values:
+        counts[value] = counts.get(value, 0) + 1
+    return {key: counts[key] for key in sorted(counts)}
+
+
+def _string_sequence(value: object) -> tuple[str, ...]:
+    if not isinstance(value, Sequence) or isinstance(value, str):
+        return ()
+    return tuple(item for item in value if isinstance(item, str))
 
 
 def _summary_value(summary: object, key: str) -> int | None:

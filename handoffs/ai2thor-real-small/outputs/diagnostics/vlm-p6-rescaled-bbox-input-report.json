@@ -1,0 +1,97 @@
+{
+  "action": "vlm_p6_rescaled_bbox_input_report",
+  "coverage_by_previous_failure_reason": {
+    "p5": {
+      "correct": {
+        "case_count": 22,
+        "cases_with_answer_options": 22,
+        "cases_with_support_candidates": 19,
+        "cases_with_target_crop": 21
+      },
+      "destination_mismatch": {
+        "case_count": 4,
+        "cases_with_answer_options": 4,
+        "cases_with_support_candidates": 4,
+        "cases_with_target_crop": 2
+      },
+      "relation_mismatch": {
+        "case_count": 3,
+        "cases_with_answer_options": 3,
+        "cases_with_support_candidates": 2,
+        "cases_with_target_crop": 1
+      },
+      "relation_not_observed": {
+        "case_count": 1,
+        "cases_with_answer_options": 1,
+        "cases_with_support_candidates": 1,
+        "cases_with_target_crop": 1
+      },
+      "target_not_observed": {
+        "case_count": 30,
+        "cases_with_answer_options": 30,
+        "cases_with_support_candidates": 27,
+        "cases_with_target_crop": 14
+      }
+    },
+    "p6": {
+      "correct": {
+        "case_count": 22,
+        "cases_with_answer_options": 22,
+        "cases_with_support_candidates": 19,
+        "cases_with_target_crop": 22
+      },
+      "destination_mismatch": {
+        "case_count": 4,
+        "cases_with_answer_options": 4,
+        "cases_with_support_candidates": 4,
+        "cases_with_target_crop": 2
+      },
+      "relation_mismatch": {
+        "case_count": 3,
+        "cases_with_answer_options": 3,
+        "cases_with_support_candidates": 2,
+        "cases_with_target_crop": 2
+      },
+      "relation_not_observed": {
+        "case_count": 1,
+        "cases_with_answer_options": 1,
+        "cases_with_support_candidates": 1,
+        "cases_with_target_crop": 1
+      },
+      "target_not_observed": {
+        "case_count": 30,
+        "cases_with_answer_options": 30,
+        "cases_with_support_candidates": 27,
+        "cases_with_target_crop": 14
+      }
+    }
+  },
+  "external_model_called": false,
+  "improved_request_bundle": "handoffs/ai2thor-real-small/offline-control-prediction-request-bundle-observation-aware-p4-target60-vlm-p6-rescaled-bbox-visual-contract.json",
+  "improved_request_bundle_digest": "b8b5acd79cb100e5c6eb6ff3870ac292398998e8d3289bb63e40ae1319fbf33c",
+  "interpretation": [
+    "p6 fixes detector bbox crops expressed in a 0-1000 coordinate space.",
+    "This is an input/readiness improvement; VLM accuracy is not claimed improved until p6 predictions are rerun."
+  ],
+  "new_target_crop_case_ids": [
+    "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53:observation_aware:100046",
+    "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10:observation_aware:100046"
+  ],
+  "no_gold_leak_check": {
+    "contains_gold_answer": false,
+    "contains_gold_evidence": false,
+    "passed": true
+  },
+  "previous_request_bundle": "handoffs/ai2thor-real-small/offline-control-prediction-request-bundle-observation-aware-p4-target60-vlm-p5-visual-contract.json",
+  "previous_request_bundle_digest": "e163a8eacec273949f34c83386eb5f505cc717e2b988267e7f1389a51526dcc8",
+  "report_digest": "fc0b89998ec67aaaea3bcb1423cc58bd1269c2efcb5d7e71bf49fec7040db47a",
+  "schema_version": "dsg-spatialqa-lab.vlm-input-improvement-report.v1",
+  "source_semantic_eval_report": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-semantic-eval-p12-dst-label-room-independent.json",
+  "summary": {
+    "case_count": 60,
+    "improved_cases_with_target_crop": 41,
+    "new_target_crop_case_count": 2,
+    "previous_cases_with_target_crop": 39,
+    "target_crop_delta": 2
+  }
+}

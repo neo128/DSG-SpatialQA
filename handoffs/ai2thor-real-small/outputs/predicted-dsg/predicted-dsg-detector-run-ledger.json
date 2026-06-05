@@ -1,26 +1,28 @@
 {
-  "ledger_digest": "7d661f6793ba6fa5958468a50679e2591f38dac67bc2157aa5806760cc1f724c",
+  "ledger_digest": "59c41ab5ef5981940c051a9fc266f2d5db303544f1ce1222b7674258c2304b6d",
   "readiness": {
-    "failed_check_count": 0,
-    "failed_checks": [],
-    "ready": true
+    "failed_check_count": 1,
+    "failed_checks": [
+      "non_real_sources_absent"
+    ],
+    "ready": false
   },
   "run": {
     "detector_import_report_digest": "8c67b9b0f9eb5986a519f5870ed3df25412c8a1a6c9fb1300ee8e5ea71a8dd34",
     "detector_import_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-import-report.json",
     "detector_jsonl_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd.jsonl",
-    "graph_digest": "afd68fcdf36058760f7ea0c88f4f7bec7c0da120a46718a2e1a56f539e97fc8c",
+    "graph_digest": "dca8487a59a5b82f956ec8d553ff89eef381a08c958cfa69214c50e98153344a",
     "graph_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph.json",
     "input_digest": "edbd7347c6e369e11a9b750da66f63231b9f3b5a0a20685818b46c8f062445d9",
-    "manifest_digest": "55c144151a94bf7dfde322682d07941bc76b1943846004256efd32a025a5f4c2",
+    "manifest_digest": "ca8cf47815be2a2784753f75c56259ec5b175bc0c91870a9bfcf2ace1744e373",
     "manifest_path": "handoffs/ai2thor-real-small/predicted-dsg-detector-run-manifest.json",
     "observation_sequence_digest": "c222df00846bf526bf09c6a2b8bce62b1275c84d5f6c20e0314d178aeb938ac0",
     "observation_sequence_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations.json",
-    "predicted_dsg_evidence_report_digest": "a797165e6b37db9333ab13fe7579b1e1c921ee68a0494f3a66367e03363c9f11",
+    "predicted_dsg_evidence_report_digest": "56d9b7168e27b58b3f09b9fd29a6d84356d9f179ac415acab230dc42ddd4ae0d",
     "predicted_dsg_evidence_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-evidence.json",
-    "predicted_graph_report_digest": "effad91a31429c626e75145c0dc27a3ac1ef1f742ec5d248778fdcd1ff51e1f8",
+    "predicted_graph_report_digest": "04689c17ebe101a2fb0e3bdcb32c8ef45f471fae3af436c2095c2af41114abc7",
     "predicted_graph_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-report.json",
-    "ready": true,
+    "ready": false,
     "schema_version": "dsg-spatialqa-lab.predicted-dsg-detector-run.v1"
   },
   "schema_version": "dsg-spatialqa-lab.predicted-dsg-detector-run-ledger.v1",
@@ -960,10 +962,19 @@
       "graph_summary": {
         "agent_count": 1,
         "agent_history_count": 50,
-        "by_current_location": {},
-        "by_current_room": {},
+        "by_current_location": {
+          "ai2thor_room": 36,
+          "drawer_01_56_00_33_00_20": 1,
+          "drawer_01_56_00_66_00_20": 1
+        },
+        "by_current_room": {
+          "ai2thor_room": 38
+        },
         "by_edge_relation": {
-          "NEAR": 484,
+          "IN_REGION": 123,
+          "IN_ROOM": 123,
+          "NEAR": 234,
+          "ON": 4,
           "STATE_CHANGED": 173
         },
         "by_node_type": {
@@ -1010,8 +1021,8 @@
         "object_history_count": 123,
         "reobserve_candidate_count": 0,
         "schema_version": 1,
-        "unlocated_object_count": 38,
-        "unroomed_object_count": 38,
+        "unlocated_object_count": 0,
+        "unroomed_object_count": 0,
         "visible_object_count": 38
       },
       "observation_summary": {

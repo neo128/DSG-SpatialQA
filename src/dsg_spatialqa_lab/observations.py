@@ -1,15 +1,18 @@
 from __future__ import annotations
 
+import ast
 from collections.abc import Iterable, Mapping, Sequence
 from dataclasses import dataclass, field
 import hashlib
 import json
+import math
 from pathlib import Path
+import struct
 from typing import Any, cast
 
 from dsg_spatialqa_lab.episodes import EpisodeFrame
 from dsg_spatialqa_lab.graph_tool import GraphTool
-from dsg_spatialqa_lab.memory import DynamicSceneGraph
+from dsg_spatialqa_lab.memory import CONTAINMENT_RELATIONS, DynamicSceneGraph
 from dsg_spatialqa_lab.scene_io import (
     graph_json_digest,
     graph_report,
@@ -42,9 +45,44 @@ SCENE_OBSERVATION_SEQUENCE_SUMMARY_SCHEMA_VERSION = (
 OBSERVATION_SEQUENCE_LOW_CONFIDENCE_THRESHOLD = 0.5
 OBSERVATION_CONTAINMENT_SOURCE = "containment_inference"
 OBSERVATION_CONTAINMENT_AXES = ("z", "y")
+OBSERVATION_TOP_K_RELATIONS = frozenset(
+    {"ABOVE", "BEHIND", "FRONT_OF", "LEFT_OF", "NEAR", "RIGHT_OF"}
+)
 OBSERVATION_ON_VERTICAL_MARGIN = 0.08
 OBSERVATION_ON_OVERLAP_MARGIN = 0.05
 OBSERVATION_ON_SUPPORT_OVERLAP_RATIO = 0.25
+OBSERVATION_ON_UNSUPPORTED_SOURCE_LABELS = frozenset(
+    {
+        "blinds",
+        "ceiling",
+        "countertop",
+        "floor",
+        "room",
+        "wall",
+        "window",
+    }
+)
+OBSERVATION_ON_SUPPORTED_DESTINATION_LABELS = frozenset(
+    {
+        "bathtub",
+        "bathtubbasin",
+        "bed",
+        "cabinet",
+        "chair",
+        "counter",
+        "countertop",
+        "desk",
+        "diningtable",
+        "drawer",
+        "floor",
+        "fridge",
+        "shelf",
+        "sink",
+        "sofa",
+        "table",
+        "toilet",
+    }
+)
 EPISODE_METADATA_COVERAGE_DETECTOR_NAME = "ai2thor_metadata_coverage_objects"
 EPISODE_METADATA_COVERAGE_SOURCE_KIND = "ai2thor_metadata_coverage"
 
@@ -574,7 +612,28 @@ def load_scene_observation_sequence(path: str | Path) -> tuple[SceneObservation,
     return scene_observation_sequence_from_json(Path(path).read_text(encoding="utf-8"))
 
 
-def detector_observation_sequence_from_jsonl(payload: str) -> tuple[SceneObservation, ...]:
+def merge_scene_observation_sequences(
+    *sequences: Sequence[SceneObservation],
+) -> tuple[SceneObservation, ...]:
+    merged_by_key: dict[tuple[int, str], SceneObservation] = {}
+    for sequence in sequences:
+        for observation in sequence:
+            key = (observation.step, observation.agent_id)
+            if key in merged_by_key:
+                merged_by_key[key] = _merge_scene_observations(
+                    merged_by_key[key],
+                    observation,
+                )
+            else:
+                merged_by_key[key] = observation
+    return tuple(merged_by_key[key] for key in sorted(merged_by_key))
+
+
+def detector_observation_sequence_from_jsonl(
+    payload: str,
+    *,
+    anchor_visible_frame_region: bool = False,
+) -> tuple[SceneObservation, ...]:
     observations: list[SceneObservation] = []
     for line_number, line in enumerate(payload.splitlines(), start=1):
         if line == "":
@@ -582,6 +641,7 @@ def detector_observation_sequence_from_jsonl(payload: str) -> tuple[SceneObserva
         item = json.loads(line)
         observation = _scene_observation_from_detector_record(
             _as_mapping(item, f"detector_observation_record line {line_number}"),
+            anchor_visible_frame_region=anchor_visible_frame_region,
         )
         observations.append(observation)
     return tuple(sorted(_validate_unique_observation_steps(observations), key=lambda item: item.step))
@@ -589,6 +649,40 @@ def detector_observation_sequence_from_jsonl(payload: str) -> tuple[SceneObserva
 
 def load_detector_observation_sequence(path: str | Path) -> tuple[SceneObservation, ...]:
     return detector_observation_sequence_from_jsonl(Path(path).read_text(encoding="utf-8"))
+
+
+def _merge_scene_observations(
+    existing: SceneObservation,
+    incoming: SceneObservation,
+) -> SceneObservation:
+    return SceneObservation(
+        step=existing.step,
+        agent_id=existing.agent_id,
+        agent_pose=(
+            incoming.agent_pose if incoming.agent_pose is not None else existing.agent_pose
+        ),
+        rooms=_merge_node_observations(existing.rooms, incoming.rooms),
+        regions=_merge_node_observations(existing.regions, incoming.regions),
+        objects=_merge_object_observations(existing.objects, incoming.objects),
+    )
+
+
+def _merge_node_observations(
+    existing: Sequence[NodeObservation],
+    incoming: Sequence[NodeObservation],
+) -> tuple[NodeObservation, ...]:
+    by_id = {node.node_id: node for node in existing}
+    by_id.update({node.node_id: node for node in incoming})
+    return tuple(by_id[node_id] for node_id in sorted(by_id))
+
+
+def _merge_object_observations(
+    existing: Sequence[ObjectObservation],
+    incoming: Sequence[ObjectObservation],
+) -> tuple[ObjectObservation, ...]:
+    by_id = {obj.object_id: obj for obj in existing}
+    by_id.update({obj.object_id: obj for obj in incoming})
+    return tuple(by_id[object_id] for object_id in sorted(by_id))
 
 
 def episode_metadata_coverage_detector_jsonl(
@@ -604,6 +698,38 @@ def episode_metadata_coverage_detector_jsonl(
             include_hidden=include_hidden,
             path_prefix=path_prefix,
         )
+    )
+
+
+def segmentation_color_map_detector_jsonl(
+    frames: Sequence[EpisodeFrame],
+    *,
+    mask_root: str | Path,
+    detector_name: str = "visible_segmentation_rgbd",
+) -> str:
+    return "".join(
+        json.dumps(record, separators=(",", ":"), sort_keys=True) + "\n"
+        for record in segmentation_color_map_detector_records(
+            frames,
+            mask_root=mask_root,
+            detector_name=detector_name,
+        )
+    )
+
+
+def segmentation_color_map_detector_records(
+    frames: Sequence[EpisodeFrame],
+    *,
+    mask_root: str | Path,
+    detector_name: str = "visible_segmentation_rgbd",
+) -> tuple[dict[str, Any], ...]:
+    return tuple(
+        _episode_frame_to_segmentation_detector_record(
+            frame,
+            mask_root=Path(mask_root),
+            detector_name=detector_name,
+        )
+        for frame in sorted(frames, key=lambda item: (item.episode_id, item.step))
     )
 
 
@@ -633,6 +759,7 @@ def detector_observation_import_report(
     output_sequence_path: str | Path,
     observations: Sequence[SceneObservation],
     input_payload: str,
+    anchor_visible_frame_region: bool = False,
 ) -> dict[str, Any]:
     report: dict[str, Any] = {
         "schema_version": DETECTOR_OBSERVATION_IMPORT_REPORT_SCHEMA_VERSION,
@@ -640,6 +767,9 @@ def detector_observation_import_report(
         "path": str(input_path),
         "output_sequence_path": str(output_sequence_path),
         "valid": True,
+        "import_options": {
+            "anchor_visible_frame_region": anchor_visible_frame_region,
+        },
         "input_digest": detector_observation_records_digest(input_payload),
         "sequence_digest": scene_observation_sequence_digest(observations),
         "summary": scene_observation_sequence_summary(observations),
@@ -758,14 +888,25 @@ def compare_detector_observation_import_report(
 ) -> dict[str, Any]:
     input_path = _required_str(report, "path")
     output_sequence_path = _required_str(report, "output_sequence_path")
+    import_options = report.get("import_options")
+    if import_options is None:
+        import_options = {}
+    import_options_mapping = _as_mapping(import_options, "import_options")
+    anchor_visible_frame_region = (
+        import_options_mapping.get("anchor_visible_frame_region") is True
+    )
     input_payload = Path(input_path).read_text(encoding="utf-8")
-    current_observations = detector_observation_sequence_from_jsonl(input_payload)
+    current_observations = detector_observation_sequence_from_jsonl(
+        input_payload,
+        anchor_visible_frame_region=anchor_visible_frame_region,
+    )
     output_observations = load_scene_observation_sequence(output_sequence_path)
     current_report = detector_observation_import_report(
         input_path=input_path,
         output_sequence_path=output_sequence_path,
         observations=current_observations,
         input_payload=input_payload,
+        anchor_visible_frame_region=anchor_visible_frame_region,
     )
     current_sequence_digest = scene_observation_sequence_digest(current_observations)
     output_sequence_digest = scene_observation_sequence_digest(output_observations)
@@ -819,10 +960,15 @@ def compare_detector_observation_import_report(
 
 def _scene_observation_from_detector_record(
     payload: Mapping[str, Any],
+    *,
+    anchor_visible_frame_region: bool = False,
 ) -> SceneObservation:
     schema_version = payload.get("schema_version")
     if schema_version == EXTERNAL_DETECTOR_FRAME_SCHEMA_VERSION:
-        return _scene_observation_from_external_detector_frame(payload)
+        return _scene_observation_from_external_detector_frame(
+            payload,
+            anchor_visible_frame_region=anchor_visible_frame_region,
+        )
     if schema_version != DETECTOR_OBSERVATION_RECORD_SCHEMA_VERSION:
         raise SpatialQAError(
             f"Unsupported detector observation record schema version: {schema_version}"
@@ -857,10 +1003,17 @@ def _scene_observation_from_detector_record(
 
 def _scene_observation_from_external_detector_frame(
     payload: Mapping[str, Any],
+    *,
+    anchor_visible_frame_region: bool = False,
 ) -> SceneObservation:
     detector_name = _required_str(payload, "detector_name")
     camera_pose = payload.get("camera_pose")
     frame_attributes = _external_detector_frame_attributes(payload, detector_name)
+    region = (
+        _visible_frame_region_from_external_detector_frame(payload, frame_attributes)
+        if anchor_visible_frame_region
+        else None
+    )
     return SceneObservation(
         step=_required_int(payload, "step"),
         agent_id=_optional_string(payload, "agent_id", default="agent"),
@@ -869,13 +1022,36 @@ def _scene_observation_from_external_detector_frame(
             if camera_pose is not None
             else None
         ),
+        regions=(region,) if region is not None else (),
         objects=tuple(
             _object_observation_from_external_detection(
                 _as_mapping(item, "detection"),
                 frame_attributes,
+                frame_region_id=region.node_id if region is not None else None,
             )
             for item in _required_sequence(payload, "detections")
         ),
+    )
+
+
+def _visible_frame_region_from_external_detector_frame(
+    payload: Mapping[str, Any],
+    frame_attributes: Mapping[str, Any],
+) -> NodeObservation:
+    episode_id = _required_str(payload, "episode_id")
+    step = _required_int(payload, "step")
+    attributes = {
+        "source_kind": "detector",
+        "source_name": _required_str(payload, "detector_name"),
+    }
+    for field_name in ("episode_id", "scene_id", "rgb_path", "depth_path"):
+        value = frame_attributes.get(field_name)
+        if isinstance(value, str) and value:
+            attributes[field_name] = value
+    return NodeObservation(
+        f"visible_frame_region:{episode_id}:{step:04d}",
+        "visible frame region",
+        attributes=attributes,
     )
 
 
@@ -901,6 +1077,8 @@ def _external_detector_frame_attributes(
 def _object_observation_from_external_detection(
     payload: Mapping[str, Any],
     frame_attributes: Mapping[str, Any],
+    *,
+    frame_region_id: str | None = None,
 ) -> ObjectObservation:
     detection_id = _required_str(payload, "detection_id")
     object_id_value = payload.get("object_id")
@@ -938,6 +1116,17 @@ def _object_observation_from_external_detection(
             _as_mapping(payload.get("attributes", {}), "detection attributes")
         )
     )
+    if (
+        frame_region_id is not None
+        and attributes.get("current_location_id") is None
+        and attributes.get("current_location_relation") is None
+        and _required_bool(payload, "visible") is True
+        and {"depth", "detector", "rgb"}.issubset(
+            set(str(item) for item in attributes["evidence_kinds"])
+        )
+    ):
+        attributes["current_location_id"] = frame_region_id
+        attributes["current_location_relation"] = "IN_REGION"
     return ObjectObservation(
         object_id,
         _required_str(payload, "label"),
@@ -947,6 +1136,415 @@ def _object_observation_from_external_detection(
         visible=_required_bool(payload, "visible"),
         attributes=attributes,
     )
+
+
+def _episode_frame_to_segmentation_detector_record(
+    frame: EpisodeFrame,
+    *,
+    mask_root: Path,
+    detector_name: str,
+) -> dict[str, Any]:
+    if frame.rgb_path is None or frame.depth_path is None or frame.segmentation_path is None:
+        raise SpatialQAError(
+            "segmentation detector export requires rgb/depth/segmentation paths"
+        )
+    color_map = _segmentation_color_map_from_frame(frame)
+    segmentation_pixels = _read_ppm_pixels(Path(frame.segmentation_path))
+    depth_values = _read_depth_values(Path(frame.depth_path))
+    height = len(segmentation_pixels)
+    width = len(segmentation_pixels[0]) if segmentation_pixels else 0
+    if height == 0 or width == 0:
+        raise SpatialQAError("segmentation image must contain pixels")
+    if len(depth_values) != height or any(len(row) != width for row in depth_values):
+        raise SpatialQAError("depth artifact shape must match segmentation image shape")
+    region_id = f"visible_frame_region:{frame.episode_id}:{frame.step:04d}"
+    detections = [
+        _segmentation_color_detection(
+            frame,
+            object_id=object_id,
+            rgb=rgb,
+            pixels=segmentation_pixels,
+            depth_values=depth_values,
+            mask_root=mask_root,
+            detector_name=detector_name,
+            region_id=region_id,
+        )
+        for rgb, object_id in sorted(color_map.items(), key=lambda item: (item[1], item[0]))
+    ]
+    detections = [item for item in detections if item is not None]
+    return {
+        "schema_version": DETECTOR_OBSERVATION_RECORD_SCHEMA_VERSION,
+        "episode_id": frame.episode_id,
+        "scene_id": frame.scene_id,
+        "step": frame.step,
+        "agent_id": frame.agent_id,
+        "agent_pose": frame.agent_pose.to_dict(),
+        "rgb_path": frame.rgb_path,
+        "depth_path": frame.depth_path,
+        "segmentation_path": frame.segmentation_path,
+        "metadata": {
+            "action": frame.action,
+            "detector": detector_name,
+            "episode_id": frame.episode_id,
+            "geometry_estimator": "segmentation_depth_ray_v1",
+            "scene_id": frame.scene_id,
+            "source_kind": "detector",
+        },
+        "regions": [
+            {
+                "attributes": {
+                    "episode_id": frame.episode_id,
+                    "scene_id": frame.scene_id,
+                    "source_kind": "detector",
+                    "source_name": detector_name,
+                },
+                "label": "visible frame region",
+                "node_id": region_id,
+            }
+        ],
+        "rooms": [],
+        "detections": detections,
+    }
+
+
+def _segmentation_color_detection(
+    frame: EpisodeFrame,
+    *,
+    object_id: str,
+    rgb: tuple[int, int, int],
+    pixels: Sequence[Sequence[tuple[int, int, int]]],
+    depth_values: Sequence[Sequence[float]],
+    mask_root: Path,
+    detector_name: str,
+    region_id: str,
+) -> dict[str, Any] | None:
+    coordinates = [
+        (x, y)
+        for y, row in enumerate(pixels)
+        for x, pixel in enumerate(row)
+        if pixel == rgb
+    ]
+    if not coordinates:
+        return None
+    min_x = min(x for x, _ in coordinates)
+    max_x = max(x for x, _ in coordinates)
+    min_y = min(y for _, y in coordinates)
+    max_y = max(y for _, y in coordinates)
+    depth = sum(depth_values[y][x] for x, y in coordinates) / len(coordinates)
+    center_x = (min_x + max_x) / 2.0
+    image_width = len(pixels[0])
+    image_height = len(pixels)
+    pose = _segmentation_depth_pose(frame.agent_pose, center_x, image_width, depth)
+    size_x = max(0.01, ((max_x - min_x + 1) / image_width) * max(depth, 0.01))
+    size_y = max(0.01, ((max_y - min_y + 1) / image_height) * max(depth, 0.01))
+    size_z = max(0.01, min(size_x, size_y))
+    mask_path = _write_segmentation_mask(
+        pixels,
+        rgb=rgb,
+        mask_root=mask_root,
+        episode_id=frame.episode_id,
+        step=frame.step,
+        object_id=object_id,
+    )
+    return {
+        "object_id": object_id,
+        "label": _label_from_segmentation_object_id(object_id),
+        "pose": pose.to_dict(),
+        "bbox": {
+            "center": pose.to_dict(),
+            "size": [size_x, size_y, size_z],
+        },
+        "confidence": 1.0,
+        "visible": True,
+        "attributes": {
+            "bbox_2d_xyxy": [min_x, min_y, max_x, max_y],
+            "current_location_id": region_id,
+            "current_location_relation": "IN_REGION",
+            "detector": detector_name,
+            "evidence_kinds": ["depth", "detector", "rgb"],
+            "geometry_estimator": "segmentation_depth_ray_v1",
+            "mask_path": str(mask_path),
+            "pixel_count": len(coordinates),
+            "segmentation_color_rgb": list(rgb),
+            "source_kind": "detector",
+            "source_name": detector_name,
+        },
+    }
+
+
+def _segmentation_depth_pose(
+    agent_pose: Pose3D,
+    center_x: float,
+    image_width: int,
+    depth: float,
+) -> Pose3D:
+    normalized_x = 0.0 if image_width <= 1 else (center_x / (image_width - 1)) - 0.5
+    lateral = normalized_x * max(depth, 0.0)
+    yaw_radians = math.radians(agent_pose.yaw)
+    forward_x = math.sin(yaw_radians)
+    forward_z = math.cos(yaw_radians)
+    right_x = math.cos(yaw_radians)
+    right_z = -math.sin(yaw_radians)
+    return Pose3D(
+        agent_pose.x + (forward_x * depth) + (right_x * lateral),
+        agent_pose.y,
+        agent_pose.z + (forward_z * depth) + (right_z * lateral),
+        yaw=agent_pose.yaw,
+    )
+
+
+def _segmentation_color_map_from_frame(frame: EpisodeFrame) -> dict[tuple[int, int, int], str]:
+    metadata = _as_mapping(frame.metadata, "metadata")
+    color_map = metadata.get("segmentation_color_map")
+    if isinstance(color_map, str) or not isinstance(color_map, Sequence):
+        raise SpatialQAError("segmentation_color_map must be a sequence")
+    result: dict[tuple[int, int, int], str] = {}
+    for item in color_map:
+        payload = _as_mapping(item, "segmentation_color_map item")
+        object_id = _required_str(payload, "object_id")
+        rgb = _rgb_tuple(_required_sequence(payload, "rgb"), "segmentation_color_map rgb")
+        result[rgb] = object_id
+    if not result:
+        raise SpatialQAError("segmentation_color_map must contain at least one color")
+    return result
+
+
+def _read_ppm_pixels(path: Path) -> list[list[tuple[int, int, int]]]:
+    data = path.read_bytes()
+    magic, offset = _ppm_token(data, 0)
+    width_token, offset = _ppm_token(data, offset)
+    height_token, offset = _ppm_token(data, offset)
+    max_value_token, offset = _ppm_token(data, offset)
+    if magic not in (b"P3", b"P6"):
+        raise SpatialQAError("PPM image must use P3 or P6 format")
+    width = _positive_int_token(width_token, "PPM width")
+    height = _positive_int_token(height_token, "PPM height")
+    max_value = _positive_int_token(max_value_token, "PPM max value")
+    if max_value != 255:
+        raise SpatialQAError("PPM max value must be 255")
+    if magic == b"P6":
+        while offset < len(data) and data[offset] in b" \t\r\n":
+            offset += 1
+        expected = width * height * 3
+        payload = data[offset : offset + expected]
+        if len(payload) != expected:
+            raise SpatialQAError("P6 PPM payload size does not match dimensions")
+        rows: list[list[tuple[int, int, int]]] = []
+        cursor = 0
+        for _ in range(height):
+            row: list[tuple[int, int, int]] = []
+            for _ in range(width):
+                row.append((payload[cursor], payload[cursor + 1], payload[cursor + 2]))
+                cursor += 3
+            rows.append(row)
+        return rows
+    tokens: list[bytes] = []
+    while len(tokens) < width * height * 3:
+        token, offset = _ppm_token(data, offset)
+        tokens.append(token)
+    channels = [_nonnegative_int_token(token, "P3 PPM channel") for token in tokens]
+    if any(channel > 255 for channel in channels):
+        raise SpatialQAError("P3 PPM channel must be in 0..255")
+    rows = []
+    cursor = 0
+    for _ in range(height):
+        row = []
+        for _ in range(width):
+            row.append((channels[cursor], channels[cursor + 1], channels[cursor + 2]))
+            cursor += 3
+        rows.append(row)
+    return rows
+
+
+def _ppm_token(data: bytes, offset: int) -> tuple[bytes, int]:
+    while offset < len(data):
+        value = data[offset]
+        if value in b" \t\r\n":
+            offset += 1
+            continue
+        if value == ord("#"):
+            while offset < len(data) and data[offset] not in b"\r\n":
+                offset += 1
+            continue
+        break
+    start = offset
+    while offset < len(data) and data[offset] not in b" \t\r\n":
+        offset += 1
+    if start == offset:
+        raise SpatialQAError("PPM file ended before expected token")
+    return data[start:offset], offset
+
+
+def _positive_int_token(token: bytes, field_name: str) -> int:
+    try:
+        value = int(token.decode("ascii"))
+    except ValueError as exc:
+        raise SpatialQAError(f"{field_name} must be an integer") from exc
+    if value <= 0:
+        raise SpatialQAError(f"{field_name} must be positive")
+    return value
+
+
+def _nonnegative_int_token(token: bytes, field_name: str) -> int:
+    try:
+        value = int(token.decode("ascii"))
+    except ValueError as exc:
+        raise SpatialQAError(f"{field_name} must be an integer") from exc
+    if value < 0:
+        raise SpatialQAError(f"{field_name} must be non-negative")
+    return value
+
+
+def _read_depth_values(path: Path) -> list[list[float]]:
+    if path.suffix == ".npy":
+        return _read_npy_depth_values(path)
+    text = path.read_text(encoding="utf-8")
+    payload = json.loads(text)
+    if isinstance(payload, str) or not isinstance(payload, Sequence):
+        raise SpatialQAError("depth artifact must be a matrix")
+    rows: list[list[float]] = []
+    for row_index, row in enumerate(payload):
+        if isinstance(row, str) or not isinstance(row, Sequence):
+            raise SpatialQAError(f"depth artifact row {row_index} must be a sequence")
+        rows.append([
+            _number_from_value(value, f"depth artifact row {row_index}")
+            for value in row
+        ])
+    return rows
+
+
+def _read_npy_depth_values(path: Path) -> list[list[float]]:
+    data = path.read_bytes()
+    if not data.startswith(b"\x93NUMPY"):
+        raise SpatialQAError("NPY depth artifact must start with numpy magic")
+    if len(data) < 10:
+        raise SpatialQAError("NPY depth artifact is too short")
+    major = data[6]
+    if major == 1:
+        header_length = struct.unpack("<H", data[8:10])[0]
+        header_start = 10
+    elif major in (2, 3):
+        if len(data) < 12:
+            raise SpatialQAError("NPY depth artifact is too short")
+        header_length = struct.unpack("<I", data[8:12])[0]
+        header_start = 12
+    else:
+        raise SpatialQAError("Unsupported NPY depth artifact version")
+    header_end = header_start + header_length
+    if header_end > len(data):
+        raise SpatialQAError("NPY depth artifact header exceeds file size")
+    header_text = data[header_start:header_end].decode("latin1").strip()
+    header = ast.literal_eval(header_text)
+    if not isinstance(header, Mapping):
+        raise SpatialQAError("NPY depth artifact header must be a mapping")
+    if header.get("fortran_order") is not False:
+        raise SpatialQAError("NPY depth artifact must use C-order storage")
+    shape = header.get("shape")
+    if (
+        isinstance(shape, str)
+        or not isinstance(shape, Sequence)
+        or len(shape) != 2
+        or not all(isinstance(item, int) and item > 0 for item in shape)
+    ):
+        raise SpatialQAError("NPY depth artifact shape must be two positive integers")
+    height = int(shape[0])
+    width = int(shape[1])
+    descr = header.get("descr")
+    if not isinstance(descr, str):
+        raise SpatialQAError("NPY depth artifact descr must be a string")
+    struct_format = _npy_struct_format(descr)
+    item_size = struct.calcsize(struct_format)
+    expected_bytes = height * width * item_size
+    payload = data[header_end : header_end + expected_bytes]
+    if len(payload) != expected_bytes:
+        raise SpatialQAError("NPY depth artifact payload size does not match shape")
+    values = [
+        float(value[0])
+        for value in struct.iter_unpack(struct_format, payload)
+    ]
+    return [
+        values[row_index * width : (row_index + 1) * width]
+        for row_index in range(height)
+    ]
+
+
+def _npy_struct_format(descr: str) -> str:
+    endian = descr[0] if descr and descr[0] in "<>|=" else "<"
+    dtype = descr[1:] if descr and descr[0] in "<>|=" else descr
+    if endian in (">",):
+        prefix = ">"
+    else:
+        prefix = "<"
+    formats = {
+        "f4": "f",
+        "f8": "d",
+        "i2": "h",
+        "i4": "i",
+        "i8": "q",
+        "u2": "H",
+        "u4": "I",
+        "u8": "Q",
+    }
+    if dtype not in formats:
+        raise SpatialQAError(f"Unsupported NPY depth artifact dtype: {descr}")
+    return f"{prefix}{formats[dtype]}"
+
+
+def _rgb_tuple(value: Sequence[Any], field_name: str) -> tuple[int, int, int]:
+    if len(value) != 3:
+        raise SpatialQAError(f"{field_name} must contain exactly three channels")
+    channels = tuple(_rgb_channel(channel, field_name) for channel in value)
+    return cast(tuple[int, int, int], channels)
+
+
+def _rgb_channel(value: object, field_name: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise SpatialQAError(f"{field_name} channels must be integers")
+    if value < 0 or value > 255:
+        raise SpatialQAError(f"{field_name} channels must be in 0..255")
+    return value
+
+
+def _label_from_segmentation_object_id(object_id: str) -> str:
+    if "|" in object_id:
+        return object_id.split("|", 1)[0].lower()
+    prefix = object_id.split("_", 1)[0]
+    return prefix.lower() if prefix else object_id.lower()
+
+
+def _write_segmentation_mask(
+    pixels: Sequence[Sequence[tuple[int, int, int]]],
+    *,
+    rgb: tuple[int, int, int],
+    mask_root: Path,
+    episode_id: str,
+    step: int,
+    object_id: str,
+) -> Path:
+    output_path = mask_root / episode_id / f"{step:04d}" / f"{_safe_path_token(object_id)}.ppm"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    height = len(pixels)
+    width = len(pixels[0]) if pixels else 0
+    lines = [
+        " ".join(
+            "255 255 255" if pixel == rgb else "0 0 0"
+            for pixel in row
+        )
+        for row in pixels
+    ]
+    output_path.write_text(
+        f"P3\n{width} {height}\n255\n" + "\n".join(lines) + "\n",
+        encoding="utf-8",
+    )
+    return output_path
+
+
+def _safe_path_token(value: str) -> str:
+    cleaned = "".join(
+        char.lower() if char.isalnum() else "_"
+        for char in value
+    ).strip("_")
+    return cleaned or "object"
 
 
 def _episode_frame_to_coverage_detector_record(
@@ -975,6 +1573,8 @@ def _episode_frame_to_coverage_detector_record(
     ]
     return {
         "schema_version": DETECTOR_OBSERVATION_RECORD_SCHEMA_VERSION,
+        "episode_id": frame.episode_id,
+        "scene_id": frame.scene_id,
         "step": frame.step,
         "agent_id": frame.agent_id,
         "agent_pose": frame.agent_pose.to_dict(),
@@ -1208,6 +1808,8 @@ def ingest_scene_observation_sequence(
     reference_frames: Sequence[str] = ("world",),
     infer_containment: bool = False,
     containment_axis: str = "z",
+    relation_top_k: int | None = None,
+    require_detector_state_evidence: bool = False,
 ) -> tuple[DynamicSceneGraph, tuple[IngestResult, ...]]:
     graph = DynamicSceneGraph()
     ingestor = ObservationIngestor(graph)
@@ -1221,6 +1823,8 @@ def ingest_scene_observation_sequence(
             reference_frames=reference_frames,
             infer_containment=infer_containment,
             containment_axis=containment_axis,
+            relation_top_k=relation_top_k,
+            require_detector_state_evidence=require_detector_state_evidence,
             relation_evidence=(
                 (f"{source_prefix}:{observation.step}",)
                 if source_prefix is not None
@@ -1526,6 +2130,8 @@ class ObservationIngestor:
         reference_frames: Sequence[str] = ("world", "agent"),
         infer_containment: bool = False,
         containment_axis: str = "z",
+        relation_top_k: int | None = None,
+        require_detector_state_evidence: bool = False,
         relation_confidence: float = 1.0,
         relation_evidence: Sequence[str] | None = None,
     ) -> IngestResult:
@@ -1564,6 +2170,8 @@ class ObservationIngestor:
         object_ids: list[str] = []
         state_edge_ids: list[str] = []
         for obj in sorted(observation.objects, key=lambda item: item.object_id):
+            if require_detector_state_evidence:
+                _validate_detector_state_evidence(obj)
             self.graph.upsert_object(
                 obj.object_id,
                 obj.label,
@@ -1577,8 +2185,9 @@ class ObservationIngestor:
             object_ids.append(obj.object_id)
             node_ids.add(obj.object_id)
             state_edge_ids.append(self._state_edge_id(obj.object_id, observation.step))
+            self._annotate_detector_state_evidence(obj, observation.step)
 
-        inferred_edges = []
+        inferred_edges = self._ingest_explicit_current_location_edges(observation)
         if infer_containment and object_ids:
             inferred_edges.extend(
                 self._infer_containment_edges(
@@ -1587,20 +2196,44 @@ class ObservationIngestor:
                     evidence=relation_evidence,
                 )
             )
+        if inferred_edges:
+            self._assign_current_locations(observation)
 
         if infer_relations and object_ids:
+            relation_names = tuple(dict.fromkeys(relation.upper() for relation in infer_relations))
+            graph_tool_relations = relation_names
+            top_k_relations: tuple[str, ...] = ()
+            if relation_top_k is not None:
+                self._validate_relation_top_k(relation_top_k)
+                top_k_relations = tuple(
+                    relation
+                    for relation in relation_names
+                    if relation in OBSERVATION_TOP_K_RELATIONS
+                )
+                graph_tool_relations = tuple(
+                    relation for relation in relation_names if relation not in top_k_relations
+                )
             inferred_edges.extend(
-                self.graph_tool.update_spatial_relations(
-                    step=observation.step,
+                self._infer_graph_tool_relations(
+                    observation,
                     object_ids=tuple(object_ids),
-                    relations=infer_relations,
+                    relations=graph_tool_relations,
                     reference_frames=reference_frames,
-                    agent_id=observation.agent_id,
                     confidence=relation_confidence,
                     evidence=relation_evidence,
-                    attributes={"source": "geometry_inference"},
                 )
             )
+            if relation_top_k is not None and top_k_relations:
+                inferred_edges.extend(
+                    self._infer_relation_top_k_edges(
+                        observation,
+                        relations=top_k_relations,
+                        top_k=relation_top_k,
+                        reference_frames=reference_frames,
+                        confidence=relation_confidence,
+                        evidence=relation_evidence,
+                    )
+                )
         inferred_edge_ids = tuple(
             edge.id for edge in sorted(inferred_edges, key=self.graph_tool._edge_sort_key)
         )
@@ -1629,6 +2262,146 @@ class ObservationIngestor:
     @staticmethod
     def _state_edge_id(object_id: str, step: int) -> str:
         return f"{object_id}-STATE_CHANGED-state:{object_id}:{step}-{step}"
+
+    def _annotate_detector_state_evidence(
+        self,
+        obj: ObjectObservation,
+        step: int,
+    ) -> None:
+        states = obj.attributes.get("states")
+        if not isinstance(states, Mapping) or not states:
+            return
+        try:
+            _validate_detector_state_evidence(obj)
+        except SpatialQAError:
+            return
+        state_id = f"state:{obj.object_id}:{step}"
+        state_node = self.graph.nodes.get(state_id)
+        if state_node is None:
+            return
+        attributes = _detector_state_evidence_attributes(obj.attributes)
+        evidence = _detector_state_evidence_paths(obj.attributes)
+        state_node.attributes.update(attributes)
+        for edge in self.graph.find_edges(
+            src=obj.object_id,
+            relation="STATE_CHANGED",
+            dst=state_id,
+        ):
+            if edge.step != step:
+                continue
+            edge.attributes.update(attributes)
+            edge.evidence = evidence
+
+    @staticmethod
+    def _validate_relation_top_k(relation_top_k: int) -> None:
+        if not isinstance(relation_top_k, int) or isinstance(relation_top_k, bool):
+            raise SpatialQAError("relation_top_k must be an integer")
+        if relation_top_k < 0:
+            raise SpatialQAError("relation_top_k must be non-negative")
+
+    def _infer_graph_tool_relations(
+        self,
+        observation: SceneObservation,
+        *,
+        object_ids: Sequence[str],
+        relations: Sequence[str],
+        reference_frames: Sequence[str],
+        confidence: float,
+        evidence: Sequence[str] | None,
+    ) -> list[Any]:
+        if not relations:
+            return []
+        return self.graph_tool.update_spatial_relations(
+            step=observation.step,
+            object_ids=tuple(object_ids),
+            relations=relations,
+            reference_frames=reference_frames,
+            agent_id=observation.agent_id,
+            confidence=confidence,
+            evidence=evidence,
+            attributes={"source": "geometry_inference"},
+        )
+
+    def _infer_relation_top_k_edges(
+        self,
+        observation: SceneObservation,
+        *,
+        relations: Sequence[str],
+        top_k: int,
+        reference_frames: Sequence[str],
+        confidence: float,
+        evidence: Sequence[str] | None,
+    ) -> list[Any]:
+        if top_k == 0:
+            return []
+        objects = sorted(observation.objects, key=lambda item: item.object_id)
+        evidence_list = list(evidence or [])
+        attributes = {"inferred": True, "source": "geometry_inference", "top_k": top_k}
+        added: list[Any] = []
+        for reference_frame in reference_frames:
+            if reference_frame not in {"world", "agent"}:
+                continue
+            agent_pose = (
+                self.graph.get_agent_pose(observation.agent_id)
+                if reference_frame == "agent"
+                else None
+            )
+            for relation in relations:
+                for src in objects:
+                    candidates = [
+                        (src.bbox.surface_distance_to(dst.bbox), dst.object_id)
+                        for dst in objects
+                        if src.object_id != dst.object_id
+                        and self._top_k_relation_matches(
+                            src,
+                            dst,
+                            relation,
+                            reference_frame=reference_frame,
+                            agent_pose=agent_pose,
+                        )
+                    ]
+                    for _, dst_id in sorted(candidates)[:top_k]:
+                        if self._has_edge(
+                            src.object_id,
+                            relation,
+                            dst_id,
+                            observation.step,
+                            reference_frame=reference_frame,
+                        ):
+                            continue
+                        added.append(
+                            self.graph.add_edge(
+                                src.object_id,
+                                relation,
+                                dst_id,
+                                reference_frame,
+                                confidence,
+                                step=observation.step,
+                                evidence=evidence_list,
+                                attributes=attributes,
+                            )
+                        )
+        return added
+
+    def _top_k_relation_matches(
+        self,
+        src: ObjectObservation,
+        dst: ObjectObservation,
+        relation: str,
+        *,
+        reference_frame: str,
+        agent_pose: Pose3D | None,
+    ) -> bool:
+        try:
+            return self.graph_tool.relation_engine.evaluate(
+                src.bbox,
+                dst.bbox,
+                relation,
+                reference_frame=reference_frame,
+                agent_pose=agent_pose,
+            )
+        except SpatialQAError:
+            return False
 
     def _infer_containment_edges(
         self,
@@ -1691,11 +2464,16 @@ class ObservationIngestor:
 
         objects = sorted(observation.objects, key=lambda item: item.object_id)
         for src in objects:
+            candidates: list[tuple[tuple[float, float, float, str], ObjectObservation]] = []
             for dst in objects:
                 if src.object_id == dst.object_id:
                     continue
+                if not _is_semantically_valid_on(src, dst):
+                    continue
                 if not _is_on_axis(src.bbox, dst.bbox, normalized_axis):
                     continue
+                candidates.append((_on_support_sort_key(src, dst, normalized_axis), dst))
+            for _, dst in sorted(candidates)[:1]:
                 if self._has_edge(src.object_id, "ON", dst.object_id, observation.step):
                     continue
                 added.append(
@@ -1711,6 +2489,130 @@ class ObservationIngestor:
                     )
                 )
         return added
+
+    def _ingest_explicit_current_location_edges(
+        self,
+        observation: SceneObservation,
+    ) -> list[Any]:
+        added: list[Any] = []
+        for obj in sorted(observation.objects, key=lambda item: item.object_id):
+            location_id = obj.attributes.get("current_location_id")
+            relation = obj.attributes.get("current_location_relation")
+            if location_id is None and relation is None:
+                continue
+            _validate_explicit_current_location_evidence(obj)
+            if not isinstance(location_id, str) or not location_id:
+                raise SpatialQAError("current_location_id must be a non-empty string")
+            if not isinstance(relation, str) or not relation:
+                raise SpatialQAError("current_location_relation must be a non-empty string")
+            normalized_relation = relation.upper()
+            if normalized_relation not in CONTAINMENT_RELATIONS:
+                raise SpatialQAError(
+                    "current_location_relation must be a containment relation"
+                )
+            if location_id not in self.graph.nodes:
+                self._ensure_explicit_current_location_node(
+                    location_id,
+                    normalized_relation,
+                    obj.attributes,
+                    step=observation.step,
+                )
+            if self._has_edge(
+                obj.object_id,
+                normalized_relation,
+                location_id,
+                observation.step,
+            ):
+                continue
+            attributes = _explicit_current_location_edge_attributes(obj.attributes)
+            added.append(
+                self.graph.add_edge(
+                    obj.object_id,
+                    normalized_relation,
+                    location_id,
+                    "world",
+                    obj.confidence,
+                    step=observation.step,
+                    attributes=attributes,
+                )
+            )
+        return added
+
+    def _ensure_explicit_current_location_node(
+        self,
+        location_id: str,
+        relation: str,
+        attributes: Mapping[str, Any],
+        *,
+        step: int,
+    ) -> None:
+        if relation == "IN_REGION":
+            self.graph.add_region(
+                location_id,
+                _explicit_current_location_label(attributes, location_id),
+                step=step,
+                attributes=_explicit_current_location_node_attributes(attributes),
+            )
+            return
+        if relation == "IN_ROOM":
+            self.graph.add_room(
+                location_id,
+                _explicit_current_location_label(attributes, location_id),
+                step=step,
+                attributes=_explicit_current_location_node_attributes(attributes),
+            )
+            return
+        raise SpatialQAError(f"current_location_id node not found: {location_id}")
+
+    def _assign_current_locations(self, observation: SceneObservation) -> None:
+        room = self._preferred_room(
+            observation.rooms,
+            self._preferred_region(observation.regions),
+        )
+        for obj in sorted(observation.objects, key=lambda item: item.object_id):
+            node = self.graph.nodes.get(obj.object_id)
+            if node is None:
+                continue
+            best = self._best_current_location(obj.object_id, observation.step)
+            if best is not None:
+                node.attributes["current_location_id"] = best.dst
+                node.attributes["current_location_relation"] = best.relation
+                node.attributes["current_location_step"] = best.step
+            room_id = self._current_room_id(obj.object_id, observation.step)
+            if room_id is None and room is not None:
+                room_id = room.node_id
+            if room_id is not None:
+                node.attributes["current_room_id"] = room_id
+
+    def _best_current_location(self, object_id: str, step: int) -> Any | None:
+        priority = {"ON": 0, "INSIDE": 1, "IN_REGION": 2, "IN_ROOM": 3}
+        edges = [
+            edge
+            for edge in self.graph.find_edges(src=object_id)
+            if edge.step == step and edge.relation in priority
+        ]
+        if not edges:
+            return None
+        return sorted(edges, key=lambda edge: (priority[edge.relation], edge.dst))[0]
+
+    def _current_room_id(self, object_id: str, step: int) -> str | None:
+        direct = [
+            edge
+            for edge in self.graph.find_edges(src=object_id, relation="IN_ROOM")
+            if edge.step == step
+        ]
+        if direct:
+            return sorted(edge.dst for edge in direct)[0]
+        location = self._best_current_location(object_id, step)
+        if location is None:
+            return None
+        destination = self.graph.nodes.get(location.dst)
+        if destination is None:
+            return None
+        if destination.type == "room":
+            return location.dst if isinstance(location.dst, str) else None
+        room_id = destination.attributes.get("room_id")
+        return room_id if isinstance(room_id, str) and room_id else None
 
     @staticmethod
     def _preferred_region(regions: Sequence[NodeObservation]) -> NodeObservation | None:
@@ -1738,10 +2640,23 @@ class ObservationIngestor:
                 return room_by_id[region_room_id]
         return sorted(rooms, key=lambda item: item.node_id)[0]
 
-    def _has_edge(self, src: str, relation: str, dst: str, step: int) -> bool:
+    def _has_edge(
+        self,
+        src: str,
+        relation: str,
+        dst: str,
+        step: int,
+        *,
+        reference_frame: str | None = None,
+    ) -> bool:
         return any(
             edge.step == step
-            for edge in self.graph.find_edges(src=src, relation=relation, dst=dst)
+            for edge in self.graph.find_edges(
+                src=src,
+                relation=relation,
+                dst=dst,
+                reference_frame=reference_frame,
+            )
         )
 
 
@@ -1794,6 +2709,142 @@ def _is_on_axis(src: BBox3D, dst: BBox3D, axis: str) -> bool:
         _horizontal_area(src, axis=axis) * OBSERVATION_ON_SUPPORT_OVERLAP_RATIO
     )
     return vertical_touch and support_area >= required_area
+
+
+def _on_support_sort_key(
+    src: ObjectObservation,
+    dst: ObjectObservation,
+    axis: str,
+) -> tuple[float, float, float, str]:
+    vertical_gap = abs(_bbox_min(src.bbox, axis) - _bbox_max(dst.bbox, axis))
+    support_area = _horizontal_overlap_area(
+        src.bbox,
+        dst.bbox,
+        axis=axis,
+        margin=OBSERVATION_ON_OVERLAP_MARGIN,
+    )
+    return (
+        vertical_gap,
+        -support_area,
+        src.bbox.surface_distance_to(dst.bbox),
+        dst.object_id,
+    )
+
+
+def _is_semantically_valid_on(src: ObjectObservation, dst: ObjectObservation) -> bool:
+    src_label = src.label.replace("_", "").replace(" ", "").lower()
+    dst_label = dst.label.replace("_", "").replace(" ", "").lower()
+    if src_label in OBSERVATION_ON_UNSUPPORTED_SOURCE_LABELS:
+        return False
+    if dst_label not in OBSERVATION_ON_SUPPORTED_DESTINATION_LABELS:
+        return False
+    return True
+
+
+def _explicit_current_location_edge_attributes(
+    attributes: Mapping[str, Any],
+) -> dict[str, Any]:
+    edge_attributes: dict[str, Any] = {
+        "source": "detector_current_location",
+        "source_kind": "detector",
+    }
+    for key in (
+        "detector",
+        "source_name",
+        "evidence_kinds",
+        "rgb_path",
+        "depth_path",
+        "mask_path",
+    ):
+        value = attributes.get(key)
+        if _json_attribute_value(value):
+            edge_attributes[key] = _stable_json_value(value)
+    if "source_name" not in edge_attributes:
+        detector = attributes.get("detector")
+        if isinstance(detector, str) and detector:
+            edge_attributes["source_name"] = detector
+    return edge_attributes
+
+
+def _explicit_current_location_node_attributes(
+    attributes: Mapping[str, Any],
+) -> dict[str, Any]:
+    node_attributes = _explicit_current_location_edge_attributes(attributes)
+    node_attributes["current_location_node_source"] = "detector_current_location"
+    for key in ("room_id", "current_room_id"):
+        value = attributes.get(key)
+        if isinstance(value, str) and value:
+            node_attributes["room_id"] = value
+            break
+    return node_attributes
+
+
+def _explicit_current_location_label(
+    attributes: Mapping[str, Any],
+    location_id: str,
+) -> str:
+    label = attributes.get("current_location_label")
+    return label if isinstance(label, str) and label else location_id
+
+
+def _detector_state_evidence_attributes(
+    attributes: Mapping[str, Any],
+) -> dict[str, Any]:
+    state_attributes: dict[str, Any] = {
+        "source": "detector_state_evidence",
+        "source_kind": "detector",
+        "states": _stable_json_mapping(_as_mapping(attributes.get("states"), "states")),
+        "evidence_kinds": _stable_string_list(attributes.get("evidence_kinds")),
+    }
+    for key in ("detector", "source_name", "rgb_path", "depth_path", "mask_path"):
+        value = attributes.get(key)
+        if _json_attribute_value(value):
+            state_attributes[key] = _stable_json_value(value)
+    if "source_name" not in state_attributes:
+        detector = attributes.get("detector")
+        if isinstance(detector, str) and detector:
+            state_attributes["source_name"] = detector
+    return state_attributes
+
+
+def _detector_state_evidence_paths(attributes: Mapping[str, Any]) -> list[str]:
+    paths: list[str] = []
+    for key in ("depth_path", "rgb_path", "mask_path"):
+        value = attributes.get(key)
+        if isinstance(value, str) and value and value not in paths:
+            paths.append(value)
+    return paths
+
+
+def _validate_explicit_current_location_evidence(obj: ObjectObservation) -> None:
+    if obj.visible is not True:
+        raise SpatialQAError("current_location requires a visible detector observation")
+    source_kind = obj.attributes.get("source_kind")
+    if source_kind != "detector":
+        raise SpatialQAError("current_location requires detector source_kind")
+    evidence_kinds = set(_stable_string_list(obj.attributes.get("evidence_kinds")))
+    required = {"rgb", "depth", "detector"}
+    if not required.issubset(evidence_kinds):
+        raise SpatialQAError(
+            "current_location requires rgb/depth/detector evidence_kinds"
+        )
+
+
+def _validate_detector_state_evidence(obj: ObjectObservation) -> None:
+    states = obj.attributes.get("states")
+    if states is None:
+        return
+    if not isinstance(states, Mapping) or not states:
+        return
+    if obj.visible is not True:
+        raise SpatialQAError("state evidence requires a visible detector observation")
+    source_kind = obj.attributes.get("source_kind")
+    if source_kind != "detector":
+        raise SpatialQAError("state evidence requires detector source_kind")
+    evidence_kinds = set(_stable_string_list(obj.attributes.get("evidence_kinds")))
+    required = {"rgb", "depth", "detector"}
+    if not required.issubset(evidence_kinds):
+        raise SpatialQAError("state evidence requires rgb/depth/detector evidence_kinds")
 
 
 def _bbox_min(bbox: BBox3D, axis: str) -> float:

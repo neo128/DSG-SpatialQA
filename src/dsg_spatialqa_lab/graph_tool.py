@@ -686,7 +686,7 @@ class GraphTool:
             ]
         if not candidates:
             return None
-        return sorted(candidates, key=self._edge_sort_key)[-1]
+        return sorted(candidates, key=self._location_edge_sort_key)[-1]
 
     def _latest_location_at_or_before(self, object_id: str, step: int) -> Edge | None:
         candidates = [
@@ -698,7 +698,7 @@ class GraphTool:
         ]
         if not candidates:
             return None
-        return sorted(candidates, key=self._edge_sort_key)[-1]
+        return sorted(candidates, key=self._location_edge_sort_key)[-1]
 
     def _state_changed_edge(self, src: str, step: int) -> Edge | None:
         state_id = f"state:{src}:{step}"
@@ -991,6 +991,17 @@ class GraphTool:
         return (edge.step, edge.src, edge.relation, edge.dst, edge.reference_frame)
 
     @staticmethod
+    def _location_edge_sort_key(edge: Edge) -> tuple[int, int, str, str, str, str]:
+        return (
+            edge.step,
+            _location_edge_source_priority(edge),
+            edge.src,
+            edge.relation,
+            edge.dst,
+            edge.reference_frame,
+        )
+
+    @staticmethod
     def _node_sort_key(node: Node) -> tuple[int, str]:
         priority = {
             "object": 0,
@@ -1045,3 +1056,13 @@ class GraphTool:
             if precondition.get("type") == precondition_type:
                 return precondition.get("value")
         return None
+
+
+def _location_edge_source_priority(edge: Edge) -> int:
+    source = edge.attributes.get("source")
+    source_kind = edge.attributes.get("source_kind")
+    if source == "detector_current_location":
+        return 2
+    if source_kind == "detector":
+        return 1
+    return 0

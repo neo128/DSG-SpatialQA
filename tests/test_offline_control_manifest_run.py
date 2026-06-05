@@ -619,6 +619,13 @@ def test_offline_control_prediction_request_bundle_exports_external_baseline_tem
         "digest": lab.qa_dataset_digest(cases),
         "path": str(manifest["qa_path"]),
     }
+    assert bundle["frame_index"] == {
+        "available": True,
+        "frame_count": len(
+            {(case.episode_id, case.scene_id, case.step) for case in cases}
+        ),
+        "path": str(manifest["frame_index_path"]),
+    }
     assert bundle["expected_input_formats"] == {
         "offline_prediction_record": (
             "dsg-spatialqa-lab.offline-prediction-record.v1"
@@ -658,7 +665,22 @@ def test_offline_control_prediction_request_bundle_exports_external_baseline_tem
     }
     assert bundle["case_count"] == 3
     first_case_request = bundle["case_inputs"][0]
-    assert first_case_request == {
+    assert {
+        key: first_case_request[key]
+        for key in (
+            "answer_type",
+            "case_id",
+            "choices",
+            "difficulty",
+            "episode_id",
+            "question",
+            "question_type",
+            "reference_frame",
+            "scene_id",
+            "step",
+            "tags",
+        )
+    } == {
         "answer_type": cases[0].answer_type,
         "case_id": cases[0].id,
         "choices": list(cases[0].choices),
@@ -671,6 +693,40 @@ def test_offline_control_prediction_request_bundle_exports_external_baseline_tem
         "step": cases[0].step,
         "tags": list(cases[0].tags),
     }
+    assert first_case_request["question_text"].startswith("Where is the ")
+    assert first_case_request["target"]["object_id"] == cases[0].question["object_id"]
+    assert first_case_request["target"]["label"] in first_case_request["question_text"]
+    assert first_case_request["primary_frame"] == {
+        "depth_digest": f"depth-digest-{cases[0].step:04d}",
+        "depth_path": f"frames/{cases[0].episode_id}/{cases[0].step:04d}.depth.npy",
+        "episode_id": cases[0].episode_id,
+        "frame_id": f"{cases[0].episode_id}:{cases[0].scene_id}:{cases[0].step:04d}",
+        "rgb_digest": f"rgb-digest-{cases[0].step:04d}",
+        "rgb_path": f"frames/{cases[0].episode_id}/{cases[0].step:04d}.rgb.ppm",
+        "scene_id": cases[0].scene_id,
+        "segmentation_digest": f"seg-digest-{cases[0].step:04d}",
+        "segmentation_path": f"frames/{cases[0].episode_id}/{cases[0].step:04d}.seg.ppm",
+        "step": cases[0].step,
+    }
+    assert first_case_request["frames"] == [first_case_request["primary_frame"]]
+    assert "visible_object_ids" not in json.dumps(first_case_request, sort_keys=True)
+    assert "visible_object_labels" not in json.dumps(first_case_request, sort_keys=True)
+    assert first_case_request["answer_schema_hint"]["answer_type"] == (
+        cases[0].answer_type
+    )
+    assert "current_location" in first_case_request["answer_schema_hint"][
+        "required_answer_fields"
+    ]
+    assert bundle["control_prompt_guidance"]["vlm"]["question_text_required"] is True
+    object_location_answer = cast(dict[str, object], cases[0].answer)
+    current_location = cast(
+        dict[str, object],
+        object_location_answer["current_location"],
+    )
+    assert str(current_location["dst"]) not in json.dumps(
+        first_case_request,
+        sort_keys=True,
+    )
     assert "answer" not in first_case_request
     assert "required_nodes" not in first_case_request
     assert "required_edges" not in first_case_request
@@ -735,6 +791,89 @@ def test_offline_control_prediction_request_bundle_exports_external_baseline_tem
     assert payload["request_bundle_path"] == str(cli_bundle_path)
     assert payload["bundle"] == bundle
     assert lab.load_offline_control_prediction_request_bundle(cli_bundle_path) == bundle
+
+
+def test_prediction_request_bundle_selects_target_visible_primary_frame_without_leaking_visibility(
+    tmp_path: Path,
+) -> None:
+    manifest_path = _write_manifest_package(tmp_path)
+    manifest = lab.load_offline_control_import_manifest(manifest_path)
+    cases = tuple(lab.load_qa_dataset(manifest["qa_path"]))
+    case = cases[0]
+    target_id = cast(str, case.question["object_id"])
+    frame_index_path = Path(cast(str, manifest["frame_index_path"]))
+    _write_custom_frame_index(
+        frame_index_path,
+        rows=(
+            _frame_index_row(case, visible_object_ids=("other_object",)),
+            _frame_index_row(
+                case,
+                step=case.step + 1,
+                visible_object_ids=(target_id,),
+            ),
+        ),
+    )
+
+    bundle = lab.offline_control_prediction_request_bundle(manifest_path)
+    first_case_request = bundle["case_inputs"][0]
+
+    assert first_case_request["primary_frame"]["step"] == case.step + 1
+    assert first_case_request["primary_frame"]["rgb_path"] == (
+        f"frames/{case.episode_id}/{case.step + 1:04d}.rgb.ppm"
+    )
+    serialized = json.dumps(first_case_request, sort_keys=True)
+    assert "visible_object_ids" not in serialized
+    assert "visible_object_labels" not in serialized
+    assert "other_object" not in serialized
+
+
+def test_prediction_request_bundle_can_use_detector_vlm_frame_index_without_leakage(
+    tmp_path: Path,
+) -> None:
+    manifest_path = _write_manifest_package(tmp_path)
+    manifest = lab.load_offline_control_import_manifest(manifest_path)
+    cases = tuple(lab.load_qa_dataset(manifest["qa_path"]))
+    case = cases[0]
+    target_id = cast(str, case.question["object_id"])
+    frame_index_path = Path(cast(str, manifest["frame_index_path"]))
+    base_rows = [
+        _frame_index_row(case, visible_object_ids=("other_object",)),
+    ]
+    detector_rows = lab.vlm_frame_index_rows_from_detector_records(
+        [
+            {
+                "episode_id": case.episode_id,
+                "scene_id": case.scene_id,
+                "step": case.step + 20,
+                "rgb_path": f"coverage/{case.episode_id}/0020.rgb.ppm",
+                "depth_path": f"coverage/{case.episode_id}/0020.depth.npy",
+                "segmentation_path": f"coverage/{case.episode_id}/0020.seg.ppm",
+                "metadata": {"dataset_id": "coverage-visible-p2"},
+                "detections": [
+                    {
+                        "object_id": target_id,
+                        "label": "target label should not leak",
+                        "visible": True,
+                    }
+                ],
+            }
+        ]
+    )
+    merged_rows = lab.merge_vlm_frame_index_rows(base_rows, detector_rows)
+    lab.save_vlm_frame_index_rows(merged_rows, frame_index_path)
+
+    bundle = lab.offline_control_prediction_request_bundle(manifest_path)
+    first_case_request = bundle["case_inputs"][0]
+
+    assert first_case_request["primary_frame"]["step"] == case.step + 20
+    assert first_case_request["primary_frame"]["rgb_path"] == (
+        f"coverage/{case.episode_id}/0020.rgb.ppm"
+    )
+    serialized = json.dumps(first_case_request, sort_keys=True)
+    assert "visible_object_ids" not in serialized
+    assert "visible_object_labels" not in serialized
+    assert "other_object" not in serialized
+    assert "target label should not leak" not in serialized
 
 
 def test_offline_control_prediction_receipt_bundle_exports_returned_file_receipts(
@@ -1273,9 +1412,11 @@ def _write_manifest_package(tmp_path: Path) -> Path:
     package_dir = tmp_path / "ai2thor-real-trial"
     qa_path = package_dir / "qa.jsonl"
     candidate_path = package_dir / "candidate" / "predicted-graph-tool.jsonl"
+    frame_index_path = package_dir / "inputs" / "traces" / "frame-index.jsonl"
     cases = _cases()
     lab.save_qa_dataset(cases, qa_path)
     lab.save_qa_predictions(_predictions(cases), candidate_path)
+    _write_frame_index(cases, frame_index_path)
 
     sources = []
     for source_kind in ("vlm", "multi_frame_vlm", "caption_memory", "graph_text"):
@@ -1295,6 +1436,7 @@ def _write_manifest_package(tmp_path: Path) -> Path:
     manifest = {
         "schema_version": "dsg-spatialqa-lab.offline-control-import-manifest.v1",
         "qa_path": _relative(package_dir, qa_path),
+        "frame_index_path": _relative(package_dir, frame_index_path),
         "output_dir": "offline-controls",
         "matrix_report_path": "offline-controls/offline-control-matrix.json",
         "result_report_path": "offline-controls/offline-control-result.json",
@@ -1315,6 +1457,91 @@ def _write_manifest_package(tmp_path: Path) -> Path:
         encoding="utf-8",
     )
     return manifest_path
+
+
+def _write_frame_index(cases: tuple[lab.QACase, ...], path: Path) -> None:
+    rows = []
+    seen: set[tuple[str, str, int]] = set()
+    for case in cases:
+        key = (case.episode_id, case.scene_id, case.step)
+        if key in seen:
+            continue
+        seen.add(key)
+        rows.append(
+            {
+                "schema_version": "dsg-spatialqa-lab.real-experiment-frame-trace.v1",
+                "dataset_id": "unit-test",
+                "episode_id": case.episode_id,
+                "scene_id": case.scene_id,
+                "step": case.step,
+                "asset_paths": {
+                    "rgb": f"frames/{case.episode_id}/{case.step:04d}.rgb.ppm",
+                    "depth": f"frames/{case.episode_id}/{case.step:04d}.depth.npy",
+                    "segmentation": f"frames/{case.episode_id}/{case.step:04d}.seg.ppm",
+                },
+                "asset_digests": {
+                    "rgb": f"rgb-digest-{case.step:04d}",
+                    "depth": f"depth-digest-{case.step:04d}",
+                    "segmentation": f"seg-digest-{case.step:04d}",
+                },
+                "asset_present": {
+                    "rgb": True,
+                    "depth": True,
+                    "segmentation": True,
+                },
+                "visible_object_ids": ["hidden-from-vlm-request"],
+                "visible_object_labels": ["hidden-label"],
+            }
+        )
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        "".join(json.dumps(row, separators=(",", ":"), sort_keys=True) + "\n" for row in rows),
+        encoding="utf-8",
+    )
+
+
+def _write_custom_frame_index(path: Path, *, rows: tuple[dict[str, object], ...]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(
+        "".join(
+            json.dumps(row, separators=(",", ":"), sort_keys=True) + "\n"
+            for row in rows
+        ),
+        encoding="utf-8",
+    )
+
+
+def _frame_index_row(
+    case: lab.QACase,
+    *,
+    step: int | None = None,
+    visible_object_ids: tuple[str, ...],
+) -> dict[str, object]:
+    frame_step = case.step if step is None else step
+    return {
+        "schema_version": "dsg-spatialqa-lab.real-experiment-frame-trace.v1",
+        "dataset_id": "unit-test",
+        "episode_id": case.episode_id,
+        "scene_id": case.scene_id,
+        "step": frame_step,
+        "asset_paths": {
+            "rgb": f"frames/{case.episode_id}/{frame_step:04d}.rgb.ppm",
+            "depth": f"frames/{case.episode_id}/{frame_step:04d}.depth.npy",
+            "segmentation": f"frames/{case.episode_id}/{frame_step:04d}.seg.ppm",
+        },
+        "asset_digests": {
+            "rgb": f"rgb-digest-{frame_step:04d}",
+            "depth": f"depth-digest-{frame_step:04d}",
+            "segmentation": f"seg-digest-{frame_step:04d}",
+        },
+        "asset_present": {
+            "rgb": True,
+            "depth": True,
+            "segmentation": True,
+        },
+        "visible_object_ids": list(visible_object_ids),
+        "visible_object_labels": ["hidden-label"],
+    }
 
 
 def _relative(root: Path, path: Path) -> str:

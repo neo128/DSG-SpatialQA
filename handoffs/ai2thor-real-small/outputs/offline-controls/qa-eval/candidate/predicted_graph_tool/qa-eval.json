@@ -26,7 +26,7 @@
         "case_count": 12,
         "exact_match_count": 0,
         "exact_match_rate": 0.0,
-        "mean_evidence_edge_recall": 0.083333,
+        "mean_evidence_edge_recall": 0.166667,
         "mean_evidence_node_recall": 0.208333
       },
       "ai2thor-real-small-episode-005": {
@@ -49,7 +49,7 @@
         "case_count": 50,
         "exact_match_count": 0,
         "exact_match_rate": 0.0,
-        "mean_evidence_edge_recall": 0.05,
+        "mean_evidence_edge_recall": 0.07,
         "mean_evidence_node_recall": 0.14
       },
       "relation_timeline": {
@@ -79,7 +79,7 @@
         "case_count": 52,
         "exact_match_count": 1,
         "exact_match_rate": 0.019231,
-        "mean_evidence_edge_recall": 0.086538,
+        "mean_evidence_edge_recall": 0.105769,
         "mean_evidence_node_recall": 0.153846
       },
       "world": {
@@ -102,14 +102,14 @@
         "case_count": 55,
         "exact_match_count": 0,
         "exact_match_rate": 0.0,
-        "mean_evidence_edge_recall": 0.063636,
+        "mean_evidence_edge_recall": 0.081818,
         "mean_evidence_node_recall": 0.163636
       },
       "spatial_qa": {
         "case_count": 60,
         "exact_match_count": 1,
         "exact_match_rate": 0.016667,
-        "mean_evidence_edge_recall": 0.075,
+        "mean_evidence_edge_recall": 0.091667,
         "mean_evidence_node_recall": 0.166667
       }
     },
@@ -146,7 +146,7 @@
         "case_count": 12,
         "exact_match_count": 0,
         "exact_match_rate": 0.0,
-        "mean_evidence_edge_recall": 0.083333,
+        "mean_evidence_edge_recall": 0.166667,
         "mean_evidence_node_recall": 0.208333
       }
     },
@@ -155,14 +155,14 @@
         "case_count": 60,
         "exact_match_count": 1,
         "exact_match_rate": 0.016667,
-        "mean_evidence_edge_recall": 0.075,
+        "mean_evidence_edge_recall": 0.091667,
         "mean_evidence_node_recall": 0.166667
       },
       "generated": {
         "case_count": 60,
         "exact_match_count": 1,
         "exact_match_rate": 0.016667,
-        "mean_evidence_edge_recall": 0.075,
+        "mean_evidence_edge_recall": 0.091667,
         "mean_evidence_node_recall": 0.166667
       },
       "nearest_object": {
@@ -176,21 +176,21 @@
         "case_count": 50,
         "exact_match_count": 0,
         "exact_match_rate": 0.0,
-        "mean_evidence_edge_recall": 0.05,
+        "mean_evidence_edge_recall": 0.07,
         "mean_evidence_node_recall": 0.14
       },
       "qa": {
         "case_count": 60,
         "exact_match_count": 1,
         "exact_match_rate": 0.016667,
-        "mean_evidence_edge_recall": 0.075,
+        "mean_evidence_edge_recall": 0.091667,
         "mean_evidence_node_recall": 0.166667
       },
       "real": {
         "case_count": 60,
         "exact_match_count": 1,
         "exact_match_rate": 0.016667,
-        "mean_evidence_edge_recall": 0.075,
+        "mean_evidence_edge_recall": 0.091667,
         "mean_evidence_node_recall": 0.166667
       },
       "relation_timeline": {
@@ -1087,7 +1087,7 @@
       "confidence": 0.92,
       "episode_id": "ai2thor-real-small-episode-004",
       "error": null,
-      "evidence_edge_recall": 0.5,
+      "evidence_edge_recall": 1.0,
       "evidence_node_recall": 1.0,
       "exact_match": false,
       "multiple_choice": false,
@@ -1111,7 +1111,7 @@
       "confidence": 0.92,
       "episode_id": "ai2thor-real-small-episode-004",
       "error": null,
-      "evidence_edge_recall": 0.5,
+      "evidence_edge_recall": 1.0,
       "evidence_node_recall": 1.0,
       "exact_match": false,
       "multiple_choice": false,
@@ -1667,7 +1667,7 @@
       "total": 60
     },
     "evidence_edge_recall": {
-      "average": 0.075,
+      "average": 0.091667,
       "total": 60
     },
     "evidence_node_recall": {
@@ -1690,9 +1690,9 @@
       "total_absolute_error": 0
     }
   },
-  "prediction_digest": "f5f256e765140b771038fbaa407693537ae7df853b2b80e1212182b5d279bb8e",
+  "prediction_digest": "1e13f0942b3db0df3ec4a99871428c23356570faa1e26f3529df4c4fd69d5521",
   "prediction_path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool.jsonl",
-  "report_digest": "d7f602ef680fab17dc9a7dae8b59fbe7f5295424ec061a5089df181af7a0c561",
+  "report_digest": "9db20900bca8d41bf4c5ec56f12824a21b845d69de3f1ca8ffc5155af3815901",
   "schema_version": "dsg-spatialqa-lab.qa-eval-report.v1",
   "summary": {
     "case_count": 60,

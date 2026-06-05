@@ -1,0 +1,27 @@
+{
+  "baseline_name": "vlm_p25_text_option_alignment",
+  "baseline_report_digest": "bdac51c6e6991de448f6d511ad4c33cb0e0943cd21464a6536e618e6b90f1c7a",
+  "baseline_semantic_eval_report_path": "handoffs/ai2thor-real-small/inputs/offline-controls/reruns/observation-aware-p4-target60/vlm-p25-text-option-alignment.jsonl",
+  "candidate_name": "dsg_p22_detector_location_priority",
+  "candidate_report_digest": "e2f24bc5fbfee24d1af01b2cf42904b6b40a89f07ab1002fdd420a8cd154d425",
+  "candidate_semantic_eval_report_path": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-observation-aware-p22-detector-location-priority.jsonl",
+  "case_count_match": true,
+  "decision": "candidate_improved",
+  "gold_digest_match": true,
+  "paired": {
+    "case_count": 60,
+    "paired_losses": 0,
+    "paired_ties": 37,
+    "paired_wins": 23
+  },
+  "report_digest": "f5cd4fa04fe479e05e7107ae5a367f2b923051724c1f49b76f24297d090ef372",
+  "schema_version": "dsg-spatialqa-lab.vlm-semantic-eval-delta-report.v1",
+  "summary_delta": {
+    "baseline_semantic_match_count": 37,
+    "baseline_semantic_match_rate": 0.6166666666666667,
+    "candidate_semantic_match_count": 60,
+    "candidate_semantic_match_rate": 1.0,
+    "semantic_match_count_delta": 23,
+    "semantic_match_rate_delta": 0.383333
+  }
+}

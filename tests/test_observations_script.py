@@ -165,6 +165,82 @@ def test_observations_cli_validates_explicit_sequence_without_graph_ingest(
     assert not graph_path.exists()
 
 
+def test_observations_cli_merges_explicit_sequences_without_graph_ingest(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_observations_script()
+    main = cast(MainFn, getattr(module, "main"))
+    base_path = tmp_path / "observations" / "base.json"
+    returned_path = tmp_path / "observations" / "returned.json"
+    output_path = tmp_path / "observations" / "merged.json"
+    report_path = tmp_path / "reports" / "merged-report.json"
+    base = (
+        SceneObservation(
+            step=1,
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                ),
+            ),
+        ),
+    )
+    returned = (
+        SceneObservation(
+            step=1,
+            objects=(
+                ObjectObservation(
+                    "producer_track_plate_7",
+                    "plate",
+                    Pose3D(-1.0, 0.9, 0.25),
+                    BBox3D(center=Pose3D(-1.0, 0.9, 0.25), size=(0.2, 0.2, 0.04)),
+                    confidence=0.88,
+                    visible=True,
+                    attributes={
+                        "coverage_target_object_id": "plate_1",
+                        "source_kind": "detector",
+                        "evidence_kinds": ["rgb", "depth", "detector"],
+                    },
+                ),
+            ),
+        ),
+    )
+    save_scene_observation_sequence(base, base_path)
+    save_scene_observation_sequence(returned, returned_path)
+
+    assert main(
+        [
+            "--merge-sequence",
+            str(base_path),
+            "--merge-sequence",
+            str(returned_path),
+            "--output-sequence",
+            str(output_path),
+            "--report",
+            str(report_path),
+        ]
+    ) == 0
+
+    output = json.loads(capsys.readouterr().out)
+    merged = load_scene_observation_sequence(output_path)
+    assert output == json.loads(report_path.read_text(encoding="utf-8"))
+    assert output["action"] == "merge_observation_sequences"
+    assert output["valid"] is True
+    assert output["input_sequence_count"] == 2
+    assert output["input_observation_count"] == 2
+    assert output["output_observation_count"] == 1
+    assert output["output_sequence_digest"] == scene_observation_sequence_digest(merged)
+    assert [obj.object_id for obj in merged[0].objects] == [
+        "mug_1",
+        "producer_track_plate_7",
+    ]
+
+
 def test_observations_cli_returns_nonzero_for_invalid_sequence_validation(
     tmp_path: Path,
     capsys: CaptureFixture[str],
@@ -254,6 +330,75 @@ def test_observations_cli_writes_episode_metadata_coverage_detector_jsonl(
     assert output["hidden_object_observation_count"] == 1
     assert imported_observations[0].objects[0].object_id == "book_1"
     assert imported_observations[0].objects[0].visible is False
+
+
+def test_observations_cli_writes_segmentation_color_map_detector_jsonl(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_observations_script()
+    main = cast(MainFn, getattr(module, "main"))
+    episode_path = tmp_path / "episodes" / "episode-1.jsonl"
+    detector_path = tmp_path / "predicted" / "segmentation-detector.jsonl"
+    mask_root = tmp_path / "predicted" / "masks"
+    rgb_path = tmp_path / "frames" / "rgb" / "0001.ppm"
+    depth_path = tmp_path / "frames" / "depth" / "0001.json"
+    segmentation_path = tmp_path / "frames" / "segmentation" / "0001.ppm"
+    rgb_path.parent.mkdir(parents=True)
+    depth_path.parent.mkdir(parents=True)
+    segmentation_path.parent.mkdir(parents=True)
+    rgb_path.write_text("P3\n2 1\n255\n0 0 0 0 0 0\n", encoding="utf-8")
+    depth_path.write_text("[[1.0, 1.1]]\n", encoding="utf-8")
+    segmentation_path.write_text("P3\n2 1\n255\n7 8 9 7 8 9\n", encoding="utf-8")
+    frame = EpisodeFrame(
+        episode_id="episode-1",
+        scene_id="FloorPlan1",
+        step=1,
+        rgb_path=str(rgb_path),
+        depth_path=str(depth_path),
+        segmentation_path=str(segmentation_path),
+        agent_id="agent",
+        agent_pose=Pose3D(0.0, 0.9, 0.0),
+        action="Initialize",
+        visible_object_ids=(),
+        metadata={
+            "segmentation_color_map": [
+                {"object_id": "Mug|0|0|1", "rgb": [7, 8, 9]},
+            ],
+            "segmentation_source": "ai2thor_instance_segmentation_frame",
+        },
+    )
+    save_episode_sequence((frame,), episode_path)
+
+    assert (
+        main(
+            [
+                "--episode-segmentation-detector-jsonl",
+                str(episode_path),
+                "--output-detector-jsonl",
+                str(detector_path),
+                "--mask-root",
+                str(mask_root),
+                "--detector-name",
+                "ai2thor_visible_segmentation_rgbd",
+            ]
+        )
+        == 0
+    )
+
+    output = json.loads(capsys.readouterr().out)
+    payload = detector_path.read_text(encoding="utf-8")
+    records = [json.loads(line) for line in payload.splitlines()]
+    imported_observations = detector_observation_sequence_from_jsonl(payload)
+    assert output["action"] == "episode_segmentation_detector_jsonl"
+    assert output["detector_jsonl_path"] == str(detector_path)
+    assert output["frame_count"] == 1
+    assert output["record_count"] == 1
+    assert output["object_observation_count"] == 1
+    assert output["source_kind"] == "detector"
+    assert records[0]["metadata"]["source_kind"] == "detector"
+    assert records[0]["detections"][0]["attributes"]["current_location_relation"] == "IN_REGION"
+    assert imported_observations[0].objects[0].attributes["source_kind"] == "detector"
 
 
 def test_observations_cli_validates_and_compares_sequence_summary(
@@ -360,6 +505,81 @@ def test_observations_cli_imports_detector_jsonl_to_sequence(
     assert [observation.step for observation in observations] == [1, 2]
     assert observations[0].objects[0].attributes["source"] == "detector_rgbd"
     assert observations[0].objects[0].attributes["rgb_path"] == "rgb/0001.png"
+
+
+def test_observations_cli_can_anchor_external_detector_visible_frame_region(
+    tmp_path: Path,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_observations_script()
+    main = cast(MainFn, getattr(module, "main"))
+    input_path = tmp_path / "detector" / "external-detections.jsonl"
+    sequence_path = tmp_path / "observations" / "anchored-sequence.json"
+    report_path = tmp_path / "reports" / "anchored-import-report.json"
+    input_path.parent.mkdir(parents=True, exist_ok=True)
+    input_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "dsg-spatialqa-lab.external-detector-frame.v1",
+                "episode_id": "episode-1",
+                "scene_id": "FloorPlan1",
+                "step": 3,
+                "rgb_path": "rgb/000003.png",
+                "depth_path": "depth/000003.npy",
+                "detector_name": "grounded_sam2",
+                "camera_pose": {"x": 0.0, "y": 0.9, "z": 0.0, "yaw": 90.0},
+                "detections": [
+                    {
+                        "detection_id": "det_000003_mug",
+                        "object_id": "mug_track_1",
+                        "label": "mug",
+                        "confidence": 0.86,
+                        "bbox_2d_xyxy": [10, 20, 80, 120],
+                        "bbox_3d_center": {
+                            "x": 0.2,
+                            "y": 1.0,
+                            "z": 0.8,
+                            "yaw": 0.0,
+                        },
+                        "bbox_3d_size": [0.1, 0.1, 0.16],
+                        "visible": True,
+                        "evidence_kinds": ["rgb", "depth", "detector"],
+                    }
+                ],
+            },
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    assert (
+        main(
+            [
+                "--import-detector-jsonl",
+                str(input_path),
+                "--anchor-visible-frame-region",
+                "--output-sequence",
+                str(sequence_path),
+                "--report",
+                str(report_path),
+            ]
+        )
+        == 0
+    )
+
+    output = json.loads(capsys.readouterr().out)
+    observations = load_scene_observation_sequence(sequence_path)
+    assert output["import_options"] == {"anchor_visible_frame_region": True}
+    assert [region.node_id for region in observations[0].regions] == [
+        "visible_frame_region:episode-1:0003"
+    ]
+    assert observations[0].objects[0].attributes["current_location_id"] == (
+        "visible_frame_region:episode-1:0003"
+    )
+    assert observations[0].objects[0].attributes["current_location_relation"] == (
+        "IN_REGION"
+    )
 
 
 def test_observations_cli_returns_nonzero_for_sequence_summary_drift(

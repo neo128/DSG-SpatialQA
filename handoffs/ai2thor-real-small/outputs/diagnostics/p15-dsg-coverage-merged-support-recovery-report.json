@@ -1,0 +1,214 @@
+{
+  "claim_scope": "diagnostic_upper_bound_ai2thor_metadata_coverage_not_final_external_detector_claim",
+  "conclusion": {
+    "dsg_status": "coverage-merged DSG demonstrates that support-relation recovery is the decisive bottleneck: p3 reaches 59/60 on the same p4 QA slice",
+    "reason_not_final_claim": "p15 uses AI2-THOR metadata coverage as a diagnostic upper bound; final real DSG-vs-control claim still needs external detector/RGB-D observation sequence and fresh control predictions under the same readiness gate",
+    "research_claim_ready": false,
+    "vlm_only_status": "p14 local semantic/runner calibration raised saved-prediction semantic success to 24/60; no new external VLM call was made"
+  },
+  "graph_support_recovery": {
+    "coverage_merged_p2": {
+      "edge_count": 2996,
+      "node_count": 904,
+      "on_edge_count": 458,
+      "relation_counts": {
+        "IN_REGION": 616,
+        "IN_ROOM": 616,
+        "NEAR": 592,
+        "ON": 458,
+        "STATE_CHANGED": 714
+      },
+      "support_node_counts": {
+        "bathtub": 1,
+        "countertop": 6,
+        "dresser": 1,
+        "handtowelholder": 2,
+        "shelf": 7,
+        "sink": 1
+      }
+    },
+    "coverage_merged_p3": {
+      "edge_count": 3459,
+      "node_count": 1051,
+      "on_edge_count": 548,
+      "relation_counts": {
+        "IN_REGION": 706,
+        "IN_ROOM": 706,
+        "NEAR": 681,
+        "ON": 548,
+        "STATE_CHANGED": 818
+      },
+      "support_node_counts": {
+        "bathtub": 1,
+        "countertop": 6,
+        "dresser": 1,
+        "handtowelholder": 2,
+        "shelf": 8,
+        "sink": 1
+      }
+    },
+    "independent_p4": {
+      "edge_count": 116,
+      "node_count": 111,
+      "on_edge_count": 3,
+      "relation_counts": {
+        "NEAR": 44,
+        "ON": 3,
+        "STATE_CHANGED": 69
+      },
+      "support_node_counts": {
+        "bathtub": 1,
+        "countertop": 0,
+        "dresser": 0,
+        "handtowelholder": 0,
+        "shelf": 0,
+        "sink": 0
+      }
+    }
+  },
+  "inputs": {
+    "baseline_multi_frame_semantic_eval": "handoffs/ai2thor-real-small/outputs/diagnostics/multi-frame-vlm-semantic-eval-p14-affordance-room-specific-support.json",
+    "baseline_vlm_semantic_eval": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-semantic-eval-p14-affordance-room-specific-support.json",
+    "coverage_merged_p2_graph": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-p2-offset.json",
+    "coverage_merged_p3_graph": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-p3-offset.json",
+    "independent_p4_predicted_graph": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-independent-p4-target60.json",
+    "qa_path": "handoffs/ai2thor-real-small/inputs/traces/observation-aware-p4-target60-qa.jsonl"
+  },
+  "remaining_failure": {
+    "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0006:diningtable_02_27_00_02_01_42:observation_aware:200007",
+    "gold": "diningtable ON chair",
+    "prediction": "diningtable IN_ROOM room",
+    "reason": "relation_mismatch"
+  },
+  "schema_fix": {
+    "code_change": "coverage and segmentation detector records now write top-level episode_id and scene_id; target-crop indexing falls back to metadata episode_id/scene_id for legacy records",
+    "fixed_detector_jsonl_paths": [
+      "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-ai2thor-visible-p2-schema-fixed-p15.jsonl",
+      "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-ai2thor-visible-p3-offset-schema-fixed-p15.jsonl"
+    ],
+    "fixed_import_reports": [
+      "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-import-report-coverage-ai2thor-visible-p2-schema-fixed-p15.json",
+      "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-import-report-coverage-ai2thor-visible-p3-offset-schema-fixed-p15.json"
+    ]
+  },
+  "schema_version": "dsg-spatialqa-lab.diagnostic-report.v1",
+  "semantic_deltas": {
+    "p2_vs_multi_frame_vlm": {
+      "baseline_semantic_match_count": 26,
+      "baseline_semantic_match_rate": 0.43333333333333335,
+      "candidate_semantic_match_count": 43,
+      "candidate_semantic_match_rate": 0.7166666666666667,
+      "decision": "candidate_improved",
+      "paired": {
+        "case_count": 60,
+        "paired_losses": 6,
+        "paired_ties": 31,
+        "paired_wins": 23
+      },
+      "report_digest": "72e2014f20fc5f3e429ec52abddd0a0a6ea2a593d9101b43e8ff258b28886337",
+      "semantic_match_count_delta": 17,
+      "semantic_match_rate_delta": 0.283333
+    },
+    "p2_vs_vlm_only": {
+      "baseline_semantic_match_count": 24,
+      "baseline_semantic_match_rate": 0.4,
+      "candidate_semantic_match_count": 43,
+      "candidate_semantic_match_rate": 0.7166666666666667,
+      "decision": "candidate_improved",
+      "paired": {
+        "case_count": 60,
+        "paired_losses": 4,
+        "paired_ties": 33,
+        "paired_wins": 23
+      },
+      "report_digest": "0d948bebf3e9f03d1fd9c755c68d7340f2fe5b0a3cae498710233be478ca1b9d",
+      "semantic_match_count_delta": 19,
+      "semantic_match_rate_delta": 0.316667
+    },
+    "p3_vs_multi_frame_vlm": {
+      "baseline_semantic_match_count": 26,
+      "baseline_semantic_match_rate": 0.43333333333333335,
+      "candidate_semantic_match_count": 59,
+      "candidate_semantic_match_rate": 0.9833333333333333,
+      "decision": "candidate_improved",
+      "paired": {
+        "case_count": 60,
+        "paired_losses": 0,
+        "paired_ties": 27,
+        "paired_wins": 33
+      },
+      "report_digest": "6ae59a13e16c31740ca8f5ef1bfc5a48c96f700b2ccd6053ce143cf9f017e587",
+      "semantic_match_count_delta": 33,
+      "semantic_match_rate_delta": 0.55
+    },
+    "p3_vs_vlm_only": {
+      "baseline_semantic_match_count": 24,
+      "baseline_semantic_match_rate": 0.4,
+      "candidate_semantic_match_count": 59,
+      "candidate_semantic_match_rate": 0.9833333333333333,
+      "decision": "candidate_improved",
+      "paired": {
+        "case_count": 60,
+        "paired_losses": 0,
+        "paired_ties": 25,
+        "paired_wins": 35
+      },
+      "report_digest": "8525e48825a792a620e26d198e3af56ac2aedee07b698a8ad7f76f5db4614944",
+      "semantic_match_count_delta": 35,
+      "semantic_match_rate_delta": 0.583333
+    }
+  },
+  "semantic_results": {
+    "dsg_coverage_merged_p2_p15": {
+      "case_count": 60,
+      "excluded_case_count": 0,
+      "matched_prediction_count": 60,
+      "prediction_count": 60,
+      "semantic_match_count": 43,
+      "semantic_match_rate": 0.7166666666666667,
+      "strict_exact_match_count": 40,
+      "strict_exact_match_rate": 0.6666666666666666
+    },
+    "dsg_coverage_merged_p3_p15": {
+      "case_count": 60,
+      "excluded_case_count": 0,
+      "matched_prediction_count": 60,
+      "prediction_count": 60,
+      "semantic_match_count": 59,
+      "semantic_match_rate": 0.9833333333333333,
+      "strict_exact_match_count": 59,
+      "strict_exact_match_rate": 0.9833333333333333
+    },
+    "dsg_independent_p14": {
+      "case_count": 60,
+      "excluded_case_count": 0,
+      "matched_prediction_count": 60,
+      "prediction_count": 60,
+      "semantic_match_count": 23,
+      "semantic_match_rate": 0.38333333333333336,
+      "strict_exact_match_count": 0,
+      "strict_exact_match_rate": 0.0
+    },
+    "multi_frame_vlm_p14": {
+      "case_count": 60,
+      "excluded_case_count": 0,
+      "matched_prediction_count": 60,
+      "prediction_count": 60,
+      "semantic_match_count": 26,
+      "semantic_match_rate": 0.43333333333333335,
+      "strict_exact_match_count": 0,
+      "strict_exact_match_rate": 0.0
+    },
+    "vlm_only_p14": {
+      "case_count": 60,
+      "excluded_case_count": 0,
+      "matched_prediction_count": 60,
+      "prediction_count": 60,
+      "semantic_match_count": 24,
+      "semantic_match_rate": 0.4,
+      "strict_exact_match_count": 0,
+      "strict_exact_match_rate": 0.0
+    }
+  },
+  "stage": "p15_dsg_coverage_merged_support_recovery"
+}

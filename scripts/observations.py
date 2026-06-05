@@ -18,12 +18,14 @@ from dsg_spatialqa_lab import (
     load_observation_ingest_report,
     load_scene_observation_sequence,
     load_scene_observation_sequence_summary,
+    merge_scene_observation_sequences,
     observation_ingest_report,
     observation_ingest_report_json,
     save_graph_json,
     save_scene_observation_sequence,
     scene_observation_sequence_digest,
     scene_observation_sequence_summary,
+    segmentation_color_map_detector_jsonl,
     validate_scene_observation_sequence_payload,
     validate_scene_observation_sequence_summary,
     validate_observation_ingest_report,
@@ -52,6 +54,15 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     parser.add_argument(
+        "--anchor-visible-frame-region",
+        action="store_true",
+        help=(
+            "When importing external detector frame JSONL, add a deterministic "
+            "visible-frame region and anchor visible rgb/depth/detector objects "
+            "to it with IN_REGION current-location evidence."
+        ),
+    )
+    parser.add_argument(
         "--episode-metadata-coverage-jsonl",
         action="append",
         dest="episode_metadata_coverage_jsonl",
@@ -60,6 +71,16 @@ def main(argv: list[str] | None = None) -> int:
             "Convert an explicit local episode JSONL into coverage-enhanced "
             "detector/RGB-D JSONL records using saved episode metadata. May be "
             "repeated."
+        ),
+    )
+    parser.add_argument(
+        "--episode-segmentation-detector-jsonl",
+        action="append",
+        dest="episode_segmentation_detector_jsonl",
+        type=Path,
+        help=(
+            "Convert explicit local real episode JSONL frames with segmentation "
+            "color maps into visible detector/RGB-D JSONL records. May be repeated."
         ),
     )
     parser.add_argument(
@@ -78,6 +99,16 @@ def main(argv: list[str] | None = None) -> int:
         ),
     )
     parser.add_argument(
+        "--mask-root",
+        type=Path,
+        help="Local output directory for segmentation-derived object masks.",
+    )
+    parser.add_argument(
+        "--detector-name",
+        default="visible_segmentation_rgbd",
+        help="Detector source name for --episode-segmentation-detector-jsonl.",
+    )
+    parser.add_argument(
         "--visible-only",
         action="store_true",
         help=(
@@ -89,6 +120,16 @@ def main(argv: list[str] | None = None) -> int:
         "--output-sequence",
         type=Path,
         help="Explicit local SceneObservation sequence JSON output path.",
+    )
+    parser.add_argument(
+        "--merge-sequence",
+        action="append",
+        dest="merge_sequences",
+        type=Path,
+        help=(
+            "Explicit local SceneObservation sequence JSON file to merge. May be "
+            "repeated; later sequences replace matching object, room, and region ids."
+        ),
     )
     parser.add_argument(
         "--output-graph",
@@ -215,21 +256,86 @@ def main(argv: list[str] | None = None) -> int:
         _emit_json_payload(payload, args.report)
         return 0
 
+    if args.episode_segmentation_detector_jsonl is not None:
+        if args.output_detector_jsonl is None:
+            parser.error(
+                "--episode-segmentation-detector-jsonl requires --output-detector-jsonl"
+            )
+        if args.mask_root is None:
+            parser.error("--episode-segmentation-detector-jsonl requires --mask-root")
+        try:
+            frames = tuple(
+                frame
+                for episode_path in args.episode_segmentation_detector_jsonl
+                for frame in load_episode_sequence(episode_path)
+            )
+            detector_payload = segmentation_color_map_detector_jsonl(
+                frames,
+                mask_root=args.mask_root,
+                detector_name=args.detector_name,
+            )
+            args.output_detector_jsonl.parent.mkdir(parents=True, exist_ok=True)
+            args.output_detector_jsonl.write_text(detector_payload, encoding="utf-8")
+            observations = detector_observation_sequence_from_jsonl(detector_payload)
+            summary = scene_observation_sequence_summary(observations)
+            payload = {
+                "action": "episode_segmentation_detector_jsonl",
+                "episode_paths": [
+                    str(path) for path in args.episode_segmentation_detector_jsonl
+                ],
+                "detector_jsonl_path": str(args.output_detector_jsonl),
+                "detector_name": args.detector_name,
+                "source_kind": "detector",
+                "valid": True,
+                "frame_count": len(frames),
+                "record_count": len(observations),
+                "object_observation_count": summary["object_observation_count"],
+                "visible_object_observation_count": summary[
+                    "visible_object_observation_count"
+                ],
+                "hidden_object_observation_count": summary[
+                    "hidden_object_observation_count"
+                ],
+                "unique_object_count": summary["unique_object_count"],
+                "detector_jsonl_digest": detector_observation_records_digest(
+                    detector_payload
+                ),
+                "sequence_digest": summary["sequence_digest"],
+            }
+        except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
+            payload = _error_report(
+                args.episode_segmentation_detector_jsonl[0],
+                args.output_detector_jsonl,
+                exc,
+                action="episode_segmentation_detector_jsonl",
+            )
+            _emit_json_payload(payload, args.report)
+            return 1
+        _emit_json_payload(payload, args.report)
+        return 0
+
     if args.output_detector_jsonl is not None:
-        parser.error("--output-detector-jsonl requires --episode-metadata-coverage-jsonl")
+        parser.error(
+            "--output-detector-jsonl requires --episode-metadata-coverage-jsonl "
+            "or --episode-segmentation-detector-jsonl"
+        )
 
     if args.import_detector_jsonl is not None:
         if args.output_sequence is None:
             parser.error("--import-detector-jsonl requires --output-sequence")
         try:
             input_payload = args.import_detector_jsonl.read_text(encoding="utf-8")
-            observations = detector_observation_sequence_from_jsonl(input_payload)
+            observations = detector_observation_sequence_from_jsonl(
+                input_payload,
+                anchor_visible_frame_region=args.anchor_visible_frame_region,
+            )
             save_scene_observation_sequence(observations, args.output_sequence)
             payload = detector_observation_import_report(
                 input_path=args.import_detector_jsonl,
                 output_sequence_path=args.output_sequence,
                 observations=observations,
                 input_payload=input_payload,
+                anchor_visible_frame_region=args.anchor_visible_frame_region,
             )
         except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
             payload = _error_report(
@@ -237,6 +343,44 @@ def main(argv: list[str] | None = None) -> int:
                 args.output_sequence,
                 exc,
                 action="import_detector_observation_jsonl",
+            )
+            _emit_json_payload(payload, args.report)
+            return 1
+        _emit_json_payload(payload, args.report)
+        return 0
+
+    if args.merge_sequences is not None:
+        if args.output_sequence is None:
+            parser.error("--merge-sequence requires --output-sequence")
+        try:
+            input_sequences = tuple(
+                load_scene_observation_sequence(path) for path in args.merge_sequences
+            )
+            merged = merge_scene_observation_sequences(*input_sequences)
+            save_scene_observation_sequence(merged, args.output_sequence)
+            payload = {
+                "action": "merge_observation_sequences",
+                "input_paths": [str(path) for path in args.merge_sequences],
+                "output_sequence_path": str(args.output_sequence),
+                "valid": True,
+                "input_sequence_count": len(input_sequences),
+                "input_observation_count": sum(
+                    len(sequence) for sequence in input_sequences
+                ),
+                "output_observation_count": len(merged),
+                "input_sequence_digests": [
+                    scene_observation_sequence_digest(sequence)
+                    for sequence in input_sequences
+                ],
+                "output_sequence_digest": scene_observation_sequence_digest(merged),
+                "summary": scene_observation_sequence_summary(merged),
+            }
+        except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
+            payload = _error_report(
+                args.merge_sequences[0],
+                args.output_sequence,
+                exc,
+                action="merge_observation_sequences",
             )
             _emit_json_payload(payload, args.report)
             return 1

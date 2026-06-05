@@ -98,6 +98,7 @@ def compare_graphs(
         matching=matching,
         center_distance_threshold=center_distance_threshold,
     )
+    unlocated_object_ids = _unlocated_object_ids(predicted_graph)
     metrics = {
         "bbox_center_error": {
             "average": _average(center_distances),
@@ -126,6 +127,10 @@ def compare_graphs(
             "count": len(object_matches),
             "rate": _rate(len(object_matches), len(oracle_object_ids)),
             "total": len(oracle_object_ids),
+        },
+        "unlocated_object_count": {
+            "count": len(unlocated_object_ids),
+            "total": len(predicted_object_ids),
         },
         "relation_f1": {
             "rate": _f1(
@@ -169,6 +174,7 @@ def compare_graphs(
             "oracle_object_count": len(oracle_object_ids),
             "predicted_object_count": len(predicted_object_ids),
             "matched_object_count": len(object_matches),
+            "predicted_unlocated_object_count": len(unlocated_object_ids),
             "oracle_relation_count": len(oracle_relations),
             "predicted_relation_count": len(predicted_relations),
             "matched_relation_count": len(matched_relations),
@@ -196,6 +202,7 @@ def compare_graphs(
         "differences": {
             "missing_object_ids": missing_object_ids,
             "extra_object_ids": extra_object_ids,
+            "unlocated_object_ids": unlocated_object_ids,
             "object_matches": _object_match_dicts(oracle_graph, predicted_graph, object_matches),
             "missing_relations": [_relation_dict(oracle_relations[key]) for key in missing_relations],
             "extra_relations": [_relation_dict(predicted_relations[key]) for key in extra_relations],
@@ -428,6 +435,23 @@ def _relation_key(
         edge.reference_frame,
         edge.step,
     )
+
+
+def _unlocated_object_ids(graph: DynamicSceneGraph) -> list[str]:
+    located_sources = {
+        edge.src for edge in graph.edges if edge.relation in CONTAINMENT_RELATIONS
+    }
+    object_ids: list[str] = []
+    for object_id in graph.object_states:
+        node = graph.nodes.get(object_id)
+        attributes = node.attributes if node is not None else {}
+        has_location_attribute = bool(
+            attributes.get("current_location_id")
+            or attributes.get("current_room_id")
+        )
+        if object_id not in located_sources and not has_location_attribute:
+            object_ids.append(object_id)
+    return sorted(object_ids)
 
 
 def _mapped_node_id(node_id: str, object_id_mapping: Mapping[str, str]) -> str:

@@ -8,7 +8,10 @@
 - required controls passed: 0/4
 - minimum exact-match delta: 0.016667
 - minimum sign-test p-value: 0.5
-- predicted graph object recall: 0.153409
+- predicted graph object recall: 0.159091
+- predicted graph unlocated objects: 0
+- evaluation scope: full_oracle
+- evidence-observable QA: 3/60
 
 ## 主要原因
 

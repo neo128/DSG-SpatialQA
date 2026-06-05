@@ -1,0 +1,1079 @@
+{
+  "accepted_location_evidence_targets": [],
+  "accepted_state_evidence_targets": [],
+  "accepted_targets": [],
+  "action": "coverage_collection_acceptance_report",
+  "coverage_collection_plan_digest": "ce4564e1b8e20e1b13ca377a5a7d9c5de637b373e3bc15a3c687a31f5eadc700",
+  "digest": "3319b2fe1ddc759f24afc0e240c9c16f93d3ecf997139d9f294cd85c7c6e8edb",
+  "observation_sequence_digest": "c222df00846bf526bf09c6a2b8bce62b1275c84d5f6c20e0314d178aeb938ac0",
+  "observation_sequence_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd.jsonl",
+  "rejected_observations": [],
+  "required_evidence_kinds": [
+    "depth",
+    "detector",
+    "rgb"
+  ],
+  "schema_version": "dsg-spatialqa-lab.coverage-collection-acceptance-report.v1",
+  "summary": {
+    "accepted_location_evidence_target_count": 0,
+    "accepted_state_evidence_target_count": 0,
+    "accepted_target_count": 0,
+    "location_evidence_acceptance_rate": 0.0,
+    "location_evidence_ready": false,
+    "location_evidence_target_count": 83,
+    "planned_target_count": 83,
+    "rejected_target_count": 0,
+    "state_evidence_acceptance_rate": 0.0,
+    "state_evidence_ready": false,
+    "state_evidence_target_count": 45,
+    "target_acceptance_rate": 0.0,
+    "target_evidence_ready": false,
+    "unaccepted_location_evidence_target_count": 83,
+    "unaccepted_state_evidence_target_count": 45,
+    "unaccepted_target_count": 83
+  },
+  "unaccepted_location_evidence_targets": [
+    {
+      "object_id": "alarmclock_01_28_01_24_00_47"
+    },
+    {
+      "object_id": "apple_01_65_00_81_00_07"
+    },
+    {
+      "object_id": "armchair_00_85_00_00_05_98"
+    },
+    {
+      "object_id": "armchair_04_38_00_00_06_02"
+    },
+    {
+      "object_id": "baseballbat_02_84_00_29_01_82"
+    },
+    {
+      "object_id": "basketball_00_24_00_13_01_24"
+    },
+    {
+      "object_id": "bed_00_64_00_01_00_87"
+    },
+    {
+      "object_id": "blinds_00_11_02_34_01_44"
+    },
+    {
+      "object_id": "book_00_15_01_10_00_62"
+    },
+    {
+      "object_id": "book_00_90_00_56_01_18"
+    },
+    {
+      "object_id": "book_01_87_00_68_01_17"
+    },
+    {
+      "object_id": "boots_01_28_00_01_01_34"
+    },
+    {
+      "object_id": "bottle_01_54_00_89_02_54"
+    },
+    {
+      "object_id": "bowl_00_27_01_10_00_75"
+    },
+    {
+      "object_id": "bowl_02_45_00_60_04_79"
+    },
+    {
+      "object_id": "bowl_02_45_00_80_01_21"
+    },
+    {
+      "object_id": "box_02_73_00_20_00_89"
+    },
+    {
+      "object_id": "box_03_36_00_19_06_43"
+    },
+    {
+      "object_id": "bread_00_26_00_99_00_08"
+    },
+    {
+      "object_id": "butterknife_01_67_00_69_00_11"
+    },
+    {
+      "object_id": "cabinet_00_41_00_48_00_44"
+    },
+    {
+      "object_id": "cabinet_00_49_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_50_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_63_02_02_01_45"
+    },
+    {
+      "object_id": "cabinet_00_68_00_50_02_20"
+    },
+    {
+      "object_id": "cabinet_00_68_02_02_02_46"
+    },
+    {
+      "object_id": "cabinet_00_72_02_02_02_46"
+    },
+    {
+      "object_id": "cabinet_00_73_02_02_02_46"
+    },
+    {
+      "object_id": "cabinet_01_39_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_01_70_02_02_01_45"
+    },
+    {
+      "object_id": "candle_03_11_00_23_00_05"
+    },
+    {
+      "object_id": "cd_01_62_00_80_01_19"
+    },
+    {
+      "object_id": "cellphone_00_26_00_56_00_52"
+    },
+    {
+      "object_id": "chair_01_34_00_02_01_43"
+    },
+    {
+      "object_id": "chair_01_86_00_02_01_04"
+    },
+    {
+      "object_id": "chair_01_86_00_02_01_84"
+    },
+    {
+      "object_id": "chair_02_43_00_01_00_99"
+    },
+    {
+      "object_id": "cloth_00_27_00_04_01_02"
+    },
+    {
+      "object_id": "creditcard_01_78_00_80_01_19"
+    },
+    {
+      "object_id": "desk_02_21_00_01_01_26"
+    },
+    {
+      "object_id": "desklamp_01_32_01_24_00_99"
+    },
+    {
+      "object_id": "dishsponge_03_20_00_86_00_02"
+    },
+    {
+      "object_id": "dogbed_00_92_00_01_01_04"
+    },
+    {
+      "object_id": "drawer_01_31_00_18_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_00_18_00_92"
+    },
+    {
+      "object_id": "drawer_01_31_00_45_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_00_45_00_92"
+    },
+    {
+      "object_id": "drawer_01_31_00_75_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_00_75_00_92"
+    },
+    {
+      "object_id": "drawer_01_31_01_03_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_01_03_00_92"
+    },
+    {
+      "object_id": "drawer_01_62_00_19_01_18"
+    },
+    {
+      "object_id": "drawer_01_62_00_41_01_18"
+    },
+    {
+      "object_id": "drawer_01_62_00_63_01_18"
+    },
+    {
+      "object_id": "drawer_01_94_00_19_01_18"
+    },
+    {
+      "object_id": "drawer_01_94_00_41_01_18"
+    },
+    {
+      "object_id": "drawer_01_94_00_63_01_18"
+    },
+    {
+      "object_id": "drawer_02_82_00_19_01_18"
+    },
+    {
+      "object_id": "drawer_02_82_00_41_01_18"
+    },
+    {
+      "object_id": "drawer_02_82_00_63_01_18"
+    },
+    {
+      "object_id": "dresser_01_33_00_01_00_75"
+    },
+    {
+      "object_id": "faucet_00_14_00_61_00_28"
+    },
+    {
+      "object_id": "faucet_03_40_01_02_01_53"
+    },
+    {
+      "object_id": "fridge_01_76_00_00_00_00"
+    },
+    {
+      "object_id": "garbagecan_00_05_00_00_03_88"
+    },
+    {
+      "object_id": "garbagecan_02_84_00_01_00_22"
+    },
+    {
+      "object_id": "handtowel_03_42_01_34_02_10"
+    },
+    {
+      "object_id": "keychain_01_74_00_80_01_29"
+    },
+    {
+      "object_id": "laptop_00_50_00_56_00_29"
+    },
+    {
+      "object_id": "mug_02_82_00_80_01_22"
+    },
+    {
+      "object_id": "pen_01_93_00_81_01_18"
+    },
+    {
+      "object_id": "pencil_02_01_00_81_01_17"
+    },
+    {
+      "object_id": "pillow_00_63_00_63_01_61"
+    },
+    {
+      "object_id": "shelf_01_80_00_92_01_38"
+    },
+    {
+      "object_id": "shelf_01_80_01_39_01_38"
+    },
+    {
+      "object_id": "shelf_02_25_01_50_01_38"
+    },
+    {
+      "object_id": "shelf_02_48_00_92_01_38"
+    },
+    {
+      "object_id": "shelf_02_48_01_15_01_38"
+    },
+    {
+      "object_id": "shelf_02_70_01_51_01_38"
+    },
+    {
+      "object_id": "statue_01_30_01_24_00_78"
+    },
+    {
+      "object_id": "tissuebox_02_32_01_05_01_38"
+    },
+    {
+      "object_id": "watch_02_18_00_82_01_38"
+    },
+    {
+      "object_id": "window_00_12_01_50_01_59"
+    }
+  ],
+  "unaccepted_state_evidence_targets": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62",
+      "missing_state_edges": [
+        "book_00_15_01_10_00_62-STATE_CHANGED-state:book_00_15_01_10_00_62:10-10"
+      ],
+      "missing_state_nodes": [
+        "state:book_00_15_01_10_00_62:10"
+      ],
+      "object_ids": [
+        "book_00_15_01_10_00_62"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54",
+      "missing_state_edges": [
+        "bottle_01_54_00_89_02_54-STATE_CHANGED-state:bottle_01_54_00_89_02_54:10-10"
+      ],
+      "missing_state_nodes": [
+        "state:bottle_01_54_00_89_02_54:10"
+      ],
+      "object_ids": [
+        "bottle_01_54_00_89_02_54"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75",
+      "missing_state_edges": [
+        "bowl_00_27_01_10_00_75-STATE_CHANGED-state:bowl_00_27_01_10_00_75:10-10"
+      ],
+      "missing_state_nodes": [
+        "state:bowl_00_27_01_10_00_75:10"
+      ],
+      "object_ids": [
+        "bowl_00_27_01_10_00_75"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20",
+      "missing_state_edges": [
+        "cabinet_00_68_00_50_02_20-STATE_CHANGED-state:cabinet_00_68_00_50_02_20:10-10"
+      ],
+      "missing_state_nodes": [
+        "state:cabinet_00_68_00_50_02_20:10"
+      ],
+      "object_ids": [
+        "cabinet_00_68_00_50_02_20"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46",
+      "missing_state_edges": [
+        "cabinet_00_68_02_02_02_46-STATE_CHANGED-state:cabinet_00_68_02_02_02_46:10-10"
+      ],
+      "missing_state_nodes": [
+        "state:cabinet_00_68_02_02_02_46:10"
+      ],
+      "object_ids": [
+        "cabinet_00_68_02_02_02_46"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46",
+      "missing_state_edges": [
+        "cabinet_00_72_02_02_02_46-STATE_CHANGED-state:cabinet_00_72_02_02_02_46:10-10"
+      ],
+      "missing_state_nodes": [
+        "state:cabinet_00_72_02_02_02_46:10"
+      ],
+      "object_ids": [
+        "cabinet_00_72_02_02_02_46"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46",
+      "missing_state_edges": [
+        "cabinet_00_73_02_02_02_46-STATE_CHANGED-state:cabinet_00_73_02_02_02_46:10-10"
+      ],
+      "missing_state_nodes": [
+        "state:cabinet_00_73_02_02_02_46:10"
+      ],
+      "object_ids": [
+        "cabinet_00_73_02_02_02_46"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98",
+      "missing_state_edges": [
+        "armchair_00_85_00_00_05_98-STATE_CHANGED-state:armchair_00_85_00_00_05_98:20-20"
+      ],
+      "missing_state_nodes": [
+        "state:armchair_00_85_00_00_05_98:20"
+      ],
+      "object_ids": [
+        "armchair_00_85_00_00_05_98"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02",
+      "missing_state_edges": [
+        "armchair_04_38_00_00_06_02-STATE_CHANGED-state:armchair_04_38_00_00_06_02:20-20"
+      ],
+      "missing_state_nodes": [
+        "state:armchair_04_38_00_00_06_02:20"
+      ],
+      "object_ids": [
+        "armchair_04_38_00_00_06_02"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17",
+      "missing_state_edges": [
+        "book_01_87_00_68_01_17-STATE_CHANGED-state:book_01_87_00_68_01_17:20-20"
+      ],
+      "missing_state_nodes": [
+        "state:book_01_87_00_68_01_17:20"
+      ],
+      "object_ids": [
+        "book_01_87_00_68_01_17"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79",
+      "missing_state_edges": [
+        "bowl_02_45_00_60_04_79-STATE_CHANGED-state:bowl_02_45_00_60_04_79:20-20"
+      ],
+      "missing_state_nodes": [
+        "state:bowl_02_45_00_60_04_79:20"
+      ],
+      "object_ids": [
+        "bowl_02_45_00_60_04_79"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43",
+      "missing_state_edges": [
+        "box_03_36_00_19_06_43-STATE_CHANGED-state:box_03_36_00_19_06_43:20-20"
+      ],
+      "missing_state_nodes": [
+        "state:box_03_36_00_19_06_43:20"
+      ],
+      "object_ids": [
+        "box_03_36_00_19_06_43"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43",
+      "missing_state_edges": [
+        "chair_01_34_00_02_01_43-STATE_CHANGED-state:chair_01_34_00_02_01_43:20-20"
+      ],
+      "missing_state_nodes": [
+        "state:chair_01_34_00_02_01_43:20"
+      ],
+      "object_ids": [
+        "chair_01_34_00_02_01_43"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04",
+      "missing_state_edges": [
+        "chair_01_86_00_02_01_04-STATE_CHANGED-state:chair_01_86_00_02_01_04:20-20"
+      ],
+      "missing_state_nodes": [
+        "state:chair_01_86_00_02_01_04:20"
+      ],
+      "object_ids": [
+        "chair_01_86_00_02_01_04"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84",
+      "missing_state_edges": [
+        "chair_01_86_00_02_01_84-STATE_CHANGED-state:chair_01_86_00_02_01_84:20-20"
+      ],
+      "missing_state_nodes": [
+        "state:chair_01_86_00_02_01_84:20"
+      ],
+      "object_ids": [
+        "chair_01_86_00_02_01_84"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99",
+      "missing_state_edges": [
+        "chair_02_51_00_02_00_99-STATE_CHANGED-state:chair_02_51_00_02_00_99:20-20"
+      ],
+      "missing_state_nodes": [
+        "state:chair_02_51_00_02_00_99:20"
+      ],
+      "object_ids": [
+        "chair_02_51_00_02_00_99"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88",
+      "missing_state_edges": [
+        "chair_02_52_00_02_01_88-STATE_CHANGED-state:chair_02_52_00_02_01_88:20-20"
+      ],
+      "missing_state_nodes": [
+        "state:chair_02_52_00_02_01_88:20"
+      ],
+      "object_ids": [
+        "chair_02_52_00_02_01_88"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47",
+      "missing_state_edges": [
+        "alarmclock_01_28_01_24_00_47-STATE_CHANGED-state:alarmclock_01_28_01_24_00_47:30-30"
+      ],
+      "missing_state_nodes": [
+        "state:alarmclock_01_28_01_24_00_47:30"
+      ],
+      "object_ids": [
+        "alarmclock_01_28_01_24_00_47"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82",
+      "missing_state_edges": [
+        "baseballbat_02_84_00_29_01_82-STATE_CHANGED-state:baseballbat_02_84_00_29_01_82:30-30"
+      ],
+      "missing_state_nodes": [
+        "state:baseballbat_02_84_00_29_01_82:30"
+      ],
+      "object_ids": [
+        "baseballbat_02_84_00_29_01_82"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24",
+      "missing_state_edges": [
+        "basketball_00_24_00_13_01_24-STATE_CHANGED-state:basketball_00_24_00_13_01_24:30-30"
+      ],
+      "missing_state_nodes": [
+        "state:basketball_00_24_00_13_01_24:30"
+      ],
+      "object_ids": [
+        "basketball_00_24_00_13_01_24"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87",
+      "missing_state_edges": [
+        "bed_00_64_00_01_00_87-STATE_CHANGED-state:bed_00_64_00_01_00_87:30-30"
+      ],
+      "missing_state_nodes": [
+        "state:bed_00_64_00_01_00_87:30"
+      ],
+      "object_ids": [
+        "bed_00_64_00_01_00_87"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44",
+      "missing_state_edges": [
+        "blinds_00_11_02_34_01_44-STATE_CHANGED-state:blinds_00_11_02_34_01_44:30-30"
+      ],
+      "missing_state_nodes": [
+        "state:blinds_00_11_02_34_01_44:30"
+      ],
+      "object_ids": [
+        "blinds_00_11_02_34_01_44"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18",
+      "missing_state_edges": [
+        "book_00_90_00_56_01_18-STATE_CHANGED-state:book_00_90_00_56_01_18:30-30"
+      ],
+      "missing_state_nodes": [
+        "state:book_00_90_00_56_01_18:30"
+      ],
+      "object_ids": [
+        "book_00_90_00_56_01_18"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34",
+      "missing_state_edges": [
+        "boots_01_28_00_01_01_34-STATE_CHANGED-state:boots_01_28_00_01_01_34:30-30"
+      ],
+      "missing_state_nodes": [
+        "state:boots_01_28_00_01_01_34:30"
+      ],
+      "object_ids": [
+        "boots_01_28_00_01_01_34"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21",
+      "missing_state_edges": [
+        "bowl_02_45_00_80_01_21-STATE_CHANGED-state:bowl_02_45_00_80_01_21:30-30"
+      ],
+      "missing_state_nodes": [
+        "state:bowl_02_45_00_80_01_21:30"
+      ],
+      "object_ids": [
+        "bowl_02_45_00_80_01_21"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89",
+      "missing_state_edges": [
+        "box_02_73_00_20_00_89-STATE_CHANGED-state:box_02_73_00_20_00_89:30-30"
+      ],
+      "missing_state_nodes": [
+        "state:box_02_73_00_20_00_89:30"
+      ],
+      "object_ids": [
+        "box_02_73_00_20_00_89"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19",
+      "missing_state_edges": [
+        "cd_01_62_00_80_01_19-STATE_CHANGED-state:cd_01_62_00_80_01_19:30-30"
+      ],
+      "missing_state_nodes": [
+        "state:cd_01_62_00_80_01_19:30"
+      ],
+      "object_ids": [
+        "cd_01_62_00_80_01_19"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0003:object_location:candle_03_11_00_23_00_05",
+      "missing_state_edges": [
+        "candle_03_11_00_23_00_05-STATE_CHANGED-state:candle_03_11_00_23_00_05:40-40"
+      ],
+      "missing_state_nodes": [
+        "state:candle_03_11_00_23_00_05:40"
+      ],
+      "object_ids": [
+        "candle_03_11_00_23_00_05"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02",
+      "missing_state_edges": [
+        "cloth_00_27_00_04_01_02-STATE_CHANGED-state:cloth_00_27_00_04_01_02:40-40"
+      ],
+      "missing_state_nodes": [
+        "state:cloth_00_27_00_04_01_02:40"
+      ],
+      "object_ids": [
+        "cloth_00_27_00_04_01_02"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02",
+      "missing_state_edges": [
+        "dishsponge_03_20_00_86_00_02-STATE_CHANGED-state:dishsponge_03_20_00_86_00_02:40-40"
+      ],
+      "missing_state_nodes": [
+        "state:dishsponge_03_20_00_86_00_02:40"
+      ],
+      "object_ids": [
+        "dishsponge_03_20_00_86_00_02"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28",
+      "missing_state_edges": [
+        "faucet_00_14_00_61_00_28-STATE_CHANGED-state:faucet_00_14_00_61_00_28:40-40"
+      ],
+      "missing_state_nodes": [
+        "state:faucet_00_14_00_61_00_28:40"
+      ],
+      "object_ids": [
+        "faucet_00_14_00_61_00_28"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53",
+      "missing_state_edges": [
+        "faucet_03_40_01_02_01_53-STATE_CHANGED-state:faucet_03_40_01_02_01_53:40-40"
+      ],
+      "missing_state_nodes": [
+        "state:faucet_03_40_01_02_01_53:40"
+      ],
+      "object_ids": [
+        "faucet_03_40_01_02_01_53"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85",
+      "missing_state_edges": [
+        "floor_01_44_00_04_01_85-STATE_CHANGED-state:floor_01_44_00_04_01_85:40-40"
+      ],
+      "missing_state_nodes": [
+        "state:floor_01_44_00_04_01_85:40"
+      ],
+      "object_ids": [
+        "floor_01_44_00_04_01_85"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88",
+      "missing_state_edges": [
+        "garbagecan_00_05_00_00_03_88-STATE_CHANGED-state:garbagecan_00_05_00_00_03_88:40-40"
+      ],
+      "missing_state_nodes": [
+        "state:garbagecan_00_05_00_00_03_88:40"
+      ],
+      "object_ids": [
+        "garbagecan_00_05_00_00_03_88"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10",
+      "missing_state_edges": [
+        "handtowel_03_42_01_34_02_10-STATE_CHANGED-state:handtowel_03_42_01_34_02_10:40-40"
+      ],
+      "missing_state_nodes": [
+        "state:handtowel_03_42_01_34_02_10:40"
+      ],
+      "object_ids": [
+        "handtowel_03_42_01_34_02_10"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0001:object_location:apple_01_65_00_81_00_07",
+      "missing_state_edges": [
+        "apple_01_65_00_81_00_07-STATE_CHANGED-state:apple_01_65_00_81_00_07:50-50"
+      ],
+      "missing_state_nodes": [
+        "state:apple_01_65_00_81_00_07:50"
+      ],
+      "object_ids": [
+        "apple_01_65_00_81_00_07"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0002:object_location:bowl_00_28_00_92_01_09",
+      "missing_state_edges": [
+        "bowl_00_28_00_92_01_09-STATE_CHANGED-state:bowl_00_28_00_92_01_09:50-50"
+      ],
+      "missing_state_nodes": [
+        "state:bowl_00_28_00_92_01_09:50"
+      ],
+      "object_ids": [
+        "bowl_00_28_00_92_01_09"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08",
+      "missing_state_edges": [
+        "bread_00_26_00_99_00_08-STATE_CHANGED-state:bread_00_26_00_99_00_08:50-50"
+      ],
+      "missing_state_nodes": [
+        "state:bread_00_26_00_99_00_08:50"
+      ],
+      "object_ids": [
+        "bread_00_26_00_99_00_08"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0004:object_location:butterknife_01_67_00_69_00_11",
+      "missing_state_edges": [
+        "butterknife_01_67_00_69_00_11-STATE_CHANGED-state:butterknife_01_67_00_69_00_11:50-50"
+      ],
+      "missing_state_nodes": [
+        "state:butterknife_01_67_00_69_00_11:50"
+      ],
+      "object_ids": [
+        "butterknife_01_67_00_69_00_11"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0005:object_location:cabinet_00_41_00_48_00_44",
+      "missing_state_edges": [
+        "cabinet_00_41_00_48_00_44-STATE_CHANGED-state:cabinet_00_41_00_48_00_44:50-50"
+      ],
+      "missing_state_nodes": [
+        "state:cabinet_00_41_00_48_00_44:50"
+      ],
+      "object_ids": [
+        "cabinet_00_41_00_48_00_44"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0006:object_location:cabinet_00_49_00_47_01_15",
+      "missing_state_edges": [
+        "cabinet_00_49_00_47_01_15-STATE_CHANGED-state:cabinet_00_49_00_47_01_15:50-50"
+      ],
+      "missing_state_nodes": [
+        "state:cabinet_00_49_00_47_01_15:50"
+      ],
+      "object_ids": [
+        "cabinet_00_49_00_47_01_15"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0007:object_location:cabinet_00_50_00_47_01_15",
+      "missing_state_edges": [
+        "cabinet_00_50_00_47_01_15-STATE_CHANGED-state:cabinet_00_50_00_47_01_15:50-50"
+      ],
+      "missing_state_nodes": [
+        "state:cabinet_00_50_00_47_01_15:50"
+      ],
+      "object_ids": [
+        "cabinet_00_50_00_47_01_15"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45",
+      "missing_state_edges": [
+        "cabinet_00_63_02_02_01_45-STATE_CHANGED-state:cabinet_00_63_02_02_01_45:50-50"
+      ],
+      "missing_state_nodes": [
+        "state:cabinet_00_63_02_02_01_45:50"
+      ],
+      "object_ids": [
+        "cabinet_00_63_02_02_01_45"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0009:object_location:cabinet_01_39_00_47_01_15",
+      "missing_state_edges": [
+        "cabinet_01_39_00_47_01_15-STATE_CHANGED-state:cabinet_01_39_00_47_01_15:50-50"
+      ],
+      "missing_state_nodes": [
+        "state:cabinet_01_39_00_47_01_15:50"
+      ],
+      "object_ids": [
+        "cabinet_01_39_00_47_01_15"
+      ]
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45",
+      "missing_state_edges": [
+        "cabinet_01_70_02_02_01_45-STATE_CHANGED-state:cabinet_01_70_02_02_01_45:50-50"
+      ],
+      "missing_state_nodes": [
+        "state:cabinet_01_70_02_02_01_45:50"
+      ],
+      "object_ids": [
+        "cabinet_01_70_02_02_01_45"
+      ]
+    }
+  ],
+  "unaccepted_targets": [
+    {
+      "object_id": "alarmclock_01_28_01_24_00_47"
+    },
+    {
+      "object_id": "apple_01_65_00_81_00_07"
+    },
+    {
+      "object_id": "armchair_00_85_00_00_05_98"
+    },
+    {
+      "object_id": "armchair_04_38_00_00_06_02"
+    },
+    {
+      "object_id": "baseballbat_02_84_00_29_01_82"
+    },
+    {
+      "object_id": "basketball_00_24_00_13_01_24"
+    },
+    {
+      "object_id": "bed_00_64_00_01_00_87"
+    },
+    {
+      "object_id": "blinds_00_11_02_34_01_44"
+    },
+    {
+      "object_id": "book_00_15_01_10_00_62"
+    },
+    {
+      "object_id": "book_00_90_00_56_01_18"
+    },
+    {
+      "object_id": "book_01_87_00_68_01_17"
+    },
+    {
+      "object_id": "boots_01_28_00_01_01_34"
+    },
+    {
+      "object_id": "bottle_01_54_00_89_02_54"
+    },
+    {
+      "object_id": "bowl_00_27_01_10_00_75"
+    },
+    {
+      "object_id": "bowl_02_45_00_60_04_79"
+    },
+    {
+      "object_id": "bowl_02_45_00_80_01_21"
+    },
+    {
+      "object_id": "box_02_73_00_20_00_89"
+    },
+    {
+      "object_id": "box_03_36_00_19_06_43"
+    },
+    {
+      "object_id": "bread_00_26_00_99_00_08"
+    },
+    {
+      "object_id": "butterknife_01_67_00_69_00_11"
+    },
+    {
+      "object_id": "cabinet_00_41_00_48_00_44"
+    },
+    {
+      "object_id": "cabinet_00_49_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_50_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_63_02_02_01_45"
+    },
+    {
+      "object_id": "cabinet_00_68_00_50_02_20"
+    },
+    {
+      "object_id": "cabinet_00_68_02_02_02_46"
+    },
+    {
+      "object_id": "cabinet_00_72_02_02_02_46"
+    },
+    {
+      "object_id": "cabinet_00_73_02_02_02_46"
+    },
+    {
+      "object_id": "cabinet_01_39_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_01_70_02_02_01_45"
+    },
+    {
+      "object_id": "candle_03_11_00_23_00_05"
+    },
+    {
+      "object_id": "cd_01_62_00_80_01_19"
+    },
+    {
+      "object_id": "cellphone_00_26_00_56_00_52"
+    },
+    {
+      "object_id": "chair_01_34_00_02_01_43"
+    },
+    {
+      "object_id": "chair_01_86_00_02_01_04"
+    },
+    {
+      "object_id": "chair_01_86_00_02_01_84"
+    },
+    {
+      "object_id": "chair_02_43_00_01_00_99"
+    },
+    {
+      "object_id": "cloth_00_27_00_04_01_02"
+    },
+    {
+      "object_id": "creditcard_01_78_00_80_01_19"
+    },
+    {
+      "object_id": "desk_02_21_00_01_01_26"
+    },
+    {
+      "object_id": "desklamp_01_32_01_24_00_99"
+    },
+    {
+      "object_id": "dishsponge_03_20_00_86_00_02"
+    },
+    {
+      "object_id": "dogbed_00_92_00_01_01_04"
+    },
+    {
+      "object_id": "drawer_01_31_00_18_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_00_18_00_92"
+    },
+    {
+      "object_id": "drawer_01_31_00_45_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_00_45_00_92"
+    },
+    {
+      "object_id": "drawer_01_31_00_75_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_00_75_00_92"
+    },
+    {
+      "object_id": "drawer_01_31_01_03_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_01_03_00_92"
+    },
+    {
+      "object_id": "drawer_01_62_00_19_01_18"
+    },
+    {
+      "object_id": "drawer_01_62_00_41_01_18"
+    },
+    {
+      "object_id": "drawer_01_62_00_63_01_18"
+    },
+    {
+      "object_id": "drawer_01_94_00_19_01_18"
+    },
+    {
+      "object_id": "drawer_01_94_00_41_01_18"
+    },
+    {
+      "object_id": "drawer_01_94_00_63_01_18"
+    },
+    {
+      "object_id": "drawer_02_82_00_19_01_18"
+    },
+    {
+      "object_id": "drawer_02_82_00_41_01_18"
+    },
+    {
+      "object_id": "drawer_02_82_00_63_01_18"
+    },
+    {
+      "object_id": "dresser_01_33_00_01_00_75"
+    },
+    {
+      "object_id": "faucet_00_14_00_61_00_28"
+    },
+    {
+      "object_id": "faucet_03_40_01_02_01_53"
+    },
+    {
+      "object_id": "fridge_01_76_00_00_00_00"
+    },
+    {
+      "object_id": "garbagecan_00_05_00_00_03_88"
+    },
+    {
+      "object_id": "garbagecan_02_84_00_01_00_22"
+    },
+    {
+      "object_id": "handtowel_03_42_01_34_02_10"
+    },
+    {
+      "object_id": "keychain_01_74_00_80_01_29"
+    },
+    {
+      "object_id": "laptop_00_50_00_56_00_29"
+    },
+    {
+      "object_id": "mug_02_82_00_80_01_22"
+    },
+    {
+      "object_id": "pen_01_93_00_81_01_18"
+    },
+    {
+      "object_id": "pencil_02_01_00_81_01_17"
+    },
+    {
+      "object_id": "pillow_00_63_00_63_01_61"
+    },
+    {
+      "object_id": "shelf_01_80_00_92_01_38"
+    },
+    {
+      "object_id": "shelf_01_80_01_39_01_38"
+    },
+    {
+      "object_id": "shelf_02_25_01_50_01_38"
+    },
+    {
+      "object_id": "shelf_02_48_00_92_01_38"
+    },
+    {
+      "object_id": "shelf_02_48_01_15_01_38"
+    },
+    {
+      "object_id": "shelf_02_70_01_51_01_38"
+    },
+    {
+      "object_id": "statue_01_30_01_24_00_78"
+    },
+    {
+      "object_id": "tissuebox_02_32_01_05_01_38"
+    },
+    {
+      "object_id": "watch_02_18_00_82_01_38"
+    },
+    {
+      "object_id": "window_00_12_01_50_01_59"
+    }
+  ]
+}

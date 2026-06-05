@@ -1,0 +1,78 @@
+{
+  "artifacts": {
+    "answer_option_coverage_report": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-p7-independent-support-crop-options-coverage-report.json",
+    "enhanced_vlm_request_bundle": "handoffs/ai2thor-real-small/offline-control-prediction-request-bundle-observation-aware-p4-target60-vlm-p7-independent-support-crop-options.json",
+    "frame_index_p2": "handoffs/ai2thor-real-small/inputs/traces/vlm-frame-index-coverage-p16-schema-fixed-p2.jsonl",
+    "frame_index_p2_p3": "handoffs/ai2thor-real-small/inputs/traces/vlm-frame-index-coverage-p16-schema-fixed-p2-p3.jsonl",
+    "frame_index_report_p2_p3": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-frame-index-coverage-p16-schema-fixed-p2-p3.json",
+    "support_candidate_request_bundle": "handoffs/ai2thor-real-small/offline-control-prediction-request-bundle-observation-aware-p4-target60-vlm-p7-schema-fixed-support-candidates.json",
+    "support_detector_handoff": "handoffs/ai2thor-real-small/outputs/diagnostics/independent-detector-rgbd-handoff-p16-schema-fixed-support.json",
+    "support_gap_report": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-support-gap-p16-independent-p4-target60.json"
+  },
+  "goal": "turn p15 DSG support-relation diagnostic into an external detector/RGB-D handoff and stronger VLM-only request bundle",
+  "inputs": {
+    "base_detector_handoff": "handoffs/ai2thor-real-small/outputs/diagnostics/independent-detector-rgbd-handoff-p4-target60.json",
+    "base_vlm_request_bundle": "handoffs/ai2thor-real-small/offline-control-prediction-request-bundle-observation-aware-p4-target60-vlm-p6-rescaled-bbox-visual-contract.json",
+    "independent_dsg_semantic_eval": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-candidate-semantic-eval-p14-affordance-room-specific-support.json",
+    "independent_predicted_graph": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-independent-p4-target60.json",
+    "qa_path": "handoffs/ai2thor-real-small/inputs/traces/observation-aware-p4-target60-qa.jsonl"
+  },
+  "leak_checks": {
+    "enhanced_vlm_request_bundle": {
+      "bad_key_paths": [],
+      "valid": true
+    },
+    "support_candidate_request_bundle": {
+      "bad_key_paths": [],
+      "valid": true
+    }
+  },
+  "no_external_calls": true,
+  "notes": [
+    "metadata-backed coverage records do not carry bbox_2d_xyxy, so they are not suitable as target crop detector input; p7 enhanced bundle uses independent detector p4 bbox records for target crops and schema-fixed coverage frame index for support labels.",
+    "support_detector_handoff is the next external detector contract: produce detections for requested frames plus support_labels and current_location evidence, then rebuild predicted graph."
+  ],
+  "research_claim_ready": false,
+  "schema_version": "dsg-spatialqa-lab.diagnostic-report.v1",
+  "stage": "p16_external_detector_support_handoff",
+  "summaries": {
+    "answer_option_coverage": {
+      "case_count": 60,
+      "covered_case_count": 60,
+      "covered_case_rate": 1.0,
+      "missing_case_count": 0,
+      "option_count": 184
+    },
+    "enhanced_vlm_visual_enrichment": {
+      "answer_option_count": 184,
+      "case_count": 60,
+      "cases_with_answer_options": 60,
+      "cases_with_support_candidates": 51,
+      "cases_with_target_crop": 41
+    },
+    "frame_index_p2_p3": {
+      "frame_count": 62,
+      "source_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-ai2thor-visible-p3-offset-schema-fixed-p15.jsonl",
+      "target_visible_frame_count": 62,
+      "visible_object_id_count": 145
+    },
+    "support_candidate_enrichment": {
+      "case_count": 60,
+      "cases_with_primary_frame": 60,
+      "cases_with_support_candidates": 51,
+      "support_candidate_count": 121
+    },
+    "support_detector_handoff": {
+      "frame_count": 28,
+      "frames_with_support_labels": 22,
+      "support_label_count": 51
+    },
+    "support_gap": {
+      "case_count": 32,
+      "failed_on_case_count": 32,
+      "support_missing_count": 14,
+      "support_present_relation_missing_count": 3,
+      "target_missing_count": 15
+    }
+  }
+}

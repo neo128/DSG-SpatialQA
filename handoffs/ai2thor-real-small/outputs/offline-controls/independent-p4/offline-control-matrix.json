@@ -1,0 +1,122 @@
+{
+  "checks": [
+    {
+      "actual": [],
+      "name": "import_reports_valid",
+      "passed": true
+    },
+    {
+      "missing": [],
+      "name": "required_source_kinds_present",
+      "passed": true,
+      "required": [
+        "multi_frame_vlm",
+        "vlm"
+      ]
+    },
+    {
+      "actual": [],
+      "name": "complete_prediction_coverage",
+      "passed": true
+    },
+    {
+      "actual": [
+        "multi_frame_vlm:multi_frame_vlm_qwen37_window4_p4_target60",
+        "vlm:vlm_qwen37_p4_target60"
+      ],
+      "name": "clean_import_diagnostics",
+      "passed": false
+    },
+    {
+      "actual": [],
+      "name": "unique_source_keys",
+      "passed": true
+    },
+    {
+      "actual": [
+        "9eb72ebd1f87937faa53be3e9a6ec7dc3d628cd6ec899a1fa02ef61529633115"
+      ],
+      "name": "qa_digest_consistent",
+      "passed": true
+    }
+  ],
+  "readiness": {
+    "failed_check_count": 1,
+    "failed_checks": [
+      "clean_import_diagnostics"
+    ],
+    "ready": false
+  },
+  "report_count": 2,
+  "report_digest": "7afa3818ab011918699c30414d5e66c8fe9775a17f48b957acf80f734e5ab384",
+  "required_source_kinds": [
+    "multi_frame_vlm",
+    "vlm"
+  ],
+  "schema_version": "dsg-spatialqa-lab.offline-control-matrix-report.v1",
+  "source_kind_counts": {
+    "multi_frame_vlm": 1,
+    "vlm": 1
+  },
+  "source_profile_matrix": [
+    {
+      "adapter": "multi_frame_vlm",
+      "capability_axes": [],
+      "dataset_id": "unspecified",
+      "duplicate_case_count": 0,
+      "error_prediction_count": 27,
+      "gold_case_count": 60,
+      "imported_prediction_count": 60,
+      "metadata_keys": [],
+      "missing_case_count": 0,
+      "model_id": "unspecified",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/independent-p4/imports/multi_frame_vlm/multi_frame_vlm_qwen37_window4_p4_target60/import-report.json",
+      "prediction_digest": "e2ea4f700353107738dc2c3c181cd331f342c9a6840752f9a23d831df63ab690",
+      "prompt_id": "unspecified",
+      "qa_digest": "9eb72ebd1f87937faa53be3e9a6ec7dc3d628cd6ec899a1fa02ef61529633115",
+      "report_digest": "5014013cc0e9ffcdeea12f4185118354979d14b81de83ce163dbe31db1e69ada",
+      "source_key": "multi_frame_vlm:multi_frame_vlm_qwen37_window4_p4_target60",
+      "source_kind": "multi_frame_vlm",
+      "source_name": "multi_frame_vlm_qwen37_window4_p4_target60",
+      "unknown_case_count": 0
+    },
+    {
+      "adapter": "vlm",
+      "capability_axes": [],
+      "dataset_id": "unspecified",
+      "duplicate_case_count": 0,
+      "error_prediction_count": 31,
+      "gold_case_count": 60,
+      "imported_prediction_count": 60,
+      "metadata_keys": [],
+      "missing_case_count": 0,
+      "model_id": "unspecified",
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/independent-p4/imports/vlm/vlm_qwen37_p4_target60/import-report.json",
+      "prediction_digest": "237b2d5004fd1bd045d012a62a644287678faa9bc38375419a6bf5d53be32cff",
+      "prompt_id": "unspecified",
+      "qa_digest": "9eb72ebd1f87937faa53be3e9a6ec7dc3d628cd6ec899a1fa02ef61529633115",
+      "report_digest": "97fd91e929aa1f3cd29bc3f6b9193223f40482ce004c47b8287f7b8ee9f8b2f5",
+      "source_key": "vlm:vlm_qwen37_p4_target60",
+      "source_kind": "vlm",
+      "source_name": "vlm_qwen37_p4_target60",
+      "unknown_case_count": 0
+    }
+  ],
+  "summary": {
+    "complete_source_count": 2,
+    "diagnostic_source_keys": [
+      "multi_frame_vlm:multi_frame_vlm_qwen37_window4_p4_target60",
+      "vlm:vlm_qwen37_p4_target60"
+    ],
+    "incomplete_source_keys": [],
+    "missing_required_source_kinds": [],
+    "required_source_kind_count": 2,
+    "source_count": 2,
+    "source_kind_count": 2,
+    "source_kinds": [
+      "multi_frame_vlm",
+      "vlm"
+    ],
+    "total_imported_prediction_count": 120
+  }
+}

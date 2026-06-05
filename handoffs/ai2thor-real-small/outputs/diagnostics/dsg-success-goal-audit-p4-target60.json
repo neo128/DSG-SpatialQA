@@ -1,0 +1,223 @@
+{
+  "artifacts": {
+    "candidate_predictions": "inputs/candidate/predicted-graph-tool-observation-aware-p4-target60.jsonl",
+    "observation_aware_qa": "inputs/traces/observation-aware-p4-target60-qa.jsonl",
+    "observation_aware_qa_report": "outputs/diagnostics/observation-aware-qa-p4-target60.json",
+    "qa_eval_report": "outputs/offline-controls/qa-eval-observation-aware-p4-target60/predicted-graph-tool-qa-eval.json",
+    "qa_observability_report": "outputs/diagnostics/qa-observability-observation-aware-p4-target60.json"
+  },
+  "blockers": [
+    "predicted DSG evidence gate still fails non_real_sources_absent; current detector-like evidence is simulator-derived, not independent external detector/RGB-D",
+    "real VLM/video-memory controls still need rerun on the p4 target-60 observation-aware QA slice once valid project-scoped model credentials are available"
+  ],
+  "final_real_research_claim_ready": false,
+  "formal_dsg_success_targets_ready": true,
+  "goal_checks": [
+    {
+      "actual": 60,
+      "case_count": 60,
+      "name": "formal_observation_aware_evidence_observable_at_least_30_of_60",
+      "passed": true,
+      "scope": "observation_aware_p4_target60",
+      "threshold": 30
+    },
+    {
+      "actual": 0.939394,
+      "name": "object_recall_at_least_0_5",
+      "passed": true,
+      "scope": "full_oracle_diagnostic",
+      "threshold": 0.5
+    },
+    {
+      "actual": 0,
+      "name": "unlocated_object_zero",
+      "passed": true,
+      "threshold": 0
+    },
+    {
+      "actual": 0,
+      "name": "missing_state_decreased_formal_slice",
+      "passed": true,
+      "scope": "observation_aware_p4_target60",
+      "threshold": 0
+    },
+    {
+      "actual": {
+        "case_count": 60,
+        "exact_match_count": 44,
+        "exact_match_rate": 0.733333
+      },
+      "name": "observation_aware_exact_match_at_least_15_on_30_plus",
+      "passed": true,
+      "threshold": {
+        "case_count": 30,
+        "exact_match_count": 15
+      }
+    },
+    {
+      "actual": {
+        "relations": 60,
+        "supplemental_case_count": 18
+      },
+      "name": "relation_semantic_filtering_supplemental_specific_relations_present",
+      "passed": true,
+      "scope": "observation_aware_p4_target60"
+    },
+    {
+      "actual": {
+        "failed_checks": [
+          "non_real_sources_absent"
+        ],
+        "ready": false
+      },
+      "name": "real_detector_evidence_gate_ready",
+      "passed": false,
+      "threshold": "ready=true for final real claim"
+    }
+  ],
+  "metrics": {
+    "evidence_gate": {
+      "failed_checks": [
+        "non_real_sources_absent"
+      ],
+      "ready": false,
+      "summary": {}
+    },
+    "full_oracle_diagnostic": {
+      "by_observability_status": {
+        "evidence_observable": 9,
+        "target_missing": 8,
+        "target_observable_relation_missing": 43
+      },
+      "by_question_type": {
+        "nearest_object": {
+          "case_count": 1,
+          "evidence_observable_count": 1,
+          "missing_evidence_count": 0,
+          "target_missing_count": 0,
+          "target_observable_count": 1,
+          "target_observable_relation_missing_count": 0
+        },
+        "object_location": {
+          "case_count": 50,
+          "evidence_observable_count": 5,
+          "missing_evidence_count": 45,
+          "target_missing_count": 6,
+          "target_observable_count": 44,
+          "target_observable_relation_missing_count": 39
+        },
+        "relation_timeline": {
+          "case_count": 4,
+          "evidence_observable_count": 1,
+          "missing_evidence_count": 3,
+          "target_missing_count": 1,
+          "target_observable_count": 3,
+          "target_observable_relation_missing_count": 2
+        },
+        "relative_relation": {
+          "case_count": 4,
+          "evidence_observable_count": 1,
+          "missing_evidence_count": 3,
+          "target_missing_count": 1,
+          "target_observable_count": 3,
+          "target_observable_relation_missing_count": 2
+        },
+        "reobserve_targets": {
+          "case_count": 1,
+          "evidence_observable_count": 1,
+          "missing_evidence_count": 0,
+          "target_missing_count": 0,
+          "target_observable_count": 1,
+          "target_observable_relation_missing_count": 0
+        }
+      },
+      "case_count": 60,
+      "evidence_observable_count": 9,
+      "missing_evidence_count": 51,
+      "missing_required_edge_count": 110,
+      "missing_required_edge_relations": {
+        "IN_ROOM": 33,
+        "ON": 54,
+        "STATE_CHANGED": 45
+      },
+      "missing_target_nodes": [
+        "apple_01_65_00_81_00_07",
+        "butterknife_01_67_00_69_00_11",
+        "cabinet_00_41_00_48_00_44",
+        "cabinet_00_49_00_47_01_15",
+        "cabinet_00_50_00_47_01_15",
+        "cabinet_01_39_00_47_01_15"
+      ],
+      "target_missing_count": 8,
+      "target_node_count": 99,
+      "target_node_missing_count": 6,
+      "target_node_observed_count": 93,
+      "target_node_recall": 0.939394,
+      "target_observable_count": 52,
+      "target_observable_relation_missing_count": 43
+    },
+    "observation_aware_generation": {
+      "base_case_count": 60,
+      "generated_case_count": 60,
+      "object_location_case_count": 50,
+      "skipped_case_count": 18,
+      "skipped_reasons": {
+        "missing_visible_detector_observation": 8,
+        "unsupported_question_type": 10
+      },
+      "supplemental_case_count": 18,
+      "target_case_count": 60
+    },
+    "observation_aware_graph_tool_eval": {
+      "case_count": 60,
+      "exact_match_count": 44,
+      "exact_match_rate": 0.733333,
+      "matched_prediction_count": 60,
+      "missing_prediction_count": 0,
+      "prediction_count": 60
+    },
+    "observation_aware_observability": {
+      "by_observability_status": {
+        "evidence_observable": 60
+      },
+      "by_question_type": {
+        "object_location": {
+          "case_count": 60,
+          "evidence_observable_count": 60,
+          "missing_evidence_count": 0,
+          "target_missing_count": 0,
+          "target_observable_count": 60,
+          "target_observable_relation_missing_count": 0
+        }
+      },
+      "case_count": 60,
+      "evidence_observable_count": 60,
+      "missing_evidence_count": 0,
+      "missing_required_edge_count": 0,
+      "missing_required_edge_relations": {},
+      "missing_target_nodes": [],
+      "target_missing_count": 0,
+      "target_node_count": 60,
+      "target_node_missing_count": 0,
+      "target_node_observed_count": 60,
+      "target_node_recall": 1.0,
+      "target_observable_count": 60,
+      "target_observable_relation_missing_count": 0
+    },
+    "predicted_graph": {
+      "object_count": 167,
+      "object_history_count": 706,
+      "unlocated_object_count": 0,
+      "visible_object_count": 167
+    }
+  },
+  "next_actions": [
+    "run VLM-only and multi-frame VLM controls on observation-aware-p4-target60 with no gold leakage",
+    "import independent detector/RGB-D observation sequence for the same target-visible coverage to clear final real evidence gate"
+  ],
+  "not_final_real_research_claim": true,
+  "ready": false,
+  "ready_reason": "formal observation-aware DSG ability targets are met on 60 evidence-backed QA, but final real evidence gate still requires independent detector/RGB-D sources.",
+  "schema_version": "dsg-spatialqa-lab.dsg-success-goal-audit.v1",
+  "stage": "p4-target60-observation-aware"
+}

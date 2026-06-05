@@ -1,0 +1,43 @@
+{
+  "blockers": [
+    "No same-slice independent detector/RGB-D JSONL artifact was found.",
+    "No local detector runtime module or weights were available in the current environment.",
+    "Existing p3/p4 detector-like observation sequence is derived from AI2-THOR metadata/segmentation and remains rejected by non_real_sources_absent."
+  ],
+  "current_failed_check": "non_real_sources_absent",
+  "current_non_real_sources": [
+    "ai2thor",
+    "ai2thor_visible_segmentation_rgbd"
+  ],
+  "current_predicted_dsg_evidence_report": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-evidence-p3-offset.json",
+  "dataset_id": "ai2thor_real_small_p4_target60",
+  "local_detector_modules": {
+    "PIL": true,
+    "cv2": false,
+    "groundingdino": false,
+    "segment_anything": false,
+    "torch": false,
+    "torchvision": false,
+    "ultralytics": false
+  },
+  "next_required_artifacts": [
+    "external detector/RGB-D JSONL for the p4 frames with source_name not containing ai2thor/mock/synthetic/placeholder",
+    "imported SceneObservation sequence built from that detector JSONL",
+    "predicted graph report and predicted DSG evidence report regenerated from the independent sequence"
+  ],
+  "ready": false,
+  "required_evidence": "independent detector/RGB-D observation sequence with no ai2thor/synthetic/mock source markers",
+  "same_project_candidate_detector_inputs": [
+    "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd.jsonl",
+    "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-v1.jsonl",
+    "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-ai2thor-visible-p3-offset.jsonl"
+  ],
+  "same_project_candidate_status": "available but simulator-derived; must not be relabeled as independent external detector evidence",
+  "same_slice": "observation-aware-p4-target60",
+  "schema_version": "dsg-spatialqa-lab.independent-detector-evidence-audit.v1",
+  "unrelated_external_detection_artifacts": [
+    "/home/user/Code/robot_water_v2/artifacts/level4_isaac_lightwheel_cup_overlay_semantic_loop/detections_3d.jsonl",
+    "/home/user/Code/robot_water_v2/artifacts/level4_isaac_lightwheel_cup_overlay_semantic_loop_with_rtabmap/detections_3d.jsonl",
+    "/home/user/Code/robot_water_v2/artifacts/level4_isaac_lightwheel_semantic_loop/detections_3d.jsonl"
+  ]
+}

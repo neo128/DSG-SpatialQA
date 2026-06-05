@@ -16,6 +16,46 @@ the default runtime and must fail closed or use deterministic mocks.
 
 ---
 
+## Next-Stage Goal: VLM Gate Then DSG Memory/Query Experiments
+
+**Goal:** Treat VLM-only semantic success rate >= 50% as the entry gate for
+the next DSG experiment stage. After the gate is satisfied, optimize DSG memory
+storage contents, storage method, query contents, and query method before
+claiming any DSG-vs-VLM result.
+
+Current gate status:
+
+- VLM-only P26 semantic match: `49 / 60 = 0.816667`.
+- VLM-only P26 strict exact match: `0 / 60 = 0.000000`.
+- Gate decision: semantic >= 50% is satisfied; strict exact remains a
+  secondary answer-normalization metric, not the stage entry metric.
+- Current strict detector-only DSG P30 semantic match: `25 / 60 = 0.416667`.
+- Current DSG gap to VLM P26: `-24` semantic matches.
+- Next-stage goal report:
+  `handoffs/ai2thor-real-small/outputs/diagnostics/p32-next-stage-goal-vlm-gate-dsg-memory-query.json`.
+
+DSG experiment axes for the next stage:
+
+- [ ] **Memory storage contents:** store detector-visible object states,
+  support-surface candidates, object-id/label provenance, temporal last-seen
+  facts, and relation hypotheses with confidence/evidence paths.
+- [ ] **Memory storage method:** keep append-only observation memory before
+  collapsing into graph edges; separate observed facts from inferred location
+  hypotheses; retain top-k support candidates and ambiguity/abstain flags.
+- [ ] **Query contents:** retrieve target state, visible-frame evidence,
+  support candidates, room fallback, missing-evidence status, and answer
+  rationale together.
+- [ ] **Query method:** rank explicit detector current-location evidence first,
+  then inferred support hypotheses, then room fallback; return structured
+  missing-evidence blockers when the graph cannot answer.
+- [ ] **P32 detector return loop:** use
+  `handoffs/ai2thor-real-small/inputs/predicted-dsg/p31-detector-recall-handoff.json`
+  to obtain external detector JSONL without gold answers, import it, rebuild
+  observation-backed predicted DSG, and rerun DSG candidate/eval.
+- [ ] **P33 memory/query ablation:** compare baseline GraphTool lookup against
+  memory-first retrieval and support-candidate ranking, recording wins/losses
+  against VLM P26.
+
 ## Next-Stage Todo: Conclusive DSG-vs-Control Evidence
 
 **Goal:** Turn the ready real-small handoff into an explicit research decision:
@@ -37,12 +77,20 @@ Completed in this stage:
   `handoffs/ai2thor-real-small/outputs/research-conclusion.zh.md`.
 - [x] Record the current formal verdict:
   `dsg_not_superior` for the current ready package.
+- [x] Attach QA observability context to the conclusion layer so the report
+  records full-oracle versus observation-aware scope and evidence-observable
+  QA counts.
+- [x] Block observation-aware superiority claims unless QA evals are run on the
+  evidence-observable QA slice and the slice has enough cases.
 
 Next development priorities:
 
 - [ ] Improve the real detector/RGB-D predicted graph, not the oracle or
   metadata-assisted diagnostic graph, until object recall and relation quality
   pass the conclusion gates.
+- [ ] Produce separate observation-aware QA eval, four-control delta reports,
+  and conclusion artifacts once evidence-observable coverage reaches the
+  configured sample floor.
 - [ ] Re-run the four required external controls with the structured JSON
   prompt and preserved evidence traces.
 - [ ] Expand observation-aware QA coverage with dynamic-memory and

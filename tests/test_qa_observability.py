@@ -41,14 +41,53 @@ def test_qa_observability_report_splits_cases_by_predicted_evidence() -> None:
     validation = lab.validate_qa_observability_report(report)
 
     assert report["summary"] == {
+        "by_observability_status": {
+            "evidence_observable": 1,
+            "target_missing": 1,
+            "target_observable_relation_missing": 2,
+        },
+        "by_question_type": {
+            "object_location": {
+                "case_count": 3,
+                "evidence_observable_count": 1,
+                "missing_evidence_count": 2,
+                "target_missing_count": 1,
+                "target_observable_count": 2,
+                "target_observable_relation_missing_count": 1,
+            },
+            "reobserve_targets": {
+                "case_count": 1,
+                "evidence_observable_count": 0,
+                "missing_evidence_count": 1,
+                "target_missing_count": 0,
+                "target_observable_count": 1,
+                "target_observable_relation_missing_count": 1,
+            },
+        },
         "case_count": 4,
         "evidence_observable_count": 1,
+        "missing_required_edge_count": 2,
+        "missing_required_edge_relations": {"IN_ROOM": 3},
         "missing_evidence_count": 3,
+        "missing_target_nodes": ["plate_1"],
+        "target_node_count": 3,
+        "target_node_missing_count": 1,
+        "target_node_observed_count": 2,
+        "target_node_recall": 0.666667,
         "target_observable_count": 3,
         "target_observable_relation_missing_count": 2,
         "target_missing_count": 1,
     }
     assert report["splits"]["evidence_observable"] == ["case:cup"]
+    assert report["split_qa_digests"] == {
+        "evidence_observable": lab.qa_dataset_digest((cases[0],)),
+        "missing_evidence": lab.qa_dataset_digest((cases[1], cases[2], cases[3])),
+        "target_missing": lab.qa_dataset_digest((cases[2],)),
+        "target_observable": lab.qa_dataset_digest((cases[0], cases[1], cases[3])),
+        "target_observable_relation_missing": lab.qa_dataset_digest(
+            (cases[1], cases[3])
+        ),
+    }
     assert report["splits"]["target_observable"] == [
         "case:cup",
         "case:mug",
@@ -68,6 +107,15 @@ def test_qa_observability_report_splits_cases_by_predicted_evidence() -> None:
         "case:plate": "target_missing",
         "case:scene": "target_observable_relation_missing",
     }
+    assert {
+        case["case_id"]: case["missing_required_edge_relations"]
+        for case in report["cases"]
+    } == {
+        "case:cup": [],
+        "case:mug": ["IN_ROOM"],
+        "case:plate": ["IN_ROOM"],
+        "case:scene": ["IN_ROOM"],
+    }
     assert validation["valid"] is True
 
 
@@ -83,6 +131,7 @@ def test_qa_observability_cli_writes_report_and_split_datasets(
     evidence_path = tmp_path / "evidence-observable.jsonl"
     target_path = tmp_path / "target-observable.jsonl"
     missing_path = tmp_path / "missing-evidence.jsonl"
+    relation_missing_path = tmp_path / "target-observable-relation-missing.jsonl"
     lab.save_qa_dataset(_qa_cases(), qa_path)
     lab.save_graph_json(_predicted_graph(), graph_path)
 
@@ -100,6 +149,8 @@ def test_qa_observability_cli_writes_report_and_split_datasets(
             str(target_path),
             "--missing-evidence-qa",
             str(missing_path),
+            "--target-observable-relation-missing-qa",
+            str(relation_missing_path),
         ]
     ) == 0
 
@@ -110,6 +161,7 @@ def test_qa_observability_cli_writes_report_and_split_datasets(
     assert len(lab.load_qa_dataset(evidence_path)) == 1
     assert len(lab.load_qa_dataset(target_path)) == 3
     assert len(lab.load_qa_dataset(missing_path)) == 3
+    assert len(lab.load_qa_dataset(relation_missing_path)) == 2
 
     assert main(["--validate-report", str(report_path)]) == 0
     validation = json.loads(capsys.readouterr().out)

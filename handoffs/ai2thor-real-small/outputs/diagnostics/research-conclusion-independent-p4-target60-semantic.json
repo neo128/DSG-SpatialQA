@@ -1,0 +1,72 @@
+{
+  "caveats": [
+    "The strict exact-match formal conclusion remains inconclusive_not_ready because offline control matrix readiness has clean_import_diagnostics blockers.",
+    "This semantic conclusion applies only to the current p4 target-60 object-location slice and does not generalize beyond the package."
+  ],
+  "claim": "On the p4 target-60 observation-aware object-location slice, the independent detector/RGB-D DSG candidate is not superior to VLM-only or bounded multi-frame VLM under semantic location matching.",
+  "data_source_kind": "real_ai2thor_with_external_vlm_controls_and_independent_vlm_rgbd_detector",
+  "dsg_superiority_claim_allowed": false,
+  "evaluation_scope": "observation_aware_p4_target60_object_location_semantic",
+  "input_digests": {
+    "candidate_semantic_eval": "9cf404d121019d378df40d663d03426a4b9c71ef8fdc414d0932abb8e1386bac",
+    "delta_vs_multi_frame_vlm": "2720a4d180e9053e1b33b70841ca1d79ac551dcaef7d5709715d4c86de4f8db5",
+    "delta_vs_vlm": "d7366110c5cacb7caa8500fd14f4585ce8e0d86553aabe1d6e8edd59b0fb6f70",
+    "graph_eval": "9393fa882c62f036c72feefd24efe40ae39d9ca5c9f242f22dc9b52a59820d03",
+    "multi_frame_semantic_eval": "40696a7e8128e2deb12c38f070fa04f971d3986aca4d93fbc0e86ec5a66ea9c5",
+    "predicted_dsg_evidence": "3d9a44d6d28df150df53373f3f190f0648d6d8f9cc1889456f598e69e07a3eb4",
+    "vlm_semantic_eval": "008caf15e3ed356781c5f173cf65c7fb6950b9a27d09920095564b9a506d631b"
+  },
+  "input_paths": {
+    "candidate_semantic_eval": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-candidate-semantic-eval-p4-target60-independent.json",
+    "delta_vs_multi_frame_vlm": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-candidate-semantic-delta-vs-multi-frame-vlm-p4-target60-independent.json",
+    "delta_vs_vlm": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-candidate-semantic-delta-vs-vlm-p4-target60-independent.json",
+    "graph_eval": "handoffs/ai2thor-real-small/outputs/predicted-dsg/graph-eval-independent-p4-target60.json",
+    "multi_frame_semantic_eval": "handoffs/ai2thor-real-small/outputs/diagnostics/multi-frame-vlm-semantic-eval-p4-target60-independent.json",
+    "predicted_dsg_evidence": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-evidence-independent-p4-target60.json",
+    "vlm_semantic_eval": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-semantic-eval-p4-target60-independent.json"
+  },
+  "metrics": {
+    "candidate_semantic_match_count": 0,
+    "candidate_semantic_match_rate": 0.0,
+    "delta_vs_multi_frame_vlm": {
+      "baseline_semantic_match_count": 4,
+      "baseline_semantic_match_rate": 0.06666666666666667,
+      "candidate_semantic_match_count": 0,
+      "candidate_semantic_match_rate": 0.0,
+      "semantic_match_count_delta": -4,
+      "semantic_match_rate_delta": -0.066667
+    },
+    "delta_vs_vlm": {
+      "baseline_semantic_match_count": 6,
+      "baseline_semantic_match_rate": 0.1,
+      "candidate_semantic_match_count": 0,
+      "candidate_semantic_match_rate": 0.0,
+      "semantic_match_count_delta": -6,
+      "semantic_match_rate_delta": -0.1
+    },
+    "graph_object_recall": 0.164773,
+    "graph_relation_recall": 0.00078,
+    "multi_frame_vlm_semantic_match_count": 4,
+    "multi_frame_vlm_semantic_match_rate": 0.06666666666666667,
+    "paired_vs_multi_frame_vlm": {
+      "case_count": 60,
+      "paired_losses": 4,
+      "paired_ties": 56,
+      "paired_wins": 0
+    },
+    "paired_vs_vlm": {
+      "case_count": 60,
+      "paired_losses": 6,
+      "paired_ties": 54,
+      "paired_wins": 0
+    },
+    "predicted_dsg_evidence_ready": true,
+    "vlm_semantic_match_count": 6,
+    "vlm_semantic_match_rate": 0.1
+  },
+  "negative_result_supported": true,
+  "primary_failure_reason": "predicted_dsg_graph_missing_support_surface_and_current_location_relations",
+  "report_digest": "ce3b2d3020be426aad6c6a63a4608c667977d5e8d6d43a2dba16d022801269cb",
+  "schema_version": "dsg-spatialqa-lab.semantic-research-conclusion.v1",
+  "verdict": "dsg_not_superior_candidate_regressed_semantic_location"
+}

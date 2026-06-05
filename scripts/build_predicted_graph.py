@@ -100,6 +100,22 @@ def main(argv: list[str] | None = None) -> int:
             "metadata coordinates and z for the default local graph frame."
         ),
     )
+    parser.add_argument(
+        "--relation-top-k",
+        type=int,
+        help=(
+            "Optional per-object top-k cap for NEAR relation inference on "
+            "observation_sequence input."
+        ),
+    )
+    parser.add_argument(
+        "--require-detector-state-evidence",
+        action="store_true",
+        help=(
+            "Require any object attributes.states used by observation_sequence "
+            "input to come from visible detector RGB-D evidence."
+        ),
+    )
     args = parser.parse_args(argv)
 
     if args.validate_report is not None:
@@ -164,6 +180,10 @@ def main(argv: list[str] | None = None) -> int:
                 reference_frames=reference_frames,
                 infer_containment=args.infer_containment,
                 containment_axis=args.containment_axis,
+                relation_top_k=args.relation_top_k,
+                require_detector_state_evidence=(
+                    args.require_detector_state_evidence
+                ),
             )
             report = predicted_graph_report_from_observations(
                 input_path=args.input,
@@ -174,6 +194,10 @@ def main(argv: list[str] | None = None) -> int:
                 reference_frames=reference_frames,
                 infer_containment=args.infer_containment,
                 containment_axis=args.containment_axis,
+                relation_top_k=args.relation_top_k,
+                require_detector_state_evidence=(
+                    args.require_detector_state_evidence
+                ),
             )
         else:
             frames = load_episode_sequence(args.input)

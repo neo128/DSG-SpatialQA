@@ -26,6 +26,15 @@ External producers fill the template paths under `data/real-small/`:
   gold answers or gold evidence
 - perception producers return detector/RGB-D JSONL matching
   `external-detector-observations.example.jsonl`
+  with `evidence_kinds=["rgb","depth","detector"]`,
+  `attributes.coverage_target_object_id` or another documented handoff target
+  alias when the detector object ID is an external track ID,
+  `attributes.current_location_id`,
+  `attributes.current_location_relation`, and `attributes.states` whenever the
+  handoff task requests location or dynamic-state evidence
+- `IN_REGION` and `IN_ROOM` current-location destinations may be created by the
+  graph builder from strict visible detector evidence; `ON` and `INSIDE`
+  destinations should be returned as observed support/container objects
 - local DSG-SpatialQA CLIs import controls, build predicted DSG evidence, run
   evals, export dashboard artifacts, and run readiness
 

@@ -1,0 +1,115 @@
+{
+  "checks": [
+    {
+      "name": "predicted_graph_report_valid",
+      "passed": true
+    },
+    {
+      "actual": "observation_sequence",
+      "expected": "observation_sequence",
+      "name": "input_kind_observation_sequence",
+      "passed": true
+    },
+    {
+      "name": "observation_sequence_loads",
+      "passed": true
+    },
+    {
+      "actual": "d3109fc70283ad879e2c6197d06f6d7738fa8ed93a1bba82acd71905b4840507",
+      "expected": "d3109fc70283ad879e2c6197d06f6d7738fa8ed93a1bba82acd71905b4840507",
+      "name": "observation_sequence_digest_matches_report",
+      "passed": true
+    },
+    {
+      "actual": 98,
+      "minimum": 3,
+      "name": "observation_count_minimum",
+      "passed": true
+    },
+    {
+      "actual": 616,
+      "minimum": 1,
+      "name": "object_observation_count_minimum",
+      "passed": true
+    },
+    {
+      "actual": {
+        "depth": 616,
+        "detector": 616,
+        "rgb": 616
+      },
+      "missing": [],
+      "name": "required_evidence_kinds_present",
+      "passed": true,
+      "required": [
+        "depth",
+        "detector",
+        "rgb"
+      ]
+    },
+    {
+      "actual": [],
+      "name": "mock_sources_absent",
+      "passed": true
+    },
+    {
+      "actual": [
+        "ai2thor",
+        "ai2thor_visible_segmentation_rgbd"
+      ],
+      "name": "non_real_sources_absent",
+      "passed": false
+    },
+    {
+      "invalid_object_ids": [],
+      "name": "detector_state_evidence_valid",
+      "passed": true,
+      "state_evidence_object_observation_count": 493
+    }
+  ],
+  "evidence_summary": {
+    "detector_names": [
+      "ai2thor_metadata_visible_objects",
+      "ai2thor_visible_segmentation_rgbd"
+    ],
+    "evidence_kind_counts": {
+      "depth": 616,
+      "detector": 616,
+      "rgb": 616
+    },
+    "hidden_object_observation_count": 0,
+    "input_kind": "observation_sequence",
+    "invalid_state_evidence_object_ids": [],
+    "object_observation_count": 616,
+    "observation_count": 98,
+    "observation_sequence_digest": "d3109fc70283ad879e2c6197d06f6d7738fa8ed93a1bba82acd71905b4840507",
+    "source_counts": {
+      "ai2thor": 123,
+      "ai2thor_visible_segmentation_rgbd": 493
+    },
+    "state_evidence_object_observation_count": 493,
+    "visible_object_observation_count": 616
+  },
+  "observation_sequence_digest": "d3109fc70283ad879e2c6197d06f6d7738fa8ed93a1bba82acd71905b4840507",
+  "observation_sequence_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-merged-p2-offset.json",
+  "predicted_graph_report_digest": "c531c4d21088d84c293b5d85f73c5878ab134457553639474e99ca06f3cf6440",
+  "predicted_graph_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-p2-offset-report.json",
+  "readiness": {
+    "failed_check_count": 1,
+    "failed_checks": [
+      "non_real_sources_absent"
+    ],
+    "ready": false
+  },
+  "report_digest": "2e597719b3e306a2232176e4b51a7b155143dfd195c74905175414050c2cb58a",
+  "required_evidence_kinds": [
+    "depth",
+    "detector",
+    "rgb"
+  ],
+  "schema_version": "dsg-spatialqa-lab.predicted-dsg-evidence-report.v1",
+  "thresholds": {
+    "min_object_observation_count": 1,
+    "min_observation_count": 3
+  }
+}

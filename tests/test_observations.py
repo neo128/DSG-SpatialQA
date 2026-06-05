@@ -1,5 +1,6 @@
 import json
 import hashlib
+import struct
 from pathlib import Path
 
 import pytest
@@ -16,6 +17,24 @@ from dsg_spatialqa_lab import (
     SceneObservation,
     SpatialQAError,
 )
+
+
+def _write_npy_v1_float32(path: Path, rows: tuple[tuple[float, ...], ...]) -> None:
+    height = len(rows)
+    width = len(rows[0]) if rows else 0
+    header = (
+        "{'descr': '<f4', 'fortran_order': False, "
+        f"'shape': ({height}, {width}), }}"
+    )
+    header_bytes = header.encode("latin1")
+    padding = (16 - ((10 + len(header_bytes) + 1) % 16)) % 16
+    padded_header = header_bytes + (b" " * padding) + b"\n"
+    payload = b"".join(
+        struct.pack("<f", value)
+        for row in rows
+        for value in row
+    )
+    path.write_bytes(b"\x93NUMPY\x01\x00" + struct.pack("<H", len(padded_header)) + padded_header + payload)
 
 
 def test_scene_observation_json_round_trip_and_save_loads_explicit_file(
@@ -165,6 +184,117 @@ def test_scene_observation_sequence_json_round_trip_and_save_loads_explicit_file
     assert saved_path == sequence_path
     assert loaded_observations == observations
     assert json.loads(sequence_path.read_text(encoding="utf-8")) == payload
+
+
+def test_merge_scene_observation_sequences_adds_returned_detector_evidence() -> None:
+    assert hasattr(lab, "merge_scene_observation_sequences")
+    base = (
+        SceneObservation(
+            step=1,
+            agent_pose=Pose3D(0.0, 0.0, 0.0),
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(-0.4, 1.0, 0.78),
+                    BBox3D(center=Pose3D(-0.4, 1.0, 0.78), size=(0.12, 0.12, 0.16)),
+                    confidence=0.95,
+                    visible=True,
+                    attributes={
+                        "source_kind": "detector",
+                        "evidence_kinds": ["rgb", "depth", "detector"],
+                    },
+                ),
+            ),
+        ),
+    )
+    returned = (
+        SceneObservation(
+            step=1,
+            agent_pose=Pose3D(0.0, 0.0, 0.0),
+            objects=(
+                ObjectObservation(
+                    "producer_track_plate_7",
+                    "plate",
+                    Pose3D(-1.0, 0.9, 0.25),
+                    BBox3D(center=Pose3D(-1.0, 0.9, 0.25), size=(0.2, 0.2, 0.04)),
+                    confidence=0.88,
+                    visible=True,
+                    attributes={
+                        "coverage_target_object_id": "plate_1",
+                        "current_location_id": "counter_region",
+                        "current_location_relation": "IN_REGION",
+                        "depth_path": "depth/0001.npy",
+                        "evidence_kinds": ["rgb", "depth", "detector"],
+                        "rgb_path": "rgb/0001.png",
+                        "source_kind": "detector",
+                        "states": {"isDirty": False},
+                    },
+                ),
+            ),
+        ),
+    )
+
+    merged = lab.merge_scene_observation_sequences(base, returned)
+
+    assert [observation.step for observation in merged] == [1]
+    assert [obj.object_id for obj in merged[0].objects] == [
+        "mug_1",
+        "producer_track_plate_7",
+    ]
+    plate = merged[0].objects[1]
+    assert plate.attributes["coverage_target_object_id"] == "plate_1"
+    assert plate.attributes["current_location_relation"] == "IN_REGION"
+    assert plate.attributes["states"] == {"isDirty": False}
+    assert lab.scene_observation_sequence_digest(merged) == lab.scene_observation_sequence_digest(
+        lab.merge_scene_observation_sequences(base, returned)
+    )
+
+
+def test_merge_scene_observation_sequences_later_sequence_replaces_same_object_id() -> None:
+    old = (
+        SceneObservation(
+            step=2,
+            objects=(
+                ObjectObservation(
+                    "plate_1",
+                    "plate",
+                    Pose3D(-1.0, 0.9, 0.25),
+                    BBox3D(center=Pose3D(-1.0, 0.9, 0.25), size=(0.2, 0.2, 0.04)),
+                    confidence=0.2,
+                    visible=False,
+                    attributes={"source_kind": "ai2thor"},
+                ),
+            ),
+        ),
+    )
+    returned = (
+        SceneObservation(
+            step=2,
+            objects=(
+                ObjectObservation(
+                    "plate_1",
+                    "plate",
+                    Pose3D(-1.0, 0.9, 0.25),
+                    BBox3D(center=Pose3D(-1.0, 0.9, 0.25), size=(0.2, 0.2, 0.04)),
+                    confidence=0.91,
+                    visible=True,
+                    attributes={
+                        "source_kind": "detector",
+                        "evidence_kinds": ["rgb", "depth", "detector"],
+                    },
+                ),
+            ),
+        ),
+    )
+
+    merged = lab.merge_scene_observation_sequences(old, returned)
+
+    assert len(merged) == 1
+    assert len(merged[0].objects) == 1
+    assert merged[0].objects[0].visible is True
+    assert merged[0].objects[0].confidence == 0.91
+    assert merged[0].objects[0].attributes["source_kind"] == "detector"
 
 
 def test_scene_observation_sequence_payload_validation_reports_digest_and_summary() -> None:
@@ -688,6 +818,77 @@ def test_external_detector_frame_jsonl_import_preserves_rgbd_detector_evidence()
     assert plate.attributes["evidence_kinds"] == ["depth", "detector", "rgb"]
 
 
+def test_external_detector_frame_jsonl_can_anchor_visible_objects_to_frame_region(
+    tmp_path: Path,
+) -> None:
+    payload = "\n".join(
+        json.dumps(record, sort_keys=True)
+        for record in _external_detector_frame_records()
+    ) + "\n"
+
+    observations = lab.detector_observation_sequence_from_jsonl(
+        payload,
+        anchor_visible_frame_region=True,
+    )
+    first_observation = observations[0]
+    mug = first_observation.objects[0]
+
+    assert [region.node_id for region in first_observation.regions] == [
+        "visible_frame_region:ai2thor_real_smoke_001:0001"
+    ]
+    assert first_observation.regions[0].attributes == {
+        "depth_path": "depth/000001.npy",
+        "episode_id": "ai2thor_real_smoke_001",
+        "rgb_path": "rgb/000001.png",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+        "source_name": "grounded_sam2",
+    }
+    assert mug.attributes["current_location_id"] == (
+        "visible_frame_region:ai2thor_real_smoke_001:0001"
+    )
+    assert mug.attributes["current_location_relation"] == "IN_REGION"
+    assert set(mug.attributes["evidence_kinds"]) == {"depth", "detector", "rgb"}
+
+    graph = lab.build_predicted_graph_from_observations(
+        observations,
+        infer_relations=(),
+        infer_containment=False,
+    )
+
+    assert [
+        (edge.src, edge.relation, edge.dst, edge.step)
+        for edge in graph.find_edges(src="mug_track_1", relation="IN_REGION")
+    ] == [
+        (
+            "mug_track_1",
+            "IN_REGION",
+            "visible_frame_region:ai2thor_real_smoke_001:0001",
+            1,
+        )
+    ]
+
+    input_path = tmp_path / "external-detector.jsonl"
+    sequence_path = tmp_path / "sequence.json"
+    report_path = tmp_path / "report.json"
+    input_path.write_text(payload, encoding="utf-8")
+    lab.save_scene_observation_sequence(observations, sequence_path)
+    report = lab.detector_observation_import_report(
+        input_path=input_path,
+        output_sequence_path=sequence_path,
+        observations=observations,
+        input_payload=payload,
+        anchor_visible_frame_region=True,
+    )
+    lab.save_detector_observation_import_report(report, report_path)
+
+    assert report["import_options"] == {"anchor_visible_frame_region": True}
+    assert lab.validate_detector_observation_import_report(report)["valid"] is True
+    assert lab.compare_detector_observation_import_report(
+        lab.load_detector_observation_import_report(report_path)
+    )["matches"] is True
+
+
 def test_episode_metadata_coverage_detector_jsonl_includes_hidden_objects() -> None:
     assert hasattr(lab, "episode_metadata_coverage_detector_jsonl")
     frame = lab.EpisodeFrame(
@@ -773,6 +974,8 @@ def test_episode_metadata_coverage_detector_jsonl_includes_hidden_objects() -> N
     observations = lab.detector_observation_sequence_from_jsonl(payload)
 
     assert len(records) == 1
+    assert records[0]["episode_id"] == "episode-1"
+    assert records[0]["scene_id"] == "FloorPlan1"
     assert records[0]["metadata"] == {
         "action": "MoveAhead",
         "detector": "ai2thor_metadata_coverage_objects",
@@ -809,6 +1012,146 @@ def test_episode_metadata_coverage_detector_jsonl_includes_hidden_objects() -> N
     assert records[0]["detections"][1]["attributes"]["original_object_id"] == "book_1"
     assert observations[0].objects[0].object_id == "book_1"
     assert observations[0].objects[0].visible is False
+
+
+def test_segmentation_color_map_detector_jsonl_uses_visible_artifacts_only(
+    tmp_path: Path,
+) -> None:
+    assert hasattr(lab, "segmentation_color_map_detector_jsonl")
+    rgb_path = tmp_path / "frames" / "rgb" / "0001.ppm"
+    depth_path = tmp_path / "frames" / "depth" / "0001.json"
+    segmentation_path = tmp_path / "frames" / "segmentation" / "0001.ppm"
+    mask_root = tmp_path / "frames" / "masks"
+    rgb_path.parent.mkdir(parents=True)
+    depth_path.parent.mkdir(parents=True)
+    segmentation_path.parent.mkdir(parents=True)
+    rgb_path.write_text("P3\n3 2\n255\n0 0 0 0 0 0 0 0 0\n0 0 0 0 0 0 0 0 0\n", encoding="utf-8")
+    depth_path.write_text("[[1.0, 1.2, 1.4], [1.1, 1.3, 1.5]]\n", encoding="utf-8")
+    segmentation_path.write_text(
+        "P3\n3 2\n255\n"
+        "10 20 30 10 20 30 0 0 0\n"
+        "0 0 0 40 50 60 40 50 60\n",
+        encoding="utf-8",
+    )
+    frame = lab.EpisodeFrame(
+        episode_id="episode-1",
+        scene_id="FloorPlan1",
+        step=1,
+        rgb_path=str(rgb_path),
+        depth_path=str(depth_path),
+        segmentation_path=str(segmentation_path),
+        agent_id="agent",
+        agent_pose=Pose3D(0.0, 0.9, 0.0, yaw=0.0),
+        action="Initialize",
+        visible_object_ids=(),
+        metadata={
+            "segmentation_color_map": [
+                {"object_id": "Mug|+00.10|+00.90|+01.20", "rgb": [10, 20, 30]},
+                {"object_id": "Plate|+00.30|+00.90|+01.30", "rgb": [40, 50, 60]},
+            ],
+            "segmentation_source": "ai2thor_instance_segmentation_frame",
+        },
+    )
+
+    payload = lab.segmentation_color_map_detector_jsonl(
+        (frame,),
+        mask_root=mask_root,
+        detector_name="ai2thor_visible_segmentation_rgbd",
+    )
+    records = [json.loads(line) for line in payload.splitlines()]
+    observations = lab.detector_observation_sequence_from_jsonl(payload)
+
+    assert len(records) == 1
+    assert records[0]["episode_id"] == "episode-1"
+    assert records[0]["scene_id"] == "FloorPlan1"
+    assert records[0]["metadata"] == {
+        "action": "Initialize",
+        "detector": "ai2thor_visible_segmentation_rgbd",
+        "episode_id": "episode-1",
+        "geometry_estimator": "segmentation_depth_ray_v1",
+        "scene_id": "FloorPlan1",
+        "source_kind": "detector",
+    }
+    assert records[0]["regions"] == [
+        {
+            "attributes": {
+                "episode_id": "episode-1",
+                "scene_id": "FloorPlan1",
+                "source_kind": "detector",
+                "source_name": "ai2thor_visible_segmentation_rgbd",
+            },
+            "label": "visible frame region",
+            "node_id": "visible_frame_region:episode-1:0001",
+        }
+    ]
+    assert [item["object_id"] for item in records[0]["detections"]] == [
+        "Mug|+00.10|+00.90|+01.20",
+        "Plate|+00.30|+00.90|+01.30",
+    ]
+    mug = records[0]["detections"][0]
+    assert mug["label"] == "mug"
+    assert mug["visible"] is True
+    assert mug["confidence"] == 1.0
+    assert mug["attributes"]["bbox_2d_xyxy"] == [0, 0, 1, 0]
+    assert mug["attributes"]["current_location_id"] == "visible_frame_region:episode-1:0001"
+    assert mug["attributes"]["current_location_relation"] == "IN_REGION"
+    assert mug["attributes"]["evidence_kinds"] == ["depth", "detector", "rgb"]
+    assert mug["attributes"]["segmentation_color_rgb"] == [10, 20, 30]
+    assert "coverage_source" not in mug["attributes"]
+    assert Path(mug["attributes"]["mask_path"]).exists()
+    assert observations[0].objects[0].attributes["source_kind"] == "detector"
+    assert observations[0].objects[0].attributes["current_location_relation"] == "IN_REGION"
+
+
+def test_segmentation_color_map_detector_jsonl_reads_npy_depth_without_numpy(
+    tmp_path: Path,
+) -> None:
+    rgb_path = tmp_path / "frames" / "rgb" / "0001.ppm"
+    depth_path = tmp_path / "frames" / "depth" / "0001.npy"
+    segmentation_path = tmp_path / "frames" / "segmentation" / "0001.ppm"
+    rgb_path.parent.mkdir(parents=True)
+    depth_path.parent.mkdir(parents=True)
+    segmentation_path.parent.mkdir(parents=True)
+    rgb_path.write_text("P3\n2 2\n255\n0 0 0 0 0 0\n0 0 0 0 0 0\n", encoding="utf-8")
+    segmentation_path.write_text(
+        "P3\n2 2\n255\n"
+        "10 20 30 10 20 30\n"
+        "10 20 30 0 0 0\n",
+        encoding="utf-8",
+    )
+    _write_npy_v1_float32(depth_path, ((1.0, 1.2), (1.4, 1.6)))
+    frame = lab.EpisodeFrame(
+        episode_id="episode-1",
+        scene_id="FloorPlan1",
+        step=1,
+        rgb_path=str(rgb_path),
+        depth_path=str(depth_path),
+        segmentation_path=str(segmentation_path),
+        agent_id="agent",
+        agent_pose=Pose3D(0.0, 0.9, 0.0, yaw=0.0),
+        action="Initialize",
+        visible_object_ids=(),
+        metadata={
+            "segmentation_color_map": [
+                {"object_id": "Mug|0|0|1", "rgb": [10, 20, 30]},
+            ],
+        },
+    )
+
+    payload = lab.segmentation_color_map_detector_jsonl(
+        (frame,),
+        mask_root=tmp_path / "masks",
+        detector_name="ai2thor_visible_segmentation_rgbd",
+    )
+    observation = lab.detector_observation_sequence_from_jsonl(payload)[0]
+
+    assert observation.objects[0].attributes["source_kind"] == "detector"
+    assert observation.objects[0].attributes["evidence_kinds"] == [
+        "depth",
+        "detector",
+        "rgb",
+    ]
+    assert observation.objects[0].pose.z > 1.0
 
 
 def test_scene_observation_sequence_summary_validation_and_compare_report_drift(
@@ -1250,6 +1593,258 @@ def test_scene_observation_ingestion_updates_graph_and_infers_relations() -> Non
         ["mock_observation:7"]
     ]
     assert "mug_1-ON-table_1-7" in result.inferred_edge_ids
+
+
+def test_scene_observation_ingestion_assigns_current_location_from_containment() -> None:
+    graph = DynamicSceneGraph()
+
+    ObservationIngestor(graph).ingest(
+        SceneObservation(
+            step=1,
+            rooms=(NodeObservation("kitchen", "Kitchen"),),
+            regions=(
+                NodeObservation(
+                    "visible_region",
+                    "Visible region",
+                    attributes={"room_id": "kitchen"},
+                ),
+            ),
+            objects=(
+                ObjectObservation(
+                    "table_1",
+                    "table",
+                    Pose3D(0.0, 0.0, 0.5),
+                    BBox3D(center=Pose3D(0.0, 0.0, 0.5), size=(1.0, 1.0, 1.0)),
+                    confidence=0.9,
+                    visible=True,
+                ),
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(0.0, 0.0, 1.15),
+                    BBox3D(center=Pose3D(0.0, 0.0, 1.15), size=(0.2, 0.2, 0.3)),
+                    confidence=0.88,
+                    visible=True,
+                ),
+            ),
+        ),
+        infer_containment=True,
+        containment_axis="z",
+    )
+
+    assert graph.nodes["mug_1"].attributes["current_location_id"] == "table_1"
+    assert graph.nodes["mug_1"].attributes["current_location_relation"] == "ON"
+    assert graph.nodes["mug_1"].attributes["current_room_id"] == "kitchen"
+    assert graph.nodes["table_1"].attributes["current_location_id"] == "visible_region"
+    assert graph.nodes["table_1"].attributes["current_location_relation"] == "IN_REGION"
+    assert graph.nodes["table_1"].attributes["current_room_id"] == "kitchen"
+
+
+def test_scene_observation_ingestion_limits_near_relations_per_object() -> None:
+    graph = DynamicSceneGraph()
+    objects = tuple(
+        ObjectObservation(
+            f"obj_{index}",
+            "block",
+            Pose3D(index * 0.1, 0.0, 0.0),
+            BBox3D(
+                center=Pose3D(index * 0.1, 0.0, 0.0),
+                size=(0.05, 0.05, 0.05),
+            ),
+            confidence=0.9,
+            visible=True,
+        )
+        for index in range(4)
+    )
+
+    ObservationIngestor(graph).ingest(
+        SceneObservation(step=1, objects=objects),
+        infer_relations=("NEAR",),
+        reference_frames=("world",),
+        relation_top_k=1,
+    )
+
+    near_edges = [edge for edge in graph.edges if edge.relation == "NEAR"]
+    assert len(near_edges) == 4
+    assert {
+        edge.src: [candidate.dst for candidate in graph.find_edges(src=edge.src, relation="NEAR")]
+        for edge in near_edges
+    } == {
+        "obj_0": ["obj_1"],
+        "obj_1": ["obj_0"],
+        "obj_2": ["obj_1"],
+        "obj_3": ["obj_2"],
+    }
+
+
+def test_scene_observation_ingestion_limits_left_of_relations_per_object() -> None:
+    graph = DynamicSceneGraph()
+    objects = (
+        ObjectObservation(
+            "obj_left",
+            "block",
+            Pose3D(0.0, 0.0, 0.0),
+            BBox3D(center=Pose3D(0.0, 0.0, 0.0), size=(0.05, 0.05, 0.05)),
+            confidence=0.9,
+            visible=True,
+        ),
+        ObjectObservation(
+            "obj_mid",
+            "block",
+            Pose3D(0.2, 0.0, 0.0),
+            BBox3D(center=Pose3D(0.2, 0.0, 0.0), size=(0.05, 0.05, 0.05)),
+            confidence=0.9,
+            visible=True,
+        ),
+        ObjectObservation(
+            "obj_far",
+            "block",
+            Pose3D(0.5, 0.0, 0.0),
+            BBox3D(center=Pose3D(0.5, 0.0, 0.0), size=(0.05, 0.05, 0.05)),
+            confidence=0.9,
+            visible=True,
+        ),
+    )
+
+    ObservationIngestor(graph).ingest(
+        SceneObservation(step=1, agent_pose=Pose3D(0.0, 0.0, 0.0), objects=objects),
+        infer_relations=("LEFT_OF",),
+        reference_frames=("agent",),
+        relation_top_k=1,
+    )
+
+    assert [
+        (edge.src, edge.relation, edge.dst, edge.attributes.get("top_k"))
+        for edge in graph.edges
+        if edge.relation == "LEFT_OF"
+    ] == [
+        ("obj_left", "LEFT_OF", "obj_mid", 1),
+        ("obj_mid", "LEFT_OF", "obj_far", 1),
+    ]
+
+
+def test_scene_observation_ingestion_filters_semantically_invalid_on_relations() -> None:
+    graph = DynamicSceneGraph()
+
+    ObservationIngestor(graph).ingest(
+        SceneObservation(
+            step=1,
+            objects=(
+                ObjectObservation(
+                    "floor_1",
+                    "floor",
+                    Pose3D(0.0, 0.0, 1.1),
+                    BBox3D(center=Pose3D(0.0, 0.0, 1.1), size=(0.2, 0.2, 0.2)),
+                    confidence=0.9,
+                    visible=True,
+                ),
+                ObjectObservation(
+                    "table_1",
+                    "table",
+                    Pose3D(0.0, 0.0, 0.5),
+                    BBox3D(center=Pose3D(0.0, 0.0, 0.5), size=(1.0, 1.0, 1.0)),
+                    confidence=0.9,
+                    visible=True,
+                ),
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(0.0, 0.0, 1.15),
+                    BBox3D(center=Pose3D(0.0, 0.0, 1.15), size=(0.2, 0.2, 0.3)),
+                    confidence=0.88,
+                    visible=True,
+                ),
+            ),
+        ),
+        infer_containment=True,
+        containment_axis="z",
+    )
+
+    assert [
+        (edge.src, edge.relation, edge.dst)
+        for edge in graph.edges
+        if edge.relation == "ON"
+    ] == [("mug_1", "ON", "table_1")]
+
+
+def test_scene_observation_ingestion_requires_detector_state_evidence_when_enabled() -> None:
+    graph = DynamicSceneGraph()
+
+    with pytest.raises(
+        SpatialQAError,
+        match="state evidence requires detector source_kind",
+    ):
+        ObservationIngestor(graph).ingest(
+            SceneObservation(
+                step=1,
+                objects=(
+                    ObjectObservation(
+                        "mug_1",
+                        "mug",
+                        Pose3D(0.0, 0.0, 0.8),
+                        BBox3D(
+                            center=Pose3D(0.0, 0.0, 0.8),
+                            size=(0.12, 0.12, 0.16),
+                        ),
+                        confidence=0.9,
+                        visible=True,
+                        attributes={
+                            "source_kind": "ai2thor_metadata_coverage",
+                            "states": {"isOpen": False},
+                        },
+                    ),
+                ),
+            ),
+            require_detector_state_evidence=True,
+        )
+
+
+def test_scene_observation_ingestion_accepts_visible_detector_state_evidence() -> None:
+    graph = DynamicSceneGraph()
+
+    ObservationIngestor(graph).ingest(
+        SceneObservation(
+            step=1,
+            objects=(
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    Pose3D(0.0, 0.0, 0.8),
+                    BBox3D(
+                        center=Pose3D(0.0, 0.0, 0.8),
+                        size=(0.12, 0.12, 0.16),
+                    ),
+                    confidence=0.9,
+                    visible=True,
+                    attributes={
+                        "source_kind": "detector",
+                        "evidence_kinds": ["rgb", "depth", "detector"],
+                        "rgb_path": "rgb/0001.png",
+                        "depth_path": "depth/0001.npy",
+                        "states": {"isOpen": False},
+                    },
+                ),
+            ),
+        ),
+        require_detector_state_evidence=True,
+    )
+
+    assert graph.nodes["mug_1"].attributes["states"] == {"isOpen": False}
+    assert graph.nodes["state:mug_1:1"].attributes["states"] == {"isOpen": False}
+    assert graph.nodes["state:mug_1:1"].attributes["source_kind"] == "detector"
+    state_edges = graph.find_edges(
+        src="mug_1",
+        relation="STATE_CHANGED",
+        dst="state:mug_1:1",
+    )
+    assert len(state_edges) == 1
+    assert state_edges[0].attributes["source_kind"] == "detector"
+    assert state_edges[0].attributes["evidence_kinds"] == [
+        "depth",
+        "detector",
+        "rgb",
+    ]
+    assert state_edges[0].evidence == ["depth/0001.npy", "rgb/0001.png"]
 
 
 def test_scene_observation_ingestion_marks_prediction_sources() -> None:

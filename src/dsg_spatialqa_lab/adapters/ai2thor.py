@@ -283,6 +283,7 @@ def _real_event_payload(
     visible_object_ids = [
         _required_str(obj, "object_id") for obj in objects if obj.get("visible") is True
     ]
+    segmentation_color_map = _segmentation_color_map(event)
     artifact_paths = _write_real_event_artifacts(event, config=config, step=step)
     return {
         "agent_pose": {
@@ -298,6 +299,8 @@ def _real_event_payload(
         "metadata": {
             "collection_kind": "real",
             "objects": objects,
+            "segmentation_color_map": segmentation_color_map,
+            "segmentation_source": "ai2thor_instance_segmentation_frame",
             "simulator": "ai2thor",
             "source_kind": "real_simulator",
             "source_step": step,
@@ -402,6 +405,67 @@ def _ai2thor_object_states(payload: Mapping[str, Any]) -> dict[str, Any]:
         if isinstance(value, (bool, int, float, str)):
             states[key] = value
     return _stable_mapping(states)
+
+
+def _segmentation_color_map(event: object) -> list[dict[str, Any]]:
+    color_to_object_id = getattr(event, "color_to_object_id", None)
+    if isinstance(color_to_object_id, Mapping) and color_to_object_id:
+        entries = [
+            {
+                "object_id": _segmentation_object_id(object_id),
+                "rgb": list(_segmentation_rgb(color, "AI2-THOR color_to_object_id key")),
+            }
+            for color, object_id in color_to_object_id.items()
+        ]
+        return sorted(entries, key=lambda item: (item["rgb"], str(item["object_id"])))
+
+    object_id_to_color = getattr(event, "object_id_to_color", None)
+    if isinstance(object_id_to_color, Mapping) and object_id_to_color:
+        entries = [
+            {
+                "object_id": _segmentation_object_id(object_id),
+                "rgb": list(
+                    _segmentation_rgb(color, "AI2-THOR object_id_to_color value")
+                ),
+            }
+            for object_id, color in object_id_to_color.items()
+        ]
+        return sorted(entries, key=lambda item: (item["rgb"], str(item["object_id"])))
+
+    raise SpatialQAError("AI2-THOR event segmentation color map is required")
+
+
+def _segmentation_object_id(value: object) -> str:
+    if not isinstance(value, str) or value == "":
+        raise SpatialQAError("AI2-THOR segmentation color map object id must be a string")
+    return value
+
+
+def _segmentation_rgb(value: object, field_name: str) -> tuple[int, int, int]:
+    if isinstance(value, str):
+        pieces = value.replace("(", "").replace(")", "").split(",")
+        if len(pieces) == 3:
+            try:
+                return tuple(_segmentation_channel(int(piece.strip()), field_name) for piece in pieces)  # type: ignore[return-value]
+            except ValueError as exc:
+                raise SpatialQAError(f"{field_name} must contain RGB channels") from exc
+        raise SpatialQAError(f"{field_name} must contain RGB channels")
+    if isinstance(value, Sequence):
+        if len(value) < 3:
+            raise SpatialQAError(f"{field_name} must contain RGB channels")
+        channels = tuple(
+            _segmentation_channel(channel, field_name) for channel in value[:3]
+        )
+        return cast(tuple[int, int, int], channels)
+    raise SpatialQAError(f"{field_name} must contain RGB channels")
+
+
+def _segmentation_channel(value: object, field_name: str) -> int:
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise SpatialQAError(f"{field_name} channels must be integers")
+    if value < 0 or value > 255:
+        raise SpatialQAError(f"{field_name} channels must be in 0..255")
+    return value
 
 
 def _optional_rotation_y(value: object) -> float:

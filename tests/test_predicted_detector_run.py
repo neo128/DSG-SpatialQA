@@ -136,17 +136,26 @@ def test_run_predicted_dsg_cli_writes_ready_detector_package(
                 str(detector_import_report_path),
                 "--predicted-dsg-evidence-report",
                 str(evidence_report_path),
+                "--infer-containment",
+                "--containment-axis",
+                "z",
+                "--relation-top-k",
+                "1",
             ]
         )
         == 0
     )
 
     output = json.loads(capsys.readouterr().out)
+    predicted_report = lab.load_predicted_graph_report(predicted_report_path)
     assert output["action"] == "run_predicted_dsg_from_detector_jsonl"
     assert output["ready"] is True
     assert output["predicted_graph_report_digest"] == (
-        lab.load_predicted_graph_report(predicted_report_path)["digest"]
+        predicted_report["digest"]
     )
+    assert predicted_report["options"]["infer_containment"] is True
+    assert predicted_report["options"]["containment_axis"] == "z"
+    assert predicted_report["options"]["relation_top_k"] == 1
     assert output["predicted_dsg_evidence_report_digest"] == (
         lab.load_predicted_dsg_evidence_report(evidence_report_path)["report_digest"]
     )
@@ -313,9 +322,13 @@ def test_predicted_dsg_detector_run_manifest_preflight_reports_ready_inputs(
     }
     assert contract["build_requirements"] == {
         "infer_relations": ["LEFT_OF", "RIGHT_OF", "NEAR"],
+        "infer_containment": False,
+        "containment_axis": "z",
         "min_object_observation_count": 2,
         "min_observation_count": 2,
         "reference_frames": ["world"],
+        "relation_top_k": None,
+        "require_detector_state_evidence": False,
         "required_evidence_kinds": ["depth", "detector", "rgb"],
     }
     assert contract["planned_outputs"] == result["planned_outputs"]
@@ -455,14 +468,18 @@ def test_predicted_dsg_detector_run_manifest_preflight_reports_ready_inputs(
             "failed_checks": [],
             "ready": True,
         },
-        "requirements": {
-            "infer_relations": ["LEFT_OF", "RIGHT_OF", "NEAR"],
-            "min_object_observation_count": 2,
-            "min_observation_count": 2,
-            "reference_frames": ["world"],
-            "required_evidence_kinds": ["depth", "detector", "rgb"],
-        },
-    }
+            "requirements": {
+                "infer_relations": ["LEFT_OF", "RIGHT_OF", "NEAR"],
+                "infer_containment": False,
+                "containment_axis": "z",
+                "min_object_observation_count": 2,
+                "min_observation_count": 2,
+                "reference_frames": ["world"],
+                "relation_top_k": None,
+                "require_detector_state_evidence": False,
+                "required_evidence_kinds": ["depth", "detector", "rgb"],
+            },
+        }
     assert launch_report["next_commands"] == {
         "artifact_launch_report": (
             "python scripts/run_predicted_dsg.py "
@@ -492,6 +509,70 @@ def test_predicted_dsg_detector_run_manifest_preflight_reports_ready_inputs(
     assert launch_report["report_digest"] == (
         lab.predicted_dsg_detector_artifact_launch_report_digest(launch_report)
     )
+
+
+def test_predicted_dsg_detector_run_manifest_preserves_relation_top_k(
+    tmp_path: Path,
+) -> None:
+    manifest_path = _write_detector_run_manifest(tmp_path, relation_top_k=1)
+    manifest = lab.load_predicted_dsg_detector_run_manifest(manifest_path)
+    preflight = lab.predicted_dsg_detector_run_manifest_preflight(manifest_path)
+    launch = lab.predicted_dsg_detector_artifact_launch_report(
+        preflight["artifact_contract"],
+        manifest_path=manifest_path,
+    )
+
+    assert manifest["relation_top_k"] == 1
+    assert preflight["artifact_contract"]["build_requirements"]["relation_top_k"] == 1
+    assert "--relation-top-k 1" in launch["build_command"]
+
+
+def test_predicted_dsg_detector_run_manifest_preserves_containment_options(
+    tmp_path: Path,
+) -> None:
+    manifest_path = _write_detector_run_manifest(
+        tmp_path,
+        infer_containment=True,
+        containment_axis="z",
+    )
+    manifest = lab.load_predicted_dsg_detector_run_manifest(manifest_path)
+    preflight = lab.predicted_dsg_detector_run_manifest_preflight(manifest_path)
+    launch = lab.predicted_dsg_detector_artifact_launch_report(
+        preflight["artifact_contract"],
+        manifest_path=manifest_path,
+    )
+
+    assert manifest["infer_containment"] is True
+    assert manifest["containment_axis"] == "z"
+    assert preflight["artifact_contract"]["build_requirements"][
+        "infer_containment"
+    ] is True
+    assert preflight["artifact_contract"]["build_requirements"][
+        "containment_axis"
+    ] == "z"
+    assert "--infer-containment" in launch["build_command"]
+    assert "--containment-axis z" in launch["build_command"]
+
+
+def test_predicted_dsg_detector_run_manifest_preserves_state_evidence_gate(
+    tmp_path: Path,
+) -> None:
+    manifest_path = _write_detector_run_manifest(
+        tmp_path,
+        require_detector_state_evidence=True,
+    )
+    manifest = lab.load_predicted_dsg_detector_run_manifest(manifest_path)
+    preflight = lab.predicted_dsg_detector_run_manifest_preflight(manifest_path)
+    launch = lab.predicted_dsg_detector_artifact_launch_report(
+        preflight["artifact_contract"],
+        manifest_path=manifest_path,
+    )
+
+    assert manifest["require_detector_state_evidence"] is True
+    assert preflight["artifact_contract"]["build_requirements"][
+        "require_detector_state_evidence"
+    ] is True
+    assert "--require-detector-state-evidence" in launch["build_command"]
 
 
 def test_predicted_dsg_detector_run_manifest_preflight_rejects_synthetic_sources(
@@ -560,9 +641,13 @@ def test_predicted_dsg_detector_request_bundle_exports_detector_templates(
     ]
     assert bundle["build_requirements"] == {
         "infer_relations": ["LEFT_OF", "RIGHT_OF", "NEAR"],
+        "infer_containment": False,
+        "containment_axis": "z",
         "min_object_observation_count": 2,
         "min_observation_count": 2,
         "reference_frames": ["world"],
+        "relation_top_k": None,
+        "require_detector_state_evidence": False,
         "required_evidence_kinds": ["depth", "detector", "rgb"],
     }
     assert bundle["planned_outputs"] == {
@@ -672,9 +757,13 @@ def test_predicted_dsg_detector_receipt_bundle_exports_returned_detector_receipt
     assert bundle["asset_summary"] == preflight["summary"]["asset_summary"]
     assert bundle["build_requirements"] == {
         "infer_relations": ["LEFT_OF", "RIGHT_OF", "NEAR"],
+        "infer_containment": False,
+        "containment_axis": "z",
         "min_object_observation_count": 2,
         "min_observation_count": 2,
         "reference_frames": ["world"],
+        "relation_top_k": None,
+        "require_detector_state_evidence": False,
         "required_evidence_kinds": ["depth", "detector", "rgb"],
     }
     assert bundle["planned_outputs"] == preflight["planned_outputs"]
@@ -1150,7 +1239,14 @@ def _write_detector_jsonl(tmp_path: Path) -> Path:
     return path
 
 
-def _write_detector_run_manifest(tmp_path: Path) -> Path:
+def _write_detector_run_manifest(
+    tmp_path: Path,
+    *,
+    infer_containment: bool = False,
+    containment_axis: str = "z",
+    relation_top_k: int | None = None,
+    require_detector_state_evidence: bool = False,
+) -> Path:
     root = tmp_path / "detector-run"
     detector_jsonl_path = _write_detector_jsonl(root)
     manifest = {
@@ -1167,6 +1263,10 @@ def _write_detector_run_manifest(tmp_path: Path) -> Path:
         ),
         "infer_relations": ["LEFT_OF", "RIGHT_OF", "NEAR"],
         "reference_frames": ["world"],
+        "infer_containment": infer_containment,
+        "containment_axis": containment_axis,
+        "relation_top_k": relation_top_k,
+        "require_detector_state_evidence": require_detector_state_evidence,
         "min_observation_count": 2,
         "min_object_observation_count": 2,
         "required_evidence_kinds": ["depth", "detector", "rgb"],

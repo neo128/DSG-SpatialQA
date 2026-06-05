@@ -1,0 +1,108 @@
+{
+  "checks": [
+    {
+      "name": "predicted_graph_report_valid",
+      "passed": true
+    },
+    {
+      "actual": "observation_sequence",
+      "expected": "observation_sequence",
+      "name": "input_kind_observation_sequence",
+      "passed": true
+    },
+    {
+      "name": "observation_sequence_loads",
+      "passed": true
+    },
+    {
+      "actual": "7e7c103d7dcac7eb34ae878a854c11141424ca3cf7f8015e89205c8b7d0ffb26",
+      "expected": "7e7c103d7dcac7eb34ae878a854c11141424ca3cf7f8015e89205c8b7d0ffb26",
+      "name": "observation_sequence_digest_matches_report",
+      "passed": true
+    },
+    {
+      "actual": 28,
+      "minimum": 2,
+      "name": "observation_count_minimum",
+      "passed": true
+    },
+    {
+      "actual": 41,
+      "minimum": 2,
+      "name": "object_observation_count_minimum",
+      "passed": true
+    },
+    {
+      "actual": {
+        "depth": 41,
+        "detector": 41,
+        "rgb": 41
+      },
+      "missing": [],
+      "name": "required_evidence_kinds_present",
+      "passed": true,
+      "required": [
+        "depth",
+        "detector",
+        "rgb"
+      ]
+    },
+    {
+      "actual": [],
+      "name": "mock_sources_absent",
+      "passed": true
+    },
+    {
+      "actual": [],
+      "name": "non_real_sources_absent",
+      "passed": true
+    },
+    {
+      "invalid_object_ids": [],
+      "name": "detector_state_evidence_valid",
+      "passed": true,
+      "state_evidence_object_observation_count": 0
+    }
+  ],
+  "evidence_summary": {
+    "detector_names": [
+      "qwen37_vlm_rgbd_detector"
+    ],
+    "evidence_kind_counts": {
+      "depth": 41,
+      "detector": 41,
+      "rgb": 41
+    },
+    "hidden_object_observation_count": 0,
+    "input_kind": "observation_sequence",
+    "invalid_state_evidence_object_ids": [],
+    "object_observation_count": 41,
+    "observation_count": 28,
+    "observation_sequence_digest": "7e7c103d7dcac7eb34ae878a854c11141424ca3cf7f8015e89205c8b7d0ffb26",
+    "source_counts": {
+      "qwen37_vlm_rgbd_detector": 41
+    },
+    "state_evidence_object_observation_count": 0,
+    "visible_object_observation_count": 41
+  },
+  "observation_sequence_digest": "7e7c103d7dcac7eb34ae878a854c11141424ca3cf7f8015e89205c8b7d0ffb26",
+  "observation_sequence_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-independent-p4-target60.json",
+  "predicted_graph_report_digest": "d3916b4818c0c8e67708fb6848fae1f09164d09dcbd00d7defb7bb514c8b9302",
+  "predicted_graph_report_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-independent-p4-target60-report.json",
+  "readiness": {
+    "failed_check_count": 0,
+    "failed_checks": [],
+    "ready": true
+  },
+  "report_digest": "3d9a44d6d28df150df53373f3f190f0648d6d8f9cc1889456f598e69e07a3eb4",
+  "required_evidence_kinds": [
+    "depth",
+    "detector",
+    "rgb"
+  ],
+  "schema_version": "dsg-spatialqa-lab.predicted-dsg-evidence-report.v1",
+  "thresholds": {
+    "min_object_observation_count": 2,
+    "min_observation_count": 2
+  }
+}

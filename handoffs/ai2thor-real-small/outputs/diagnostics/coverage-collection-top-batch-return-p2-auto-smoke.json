@@ -1,0 +1,1084 @@
+{
+  "accepted_location_tasks": [
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "alarmclock_01_28_01_24_00_47",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:alarmclock_01_28_01_24_00_47"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "basketball_00_24_00_13_01_24",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:basketball_00_24_00_13_01_24"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "bed_00_64_00_01_00_87",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:bed_00_64_00_01_00_87"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "blinds_00_11_02_34_01_44",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:blinds_00_11_02_34_01_44"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "boots_01_28_00_01_01_34",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:boots_01_28_00_01_01_34"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "desklamp_01_32_01_24_00_99",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:desklamp_01_32_01_24_00_99"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "dogbed_00_92_00_01_01_04",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:dogbed_00_92_00_01_01_04"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "drawer_01_62_00_19_01_18",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_62_00_19_01_18"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "drawer_01_62_00_41_01_18",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_62_00_41_01_18"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "drawer_01_62_00_63_01_18",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_62_00_63_01_18"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "dresser_01_33_00_01_00_75",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:dresser_01_33_00_01_00_75"
+    },
+    {
+      "current_location_id": "bed_00_64_00_01_00_87",
+      "current_location_relation": "ON",
+      "object_id": "laptop_00_50_00_56_00_29",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:laptop_00_50_00_56_00_29"
+    },
+    {
+      "current_location_id": "dresser_01_33_00_01_00_75",
+      "current_location_relation": "ON",
+      "object_id": "statue_01_30_01_24_00_78",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:statue_01_30_01_24_00_78"
+    },
+    {
+      "current_location_id": "ai2thor_room",
+      "current_location_relation": "IN_ROOM",
+      "object_id": "window_00_12_01_50_01_59",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:window_00_12_01_50_01_59"
+    }
+  ],
+  "accepted_state_tasks": [
+    {
+      "object_id": "alarmclock_01_28_01_24_00_47",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:alarmclock_01_28_01_24_00_47"
+    },
+    {
+      "object_id": "basketball_00_24_00_13_01_24",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:basketball_00_24_00_13_01_24"
+    },
+    {
+      "object_id": "bed_00_64_00_01_00_87",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:bed_00_64_00_01_00_87"
+    },
+    {
+      "object_id": "blinds_00_11_02_34_01_44",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:blinds_00_11_02_34_01_44"
+    },
+    {
+      "object_id": "boots_01_28_00_01_01_34",
+      "state_attribute_keys": [
+        "breakable",
+        "canFillWithLiquid",
+        "cookable",
+        "dirtyable",
+        "isBroken",
+        "isCooked",
+        "isDirty",
+        "isFilledWithLiquid",
+        "isOpen",
+        "isPickedUp",
+        "isSliced",
+        "isToggled",
+        "moveable",
+        "openable",
+        "pickupable",
+        "receptacle",
+        "sliceable",
+        "toggleable"
+      ],
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:boots_01_28_00_01_01_34"
+    }
+  ],
+  "accepted_target_tasks": [
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "alarmclock_01_28_01_24_00_47",
+      "observation_steps": [
+        1
+      ],
+      "observed_object_ids": [
+        "alarmclock_01_28_01_24_00_47"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:alarmclock_01_28_01_24_00_47"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "basketball_00_24_00_13_01_24",
+      "observation_steps": [
+        2
+      ],
+      "observed_object_ids": [
+        "basketball_00_24_00_13_01_24"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:basketball_00_24_00_13_01_24"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "bed_00_64_00_01_00_87",
+      "observation_steps": [
+        3
+      ],
+      "observed_object_ids": [
+        "bed_00_64_00_01_00_87"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:bed_00_64_00_01_00_87"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "blinds_00_11_02_34_01_44",
+      "observation_steps": [
+        4
+      ],
+      "observed_object_ids": [
+        "blinds_00_11_02_34_01_44"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:blinds_00_11_02_34_01_44"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "boots_01_28_00_01_01_34",
+      "observation_steps": [
+        5
+      ],
+      "observed_object_ids": [
+        "boots_01_28_00_01_01_34"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:boots_01_28_00_01_01_34"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "desklamp_01_32_01_24_00_99",
+      "observation_steps": [
+        1,
+        5
+      ],
+      "observed_object_ids": [
+        "desklamp_01_32_01_24_00_99"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:desklamp_01_32_01_24_00_99"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "dogbed_00_92_00_01_01_04",
+      "observation_steps": [
+        2
+      ],
+      "observed_object_ids": [
+        "dogbed_00_92_00_01_01_04"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:dogbed_00_92_00_01_01_04"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "drawer_01_62_00_19_01_18",
+      "observation_steps": [
+        2
+      ],
+      "observed_object_ids": [
+        "drawer_01_62_00_19_01_18"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_62_00_19_01_18"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "drawer_01_62_00_41_01_18",
+      "observation_steps": [
+        2
+      ],
+      "observed_object_ids": [
+        "drawer_01_62_00_41_01_18"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_62_00_41_01_18"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "drawer_01_62_00_63_01_18",
+      "observation_steps": [
+        2
+      ],
+      "observed_object_ids": [
+        "drawer_01_62_00_63_01_18"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_62_00_63_01_18"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "dresser_01_33_00_01_00_75",
+      "observation_steps": [
+        5
+      ],
+      "observed_object_ids": [
+        "dresser_01_33_00_01_00_75"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:dresser_01_33_00_01_00_75"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "laptop_00_50_00_56_00_29",
+      "observation_steps": [
+        3
+      ],
+      "observed_object_ids": [
+        "laptop_00_50_00_56_00_29"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:laptop_00_50_00_56_00_29"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "statue_01_30_01_24_00_78",
+      "observation_steps": [
+        5
+      ],
+      "observed_object_ids": [
+        "statue_01_30_01_24_00_78"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:statue_01_30_01_24_00_78"
+    },
+    {
+      "evidence_kinds": [
+        "depth",
+        "detector",
+        "rgb"
+      ],
+      "matched_by": [
+        "object_id"
+      ],
+      "object_id": "window_00_12_01_50_01_59",
+      "observation_steps": [
+        2,
+        4
+      ],
+      "observed_object_ids": [
+        "window_00_12_01_50_01_59"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:window_00_12_01_50_01_59"
+    }
+  ],
+  "action": "coverage_collection_top_batch_return_report",
+  "digest": "33ac3ecf99e4316d35636d980adbe37349743c0c4adbf695b9f5de7499776932",
+  "observation_sequence_digest": "6ebe55897e605028f12dfeea3db63fdb88a291b03f2eb2aa90b36ae228ce38e5",
+  "observation_sequence_path": "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-ai2thor-visible-p2-auto-smoke.jsonl",
+  "required_evidence_kinds": [
+    "depth",
+    "detector",
+    "rgb"
+  ],
+  "schema_version": "dsg-spatialqa-lab.coverage-collection-top-batch-return-report.v1",
+  "summary": {
+    "accepted_location_task_count": 14,
+    "accepted_state_task_count": 5,
+    "accepted_target_task_count": 14,
+    "batch_count": 5,
+    "location_evidence_ready": false,
+    "location_required_task_count": 54,
+    "related_case_count": 31,
+    "return_ready": false,
+    "state_evidence_ready": false,
+    "state_required_task_count": 26,
+    "target_acceptance_rate": 0.259259,
+    "target_evidence_ready": false,
+    "task_count": 54,
+    "unaccepted_location_task_count": 40,
+    "unaccepted_state_task_count": 21,
+    "unaccepted_target_task_count": 40
+  },
+  "top_batch_handoff_digest": "26b949cd2843f8ad98cdc24355e0c404210690058fc5a499e04375cdaee1aa10",
+  "unaccepted_location_tasks": [
+    {
+      "object_id": "cd_01_62_00_80_01_19",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:cd_01_62_00_80_01_19"
+    },
+    {
+      "object_id": "cellphone_00_26_00_56_00_52",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:cellphone_00_26_00_56_00_52"
+    },
+    {
+      "object_id": "creditcard_01_78_00_80_01_19",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:creditcard_01_78_00_80_01_19"
+    },
+    {
+      "object_id": "drawer_01_31_00_18_00_58",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_00_18_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_00_18_00_92",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_00_18_00_92"
+    },
+    {
+      "object_id": "drawer_01_31_00_45_00_58",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_00_45_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_00_45_00_92",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_00_45_00_92"
+    },
+    {
+      "object_id": "drawer_01_31_00_75_00_58",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_00_75_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_00_75_00_92",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_00_75_00_92"
+    },
+    {
+      "object_id": "drawer_01_31_01_03_00_58",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_01_03_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_01_03_00_92",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_01_03_00_92"
+    },
+    {
+      "object_id": "drawer_01_94_00_19_01_18",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_94_00_19_01_18"
+    },
+    {
+      "object_id": "drawer_01_94_00_41_01_18",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_94_00_41_01_18"
+    },
+    {
+      "object_id": "drawer_01_94_00_63_01_18",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_94_00_63_01_18"
+    },
+    {
+      "object_id": "keychain_01_74_00_80_01_29",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:keychain_01_74_00_80_01_29"
+    },
+    {
+      "object_id": "pen_01_93_00_81_01_18",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:pen_01_93_00_81_01_18"
+    },
+    {
+      "object_id": "pencil_02_01_00_81_01_17",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:pencil_02_01_00_81_01_17"
+    },
+    {
+      "object_id": "shelf_01_80_00_92_01_38",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:shelf_01_80_00_92_01_38"
+    },
+    {
+      "object_id": "shelf_01_80_01_39_01_38",
+      "reason": "missing_current_location_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:shelf_01_80_01_39_01_38"
+    },
+    {
+      "object_id": "book_00_15_01_10_00_62",
+      "reason": "missing_current_location_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:book_00_15_01_10_00_62"
+    },
+    {
+      "object_id": "bottle_01_54_00_89_02_54",
+      "reason": "missing_current_location_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:bottle_01_54_00_89_02_54"
+    },
+    {
+      "object_id": "bowl_00_27_01_10_00_75",
+      "reason": "missing_current_location_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:bowl_00_27_01_10_00_75"
+    },
+    {
+      "object_id": "cabinet_00_68_00_50_02_20",
+      "reason": "missing_current_location_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:cabinet_00_68_00_50_02_20"
+    },
+    {
+      "object_id": "cabinet_00_68_02_02_02_46",
+      "reason": "missing_current_location_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:cabinet_00_68_02_02_02_46"
+    },
+    {
+      "object_id": "cabinet_00_72_02_02_02_46",
+      "reason": "missing_current_location_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:cabinet_00_72_02_02_02_46"
+    },
+    {
+      "object_id": "cabinet_00_73_02_02_02_46",
+      "reason": "missing_current_location_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:cabinet_00_73_02_02_02_46"
+    },
+    {
+      "object_id": "bread_00_26_00_99_00_08",
+      "reason": "missing_current_location_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:bread_00_26_00_99_00_08"
+    },
+    {
+      "object_id": "butterknife_01_67_00_69_00_11",
+      "reason": "missing_current_location_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:butterknife_01_67_00_69_00_11"
+    },
+    {
+      "object_id": "cabinet_00_41_00_48_00_44",
+      "reason": "missing_current_location_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_41_00_48_00_44"
+    },
+    {
+      "object_id": "cabinet_00_49_00_47_01_15",
+      "reason": "missing_current_location_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_49_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_50_00_47_01_15",
+      "reason": "missing_current_location_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_50_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_63_02_02_01_45",
+      "reason": "missing_current_location_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_63_02_02_01_45"
+    },
+    {
+      "object_id": "candle_03_11_00_23_00_05",
+      "reason": "missing_current_location_evidence",
+      "task_id": "004:ai2thor-real-small-episode-004:FloorPlan401:000031:candle_03_11_00_23_00_05"
+    },
+    {
+      "object_id": "dishsponge_03_20_00_86_00_02",
+      "reason": "missing_current_location_evidence",
+      "task_id": "004:ai2thor-real-small-episode-004:FloorPlan401:000031:dishsponge_03_20_00_86_00_02"
+    },
+    {
+      "object_id": "faucet_03_40_01_02_01_53",
+      "reason": "missing_current_location_evidence",
+      "task_id": "004:ai2thor-real-small-episode-004:FloorPlan401:000031:faucet_03_40_01_02_01_53"
+    },
+    {
+      "object_id": "handtowel_03_42_01_34_02_10",
+      "reason": "missing_current_location_evidence",
+      "task_id": "004:ai2thor-real-small-episode-004:FloorPlan401:000031:handtowel_03_42_01_34_02_10"
+    },
+    {
+      "object_id": "apple_01_65_00_81_00_07",
+      "reason": "missing_current_location_evidence",
+      "task_id": "005:ai2thor-real-small-episode-005:FloorPlan2:000045:apple_01_65_00_81_00_07"
+    },
+    {
+      "object_id": "cabinet_01_39_00_47_01_15",
+      "reason": "missing_current_location_evidence",
+      "task_id": "005:ai2thor-real-small-episode-005:FloorPlan2:000045:cabinet_01_39_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_01_70_02_02_01_45",
+      "reason": "missing_current_location_evidence",
+      "task_id": "005:ai2thor-real-small-episode-005:FloorPlan2:000045:cabinet_01_70_02_02_01_45"
+    },
+    {
+      "object_id": "fridge_01_76_00_00_00_00",
+      "reason": "missing_current_location_evidence",
+      "task_id": "005:ai2thor-real-small-episode-005:FloorPlan2:000045:fridge_01_76_00_00_00_00"
+    }
+  ],
+  "unaccepted_state_tasks": [
+    {
+      "object_id": "cd_01_62_00_80_01_19",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19"
+      ],
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:cd_01_62_00_80_01_19"
+    },
+    {
+      "object_id": "book_00_15_01_10_00_62",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62"
+      ],
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:book_00_15_01_10_00_62"
+    },
+    {
+      "object_id": "bottle_01_54_00_89_02_54",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54"
+      ],
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:bottle_01_54_00_89_02_54"
+    },
+    {
+      "object_id": "bowl_00_27_01_10_00_75",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75"
+      ],
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:bowl_00_27_01_10_00_75"
+    },
+    {
+      "object_id": "cabinet_00_68_00_50_02_20",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20"
+      ],
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:cabinet_00_68_00_50_02_20"
+    },
+    {
+      "object_id": "cabinet_00_68_02_02_02_46",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46"
+      ],
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:cabinet_00_68_02_02_02_46"
+    },
+    {
+      "object_id": "cabinet_00_72_02_02_02_46",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46"
+      ],
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:cabinet_00_72_02_02_02_46"
+    },
+    {
+      "object_id": "cabinet_00_73_02_02_02_46",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46"
+      ],
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:cabinet_00_73_02_02_02_46"
+    },
+    {
+      "object_id": "bread_00_26_00_99_00_08",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08"
+      ],
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:bread_00_26_00_99_00_08"
+    },
+    {
+      "object_id": "butterknife_01_67_00_69_00_11",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0004:object_location:butterknife_01_67_00_69_00_11"
+      ],
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:butterknife_01_67_00_69_00_11"
+    },
+    {
+      "object_id": "cabinet_00_41_00_48_00_44",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0005:object_location:cabinet_00_41_00_48_00_44"
+      ],
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_41_00_48_00_44"
+    },
+    {
+      "object_id": "cabinet_00_49_00_47_01_15",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0006:object_location:cabinet_00_49_00_47_01_15"
+      ],
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_49_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_50_00_47_01_15",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0007:object_location:cabinet_00_50_00_47_01_15"
+      ],
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_50_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_63_02_02_01_45",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45"
+      ],
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_63_02_02_01_45"
+    },
+    {
+      "object_id": "candle_03_11_00_23_00_05",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-004:FloorPlan401:0003:object_location:candle_03_11_00_23_00_05"
+      ],
+      "task_id": "004:ai2thor-real-small-episode-004:FloorPlan401:000031:candle_03_11_00_23_00_05"
+    },
+    {
+      "object_id": "dishsponge_03_20_00_86_00_02",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02"
+      ],
+      "task_id": "004:ai2thor-real-small-episode-004:FloorPlan401:000031:dishsponge_03_20_00_86_00_02"
+    },
+    {
+      "object_id": "faucet_03_40_01_02_01_53",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53"
+      ],
+      "task_id": "004:ai2thor-real-small-episode-004:FloorPlan401:000031:faucet_03_40_01_02_01_53"
+    },
+    {
+      "object_id": "handtowel_03_42_01_34_02_10",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10"
+      ],
+      "task_id": "004:ai2thor-real-small-episode-004:FloorPlan401:000031:handtowel_03_42_01_34_02_10"
+    },
+    {
+      "object_id": "apple_01_65_00_81_00_07",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0001:object_location:apple_01_65_00_81_00_07"
+      ],
+      "task_id": "005:ai2thor-real-small-episode-005:FloorPlan2:000045:apple_01_65_00_81_00_07"
+    },
+    {
+      "object_id": "cabinet_01_39_00_47_01_15",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0009:object_location:cabinet_01_39_00_47_01_15"
+      ],
+      "task_id": "005:ai2thor-real-small-episode-005:FloorPlan2:000045:cabinet_01_39_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_01_70_02_02_01_45",
+      "reason": "missing_state_evidence",
+      "state_evidence_case_ids": [
+        "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45"
+      ],
+      "task_id": "005:ai2thor-real-small-episode-005:FloorPlan2:000045:cabinet_01_70_02_02_01_45"
+    }
+  ],
+  "unaccepted_target_tasks": [
+    {
+      "object_id": "cd_01_62_00_80_01_19",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:cd_01_62_00_80_01_19"
+    },
+    {
+      "object_id": "cellphone_00_26_00_56_00_52",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:cellphone_00_26_00_56_00_52"
+    },
+    {
+      "object_id": "creditcard_01_78_00_80_01_19",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:creditcard_01_78_00_80_01_19"
+    },
+    {
+      "object_id": "drawer_01_31_00_18_00_58",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_00_18_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_00_18_00_92",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_00_18_00_92"
+    },
+    {
+      "object_id": "drawer_01_31_00_45_00_58",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_00_45_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_00_45_00_92",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_00_45_00_92"
+    },
+    {
+      "object_id": "drawer_01_31_00_75_00_58",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_00_75_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_00_75_00_92",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_00_75_00_92"
+    },
+    {
+      "object_id": "drawer_01_31_01_03_00_58",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_01_03_00_58"
+    },
+    {
+      "object_id": "drawer_01_31_01_03_00_92",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_31_01_03_00_92"
+    },
+    {
+      "object_id": "drawer_01_94_00_19_01_18",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_94_00_19_01_18"
+    },
+    {
+      "object_id": "drawer_01_94_00_41_01_18",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_94_00_41_01_18"
+    },
+    {
+      "object_id": "drawer_01_94_00_63_01_18",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:drawer_01_94_00_63_01_18"
+    },
+    {
+      "object_id": "keychain_01_74_00_80_01_29",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:keychain_01_74_00_80_01_29"
+    },
+    {
+      "object_id": "pen_01_93_00_81_01_18",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:pen_01_93_00_81_01_18"
+    },
+    {
+      "object_id": "pencil_02_01_00_81_01_17",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:pencil_02_01_00_81_01_17"
+    },
+    {
+      "object_id": "shelf_01_80_00_92_01_38",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:shelf_01_80_00_92_01_38"
+    },
+    {
+      "object_id": "shelf_01_80_01_39_01_38",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "001:ai2thor-real-small-episode-003:FloorPlan301:000022:shelf_01_80_01_39_01_38"
+    },
+    {
+      "object_id": "book_00_15_01_10_00_62",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:book_00_15_01_10_00_62"
+    },
+    {
+      "object_id": "bottle_01_54_00_89_02_54",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:bottle_01_54_00_89_02_54"
+    },
+    {
+      "object_id": "bowl_00_27_01_10_00_75",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:bowl_00_27_01_10_00_75"
+    },
+    {
+      "object_id": "cabinet_00_68_00_50_02_20",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:cabinet_00_68_00_50_02_20"
+    },
+    {
+      "object_id": "cabinet_00_68_02_02_02_46",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:cabinet_00_68_02_02_02_46"
+    },
+    {
+      "object_id": "cabinet_00_72_02_02_02_46",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:cabinet_00_72_02_02_02_46"
+    },
+    {
+      "object_id": "cabinet_00_73_02_02_02_46",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "002:ai2thor-real-small-episode-001:FloorPlan1:000001:cabinet_00_73_02_02_02_46"
+    },
+    {
+      "object_id": "bread_00_26_00_99_00_08",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:bread_00_26_00_99_00_08"
+    },
+    {
+      "object_id": "butterknife_01_67_00_69_00_11",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:butterknife_01_67_00_69_00_11"
+    },
+    {
+      "object_id": "cabinet_00_41_00_48_00_44",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_41_00_48_00_44"
+    },
+    {
+      "object_id": "cabinet_00_49_00_47_01_15",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_49_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_50_00_47_01_15",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_50_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_00_63_02_02_01_45",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "003:ai2thor-real-small-episode-005:FloorPlan2:000049:cabinet_00_63_02_02_01_45"
+    },
+    {
+      "object_id": "candle_03_11_00_23_00_05",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "004:ai2thor-real-small-episode-004:FloorPlan401:000031:candle_03_11_00_23_00_05"
+    },
+    {
+      "object_id": "dishsponge_03_20_00_86_00_02",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "004:ai2thor-real-small-episode-004:FloorPlan401:000031:dishsponge_03_20_00_86_00_02"
+    },
+    {
+      "object_id": "faucet_03_40_01_02_01_53",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "004:ai2thor-real-small-episode-004:FloorPlan401:000031:faucet_03_40_01_02_01_53"
+    },
+    {
+      "object_id": "handtowel_03_42_01_34_02_10",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "004:ai2thor-real-small-episode-004:FloorPlan401:000031:handtowel_03_42_01_34_02_10"
+    },
+    {
+      "object_id": "apple_01_65_00_81_00_07",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "005:ai2thor-real-small-episode-005:FloorPlan2:000045:apple_01_65_00_81_00_07"
+    },
+    {
+      "object_id": "cabinet_01_39_00_47_01_15",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "005:ai2thor-real-small-episode-005:FloorPlan2:000045:cabinet_01_39_00_47_01_15"
+    },
+    {
+      "object_id": "cabinet_01_70_02_02_01_45",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "005:ai2thor-real-small-episode-005:FloorPlan2:000045:cabinet_01_70_02_02_01_45"
+    },
+    {
+      "object_id": "fridge_01_76_00_00_00_00",
+      "reason": "missing_visible_detector_evidence",
+      "task_id": "005:ai2thor-real-small-episode-005:FloorPlan2:000045:fridge_01_76_00_00_00_00"
+    }
+  ]
+}

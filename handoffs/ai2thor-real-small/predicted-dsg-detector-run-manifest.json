@@ -6,6 +6,10 @@
     "RIGHT_OF",
     "NEAR"
   ],
+  "infer_containment": true,
+  "containment_axis": "z",
+  "relation_top_k": 3,
+  "require_detector_state_evidence": true,
   "min_object_observation_count": 2,
   "min_observation_count": 2,
   "output_graph_path": "outputs/predicted-dsg/predicted-graph.json",

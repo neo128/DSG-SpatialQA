@@ -149,6 +149,7 @@ def test_compare_graphs_scores_perfect_and_degraded_graphs() -> None:
         "oracle_object_count": 3,
         "predicted_object_count": 3,
         "matched_object_count": 3,
+        "predicted_unlocated_object_count": 2,
         "oracle_relation_count": 8,
         "predicted_relation_count": 8,
         "matched_relation_count": 8,
@@ -169,6 +170,7 @@ def test_compare_graphs_scores_perfect_and_degraded_graphs() -> None:
         "object_label_accuracy": {"count": 3, "rate": 1.0, "total": 3},
         "object_precision": {"count": 3, "rate": 1.0, "total": 3},
         "object_recall": {"count": 3, "rate": 1.0, "total": 3},
+        "unlocated_object_count": {"count": 2, "total": 3},
         "relation_confidence_weighted_f1": {"rate": 1.0},
         "relation_confidence_weighted_precision": {
             "matched_weight": 7.85,
@@ -190,12 +192,17 @@ def test_compare_graphs_scores_perfect_and_degraded_graphs() -> None:
         "oracle_object_count": 3,
         "predicted_object_count": 3,
         "matched_object_count": 2,
+        "predicted_unlocated_object_count": 2,
         "oracle_relation_count": 8,
         "predicted_relation_count": 6,
         "matched_relation_count": 4,
     }
     assert degraded_comparison["metrics"]["object_precision"]["rate"] == 0.666667
     assert degraded_comparison["metrics"]["object_recall"]["rate"] == 0.666667
+    assert degraded_comparison["metrics"]["unlocated_object_count"] == {
+        "count": 2,
+        "total": 3,
+    }
     assert degraded_comparison["metrics"]["relation_precision"]["rate"] == 0.666667
     assert degraded_comparison["metrics"]["relation_recall"]["rate"] == 0.5
     assert degraded_comparison["metrics"]["relation_f1"]["rate"] == 0.571429
@@ -327,6 +334,7 @@ def test_compare_graphs_label_center_matching_handles_changed_object_ids() -> No
         "oracle_object_count": 3,
         "predicted_object_count": 3,
         "matched_object_count": 3,
+        "predicted_unlocated_object_count": 2,
         "oracle_relation_count": 8,
         "predicted_relation_count": 8,
         "matched_relation_count": 8,

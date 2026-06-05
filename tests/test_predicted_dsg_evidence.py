@@ -75,6 +75,7 @@ def test_predicted_dsg_evidence_report_accepts_detector_rgbd_observations(
         },
         "hidden_object_observation_count": 1,
         "input_kind": "observation_sequence",
+        "invalid_state_evidence_object_ids": [],
         "object_observation_count": 3,
         "observation_count": 2,
         "observation_sequence_digest": lab.scene_observation_sequence_digest(
@@ -84,6 +85,7 @@ def test_predicted_dsg_evidence_report_accepts_detector_rgbd_observations(
             "rgbd_detector": 2,
             "rgbd_tracker": 1,
         },
+        "state_evidence_object_observation_count": 0,
         "visible_object_observation_count": 2,
     }
     checks = {check["name"]: check for check in report["checks"]}
@@ -163,6 +165,58 @@ def test_predicted_dsg_evidence_report_rejects_synthetic_detector_sources(
         "passed": False,
         "actual": ["SyntheticRGBDDetector"],
     }
+
+
+def test_predicted_dsg_evidence_report_rejects_ai2thor_metadata_sources(
+    tmp_path: Path,
+) -> None:
+    predicted_report_path = _write_predicted_report(
+        tmp_path,
+        _ai2thor_metadata_observations(),
+    )
+    predicted_report = lab.load_predicted_graph_report(predicted_report_path)
+
+    report = lab.predicted_dsg_evidence_report(
+        predicted_report,
+        predicted_graph_report_path=predicted_report_path,
+    )
+
+    checks = {check["name"]: check for check in report["checks"]}
+    assert report["readiness"]["ready"] is False
+    assert "non_real_sources_absent" in report["readiness"]["failed_checks"]
+    assert checks["required_evidence_kinds_present"]["passed"] is True
+    assert checks["non_real_sources_absent"] == {
+        "name": "non_real_sources_absent",
+        "passed": False,
+        "actual": ["ai2thor"],
+    }
+
+
+def test_predicted_dsg_evidence_report_rejects_hidden_detector_state_evidence(
+    tmp_path: Path,
+) -> None:
+    predicted_report_path = _write_predicted_report(
+        tmp_path,
+        _hidden_state_rgbd_observations(),
+    )
+    predicted_report = lab.load_predicted_graph_report(predicted_report_path)
+
+    report = lab.predicted_dsg_evidence_report(
+        predicted_report,
+        predicted_graph_report_path=predicted_report_path,
+    )
+
+    checks = {check["name"]: check for check in report["checks"]}
+    assert report["readiness"]["ready"] is False
+    assert "detector_state_evidence_valid" in report["readiness"]["failed_checks"]
+    assert checks["detector_state_evidence_valid"] == {
+        "name": "detector_state_evidence_valid",
+        "passed": False,
+        "invalid_object_ids": ["mug_1"],
+        "state_evidence_object_observation_count": 1,
+    }
+    assert report["evidence_summary"]["state_evidence_object_observation_count"] == 1
+    assert report["evidence_summary"]["invalid_state_evidence_object_ids"] == ["mug_1"]
 
 
 def test_predicted_dsg_evidence_cli_writes_valid_report(
@@ -460,6 +514,102 @@ def _synthetic_rgbd_observations() -> tuple[lab.SceneObservation, ...]:
     )
 
 
+def _ai2thor_metadata_observations() -> tuple[lab.SceneObservation, ...]:
+    return (
+        lab.SceneObservation(
+            step=1,
+            agent_pose=Pose3D(0.0, 0.0, 0.0),
+            objects=(
+                _object(
+                    "mug_1",
+                    "mug",
+                    source="ai2thor",
+                    confidence=0.91,
+                    visible=True,
+                    extra={
+                        "depth_path": "frames/000001.depth.png",
+                        "detector": "ai2thor_metadata_visible_objects",
+                        "rgb_path": "frames/000001.rgb.png",
+                    },
+                ),
+            ),
+        ),
+        lab.SceneObservation(
+            step=2,
+            agent_pose=Pose3D(0.1, 0.0, 0.0),
+            objects=(
+                _object(
+                    "plate_1",
+                    "plate",
+                    source="ai2thor",
+                    confidence=0.87,
+                    visible=True,
+                    extra={
+                        "depth_path": "frames/000002.depth.png",
+                        "detector": "ai2thor_metadata_visible_objects",
+                        "rgb_path": "frames/000002.rgb.png",
+                    },
+                ),
+            ),
+        ),
+    )
+
+
+def _hidden_state_rgbd_observations() -> tuple[lab.SceneObservation, ...]:
+    return (
+        lab.SceneObservation(
+            step=1,
+            agent_pose=Pose3D(0.0, 0.0, 0.0),
+            objects=(
+                _object(
+                    "mug_1",
+                    "mug",
+                    source="rgbd_detector",
+                    confidence=0.91,
+                    visible=False,
+                    extra={
+                        "depth_path": "frames/000001.depth.png",
+                        "detector": "detic_fixture",
+                        "evidence_kinds": ["depth", "detector", "rgb"],
+                        "rgb_path": "frames/000001.rgb.png",
+                        "states": {"isOpen": False},
+                    },
+                ),
+                _object(
+                    "plate_1",
+                    "plate",
+                    source="rgbd_detector",
+                    confidence=0.87,
+                    visible=True,
+                    extra={
+                        "depth_path": "frames/000001.depth.png",
+                        "detector": "detic_fixture",
+                        "rgb_path": "frames/000001.rgb.png",
+                    },
+                ),
+            ),
+        ),
+        lab.SceneObservation(
+            step=2,
+            agent_pose=Pose3D(0.1, 0.0, 0.0),
+            objects=(
+                _object(
+                    "plate_1",
+                    "plate",
+                    source="rgbd_detector",
+                    confidence=0.87,
+                    visible=True,
+                    extra={
+                        "depth_path": "frames/000002.depth.png",
+                        "detector": "detic_fixture",
+                        "rgb_path": "frames/000002.rgb.png",
+                    },
+                ),
+            ),
+        ),
+    )
+
+
 def _object(
     object_id: str,
     label: str,
@@ -467,7 +617,7 @@ def _object(
     source: str,
     confidence: float,
     visible: bool,
-    extra: dict[str, str],
+    extra: dict[str, object],
 ) -> lab.ObjectObservation:
     return lab.ObjectObservation(
         object_id,

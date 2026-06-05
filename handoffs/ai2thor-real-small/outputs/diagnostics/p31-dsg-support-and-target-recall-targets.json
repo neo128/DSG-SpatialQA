@@ -1,0 +1,293 @@
+{
+  "artifact_inputs": {
+    "p30_predictions": "handoffs/ai2thor-real-small/inputs/candidate/predicted-graph-tool-independent-p30-nearest-support-fallback.jsonl",
+    "qa": "handoffs/ai2thor-real-small/inputs/traces/observation-aware-p4-target60-qa.jsonl"
+  },
+  "on_to_in_room_cases": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48:observation_aware:100034",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "gold_support_label": "countertop",
+      "predicted_destination": "ai2thor_room",
+      "step": 100034,
+      "target_label": "apple"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62:observation_aware:100034",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "gold_support_label": "countertop",
+      "predicted_destination": "ai2thor_room",
+      "step": 100034,
+      "target_label": "book"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54:observation_aware:100037",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "gold_support_label": "shelf",
+      "predicted_destination": "ai2thor_room",
+      "step": 100037,
+      "target_label": "bottle"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75:observation_aware:100036",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "gold_support_label": "countertop",
+      "predicted_destination": "ai2thor_room",
+      "step": 100036,
+      "target_label": "bowl"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03:observation_aware:100036",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "gold_support_label": "countertop",
+      "predicted_destination": "ai2thor_room",
+      "step": 100036,
+      "target_label": "bread"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79:observation_aware:200002",
+      "episode_id": "ai2thor-real-small-episode-002",
+      "gold_support_label": "coffeetable",
+      "predicted_destination": "ai2thor_room",
+      "step": 200002,
+      "target_label": "bowl"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47:observation_aware:100032",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "gold_support_label": "dresser",
+      "predicted_destination": "ai2thor_room",
+      "step": 100032,
+      "target_label": "alarmclock"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18:observation_aware:100007",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "gold_support_label": "bed",
+      "predicted_destination": "ai2thor_room",
+      "step": 100007,
+      "target_label": "book"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02:observation_aware:200010",
+      "episode_id": "ai2thor-real-small-episode-004",
+      "gold_support_label": "bathtub",
+      "predicted_destination": "ai2thor_room",
+      "step": 200010,
+      "target_label": "cloth"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10:observation_aware:100046",
+      "episode_id": "ai2thor-real-small-episode-004",
+      "gold_support_label": "handtowelholder",
+      "predicted_destination": "ai2thor_room",
+      "step": 100046,
+      "target_label": "handtowel"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08:observation_aware:100041",
+      "episode_id": "ai2thor-real-small-episode-005",
+      "gold_support_label": "countertop",
+      "predicted_destination": "ai2thor_room",
+      "step": 100041,
+      "target_label": "bread"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0005:desklamp_01_32_01_24_00_99:observation_aware:100032",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "gold_support_label": "dresser",
+      "predicted_destination": "ai2thor_room",
+      "step": 100032,
+      "target_label": "desklamp"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0007:egg_00_13_00_95_00_17:observation_aware:100041",
+      "episode_id": "ai2thor-real-small-episode-005",
+      "gold_support_label": "countertop",
+      "predicted_destination": "ai2thor_room",
+      "step": 100041,
+      "target_label": "egg"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0008:kettle_01_04_00_90_02_60:observation_aware:100037",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "gold_support_label": "countertop",
+      "predicted_destination": "ai2thor_room",
+      "step": 100037,
+      "target_label": "kettle"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0012:mug_00_24_00_92_00_26:observation_aware:100041",
+      "episode_id": "ai2thor-real-small-episode-005",
+      "gold_support_label": "countertop",
+      "predicted_destination": "ai2thor_room",
+      "step": 100041,
+      "target_label": "mug"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0015:pan_00_72_00_90_02_42:observation_aware:100037",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "gold_support_label": "countertop",
+      "predicted_destination": "ai2thor_room",
+      "step": 100037,
+      "target_label": "pan"
+    }
+  ],
+  "on_to_in_room_support_label_counts": {
+    "bathtub": 1,
+    "bed": 1,
+    "coffeetable": 1,
+    "countertop": 9,
+    "dresser": 2,
+    "handtowelholder": 1,
+    "shelf": 1
+  },
+  "on_to_none_cases": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46:observation_aware:100036",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "gold_support_label": "countertop",
+      "prediction_error": "Object not found: butterknife_00_41_01_11_00_46",
+      "step": 100036,
+      "target_label": "butterknife"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21:observation_aware:100029",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "gold_support_label": "desk",
+      "prediction_error": "Object not found: bowl_02_45_00_80_01_21",
+      "step": 100029,
+      "target_label": "bowl"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19:observation_aware:100029",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "gold_support_label": "desk",
+      "prediction_error": "Object not found: cd_01_62_00_80_01_19",
+      "step": 100029,
+      "target_label": "cd"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02:observation_aware:100044",
+      "episode_id": "ai2thor-real-small-episode-004",
+      "gold_support_label": "sidetable",
+      "prediction_error": "Object not found: dishsponge_03_20_00_86_00_02",
+      "step": 100044,
+      "target_label": "dishsponge"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0002:creditcard_00_46_01_10_00_87:observation_aware:100034",
+      "episode_id": "ai2thor-real-small-episode-001",
+      "gold_support_label": "countertop",
+      "prediction_error": "Object not found: creditcard_00_46_01_10_00_87",
+      "step": 100034,
+      "target_label": "creditcard"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0003:creditcard_01_78_00_80_01_19:observation_aware:100029",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "gold_support_label": "desk",
+      "prediction_error": "Object not found: creditcard_01_78_00_80_01_19",
+      "step": 100029,
+      "target_label": "creditcard"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0004:creditcard_01_94_00_68_01_80:observation_aware:200007",
+      "episode_id": "ai2thor-real-small-episode-002",
+      "gold_support_label": "chair",
+      "prediction_error": "Object not found: creditcard_01_94_00_68_01_80",
+      "step": 200007,
+      "target_label": "creditcard"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0006:diningtable_02_27_00_02_01_42:observation_aware:200007",
+      "episode_id": "ai2thor-real-small-episode-002",
+      "gold_support_label": "chair",
+      "prediction_error": "Object not found: diningtable_02_27_00_02_01_42",
+      "step": 200007,
+      "target_label": "diningtable"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0009:keychain_01_74_00_80_01_29:observation_aware:100029",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "gold_support_label": "desk",
+      "prediction_error": "Object not found: keychain_01_74_00_80_01_29",
+      "step": 100029,
+      "target_label": "keychain"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0011:laptop_01_70_00_68_01_66:observation_aware:200007",
+      "episode_id": "ai2thor-real-small-episode-002",
+      "gold_support_label": "chair",
+      "prediction_error": "Object not found: laptop_01_70_00_68_01_66",
+      "step": 200007,
+      "target_label": "laptop"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0013:mug_02_82_00_80_01_22:observation_aware:100029",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "gold_support_label": "desk",
+      "prediction_error": "Object not found: mug_02_82_00_80_01_22",
+      "step": 100029,
+      "target_label": "mug"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0014:newspaper_02_76_00_68_01_18:observation_aware:200007",
+      "episode_id": "ai2thor-real-small-episode-002",
+      "gold_support_label": "chair",
+      "prediction_error": "Object not found: newspaper_02_76_00_68_01_18",
+      "step": 200007,
+      "target_label": "newspaper"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:supplemental_object_location:0016:papertowelroll_03_15_00_96_00_28:observation_aware:100044",
+      "episode_id": "ai2thor-real-small-episode-004",
+      "gold_support_label": "sidetable",
+      "prediction_error": "Object not found: papertowelroll_03_15_00_96_00_28",
+      "step": 100044,
+      "target_label": "papertowelroll"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0017:pen_01_93_00_81_01_18:observation_aware:100029",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "gold_support_label": "desk",
+      "prediction_error": "Object not found: pen_01_93_00_81_01_18",
+      "step": 100029,
+      "target_label": "pen"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0018:pencil_02_01_00_81_01_17:observation_aware:100029",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "gold_support_label": "desk",
+      "prediction_error": "Object not found: pencil_02_01_00_81_01_17",
+      "step": 100029,
+      "target_label": "pencil"
+    }
+  ],
+  "on_to_none_support_label_counts": {
+    "chair": 4,
+    "countertop": 2,
+    "desk": 7,
+    "sidetable": 2
+  },
+  "report_digest": "e3117bfe12b46921a0b41d164661e8cb1479e76c929b75257752308344b200fa",
+  "required_next_actions": [
+    "Improve detector/RGB-D support-object recall for same-frame support labels before adding more QA fallback rules.",
+    "Prioritize countertop, dresser, shelf, coffeetable, bed, bathtub, and handtowelholder for ON->IN_ROOM failures.",
+    "Improve target-object recall for desk/chair/countertop/sidetable ON->NONE failures."
+  ],
+  "schema_version": "dsg-spatialqa-lab.next-optimization-targets.v1",
+  "stage": "p31_support_and_target_recall_targets_after_p30",
+  "summary": {
+    "case_count": 60,
+    "relation_confusion_counts": {
+      "IN_ROOM->IN_ROOM": 21,
+      "IN_ROOM->NONE": 4,
+      "ON->IN_ROOM": 16,
+      "ON->NONE": 15,
+      "ON->ON": 4
+    },
+    "remaining_on_to_in_room_count": 16,
+    "remaining_on_to_none_count": 15
+  }
+}

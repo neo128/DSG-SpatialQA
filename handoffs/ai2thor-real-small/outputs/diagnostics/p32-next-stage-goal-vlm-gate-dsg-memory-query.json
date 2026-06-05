@@ -1,0 +1,72 @@
+{
+  "artifact_paths": {
+    "dsg_p30_report": "handoffs/ai2thor-real-small/outputs/diagnostics/dsg-candidate-semantic-eval-p30-nearest-support-fallback-independent.json",
+    "p31_detector_recall_handoff": "handoffs/ai2thor-real-small/inputs/predicted-dsg/p31-detector-recall-handoff.json",
+    "vlm_gate_report": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-semantic-eval-p26-affordance-option-fallback.json"
+  },
+  "current_dsg_status": {
+    "gap_to_vlm_p26_semantic_count": -24,
+    "p30_case_count": 60,
+    "p30_semantic_match_count": 25,
+    "p30_semantic_match_rate": 0.4166666666666667,
+    "p31_detector_recall_handoff_digest": "0f7f53f6199ebba23aa2d7272cf8303107913dc59f9b34d092693dac13a93620",
+    "p31_detector_recall_handoff_summary": {
+      "case_count": 31,
+      "frame_count": 12,
+      "frames_with_support_labels": 12,
+      "missing_frame_case_count": 0,
+      "requested_detection_label_count": 46,
+      "support_label_count": 16,
+      "target_label_count": 31
+    }
+  },
+  "dsg_next_experiment_axes": {
+    "memory_storage_contents": [
+      "detector-visible object states with source/evidence kind/confidence",
+      "support-surface candidates per frame and per target",
+      "object-id alias/provenance when detector label conflicts with simulator-style object id",
+      "temporal last-seen and current-location hypotheses",
+      "relation hypotheses with evidence paths and confidence, not only final relation edges"
+    ],
+    "memory_storage_method": [
+      "append-only observation memory records before graph collapse",
+      "separate observed facts from inferred location hypotheses",
+      "store top-k candidate supports with abstain/ambiguity flags",
+      "retain frame-level visible-region anchors as evidence, but not as final semantic answers"
+    ],
+    "query_contents": [
+      "query target object by case id/object id/label plus episode and step",
+      "retrieve target state, visible-frame evidence, support candidates, room fallback, and missing-evidence status together",
+      "return why a support relation is chosen or why the system abstains"
+    ],
+    "query_method": [
+      "rank explicit detector current_location above inferred relation hypotheses",
+      "rank support candidates by same-frame evidence, label compatibility, distance, and ambiguity margin",
+      "fallback to room only after support candidate retrieval fails",
+      "emit structured missing-evidence blockers for detector recall handoff when query cannot answer"
+    ]
+  },
+  "goal": "VLM-only semantic success rate must be at least 50% before starting the next DSG experiment stage; DSG experiments then optimize memory contents, storage method, query contents, and query method.",
+  "next_actions": [
+    "Use p31-detector-recall-handoff.json to obtain or synthesize external detector JSONL without gold answers.",
+    "Import returned detector JSONL into an observation sequence.",
+    "Build a memory-first predicted graph that stores observed facts and inferred support hypotheses separately.",
+    "Run P32 DSG candidate/eval only after the VLM semantic gate remains >= 50%.",
+    "Compare DSG against VLM P26 and record whether memory/query changes improve semantic match without increasing regressions."
+  ],
+  "report_digest": "d55869478f4c342b1cc531bfc28fb51de693c92c03d4f0581dff5ebf2fb03045",
+  "schema_version": "dsg-spatialqa-lab.next-stage-goal-report.v1",
+  "stage": "p32_vlm_gate_then_dsg_memory_query_optimization",
+  "vlm_gate": {
+    "current_case_count": 60,
+    "current_semantic_match_count": 49,
+    "current_semantic_match_rate": 0.8166666666666667,
+    "current_strict_exact_match_rate": 0.0,
+    "exact_match_rate": 0.0,
+    "note": "The 50% gate uses semantic location matching because strict JSON exact match is currently 0/60 for VLM-only and is tracked as a secondary normalization target.",
+    "passed": true,
+    "primary_metric": "semantic_match_rate",
+    "secondary_metric": "strict_exact_match_rate",
+    "threshold": 0.5
+  }
+}

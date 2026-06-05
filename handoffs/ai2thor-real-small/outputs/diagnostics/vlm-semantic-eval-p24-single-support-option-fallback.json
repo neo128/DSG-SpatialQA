@@ -1,0 +1,1102 @@
+{
+  "cases": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48:observation_aware:100034",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "target_label": "apple",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "countertop",
+        "raw_text": "The apple is on the countertop.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62:observation_aware:100034",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "target_label": "book",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "countertop",
+        "raw_text": "The book is on the countertop.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54:observation_aware:100037",
+      "failure_reason": "destination_mismatch",
+      "gold": {
+        "destination_label": "shelf",
+        "relation": "ON",
+        "target_label": "bottle",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "sidetable",
+        "raw_text": "The bottle is on the sidetable.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75:observation_aware:100036",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "target_label": "bowl",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "countertop",
+        "raw_text": "The bowl is on the countertop.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03:observation_aware:100036",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "target_label": "bread",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "countertop",
+        "raw_text": "The bread is on the countertop.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46:observation_aware:100036",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "target_label": "butterknife",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20:observation_aware:100037",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "cabinet",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": "The cabinet is hanging on the wall in the kitchen.",
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46:observation_aware:100040",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "cabinet",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": null,
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46:observation_aware:100039",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "cabinet",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": "The cabinet is not clearly visible or its location relation is not observable.",
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46:observation_aware:100040",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "cabinet",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": "The cabinet is not clearly visible as a distinct object to locate in the current frame.",
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98:observation_aware:200001",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "armchair",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": null,
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02:observation_aware:200013",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "armchair",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": null,
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17:observation_aware:200007",
+      "failure_reason": "destination_mismatch",
+      "gold": {
+        "destination_label": "chair",
+        "relation": "ON",
+        "target_label": "book",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "table",
+        "raw_text": "The book is on the table.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79:observation_aware:200002",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "coffeetable",
+        "relation": "ON",
+        "target_label": "bowl",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "currentview",
+        "raw_text": "The bowl is not visible in the current view.",
+        "relation": "INSIDE"
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43:observation_aware:200003",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "box",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43:observation_aware:200007",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "chair",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "diningroom",
+        "raw_text": "The chair is in the dining room.",
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04:observation_aware:200007",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "chair",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "diningroom",
+        "raw_text": "The chair is in the dining room.",
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84:observation_aware:200007",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "chair",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "diningroom",
+        "raw_text": "The chair is in the dining room.",
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99:observation_aware:200007",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "chair",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "diningroom",
+        "raw_text": "The chair is in the dining room.",
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88:observation_aware:200007",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "chair",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "diningroom",
+        "raw_text": "The chair is in the dining room.",
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47:observation_aware:100032",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "dresser",
+        "relation": "ON",
+        "target_label": "alarmclock",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "dresser",
+        "raw_text": "The alarmclock is on the dresser.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82:observation_aware:200012",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "baseballbat",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": null,
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24:observation_aware:100021",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "basketball",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87:observation_aware:100027",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "bed",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": "The bed is in the bedroom.",
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44:observation_aware:100033",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "blinds",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": "The blinds are visible in the room, hanging at the top of the window.",
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18:observation_aware:100007",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "bed",
+        "relation": "ON",
+        "target_label": "book",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "bed",
+        "raw_text": "The book is on the bed.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34:observation_aware:100016",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "boots",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "currentview",
+        "raw_text": "The boots are not visible in the current view.",
+        "relation": "INSIDE"
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21:observation_aware:100029",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "target_label": "bowl",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89:observation_aware:200009",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "box",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "currentframe",
+        "raw_text": "The box is not visible in the current frame.",
+        "relation": "INSIDE"
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19:observation_aware:100029",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "target_label": "cd",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "currentview",
+        "raw_text": "The cd is not visible in the current view.",
+        "relation": "INSIDE"
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92:observation_aware:200011",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "bathtub",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": "The bathtub is in the bathroom.",
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0003:object_location:candle_03_11_00_23_00_05:observation_aware:100043",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "candle",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "shelf",
+        "raw_text": "The candle is on the shelf.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02:observation_aware:200010",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "bathtub",
+        "relation": "ON",
+        "target_label": "cloth",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02:observation_aware:100044",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "sidetable",
+        "relation": "ON",
+        "target_label": "dishsponge",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "sidetable",
+        "raw_text": null,
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28:observation_aware:200011",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "bathtub",
+        "relation": "ON",
+        "target_label": "faucet",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "bathtub",
+        "raw_text": "The faucet is on the bathtub.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53:observation_aware:100046",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "faucet",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "sink",
+        "raw_text": "The faucet is on the sink.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85:observation_aware:100045",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "floor",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": null,
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88:observation_aware:200014",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "garbagecan",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": null,
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10:observation_aware:100046",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "handtowelholder",
+        "relation": "ON",
+        "target_label": "handtowel",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "handtowelholder",
+        "raw_text": "The hand towel is hanging on the hand towel holder.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08:observation_aware:100041",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "target_label": "bread",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "currentframe",
+        "raw_text": "The bread is not visible in the current frame.",
+        "relation": "INSIDE"
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45:observation_aware:100047",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "cabinet",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": null,
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45:observation_aware:100047",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "room",
+        "relation": "IN_ROOM",
+        "target_label": "cabinet",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": null,
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0001:cellphone_00_26_00_56_00_52:observation_aware:100027",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "bed",
+        "relation": "ON",
+        "target_label": "cellphone",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0002:creditcard_00_46_01_10_00_87:observation_aware:100034",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "target_label": "creditcard",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0003:creditcard_01_78_00_80_01_19:observation_aware:100029",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "target_label": "creditcard",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0004:creditcard_01_94_00_68_01_80:observation_aware:200007",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "chair",
+        "relation": "ON",
+        "target_label": "creditcard",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0005:desklamp_01_32_01_24_00_99:observation_aware:100032",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "dresser",
+        "relation": "ON",
+        "target_label": "desklamp",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "dresser",
+        "raw_text": "The desk lamp is on the dresser.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0006:diningtable_02_27_00_02_01_42:observation_aware:200007",
+      "failure_reason": "relation_mismatch",
+      "gold": {
+        "destination_label": "chair",
+        "relation": "ON",
+        "target_label": "diningtable",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "room",
+        "raw_text": "The diningtable is in the living room.",
+        "relation": "IN_ROOM"
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0007:egg_00_13_00_95_00_17:observation_aware:100041",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "target_label": "egg",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "countertop",
+        "raw_text": "The egg is on the countertop.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0008:kettle_01_04_00_90_02_60:observation_aware:100037",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "target_label": "kettle",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "countertop",
+        "raw_text": "The kettle is on the countertop.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0009:keychain_01_74_00_80_01_29:observation_aware:100029",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "target_label": "keychain",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0010:laptop_00_50_00_56_00_29:observation_aware:100027",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "bed",
+        "relation": "ON",
+        "target_label": "laptop",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "currentview",
+        "raw_text": "The laptop is not visible in the current view.",
+        "relation": "INSIDE"
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0011:laptop_01_70_00_68_01_66:observation_aware:200007",
+      "failure_reason": "destination_mismatch",
+      "gold": {
+        "destination_label": "chair",
+        "relation": "ON",
+        "target_label": "laptop",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "table",
+        "raw_text": "The laptop is on the table.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0012:mug_00_24_00_92_00_26:observation_aware:100041",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "target_label": "mug",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "countertop",
+        "raw_text": "The mug is on the countertop.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0013:mug_02_82_00_80_01_22:observation_aware:100029",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "target_label": "mug",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0014:newspaper_02_76_00_68_01_18:observation_aware:200007",
+      "failure_reason": "destination_mismatch",
+      "gold": {
+        "destination_label": "chair",
+        "relation": "ON",
+        "target_label": "newspaper",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "table",
+        "raw_text": "The newspaper is on the table.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0015:pan_00_72_00_90_02_42:observation_aware:100037",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "countertop",
+        "relation": "ON",
+        "target_label": "pan",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "countertop",
+        "raw_text": "The pan is on the countertop.",
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:supplemental_object_location:0016:papertowelroll_03_15_00_96_00_28:observation_aware:100044",
+      "failure_reason": null,
+      "gold": {
+        "destination_label": "sidetable",
+        "relation": "ON",
+        "target_label": "papertowelroll",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": "sidetable",
+        "raw_text": null,
+        "relation": "ON"
+      },
+      "question_type": "object_location",
+      "semantic_match": true,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0017:pen_01_93_00_81_01_18:observation_aware:100029",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "target_label": "pen",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0018:pencil_02_01_00_81_01_17:observation_aware:100029",
+      "failure_reason": "target_not_observed",
+      "gold": {
+        "destination_label": "desk",
+        "relation": "ON",
+        "target_label": "pencil",
+        "visible": true
+      },
+      "prediction": {
+        "destination_label": null,
+        "raw_text": null,
+        "relation": null
+      },
+      "question_type": "object_location",
+      "semantic_match": false,
+      "strict_exact_match": false
+    }
+  ],
+  "excluded_case_ids": [],
+  "gold_digest": "9eb72ebd1f87937faa53be3e9a6ec7dc3d628cd6ec899a1fa02ef61529633115",
+  "gold_path": "handoffs/ai2thor-real-small/inputs/traces/observation-aware-p4-target60-qa.jsonl",
+  "include_hidden": false,
+  "prediction_digest": "78435e1311d6e39d3a164c471d924d9b469d0627c16ff6d7b2369c8d149b5eff",
+  "prediction_path": "handoffs/ai2thor-real-small/inputs/offline-controls/reruns/observation-aware-p4-target60/vlm-p24-single-support-option-fallback.jsonl",
+  "report_digest": "9f998f31fbbc066c30c273c572c26f1e1956b678e6ee3ebf197ab73d1b933745",
+  "schema_version": "dsg-spatialqa-lab.vlm-semantic-eval-report.v1",
+  "summary": {
+    "case_count": 60,
+    "excluded_case_count": 0,
+    "matched_prediction_count": 60,
+    "prediction_count": 60,
+    "semantic_match_count": 36,
+    "semantic_match_rate": 0.6,
+    "strict_exact_match_count": 0,
+    "strict_exact_match_rate": 0.0
+  }
+}

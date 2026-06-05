@@ -1,12 +1,73 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from math import sqrt
 from typing import Any, cast
 
 from dsg_spatialqa_lab.graph_tool import GraphTool
 from dsg_spatialqa_lab.memory import CONTAINMENT_RELATIONS
 from dsg_spatialqa_lab.relations import RelationEngine
 from dsg_spatialqa_lab.schema import Edge, Node, QAResponse, SpatialQAError
+
+
+DETECTOR_SUPPORT_FALLBACK_SUPPORTED_LABELS = frozenset(
+    {
+        "armchair",
+        "bathtub",
+        "bed",
+        "chair",
+        "coffeetable",
+        "counter",
+        "countertop",
+        "desk",
+        "diningtable",
+        "dresser",
+        "handtowelholder",
+        "shelf",
+        "sidetable",
+        "sofa",
+        "table",
+    }
+)
+DETECTOR_SUPPORT_FALLBACK_CONTAINER_LABELS = frozenset(
+    {"cabinet", "drawer", "fridge", "garbagecan", "microwave", "sink", "toilet"}
+)
+DETECTOR_SUPPORT_FALLBACK_UNSUPPORTED_TARGET_LABELS = frozenset(
+    {"blinds", "ceiling", "countertop", "floor", "room", "wall", "window"}
+)
+DETECTOR_SUPPORT_FALLBACK_MIN_DISTANCE_LIMIT = 0.8
+DETECTOR_SUPPORT_FALLBACK_AMBIGUITY_MARGIN = 0.05
+
+
+def _normalized_label(label: str | None) -> str:
+    return (label or "").replace("_", "").replace(" ", "").lower()
+
+
+def _normalized_object_id_prefix(object_id: str) -> str:
+    parts: list[str] = []
+    for part in object_id.split("_"):
+        if any(char.isdigit() for char in part):
+            break
+        parts.append(part)
+    return _normalized_label("_".join(parts))
+
+
+def _horizontal_xz_distance(first: Any, second: Any) -> float:
+    dx = float(first.x) - float(second.x)
+    dz = float(first.z) - float(second.z)
+    return sqrt(dx * dx + dz * dz)
+
+
+def _detector_support_distance_limit(
+    target_size: tuple[float, float, float],
+    support_size: tuple[float, float, float],
+) -> float:
+    target_span = max(float(target_size[0]), float(target_size[2]))
+    support_span = max(float(support_size[0]), float(support_size[2]))
+    return max(
+        DETECTOR_SUPPORT_FALLBACK_MIN_DISTANCE_LIMIT,
+        support_span + target_span,
+    )
 
 
 class SpatialQAEngine:
@@ -110,6 +171,29 @@ class SpatialQAEngine:
         object_id = self._required_str(question, "object_id")
         state = self.graph_tool.get_object(object_id)
         latest_location_edge = self._latest_location_edge(object_id)
+        fallback_location: dict[str, Any] | None = None
+        fallback_evidence_nodes: list[str] = []
+        latest_location_is_visible_frame_anchor = (
+            latest_location_edge is not None
+            and self._is_visible_frame_region_location_edge(latest_location_edge)
+        )
+        if latest_location_edge is None or latest_location_is_visible_frame_anchor:
+            fallback_location = self._detector_same_frame_support_fallback_location(
+                object_id,
+                state.step,
+            )
+            if fallback_location is not None:
+                fallback_dst_value = fallback_location.get("dst")
+                fallback_dst = (
+                    fallback_dst_value if isinstance(fallback_dst_value, str) else None
+                )
+                if fallback_dst is not None:
+                    fallback_evidence_nodes.append(fallback_dst)
+            else:
+                fallback_location = self._detector_scene_room_fallback_location(
+                    object_id,
+                    state.step,
+                )
         latest_state_edge = self._latest_state_edge(object_id)
         evidence_edges: list[str] = []
         if latest_location_edge is not None:
@@ -126,20 +210,129 @@ class SpatialQAEngine:
                 "last_seen_step": state.last_seen_step,
                 "state_step": state.step,
                 "current_location": (
+                    fallback_location
+                    if (
+                        latest_location_is_visible_frame_anchor
+                        and fallback_location is not None
+                    )
+                    else
                     {
                         "relation": latest_location_edge.relation,
                         "dst": latest_location_edge.dst,
                         "step": latest_location_edge.step,
                     }
                     if latest_location_edge is not None
-                    else None
+                    else fallback_location
                 ),
             },
-            evidence_nodes=[object_id, f"state:{object_id}:{state.step}"],
+            evidence_nodes=[
+                object_id,
+                f"state:{object_id}:{state.step}",
+                *fallback_evidence_nodes,
+            ],
             evidence_edges=evidence_edges,
             confidence=state.confidence,
             needs_reobserve=self.graph_tool.needs_reobserve(object_id),
         )
+
+    def _detector_same_frame_support_fallback_location(
+        self,
+        object_id: str,
+        step: int,
+    ) -> dict[str, Any] | None:
+        target_node = self.graph_tool.graph.nodes.get(object_id)
+        target_state = self.graph_tool.graph.object_states.get(object_id)
+        if target_node is None or target_state is None:
+            return None
+        if not self._has_detector_rgbd_evidence(target_node):
+            return None
+        target_identity_labels = {
+            _normalized_label(target_node.label),
+            _normalized_object_id_prefix(object_id),
+        }
+        if target_identity_labels & (
+            DETECTOR_SUPPORT_FALLBACK_SUPPORTED_LABELS
+            | DETECTOR_SUPPORT_FALLBACK_CONTAINER_LABELS
+            | DETECTOR_SUPPORT_FALLBACK_UNSUPPORTED_TARGET_LABELS
+        ):
+            return None
+        scene_value = target_node.attributes.get("scene_id")
+        scene_id = scene_value if isinstance(scene_value, str) else None
+        target_step = target_node.attributes.get("step")
+        if scene_id is None or target_step != step:
+            return None
+        candidates: list[tuple[float, str]] = []
+        for support_id, support_state in self.graph_tool.graph.object_states.items():
+            if support_id == object_id:
+                continue
+            support_node = self.graph_tool.graph.nodes.get(support_id)
+            if support_node is None:
+                continue
+            support_label = _normalized_label(support_node.label)
+            if support_label not in DETECTOR_SUPPORT_FALLBACK_SUPPORTED_LABELS:
+                continue
+            if not self._has_detector_rgbd_evidence(support_node):
+                continue
+            if support_node.attributes.get("scene_id") != scene_id:
+                continue
+            if support_node.attributes.get("step") != target_step:
+                continue
+            distance = _horizontal_xz_distance(target_state.bbox.center, support_state.bbox.center)
+            if distance > _detector_support_distance_limit(target_state.bbox.size, support_state.bbox.size):
+                continue
+            candidates.append((distance, support_id))
+        candidates = sorted(candidates)
+        if not candidates:
+            return None
+        best_distance, support_id = candidates[0]
+        if (
+            len(candidates) > 1
+            and candidates[1][0] - best_distance
+            <= DETECTOR_SUPPORT_FALLBACK_AMBIGUITY_MARGIN
+        ):
+            return None
+        return {"relation": "ON", "dst": support_id, "step": step}
+
+    def _is_visible_frame_region_location_edge(self, edge: Edge) -> bool:
+        if edge.relation != "IN_REGION":
+            return False
+        if not self._is_detector_current_location_edge(edge):
+            return False
+        if not isinstance(edge.dst, str) or not edge.dst.startswith(
+            "visible_frame_region:"
+        ):
+            return False
+        destination = self.graph_tool.graph.nodes.get(edge.dst)
+        if destination is None:
+            return True
+        return _normalized_label(destination.label) == "visibleframeregion"
+
+    def _detector_scene_room_fallback_location(
+        self,
+        object_id: str,
+        step: int,
+    ) -> dict[str, Any] | None:
+        node = self.graph_tool.graph.nodes.get(object_id)
+        if node is None:
+            return None
+        if not self._has_detector_rgbd_evidence(node):
+            return None
+        if not isinstance(node.attributes.get("scene_id"), str):
+            return None
+        return {"relation": "IN_ROOM", "dst": "ai2thor_room", "step": step}
+
+    def _has_detector_rgbd_evidence(self, node: Node) -> bool:
+        attributes = node.attributes
+        if attributes.get("source_kind") != "detector":
+            return False
+        if attributes.get("visible") is not True:
+            return False
+        evidence_kinds = attributes.get("evidence_kinds")
+        return isinstance(evidence_kinds, list) and {
+            "depth",
+            "detector",
+            "rgb",
+        }.issubset(set(evidence_kinds))
 
     def _answer_object_room(self, question: Mapping[str, Any]) -> QAResponse:
         object_id = self._required_str(question, "object_id")
@@ -554,7 +747,39 @@ class SpatialQAEngine:
         ]
         if not edges:
             return None
-        return sorted(edges, key=self._edge_sort_key)[-1]
+        sorted_edges = sorted(edges, key=self._location_edge_sort_key)
+        latest_edge = sorted_edges[-1]
+        room_edge = self._support_like_target_room_edge(object_id, sorted_edges)
+        if (
+            room_edge is not None
+            and room_edge.step == latest_edge.step
+            and not self._is_detector_current_location_edge(latest_edge)
+        ):
+            return room_edge
+        return latest_edge
+
+    def _support_like_target_room_edge(
+        self,
+        object_id: str,
+        edges: list[Edge],
+    ) -> Edge | None:
+        node = self.graph_tool.graph.nodes.get(object_id)
+        if node is None:
+            return None
+        target_identity_labels = {
+            _normalized_label(node.label),
+            _normalized_object_id_prefix(object_id),
+        }
+        if not target_identity_labels & (
+            DETECTOR_SUPPORT_FALLBACK_SUPPORTED_LABELS
+            | DETECTOR_SUPPORT_FALLBACK_CONTAINER_LABELS
+            | DETECTOR_SUPPORT_FALLBACK_UNSUPPORTED_TARGET_LABELS
+        ):
+            return None
+        room_edges = [edge for edge in edges if edge.relation == "IN_ROOM"]
+        if not room_edges:
+            return None
+        return sorted(room_edges, key=self._edge_sort_key)[-1]
 
     def _latest_state_edge(self, object_id: str) -> Edge | None:
         edges = [
@@ -565,6 +790,13 @@ class SpatialQAEngine:
         if not edges:
             return None
         return sorted(edges, key=self._edge_sort_key)[-1]
+
+    @staticmethod
+    def _is_detector_current_location_edge(edge: Edge) -> bool:
+        return (
+            edge.attributes.get("source") == "detector_current_location"
+            and edge.attributes.get("source_kind") == "detector"
+        )
 
     @staticmethod
     def _node_to_dict(node: Node) -> dict[str, Any]:
@@ -607,6 +839,17 @@ class SpatialQAEngine:
     @staticmethod
     def _edge_sort_key(edge: Edge) -> tuple[int, str, str, str, str]:
         return (edge.step, edge.src, edge.relation, edge.dst, edge.reference_frame)
+
+    @staticmethod
+    def _location_edge_sort_key(edge: Edge) -> tuple[int, int, str, str, str, str]:
+        return (
+            edge.step,
+            _location_edge_source_priority(edge),
+            edge.src,
+            edge.relation,
+            edge.dst,
+            edge.reference_frame,
+        )
 
     @staticmethod
     def _optional_bool(question: Mapping[str, Any], key: str) -> bool | None:
@@ -666,3 +909,13 @@ class SpatialQAEngine:
         if not isinstance(value, str):
             raise SpatialQAError(f"Question missing string field: {key}")
         return value
+
+
+def _location_edge_source_priority(edge: Edge) -> int:
+    source = edge.attributes.get("source")
+    source_kind = edge.attributes.get("source_kind")
+    if source == "detector_current_location":
+        return 2
+    if source_kind == "detector":
+        return 1
+    return 0

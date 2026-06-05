@@ -81,6 +81,8 @@ def build_predicted_graph_from_observations(
     reference_frames: Sequence[str] = OBSERVATION_PREDICTED_REFERENCE_FRAMES,
     infer_containment: bool = False,
     containment_axis: str = "z",
+    relation_top_k: int | None = None,
+    require_detector_state_evidence: bool = False,
 ) -> DynamicSceneGraph:
     graph, _ = ingest_scene_observation_sequence(
         observations,
@@ -89,6 +91,8 @@ def build_predicted_graph_from_observations(
         reference_frames=reference_frames,
         infer_containment=infer_containment,
         containment_axis=containment_axis,
+        relation_top_k=relation_top_k,
+        require_detector_state_evidence=require_detector_state_evidence,
     )
     return graph
 
@@ -186,6 +190,8 @@ def predicted_graph_report_from_observations(
     reference_frames: Sequence[str] = OBSERVATION_PREDICTED_REFERENCE_FRAMES,
     infer_containment: bool = False,
     containment_axis: str = "z",
+    relation_top_k: int | None = None,
+    require_detector_state_evidence: bool = False,
 ) -> dict[str, Any]:
     report: dict[str, Any] = {
         "schema_version": PREDICTED_GRAPH_REPORT_SCHEMA_VERSION,
@@ -200,6 +206,8 @@ def predicted_graph_report_from_observations(
             "reference_frames": list(reference_frames),
             "infer_containment": infer_containment,
             "containment_axis": containment_axis,
+            "relation_top_k": relation_top_k,
+            "require_detector_state_evidence": require_detector_state_evidence,
         },
         "summary": predicted_graph_observation_summary(graph, observations),
         "graph_report": graph_report(
@@ -338,6 +346,11 @@ def validate_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]
                 and _string_sequence(options.get("reference_frames"))
                 and isinstance(options.get("infer_containment", False), bool)
                 and options.get("containment_axis", "z") in ("z", "y")
+                and _optional_non_negative_int(options.get("relation_top_k"))
+                and isinstance(
+                    options.get("require_detector_state_evidence", False),
+                    bool,
+                )
                 if input_kind == "observation_sequence"
                 else True
             ),
@@ -361,6 +374,10 @@ def compare_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]:
         reference_frames = tuple(str(item) for item in _optional_sequence(options, "reference_frames"))
         infer_containment = options.get("infer_containment") is True
         containment_axis = str(options.get("containment_axis", "z"))
+        relation_top_k = _optional_int_or_none(options.get("relation_top_k"))
+        require_detector_state_evidence = (
+            options.get("require_detector_state_evidence") is True
+        )
         observations = load_scene_observation_sequence(input_path)
         current_graph = build_predicted_graph_from_observations(
             observations,
@@ -369,6 +386,8 @@ def compare_predicted_graph_report(report: Mapping[str, Any]) -> dict[str, Any]:
             reference_frames=reference_frames,
             infer_containment=infer_containment,
             containment_axis=containment_axis,
+            relation_top_k=relation_top_k,
+            require_detector_state_evidence=require_detector_state_evidence,
         )
         saved_input_digest = report.get("observation_sequence_digest")
         current_input_digest = scene_observation_sequence_digest(observations)
@@ -538,6 +557,24 @@ def _string_sequence(value: object) -> bool:
         and not isinstance(value, str)
         and all(isinstance(item, str) for item in value)
     )
+
+
+def _optional_non_negative_int(value: object) -> bool:
+    return value is None or (
+        isinstance(value, int)
+        and not isinstance(value, bool)
+        and value >= 0
+    )
+
+
+def _optional_int_or_none(value: object) -> int | None:
+    if value is None:
+        return None
+    if not isinstance(value, int) or isinstance(value, bool):
+        raise SpatialQAError("relation_top_k must be an integer or null")
+    if value < 0:
+        raise SpatialQAError("relation_top_k must be non-negative")
+    return value
 
 
 def _nested_differences(

@@ -1,0 +1,40 @@
+{
+  "allowed_next_step": "Run external VLM retry on the 35-case ready subset, then merge partial retry predictions as diagnostic only; final VLM-only score claim still requires resolving or explicitly accounting for the blocked cd case.",
+  "blocked_case_count": 1,
+  "blocked_cases": [
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19:observation_aware:100029",
+      "episode_id": "ai2thor-real-small-episode-003",
+      "missing_input_kinds": [
+        "target_crop"
+      ],
+      "primary_frame_step": 29,
+      "required_next_artifact": "local detector/RGB-D record with bbox_2d_xyxy or mask_path for cd_01_62_00_80_01_19 at a usable frame",
+      "root_cause": "No local detector record has bbox_2d_xyxy for this target; episode metadata has 3D bbox only; segmentation residual matching leaves only a background/large-area segment, not a safe target mask.",
+      "scene_id": "FloorPlan301",
+      "target_label": "cd",
+      "target_object_id": "cd_01_62_00_80_01_19"
+    }
+  ],
+  "diagnostic_evidence": {
+    "detector_records_checked": [
+      "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-ai2thor-visible-p2.jsonl",
+      "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-ai2thor-visible-p2-offset.jsonl",
+      "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-ai2thor-visible-p2-schema-fixed-p15.jsonl",
+      "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-coverage-v1.jsonl",
+      "handoffs/ai2thor-real-small/inputs/predicted-dsg/detector-rgbd-independent-p4-target60.jsonl"
+    ],
+    "local_cd_detection_records_found": 36,
+    "local_cd_detection_records_with_bbox_2d": 0,
+    "segmentation_residual_status": "not_safe_to_use_as_cd_crop"
+  },
+  "ready": false,
+  "ready_subset_input_gap_report_digest": "c6b43599324a75f954a08899f549b26e50465739650a66b5394b9676134316fd",
+  "ready_subset_input_gap_report_path": "handoffs/ai2thor-real-small/outputs/diagnostics/vlm-p21-ready35-input-gap-report.json",
+  "ready_subset_request_bundle_digest": "7ae2d1555c1b859baba8da537b255eaecbbe8c81fc7f1ab594d8eb004d7bd8fc",
+  "ready_subset_request_bundle_path": "handoffs/ai2thor-real-small/offline-control-prediction-request-bundle-observation-aware-p4-target60-vlm-p21-ready35-crop-complete.json",
+  "report_digest": "e65e073c37cfcac0faed3089d61f8ca352a33920e6675aee152ff00b8dcc1c1a",
+  "schema_version": "dsg-spatialqa-lab.vlm-crop-blocker-report.v1",
+  "scope": "p21_cd_target_crop_blocker",
+  "source_request_bundle_path": "handoffs/ai2thor-real-small/offline-control-prediction-request-bundle-observation-aware-p4-target60-vlm-p20-ready-except-cd-crop.json"
+}

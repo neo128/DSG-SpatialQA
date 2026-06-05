@@ -1,0 +1,735 @@
+{
+  "cases": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48:observation_aware:100034",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 34
+      },
+      "target_label": "apple",
+      "target_object_id": "apple_00_47_01_15_00_48",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62:observation_aware:100034",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 34
+      },
+      "target_label": "book",
+      "target_object_id": "book_00_15_01_10_00_62",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54:observation_aware:100037",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 37
+      },
+      "target_label": "bottle",
+      "target_object_id": "bottle_01_54_00_89_02_54",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75:observation_aware:100036",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 36
+      },
+      "target_label": "bowl",
+      "target_object_id": "bowl_00_27_01_10_00_75",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03:observation_aware:100036",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 36
+      },
+      "target_label": "bread",
+      "target_object_id": "bread_00_52_01_17_00_03",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46:observation_aware:100036",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 36
+      },
+      "target_label": "butter knife",
+      "target_object_id": "butterknife_00_41_01_11_00_46",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20:observation_aware:100037",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 37
+      },
+      "target_label": "cabinet",
+      "target_object_id": "cabinet_00_68_00_50_02_20",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46:observation_aware:100040",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 40
+      },
+      "target_label": "cabinet",
+      "target_object_id": "cabinet_00_68_02_02_02_46",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46:observation_aware:100039",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 39
+      },
+      "target_label": "cabinet",
+      "target_object_id": "cabinet_00_72_02_02_02_46",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46:observation_aware:100040",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 40
+      },
+      "target_label": "cabinet",
+      "target_object_id": "cabinet_00_73_02_02_02_46",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98:observation_aware:200001",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200001
+      },
+      "target_label": "armchair",
+      "target_object_id": "armchair_00_85_00_00_05_98",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02:observation_aware:200013",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200013
+      },
+      "target_label": "armchair",
+      "target_object_id": "armchair_04_38_00_00_06_02",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17:observation_aware:200007",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200007
+      },
+      "target_label": "book",
+      "target_object_id": "book_01_87_00_68_01_17",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79:observation_aware:200002",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200002
+      },
+      "target_label": "bowl",
+      "target_object_id": "bowl_02_45_00_60_04_79",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43:observation_aware:200003",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200003
+      },
+      "target_label": "box",
+      "target_object_id": "box_03_36_00_19_06_43",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43:observation_aware:200007",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200007
+      },
+      "target_label": "chair",
+      "target_object_id": "chair_01_34_00_02_01_43",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04:observation_aware:200007",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200007
+      },
+      "target_label": "chair",
+      "target_object_id": "chair_01_86_00_02_01_04",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84:observation_aware:200007",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200007
+      },
+      "target_label": "chair",
+      "target_object_id": "chair_01_86_00_02_01_84",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99:observation_aware:200007",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200007
+      },
+      "target_label": "chair",
+      "target_object_id": "chair_02_51_00_02_00_99",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88:observation_aware:200007",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200007
+      },
+      "target_label": "chair",
+      "target_object_id": "chair_02_52_00_02_01_88",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47:observation_aware:100032",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 32
+      },
+      "target_label": "alarmclock",
+      "target_object_id": "alarmclock_01_28_01_24_00_47",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82:observation_aware:200012",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 200012
+      },
+      "target_label": "baseballbat",
+      "target_object_id": "baseballbat_02_84_00_29_01_82",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24:observation_aware:100021",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 21
+      },
+      "target_label": "basketball",
+      "target_object_id": "basketball_00_24_00_13_01_24",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87:observation_aware:100027",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 27
+      },
+      "target_label": "bed",
+      "target_object_id": "bed_00_64_00_01_00_87",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44:observation_aware:100033",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 33
+      },
+      "target_label": "blinds",
+      "target_object_id": "blinds_00_11_02_34_01_44",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18:observation_aware:100007",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 7
+      },
+      "target_label": "book",
+      "target_object_id": "book_00_90_00_56_01_18",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34:observation_aware:100016",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 16
+      },
+      "target_label": "boots",
+      "target_object_id": "boots_01_28_00_01_01_34",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21:observation_aware:100029",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 29
+      },
+      "target_label": "bowl",
+      "target_object_id": "bowl_02_45_00_80_01_21",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89:observation_aware:200009",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 200009
+      },
+      "target_label": "box",
+      "target_object_id": "box_02_73_00_20_00_89",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19:observation_aware:100029",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 29
+      },
+      "target_label": "cd",
+      "target_object_id": "cd_01_62_00_80_01_19",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92:observation_aware:200011",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-004",
+        "scene_id": "FloorPlan401",
+        "step": 200011
+      },
+      "target_label": "bathtub",
+      "target_object_id": "bathtub_00_21_00_36_00_92",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0003:object_location:candle_03_11_00_23_00_05:observation_aware:100043",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-004",
+        "scene_id": "FloorPlan401",
+        "step": 43
+      },
+      "target_label": "candle",
+      "target_object_id": "candle_03_11_00_23_00_05",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02:observation_aware:200010",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-004",
+        "scene_id": "FloorPlan401",
+        "step": 200010
+      },
+      "target_label": "cloth",
+      "target_object_id": "cloth_00_27_00_04_01_02",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02:observation_aware:100044",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-004",
+        "scene_id": "FloorPlan401",
+        "step": 44
+      },
+      "target_label": "dishsponge",
+      "target_object_id": "dishsponge_03_20_00_86_00_02",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28:observation_aware:200011",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-004",
+        "scene_id": "FloorPlan401",
+        "step": 200011
+      },
+      "target_label": "faucet",
+      "target_object_id": "faucet_00_14_00_61_00_28",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53:observation_aware:100046",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-004",
+        "scene_id": "FloorPlan401",
+        "step": 46
+      },
+      "target_label": "faucet",
+      "target_object_id": "faucet_03_40_01_02_01_53",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85:observation_aware:100045",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-004",
+        "scene_id": "FloorPlan401",
+        "step": 45
+      },
+      "target_label": "floor",
+      "target_object_id": "floor_01_44_00_04_01_85",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88:observation_aware:200014",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-004",
+        "scene_id": "FloorPlan401",
+        "step": 200014
+      },
+      "target_label": "garbage can",
+      "target_object_id": "garbagecan_00_05_00_00_03_88",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10:observation_aware:100046",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-004",
+        "scene_id": "FloorPlan401",
+        "step": 46
+      },
+      "target_label": "hand towel",
+      "target_object_id": "handtowel_03_42_01_34_02_10",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08:observation_aware:100041",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-005",
+        "scene_id": "FloorPlan2",
+        "step": 41
+      },
+      "target_label": "bread",
+      "target_object_id": "bread_00_26_00_99_00_08",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45:observation_aware:100047",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-005",
+        "scene_id": "FloorPlan2",
+        "step": 47
+      },
+      "target_label": "cabinet",
+      "target_object_id": "cabinet_00_63_02_02_01_45",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45:observation_aware:100047",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-005",
+        "scene_id": "FloorPlan2",
+        "step": 47
+      },
+      "target_label": "cabinet",
+      "target_object_id": "cabinet_01_70_02_02_01_45",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0001:cellphone_00_26_00_56_00_52:observation_aware:100027",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 27
+      },
+      "target_label": "cellphone",
+      "target_object_id": "cellphone_00_26_00_56_00_52",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0002:creditcard_00_46_01_10_00_87:observation_aware:100034",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 34
+      },
+      "target_label": "creditcard",
+      "target_object_id": "creditcard_00_46_01_10_00_87",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0003:creditcard_01_78_00_80_01_19:observation_aware:100029",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 29
+      },
+      "target_label": "creditcard",
+      "target_object_id": "creditcard_01_78_00_80_01_19",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0004:creditcard_01_94_00_68_01_80:observation_aware:200007",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200007
+      },
+      "target_label": "creditcard",
+      "target_object_id": "creditcard_01_94_00_68_01_80",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0005:desklamp_01_32_01_24_00_99:observation_aware:100032",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 32
+      },
+      "target_label": "desk lamp",
+      "target_object_id": "desklamp_01_32_01_24_00_99",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0006:diningtable_02_27_00_02_01_42:observation_aware:200007",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200007
+      },
+      "target_label": "diningtable",
+      "target_object_id": "diningtable_02_27_00_02_01_42",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0007:egg_00_13_00_95_00_17:observation_aware:100041",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-005",
+        "scene_id": "FloorPlan2",
+        "step": 41
+      },
+      "target_label": "egg",
+      "target_object_id": "egg_00_13_00_95_00_17",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0008:kettle_01_04_00_90_02_60:observation_aware:100037",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 37
+      },
+      "target_label": "kettle",
+      "target_object_id": "kettle_01_04_00_90_02_60",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0009:keychain_01_74_00_80_01_29:observation_aware:100029",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 29
+      },
+      "target_label": "keychain",
+      "target_object_id": "keychain_01_74_00_80_01_29",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0010:laptop_00_50_00_56_00_29:observation_aware:100027",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 27
+      },
+      "target_label": "laptop",
+      "target_object_id": "laptop_00_50_00_56_00_29",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0011:laptop_01_70_00_68_01_66:observation_aware:200007",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200007
+      },
+      "target_label": "laptop",
+      "target_object_id": "laptop_01_70_00_68_01_66",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0012:mug_00_24_00_92_00_26:observation_aware:100041",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-005",
+        "scene_id": "FloorPlan2",
+        "step": 41
+      },
+      "target_label": "mug",
+      "target_object_id": "mug_00_24_00_92_00_26",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0013:mug_02_82_00_80_01_22:observation_aware:100029",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 29
+      },
+      "target_label": "mug",
+      "target_object_id": "mug_02_82_00_80_01_22",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0014:newspaper_02_76_00_68_01_18:observation_aware:200007",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-002",
+        "scene_id": "FloorPlan201",
+        "step": 200007
+      },
+      "target_label": "newspaper",
+      "target_object_id": "newspaper_02_76_00_68_01_18",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0015:pan_00_72_00_90_02_42:observation_aware:100037",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-001",
+        "scene_id": "FloorPlan1",
+        "step": 37
+      },
+      "target_label": "pan",
+      "target_object_id": "pan_00_72_00_90_02_42",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-004:FloorPlan401:supplemental_object_location:0016:papertowelroll_03_15_00_96_00_28:observation_aware:100044",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-004",
+        "scene_id": "FloorPlan401",
+        "step": 44
+      },
+      "target_label": "paper towel roll",
+      "target_object_id": "papertowelroll_03_15_00_96_00_28",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0017:pen_01_93_00_81_01_18:observation_aware:100029",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 29
+      },
+      "target_label": "pen",
+      "target_object_id": "pen_01_93_00_81_01_18",
+      "target_visible_in_primary_frame": true
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0018:pencil_02_01_00_81_01_17:observation_aware:100029",
+      "primary_frame": {
+        "episode_id": "ai2thor-real-small-episode-003",
+        "scene_id": "FloorPlan301",
+        "step": 29
+      },
+      "target_label": "pencil",
+      "target_object_id": "pencil_02_01_00_81_01_17",
+      "target_visible_in_primary_frame": true
+    }
+  ],
+  "report_digest": "b6e6aabcd74bd8eff1ecb20f89f45728d6c9cd76da0b2dacbf060e70570b6617",
+  "schema_version": "dsg-spatialqa-lab.vlm-primary-frame-visibility-report.v1",
+  "summary": {
+    "case_count": 60,
+    "object_location_case_count": 60,
+    "primary_frame_missing_count": 0,
+    "target_visible_primary_frame_count": 60,
+    "target_visible_primary_frame_rate": 1.0
+  },
+  "target_visible_primary_frame_case_ids": [
+    "ai2thor-real-small-episode-001:FloorPlan1:0001:object_location:apple_00_47_01_15_00_48:observation_aware:100034",
+    "ai2thor-real-small-episode-001:FloorPlan1:0002:object_location:book_00_15_01_10_00_62:observation_aware:100034",
+    "ai2thor-real-small-episode-001:FloorPlan1:0003:object_location:bottle_01_54_00_89_02_54:observation_aware:100037",
+    "ai2thor-real-small-episode-001:FloorPlan1:0004:object_location:bowl_00_27_01_10_00_75:observation_aware:100036",
+    "ai2thor-real-small-episode-001:FloorPlan1:0005:object_location:bread_00_52_01_17_00_03:observation_aware:100036",
+    "ai2thor-real-small-episode-001:FloorPlan1:0006:object_location:butterknife_00_41_01_11_00_46:observation_aware:100036",
+    "ai2thor-real-small-episode-001:FloorPlan1:0007:object_location:cabinet_00_68_00_50_02_20:observation_aware:100037",
+    "ai2thor-real-small-episode-001:FloorPlan1:0008:object_location:cabinet_00_68_02_02_02_46:observation_aware:100040",
+    "ai2thor-real-small-episode-001:FloorPlan1:0009:object_location:cabinet_00_72_02_02_02_46:observation_aware:100039",
+    "ai2thor-real-small-episode-001:FloorPlan1:0010:object_location:cabinet_00_73_02_02_02_46:observation_aware:100040",
+    "ai2thor-real-small-episode-002:FloorPlan201:0001:object_location:armchair_00_85_00_00_05_98:observation_aware:200001",
+    "ai2thor-real-small-episode-002:FloorPlan201:0002:object_location:armchair_04_38_00_00_06_02:observation_aware:200013",
+    "ai2thor-real-small-episode-002:FloorPlan201:0003:object_location:book_01_87_00_68_01_17:observation_aware:200007",
+    "ai2thor-real-small-episode-002:FloorPlan201:0004:object_location:bowl_02_45_00_60_04_79:observation_aware:200002",
+    "ai2thor-real-small-episode-002:FloorPlan201:0005:object_location:box_03_36_00_19_06_43:observation_aware:200003",
+    "ai2thor-real-small-episode-002:FloorPlan201:0006:object_location:chair_01_34_00_02_01_43:observation_aware:200007",
+    "ai2thor-real-small-episode-002:FloorPlan201:0007:object_location:chair_01_86_00_02_01_04:observation_aware:200007",
+    "ai2thor-real-small-episode-002:FloorPlan201:0008:object_location:chair_01_86_00_02_01_84:observation_aware:200007",
+    "ai2thor-real-small-episode-002:FloorPlan201:0009:object_location:chair_02_51_00_02_00_99:observation_aware:200007",
+    "ai2thor-real-small-episode-002:FloorPlan201:0010:object_location:chair_02_52_00_02_01_88:observation_aware:200007",
+    "ai2thor-real-small-episode-003:FloorPlan301:0001:object_location:alarmclock_01_28_01_24_00_47:observation_aware:100032",
+    "ai2thor-real-small-episode-003:FloorPlan301:0002:object_location:baseballbat_02_84_00_29_01_82:observation_aware:200012",
+    "ai2thor-real-small-episode-003:FloorPlan301:0003:object_location:basketball_00_24_00_13_01_24:observation_aware:100021",
+    "ai2thor-real-small-episode-003:FloorPlan301:0004:object_location:bed_00_64_00_01_00_87:observation_aware:100027",
+    "ai2thor-real-small-episode-003:FloorPlan301:0005:object_location:blinds_00_11_02_34_01_44:observation_aware:100033",
+    "ai2thor-real-small-episode-003:FloorPlan301:0006:object_location:book_00_90_00_56_01_18:observation_aware:100007",
+    "ai2thor-real-small-episode-003:FloorPlan301:0007:object_location:boots_01_28_00_01_01_34:observation_aware:100016",
+    "ai2thor-real-small-episode-003:FloorPlan301:0008:object_location:bowl_02_45_00_80_01_21:observation_aware:100029",
+    "ai2thor-real-small-episode-003:FloorPlan301:0009:object_location:box_02_73_00_20_00_89:observation_aware:200009",
+    "ai2thor-real-small-episode-003:FloorPlan301:0010:object_location:cd_01_62_00_80_01_19:observation_aware:100029",
+    "ai2thor-real-small-episode-004:FloorPlan401:0001:object_location:bathtub_00_21_00_36_00_92:observation_aware:200011",
+    "ai2thor-real-small-episode-004:FloorPlan401:0003:object_location:candle_03_11_00_23_00_05:observation_aware:100043",
+    "ai2thor-real-small-episode-004:FloorPlan401:0004:object_location:cloth_00_27_00_04_01_02:observation_aware:200010",
+    "ai2thor-real-small-episode-004:FloorPlan401:0005:object_location:dishsponge_03_20_00_86_00_02:observation_aware:100044",
+    "ai2thor-real-small-episode-004:FloorPlan401:0006:object_location:faucet_00_14_00_61_00_28:observation_aware:200011",
+    "ai2thor-real-small-episode-004:FloorPlan401:0007:object_location:faucet_03_40_01_02_01_53:observation_aware:100046",
+    "ai2thor-real-small-episode-004:FloorPlan401:0008:object_location:floor_01_44_00_04_01_85:observation_aware:100045",
+    "ai2thor-real-small-episode-004:FloorPlan401:0009:object_location:garbagecan_00_05_00_00_03_88:observation_aware:200014",
+    "ai2thor-real-small-episode-004:FloorPlan401:0010:object_location:handtowel_03_42_01_34_02_10:observation_aware:100046",
+    "ai2thor-real-small-episode-005:FloorPlan2:0003:object_location:bread_00_26_00_99_00_08:observation_aware:100041",
+    "ai2thor-real-small-episode-005:FloorPlan2:0008:object_location:cabinet_00_63_02_02_01_45:observation_aware:100047",
+    "ai2thor-real-small-episode-005:FloorPlan2:0010:object_location:cabinet_01_70_02_02_01_45:observation_aware:100047",
+    "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0001:cellphone_00_26_00_56_00_52:observation_aware:100027",
+    "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0002:creditcard_00_46_01_10_00_87:observation_aware:100034",
+    "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0003:creditcard_01_78_00_80_01_19:observation_aware:100029",
+    "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0004:creditcard_01_94_00_68_01_80:observation_aware:200007",
+    "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0005:desklamp_01_32_01_24_00_99:observation_aware:100032",
+    "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0006:diningtable_02_27_00_02_01_42:observation_aware:200007",
+    "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0007:egg_00_13_00_95_00_17:observation_aware:100041",
+    "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0008:kettle_01_04_00_90_02_60:observation_aware:100037",
+    "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0009:keychain_01_74_00_80_01_29:observation_aware:100029",
+    "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0010:laptop_00_50_00_56_00_29:observation_aware:100027",
+    "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0011:laptop_01_70_00_68_01_66:observation_aware:200007",
+    "ai2thor-real-small-episode-005:FloorPlan2:supplemental_object_location:0012:mug_00_24_00_92_00_26:observation_aware:100041",
+    "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0013:mug_02_82_00_80_01_22:observation_aware:100029",
+    "ai2thor-real-small-episode-002:FloorPlan201:supplemental_object_location:0014:newspaper_02_76_00_68_01_18:observation_aware:200007",
+    "ai2thor-real-small-episode-001:FloorPlan1:supplemental_object_location:0015:pan_00_72_00_90_02_42:observation_aware:100037",
+    "ai2thor-real-small-episode-004:FloorPlan401:supplemental_object_location:0016:papertowelroll_03_15_00_96_00_28:observation_aware:100044",
+    "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0017:pen_01_93_00_81_01_18:observation_aware:100029",
+    "ai2thor-real-small-episode-003:FloorPlan301:supplemental_object_location:0018:pencil_02_01_00_81_01_17:observation_aware:100029"
+  ]
+}

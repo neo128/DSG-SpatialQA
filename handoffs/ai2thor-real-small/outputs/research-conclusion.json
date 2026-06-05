@@ -41,7 +41,7 @@
       "candidate_exact_match_count": 1,
       "candidate_exact_match_rate": 0.016667,
       "candidate_name": "predicted_graph_tool",
-      "candidate_qa_eval_report_digest": "d7f602ef680fab17dc9a7dae8b59fbe7f5295424ec061a5089df181af7a0c561",
+      "candidate_qa_eval_report_digest": "9db20900bca8d41bf4c5ec56f12824a21b845d69de3f1ca8ffc5155af3815901",
       "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
       "case_count": 60,
       "case_count_match": true,
@@ -55,7 +55,7 @@
       "passes_candidate_floor": false,
       "passes_exact_match_rate_delta": false,
       "passes_statistical_test": false,
-      "qa_eval_delta_report_digest": "c9a7480d9f7771080a0a6fa4d3cb2468def0b3a096a4bc844a252bf7de0b96cb",
+      "qa_eval_delta_report_digest": "db5f1b9027606c664b6e60da3ea8456637e4ea1ad20c70211fb2203b9d36be79",
       "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-caption_memory_caption_memory_real_control.json",
       "sign_test_p_value": 0.5,
       "source_key": "caption_memory:caption_memory_real_control",
@@ -71,7 +71,7 @@
       "candidate_exact_match_count": 1,
       "candidate_exact_match_rate": 0.016667,
       "candidate_name": "predicted_graph_tool",
-      "candidate_qa_eval_report_digest": "d7f602ef680fab17dc9a7dae8b59fbe7f5295424ec061a5089df181af7a0c561",
+      "candidate_qa_eval_report_digest": "9db20900bca8d41bf4c5ec56f12824a21b845d69de3f1ca8ffc5155af3815901",
       "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
       "case_count": 60,
       "case_count_match": true,
@@ -85,7 +85,7 @@
       "passes_candidate_floor": false,
       "passes_exact_match_rate_delta": false,
       "passes_statistical_test": false,
-      "qa_eval_delta_report_digest": "29196d7aee6b114c8bcd9a49d21137e80faea47d1725f855e00d373feedd0348",
+      "qa_eval_delta_report_digest": "474c752583150881a5f868ec2914e79c46ddf49453aa707381ba70956e03819c",
       "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-graph_text_graph_text_real_control.json",
       "sign_test_p_value": 0.5,
       "source_key": "graph_text:graph_text_real_control",
@@ -101,7 +101,7 @@
       "candidate_exact_match_count": 1,
       "candidate_exact_match_rate": 0.016667,
       "candidate_name": "predicted_graph_tool",
-      "candidate_qa_eval_report_digest": "d7f602ef680fab17dc9a7dae8b59fbe7f5295424ec061a5089df181af7a0c561",
+      "candidate_qa_eval_report_digest": "9db20900bca8d41bf4c5ec56f12824a21b845d69de3f1ca8ffc5155af3815901",
       "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
       "case_count": 60,
       "case_count_match": true,
@@ -115,7 +115,7 @@
       "passes_candidate_floor": false,
       "passes_exact_match_rate_delta": false,
       "passes_statistical_test": false,
-      "qa_eval_delta_report_digest": "f0822615542a6a7094644959c71e95daaf52cc59f021b20ea59f404645c69b00",
+      "qa_eval_delta_report_digest": "28f3f6971b3c8afb995b382d32aa2950f88dda61c9d3569dec57a9ce76413ba4",
       "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-multi_frame_vlm_multi_frame_vlm_real_control.json",
       "sign_test_p_value": 0.5,
       "source_key": "multi_frame_vlm:multi_frame_vlm_real_control",
@@ -131,7 +131,7 @@
       "candidate_exact_match_count": 1,
       "candidate_exact_match_rate": 0.016667,
       "candidate_name": "predicted_graph_tool",
-      "candidate_qa_eval_report_digest": "d7f602ef680fab17dc9a7dae8b59fbe7f5295424ec061a5089df181af7a0c561",
+      "candidate_qa_eval_report_digest": "9db20900bca8d41bf4c5ec56f12824a21b845d69de3f1ca8ffc5155af3815901",
       "candidate_qa_eval_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/candidate/predicted_graph_tool/qa-eval.json",
       "case_count": 60,
       "case_count_match": true,
@@ -145,7 +145,7 @@
       "passes_candidate_floor": false,
       "passes_exact_match_rate_delta": false,
       "passes_statistical_test": false,
-      "qa_eval_delta_report_digest": "93d82721c8b8f956f3f4b70c1af9390a30e3cf1847f32d8001d92d5ee7bc17b1",
+      "qa_eval_delta_report_digest": "f30e742196e38f42824193aad01e54bc9ad8c28e122f2c0cc75d5c3108999b4b",
       "qa_eval_delta_report_path": "handoffs/ai2thor-real-small/outputs/offline-controls/qa-eval/deltas/predicted_graph_tool-vs-vlm_vlm_real_control.json",
       "sign_test_p_value": 0.5,
       "source_key": "vlm:vlm_real_control",
@@ -162,24 +162,39 @@
     },
     "by_evidence_error_category": {
       "missing_object": 26,
-      "missing_relation": 13,
+      "missing_relation": 11,
       "missing_state": 20,
-      "none": 1
+      "none": 3
     },
     "case_count": 60,
     "error_count": 59
   },
+  "evaluation_scope": {
+    "evidence_observable_case_count": 3,
+    "evidence_observable_rate": 0.05,
+    "full_case_count": 60,
+    "min_observation_aware_case_count": 30,
+    "missing_evidence_case_count": 57,
+    "name": "full_oracle",
+    "passes_observation_aware_case_floor": true,
+    "qa_observability_report_available": true,
+    "target_observable_case_count": 14
+  },
   "graph_quality": {
-    "object_recall": 0.153409,
+    "max_unlocated_object_count": 0,
+    "object_recall": 0.159091,
     "passes_object_recall_floor": false,
-    "relation_f1": 0.021442
+    "passes_unlocated_object_floor": true,
+    "relation_f1": 0.04765,
+    "unlocated_object_count": 0
   },
   "hypothesis": "dynamic_scene_graph_superiority_over_vlm_video_memory_and_text_controls",
   "input_digests": {
-    "error_attribution_report": "126b75e4c82079ca8a5c922cd5d2fd1e9a57375b32aa67c6aea51ae2197b292a",
-    "graph_eval_report": "4923a001710cc798958c6a2c54c60d5747a7d1c59aa1c288b879bc707816e341",
-    "offline_control_result_report": "6620ee0cd1551e0649761481d7a01bd9c100e1d03caed9eed281022b7d0cd645",
-    "predicted_dsg_evidence_report": "a797165e6b37db9333ab13fe7579b1e1c921ee68a0494f3a66367e03363c9f11",
+    "error_attribution_report": "fef0508fc479299381c3e2dae9316db7de381060a206c30770dff8374360f36c",
+    "graph_eval_report": "340b37777cae36b8280ea447c5b8508c7b7a0e3e03ff9845dc5e278ecd35e4dc",
+    "offline_control_result_report": "9b8040f3c2cc7aa50198abaa3a5cc5c7f3c4615ba546d378d2370382523318ae",
+    "predicted_dsg_evidence_report": "0168b11756e05d2883cbc3e667a92ef167b2fd978bdf00bd8b190cf2c05d0beb",
+    "qa_observability_report": "9f5bbcc5da2635cf6cf022c8d75e72b0223f9f5e990cd303e63e85ca4792bd1e",
     "real_readiness_report": "c301f712d60f057f9e0e406167186000ea0d444bd8d91671f791cee1bb976aef"
   },
   "input_paths": {
@@ -187,6 +202,7 @@
     "graph_eval_report": "handoffs/ai2thor-real-small/inputs/review/graph-eval.json",
     "offline_control_result_report": "handoffs/ai2thor-real-small/outputs/offline-controls/offline-control-result.json",
     "predicted_dsg_evidence_report": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-dsg-evidence.json",
+    "qa_observability_report": "handoffs/ai2thor-real-small/outputs/diagnostics/qa-observability-p1.json",
     "real_readiness_report": "handoffs/ai2thor-real-small/outputs/real-experiment-readiness.json"
   },
   "readiness_summary": {
@@ -194,7 +210,7 @@
     "predicted_dsg_ready": true,
     "real_experiment_ready": true
   },
-  "report_digest": "57bbc4db660da14e898338788ce023ffadcf2192ba44575436dd610ae58a24fd",
+  "report_digest": "f39d09e34719cc41a01e3ca6c1784499d838a37b3c0ed0efa153824df211ae9d",
   "required_source_kinds": [
     "caption_memory",
     "graph_text",
@@ -204,8 +220,10 @@
   "schema_version": "dsg-spatialqa-lab.research-conclusion-report.v1",
   "thresholds": {
     "alpha": 0.05,
+    "max_unlocated_object_count": 0,
     "min_candidate_exact_match_rate": 0.2,
     "min_exact_match_rate_delta": 0.05,
-    "min_graph_object_recall": 0.3
+    "min_graph_object_recall": 0.3,
+    "min_observation_aware_case_count": 30
   }
 }
