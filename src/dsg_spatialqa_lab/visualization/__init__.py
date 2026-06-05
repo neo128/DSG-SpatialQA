@@ -9,15 +9,29 @@ from dsg_spatialqa_lab.visualization.dashboard_export import (
     save_dashboard_bundle,
     validate_dashboard_bundle,
 )
+from dsg_spatialqa_lab.visualization.dsg_viewer import (
+    DSG_VIEWER_PAYLOAD_SCHEMA_VERSION,
+    dsg_viewer_payload,
+    dsg_viewer_payload_digest,
+    dsg_viewer_payload_json,
+    load_dsg_viewer_payload,
+    save_dsg_viewer_payload,
+)
 
 __all__ = [
+    "DSG_VIEWER_PAYLOAD_SCHEMA_VERSION",
     "compare_dashboard_bundle",
     "dashboard_bundle",
     "dashboard_bundle_digest",
     "dashboard_bundle_json",
     "dashboard_html",
+    "dsg_viewer_payload",
+    "dsg_viewer_payload_digest",
+    "dsg_viewer_payload_json",
     "export_dashboard",
     "load_dashboard_bundle",
+    "load_dsg_viewer_payload",
     "save_dashboard_bundle",
+    "save_dsg_viewer_payload",
     "validate_dashboard_bundle",
 ]
