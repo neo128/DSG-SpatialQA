@@ -1,0 +1,778 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DSG Viewer</title>
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --panel: #ffffff;
+      --panel-soft: #eef4f8;
+      --line: #cfd9e3;
+      --line-strong: #8aa0b4;
+      --text: #17212b;
+      --muted: #5d6d7d;
+      --blue: #2868c7;
+      --teal: #13856f;
+      --amber: #a76800;
+      --red: #b33a3a;
+      --ink: #1f2a35;
+      --focus: #0f65d6;
+      color-scheme: light;
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--text);
+      cursor: pointer;
+      min-height: 32px;
+      padding: 0 10px;
+      white-space: nowrap;
+    }
+
+    button[aria-pressed="true"] {
+      border-color: var(--blue);
+      background: #e9f1ff;
+      color: #174d9c;
+    }
+
+    input,
+    select {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--text);
+      min-height: 34px;
+      padding: 6px 8px;
+    }
+
+    input:focus,
+    select:focus,
+    button:focus {
+      outline: 2px solid var(--focus);
+      outline-offset: 1px;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+      min-height: 56px;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .title-block {
+      min-width: 0;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .digest {
+      min-width: 0;
+      color: var(--muted);
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mode-tabs {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .workbench {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(220px, 280px) minmax(360px, 1fr) minmax(260px, 340px);
+    }
+
+    .rail,
+    .stage {
+      min-width: 0;
+      min-height: 0;
+      overflow: auto;
+    }
+
+    .rail {
+      background: var(--panel);
+      border-right: 1px solid var(--line);
+    }
+
+    #detail-rail {
+      border-right: 0;
+      border-left: 1px solid var(--line);
+    }
+
+    .stage {
+      background: #edf2f6;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    .toolbar,
+    .section {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 132px;
+      gap: 8px;
+      background: #fbfcfd;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .metric {
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 8px;
+      background: #ffffff;
+    }
+
+    .metric-value {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--ink);
+      overflow-wrap: anywhere;
+    }
+
+    .metric-label {
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .list {
+      display: grid;
+      gap: 6px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      min-height: 36px;
+      padding: 7px 8px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #ffffff;
+      text-align: left;
+    }
+
+    .row:hover {
+      border-color: var(--line-strong);
+    }
+
+    .row-name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      min-height: 20px;
+      border-radius: 999px;
+      padding: 2px 7px;
+      color: #ffffff;
+      background: var(--blue);
+      font-size: 11px;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .pill.object {
+      background: var(--teal);
+    }
+
+    .pill.room,
+    .pill.region {
+      background: var(--amber);
+    }
+
+    .pill.state {
+      background: var(--muted);
+    }
+
+    .canvas-wrap {
+      min-height: 0;
+      padding: 12px;
+    }
+
+    #graph-canvas {
+      width: 100%;
+      height: 100%;
+      min-height: 520px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .edge-line {
+      stroke: #8fa2b5;
+      stroke-width: 1.5;
+    }
+
+    .edge-label {
+      fill: #405265;
+      font-size: 11px;
+      pointer-events: none;
+    }
+
+    .node {
+      cursor: pointer;
+    }
+
+    .node circle {
+      fill: #ffffff;
+      stroke: var(--blue);
+      stroke-width: 2;
+    }
+
+    .node.object circle {
+      stroke: var(--teal);
+    }
+
+    .node.room circle,
+    .node.region circle {
+      stroke: var(--amber);
+    }
+
+    .node.state circle {
+      stroke: var(--line-strong);
+    }
+
+    .node text {
+      fill: var(--text);
+      font-size: 12px;
+      font-weight: 700;
+      text-anchor: middle;
+      pointer-events: none;
+    }
+
+    .node.selected circle {
+      stroke: var(--red);
+      stroke-width: 3;
+    }
+
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .detail-table th,
+    .detail-table td {
+      padding: 7px 0;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      overflow-wrap: anywhere;
+    }
+
+    .detail-table th {
+      width: 34%;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    pre {
+      margin: 0;
+      max-height: 360px;
+      overflow: auto;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .empty {
+      color: var(--muted);
+      padding: 8px 0;
+      overflow-wrap: anywhere;
+    }
+
+    .status-line {
+      color: var(--muted);
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 980px) {
+      .workbench {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto minmax(420px, 55vh) auto;
+      }
+
+      .rail,
+      #detail-rail {
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+      }
+
+      .mode-tabs {
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="title-block">
+        <h1>DSG Viewer</h1>
+        <span class="digest" id="payload-digest">payload pending</span>
+      </div>
+      <nav class="mode-tabs" aria-label="View mode">
+        <button type="button" data-mode="debug" aria-pressed="true">Debug</button>
+        <button type="button" data-mode="demo" aria-pressed="false">Demo</button>
+        <button type="button" data-mode="analysis" aria-pressed="false">Analysis</button>
+      </nav>
+    </header>
+
+    <main class="workbench">
+      <aside class="rail" id="data-rail">
+        <section class="section">
+          <p class="section-title">Metrics</p>
+          <div class="metric-grid" id="metrics"></div>
+        </section>
+        <section class="section">
+          <p class="section-title">Artifacts</p>
+          <div class="list" id="artifact-list"></div>
+        </section>
+        <section class="section">
+          <p class="section-title">Objects</p>
+          <div class="list" id="object-list"></div>
+        </section>
+        <section class="section">
+          <p class="section-title">QA</p>
+          <div class="list" id="qa-list"></div>
+        </section>
+      </aside>
+
+      <section class="stage">
+        <div class="toolbar">
+          <input id="search" type="search" placeholder="Search graph">
+          <select id="node-filter" aria-label="Node type filter">
+            <option value="">All nodes</option>
+            <option value="agent">Agent</option>
+            <option value="object">Object</option>
+            <option value="room">Room</option>
+            <option value="region">Region</option>
+            <option value="state">State</option>
+          </select>
+        </div>
+        <div class="canvas-wrap">
+          <svg id="graph-canvas" role="img" aria-label="Dynamic scene graph"></svg>
+        </div>
+      </section>
+
+      <aside class="rail" id="detail-rail">
+        <section class="section">
+          <p class="section-title">Selection</p>
+          <div id="selection-detail" class="empty">No selection</div>
+        </section>
+        <section class="section">
+          <p class="section-title">Oracle Delta</p>
+          <div id="oracle-detail"></div>
+        </section>
+        <section class="section">
+          <p class="section-title">Diagnostics</p>
+          <div id="diagnostics"></div>
+        </section>
+      </aside>
+    </main>
+  </div>
+
+  <script>
+    const state = {
+      payload: null,
+      mode: 'debug',
+      query: '',
+      typeFilter: '',
+      selectedId: ''
+    };
+
+    const svgNs = 'http://www.w3.org/2000/svg';
+    const byId = (id) => document.getElementById(id);
+    const text = (value) => value === null || value === undefined ? '' : String(value);
+
+    fetch('payload.json')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`payload ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((payload) => {
+        state.payload = payload;
+        render();
+      })
+      .catch((error) => {
+        byId('selection-detail').textContent = `Payload load failed: ${error.message}`;
+      });
+
+    byId('search').addEventListener('input', (event) => {
+      state.query = event.target.value.toLowerCase();
+      renderGraph();
+      renderLists();
+    });
+
+    byId('node-filter').addEventListener('change', (event) => {
+      state.typeFilter = event.target.value;
+      renderGraph();
+      renderLists();
+    });
+
+    for (const button of document.querySelectorAll('[data-mode]')) {
+      button.addEventListener('click', () => {
+        state.mode = button.dataset.mode;
+        for (const item of document.querySelectorAll('[data-mode]')) {
+          item.setAttribute('aria-pressed', item === button ? 'true' : 'false');
+        }
+        renderLists();
+        renderDetail();
+      });
+    }
+
+    function render() {
+      const payload = state.payload;
+      byId('payload-digest').textContent = payload.payload_digest || 'no digest';
+      renderMetrics();
+      renderArtifacts();
+      renderLists();
+      renderGraph();
+      renderDetail();
+    }
+
+    function renderMetrics() {
+      const metrics = state.payload.metrics || {};
+      const rows = [
+        ['Objects', metrics.object_count],
+        ['Edges', metrics.edge_count],
+        ['Evidence', metrics.evidence_ready],
+        ['Relation F1', metrics.relation_f1]
+      ];
+      byId('metrics').innerHTML = rows.map(([label, value]) => `
+        <div class="metric">
+          <div class="metric-value">${escapeHtml(metricValue(value))}</div>
+          <div class="metric-label">${escapeHtml(label)}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderArtifacts() {
+      const artifacts = state.payload.artifacts || {};
+      const entries = Object.entries(artifacts).sort();
+      byId('artifact-list').innerHTML = entries.length ? entries.map(([key, value]) => `
+        <div class="row">
+          <span class="row-name" title="${escapeHtml(value)}">${escapeHtml(key)}</span>
+          <span class="pill">${escapeHtml(fileName(value))}</span>
+        </div>
+      `).join('') : '<div class="empty">No artifacts</div>';
+    }
+
+    function renderLists() {
+      const nodes = filteredNodes();
+      const objects = nodes.filter((node) => node.type === 'object');
+      byId('object-list').innerHTML = objects.length ? objects.map((node) => `
+        <button type="button" class="row" data-select-node="${escapeHtml(node.id)}">
+          <span class="row-name">${escapeHtml(node.label || node.id)}</span>
+          <span class="pill object">${escapeHtml(node.id)}</span>
+        </button>
+      `).join('') : '<div class="empty">No matching objects</div>';
+
+      const cases = state.payload.qa?.cases || [];
+      const qaRows = cases.filter((item) => matchesQuery(item.case_id, item.question_type));
+      byId('qa-list').innerHTML = qaRows.length ? qaRows.map((item) => `
+        <button type="button" class="row" data-select-case="${escapeHtml(item.case_id)}">
+          <span class="row-name">${escapeHtml(item.case_id)}</span>
+          <span class="pill">${escapeHtml(item.question_type)}</span>
+        </button>
+      `).join('') : '<div class="empty">No matching QA cases</div>';
+
+      for (const button of document.querySelectorAll('[data-select-node]')) {
+        button.addEventListener('click', () => selectNode(button.dataset.selectNode));
+      }
+      for (const button of document.querySelectorAll('[data-select-case]')) {
+        button.addEventListener('click', () => selectCase(button.dataset.selectCase));
+      }
+    }
+
+    function renderGraph() {
+      const svg = byId('graph-canvas');
+      svg.innerHTML = '';
+      const nodes = filteredNodes();
+      const nodeIds = new Set(nodes.map((node) => node.id));
+      const edges = (state.payload.graph?.edges || [])
+        .filter((edge) => nodeIds.has(edge.src) && nodeIds.has(edge.dst));
+      const width = Math.max(svg.clientWidth || 800, 800);
+      const height = Math.max(svg.clientHeight || 520, 520);
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      const positions = layoutNodes(nodes, width, height);
+
+      for (const edge of edges) {
+        const src = positions.get(edge.src);
+        const dst = positions.get(edge.dst);
+        if (!src || !dst) {
+          continue;
+        }
+        const line = document.createElementNS(svgNs, 'line');
+        line.setAttribute('x1', src.x);
+        line.setAttribute('y1', src.y);
+        line.setAttribute('x2', dst.x);
+        line.setAttribute('y2', dst.y);
+        line.setAttribute('class', 'edge-line');
+        svg.appendChild(line);
+
+        const label = document.createElementNS(svgNs, 'text');
+        label.setAttribute('x', (src.x + dst.x) / 2);
+        label.setAttribute('y', (src.y + dst.y) / 2 - 5);
+        label.setAttribute('class', 'edge-label');
+        label.textContent = edge.relation;
+        svg.appendChild(label);
+      }
+
+      for (const node of nodes) {
+        const pos = positions.get(node.id);
+        const group = document.createElementNS(svgNs, 'g');
+        group.setAttribute('class', `node ${node.type}${node.id === state.selectedId ? ' selected' : ''}`);
+        group.setAttribute('tabindex', '0');
+        group.addEventListener('click', () => selectNode(node.id));
+
+        const circle = document.createElementNS(svgNs, 'circle');
+        circle.setAttribute('cx', pos.x);
+        circle.setAttribute('cy', pos.y);
+        circle.setAttribute('r', '28');
+        group.appendChild(circle);
+
+        const label = document.createElementNS(svgNs, 'text');
+        label.setAttribute('x', pos.x);
+        label.setAttribute('y', pos.y + 4);
+        label.textContent = compactLabel(node.label || node.id);
+        group.appendChild(label);
+        svg.appendChild(group);
+      }
+    }
+
+    function renderDetail() {
+      const payload = state.payload;
+      if (!payload) {
+        return;
+      }
+      const node = (payload.graph?.nodes || []).find((item) => item.id === state.selectedId);
+      if (node) {
+        byId('selection-detail').innerHTML = detailTable({
+          id: node.id,
+          type: node.type,
+          label: node.label || '',
+          attributes: JSON.stringify(modeAttributes(node.attributes), null, 2)
+        });
+      } else {
+        byId('selection-detail').innerHTML = '<div class="empty">No selection</div>';
+      }
+
+      const oracle = payload.oracle || {};
+      byId('oracle-detail').innerHTML = detailTable({
+        missing_relations: oracle.missing_relation_count || 0,
+        extra_relations: oracle.extra_relation_count || 0,
+        object_matches: Object.keys(oracle.object_matches_by_predicted_id || {}).length
+      });
+
+      const failed = payload.diagnostics?.failed_checks || [];
+      byId('diagnostics').innerHTML = failed.length
+        ? `<pre>${escapeHtml(JSON.stringify(failed, null, 2))}</pre>`
+        : '<div class="status-line">No failed checks</div>';
+    }
+
+    function selectNode(id) {
+      state.selectedId = id || '';
+      renderGraph();
+      renderDetail();
+    }
+
+    function selectCase(caseId) {
+      const item = (state.payload.qa?.cases || []).find((row) => row.case_id === caseId);
+      const firstTarget = item?.target_object_ids?.[0] || '';
+      if (firstTarget) {
+        state.selectedId = firstTarget;
+      }
+      byId('selection-detail').innerHTML = `<pre>${escapeHtml(JSON.stringify(item || {}, null, 2))}</pre>`;
+      renderGraph();
+    }
+
+    function filteredNodes() {
+      const nodes = state.payload?.graph?.nodes || [];
+      return nodes.filter((node) => {
+        if (state.typeFilter && node.type !== state.typeFilter) {
+          return false;
+        }
+        return matchesQuery(node.id, node.label, node.type);
+      });
+    }
+
+    function matchesQuery(...values) {
+      if (!state.query) {
+        return true;
+      }
+      return values.some((value) => text(value).toLowerCase().includes(state.query));
+    }
+
+    function layoutNodes(nodes, width, height) {
+      const positions = new Map();
+      const cx = width / 2;
+      const cy = height / 2;
+      const radiusX = Math.max(120, width / 2 - 90);
+      const radiusY = Math.max(110, height / 2 - 90);
+      nodes.forEach((node, index) => {
+        const angle = nodes.length < 2 ? 0 : (Math.PI * 2 * index) / nodes.length - Math.PI / 2;
+        positions.set(node.id, {
+          x: Math.round(cx + Math.cos(angle) * radiusX),
+          y: Math.round(cy + Math.sin(angle) * radiusY)
+        });
+      });
+      return positions;
+    }
+
+    function detailTable(rows) {
+      return `<table class="detail-table"><tbody>${Object.entries(rows).map(([key, value]) => `
+        <tr><th>${escapeHtml(key)}</th><td>${cellValue(value)}</td></tr>
+      `).join('')}</tbody></table>`;
+    }
+
+    function modeAttributes(attributes) {
+      if (state.mode === 'demo') {
+        return {
+          pose: attributes?.pose,
+          confidence: attributes?.confidence,
+          visible: attributes?.visible
+        };
+      }
+      if (state.mode === 'analysis') {
+        return {
+          source_kind: attributes?.source_kind,
+          evidence_kinds: attributes?.evidence_kinds,
+          confidence: attributes?.confidence
+        };
+      }
+      return attributes || {};
+    }
+
+    function cellValue(value) {
+      if (typeof value === 'string' && value.startsWith('{')) {
+        return `<pre>${escapeHtml(value)}</pre>`;
+      }
+      return escapeHtml(metricValue(value));
+    }
+
+    function metricValue(value) {
+      if (value === true) {
+        return 'ready';
+      }
+      if (value === false) {
+        return 'not ready';
+      }
+      if (typeof value === 'number') {
+        return Number.isInteger(value) ? String(value) : value.toFixed(3);
+      }
+      return value === undefined || value === null ? 'n/a' : String(value);
+    }
+
+    function fileName(path) {
+      const parts = String(path).split('/');
+      return parts[parts.length - 1] || path;
+    }
+
+    function compactLabel(value) {
+      const label = String(value);
+      return label.length > 12 ? `${label.slice(0, 10)}..` : label;
+    }
+
+    function escapeHtml(value) {
+      return text(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#39;');
+    }
+  </script>
+</body>
+</html>

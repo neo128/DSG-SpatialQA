@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 import hashlib
+from importlib.resources import files
 import json
 from pathlib import Path
 from typing import Any, cast
@@ -126,6 +127,14 @@ def load_dsg_viewer_payload(path: str | Path) -> dict[str, Any]:
     if not isinstance(payload, Mapping):
         raise SpatialQAError("DSG viewer payload JSON must be an object")
     return cast(dict[str, Any], payload)
+
+
+def dsg_viewer_html() -> str:
+    return (
+        files("dsg_spatialqa_lab.visualization")
+        .joinpath("static", "dsg_viewer.html")
+        .read_text(encoding="utf-8")
+    )
 
 
 def dsg_viewer_resolve_workspace_path(workspace: str | Path, path: str | Path) -> Path:

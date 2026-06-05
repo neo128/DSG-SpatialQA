@@ -204,3 +204,16 @@ def test_serve_dsg_viewer_cli_writes_payload_without_starting_server(
     assert output["action"] == "write_dsg_viewer_payload"
     assert output["payload_path"] == str(output_path)
     assert payload["metrics"]["object_count"] == 1
+
+
+def test_dsg_viewer_static_html_contains_workbench_regions() -> None:
+    html = lab.dsg_viewer_html()
+
+    assert "DSG Viewer" in html
+    assert 'id="data-rail"' in html
+    assert 'id="graph-canvas"' in html
+    assert 'id="detail-rail"' in html
+    assert "Debug" in html
+    assert "Demo" in html
+    assert "Analysis" in html
+    assert "fetch('payload.json')" in html

@@ -130,5 +130,5 @@ def test_package_declares_pep561_type_marker() -> None:
 
     assert marker.read_text(encoding="utf-8").strip() == ""
     assert pyproject["tool"]["setuptools"]["package-data"] == {
-        "dsg_spatialqa_lab": ["py.typed"]
+        "dsg_spatialqa_lab": ["py.typed", "visualization/static/*.html"]
     }

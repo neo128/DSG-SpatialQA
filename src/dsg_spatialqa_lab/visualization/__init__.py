@@ -11,6 +11,7 @@ from dsg_spatialqa_lab.visualization.dashboard_export import (
 )
 from dsg_spatialqa_lab.visualization.dsg_viewer import (
     DSG_VIEWER_PAYLOAD_SCHEMA_VERSION,
+    dsg_viewer_html,
     dsg_viewer_payload,
     dsg_viewer_payload_digest,
     dsg_viewer_payload_json,
@@ -27,6 +28,7 @@ __all__ = [
     "dashboard_bundle_digest",
     "dashboard_bundle_json",
     "dashboard_html",
+    "dsg_viewer_html",
     "dsg_viewer_payload",
     "dsg_viewer_payload_digest",
     "dsg_viewer_payload_json",

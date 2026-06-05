@@ -10,6 +10,7 @@ from typing import Any, cast
 
 from dsg_spatialqa_lab import (
     SpatialQAError,
+    dsg_viewer_html,
     dsg_viewer_payload,
     dsg_viewer_payload_json,
     dsg_viewer_resolve_workspace_path,
@@ -190,7 +191,7 @@ def _serve(payload: Mapping[str, Any], *, host: str, port: int) -> None:
 
 
 def _viewer_html() -> str:
-    return "<!doctype html><html><head><title>DSG Viewer</title></head><body></body></html>"
+    return dsg_viewer_html()
 
 
 def _write_response(
