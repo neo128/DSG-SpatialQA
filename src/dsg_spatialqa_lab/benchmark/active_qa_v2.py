@@ -91,7 +91,11 @@ def build_active_qa_v2_splits(
             dst_id=edge.dst,
             dst_label=dst_node.label or _label(edge.dst),
             step=edge.step,
-            situation=_situation(index["step_pose"].get(evidence_frames[0]), evidence_frames[0]),
+            situation=_situation(
+                index["step_pose"].get(evidence_frames[0]),
+                evidence_frames[0],
+                index["step_frame"].get(evidence_frames[0]),
+            ),
             required_edges=[f"{edge.src}-{edge.relation}-{edge.dst}"],
             evidence_frames=evidence_frames,
             trajectory=trajectory,
@@ -128,7 +132,11 @@ def build_active_qa_v2_splits(
             dst_id="agent",
             dst_label="agent",
             step=last_step,
-            situation=_situation(last_pose, last_step),
+            situation=_situation(
+                last_pose,
+                last_step,
+                index["step_frame"].get(last_step),
+            ),
             required_edges=[],
             evidence_frames=[last_step],
             trajectory=trajectory,
@@ -226,15 +234,24 @@ def build_active_qa_v2_vlm_request_bundle(
     episode_id: str,
     records: Sequence[Mapping[str, Any]],
 ) -> dict[str, Any]:
-    prediction_cases = [
+    prediction_cases = _dedupe_prediction_cases([
         {
             "case_id": row.get("id"),
             "episode_id": row.get("episode_id"),
             "scene_id": row.get("scene_id"),
             "question": row.get("question_text"),
+            "question_text": row.get("question_text"),
             "question_type": row.get("question_type"),
-            "answer_options": row.get("answer_options"),
+            "answer_options": _request_answer_options(row.get("answer_options")),
+            "answer_option_response_schema": _answer_option_response_schema(
+                row.get("answer_options")
+            ),
+            "primary_frame": _mapping(row.get("situation")).get("view_frame"),
+            "frames": [_mapping(row.get("situation")).get("view_frame")]
+            if isinstance(_mapping(row.get("situation")).get("view_frame"), Mapping)
+            else [],
             "situation": _public_situation(_mapping(row.get("situation"))),
+            "target": _public_target(_mapping(row.get("target"))),
             "required_output_schema": {
                 "answer": "string or structured current_location JSON",
                 "evidence_summary": "brief text",
@@ -242,7 +259,7 @@ def build_active_qa_v2_vlm_request_bundle(
             },
         }
         for row in records
-    ]
+    ])
     bundle: dict[str, Any] = {
         "schema_version": ACTIVE_QA_V2_REQUEST_BUNDLE_SCHEMA_VERSION,
         "episode_id": episode_id,
@@ -350,11 +367,21 @@ def _observation_index(observations: Sequence[SceneObservation]) -> dict[str, An
     object_steps: dict[str, set[int]] = defaultdict(set)
     label_counts: Counter[str] = Counter()
     step_pose: dict[int, Any] = {}
+    step_frame: dict[int, dict[str, Any]] = {}
     seen_labels: set[tuple[str, str]] = set()
     for observation in observations:
         if observation.agent_pose is not None:
             step_pose[observation.step] = observation.agent_pose
         for obj in observation.objects:
+            if observation.step not in step_frame:
+                rgb_path = obj.attributes.get("rgb_path")
+                if isinstance(rgb_path, str) and rgb_path:
+                    step_frame[observation.step] = {
+                        "frame_id": f"{observation.step:06d}",
+                        "rgb_path": rgb_path,
+                        "scene_id": "",
+                        "step": observation.step,
+                    }
             object_steps[obj.object_id].add(observation.step)
             key = (obj.object_id, obj.label)
             if key not in seen_labels:
@@ -364,6 +391,7 @@ def _observation_index(observations: Sequence[SceneObservation]) -> dict[str, An
         "object_steps": {key: sorted(value) for key, value in object_steps.items()},
         "label_counts": label_counts,
         "step_pose": step_pose,
+        "step_frame": step_frame,
     }
 
 
@@ -375,12 +403,16 @@ def _same_frame_steps(
     return sorted(set(object_steps.get(src, ())) & set(object_steps.get(dst, ())))
 
 
-def _situation(pose: Any, step: int) -> dict[str, Any]:
+def _situation(
+    pose: Any,
+    step: int,
+    view_frame: Mapping[str, Any] | None = None,
+) -> dict[str, Any]:
     return {
         "step": step,
         "reference_frame": "agent_egocentric",
         "agent_pose": pose.to_dict() if hasattr(pose, "to_dict") else None,
-        "view_frame": None,
+        "view_frame": dict(view_frame) if view_frame is not None else None,
         "source": "reachable_nbv_observation",
     }
 
@@ -436,12 +468,69 @@ def _public_situation(situation: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
+def _public_target(target: Mapping[str, Any]) -> dict[str, Any] | None:
+    label = target.get("label")
+    if not isinstance(label, str) or label == "":
+        return None
+    return {"label": label}
+
+
+def _request_answer_options(value: object) -> list[dict[str, Any]]:
+    options = []
+    for index, item in enumerate(_mapping_sequence(value), start=1):
+        relation = item.get("relation")
+        dst_label = item.get("dst_label") or item.get("destination_label")
+        if not isinstance(relation, str) or not isinstance(dst_label, str):
+            continue
+        options.append(
+            {
+                "option_id": f"option_{index}",
+                "relation": relation,
+                "destination_label": dst_label,
+            }
+        )
+    return options
+
+
+def _answer_option_response_schema(value: object) -> dict[str, Any] | None:
+    option_ids = [
+        option["option_id"]
+        for option in _request_answer_options(value)
+        if isinstance(option.get("option_id"), str)
+    ]
+    if not option_ids:
+        return None
+    return {
+        "allowed_answer_option_ids": option_ids,
+        "answer_option_id_field": "answer.answer_option_id",
+        "answer_current_location_rule": (
+            "Copy relation and destination_label from the selected answer option."
+        ),
+        "required_when_answer_options_present": True,
+    }
+
+
 def _label(object_id: str) -> str:
     return object_id.split("_", 1)[0]
 
 
 def _mapping(value: object) -> Mapping[str, Any]:
     return value if isinstance(value, Mapping) else {}
+
+
+def _mapping_sequence(value: object) -> list[Mapping[str, Any]]:
+    if not isinstance(value, Sequence) or isinstance(value, str):
+        return []
+    return [item for item in value if isinstance(item, Mapping)]
+
+
+def _dedupe_prediction_cases(cases: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    by_id = {
+        str(case.get("case_id")): dict(case)
+        for case in cases
+        if isinstance(case.get("case_id"), str)
+    }
+    return [by_id[case_id] for case_id in sorted(by_id)]
 
 
 def _ratio(numerator: int, denominator: int) -> float:

@@ -105,3 +105,18 @@ def test_support_surface_gap_gain_and_position_revisit_penalty_drive_selection()
     assert support_gap.terms["support_surface_gap_gain"] > 0.0
     assert repeated_target.terms["position_revisit_penalty"] > 0.0
     assert support_gap.score > repeated_target.score
+
+
+def test_spatial_spread_gain_prefers_wider_frontier_when_only_region_prior_exists() -> None:
+    near = ViewpointCandidate("near", Pose3D(0.25, 0.9, 0.0, yaw=0.0), pitch=-30.0)
+    far = ViewpointCandidate("far", Pose3D(1.25, 0.9, 0.0, yaw=0.0), pitch=-30.0)
+    memory = CoverageMemory(
+        visited_position_keys=frozenset({"0.00:0.00", "0.25:0.00"}),
+    )
+    expected = {"unseen_region_ids": ["frontier"]}
+
+    near_score = viewpoint_score(near, memory, expected={**expected, "travel_cost": 0.05})
+    far_score = viewpoint_score(far, memory, expected={**expected, "travel_cost": 0.25})
+
+    assert far_score.terms["spatial_spread_gain"] > near_score.terms["spatial_spread_gain"]
+    assert far_score.score > near_score.score

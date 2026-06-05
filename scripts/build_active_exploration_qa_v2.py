@@ -62,6 +62,7 @@ def main(argv: list[str] | None = None) -> int:
                 list(splits.get("observation_aware", ()))
                 + list(splits.get("relation_centric", ()))
                 + list(splits.get("situated", ()))
+                + list(splits.get("temporal", ()))
             )
             request_bundle = build_active_qa_v2_vlm_request_bundle(
                 episode_id=args.episode_id,

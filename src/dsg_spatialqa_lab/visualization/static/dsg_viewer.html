@@ -30,11 +30,13 @@
     }
 
     body {
+      height: 100vh;
       margin: 0;
       background: var(--bg);
       color: var(--text);
       font-size: 14px;
       line-height: 1.4;
+      overflow: hidden;
     }
 
     button,
@@ -80,9 +82,10 @@
     }
 
     .app-shell {
-      min-height: 100vh;
+      height: 100vh;
       display: grid;
       grid-template-rows: auto minmax(0, 1fr);
+      overflow: hidden;
     }
 
     .topbar {
@@ -129,18 +132,19 @@
       min-height: 0;
       display: grid;
       grid-template-columns: minmax(220px, 280px) minmax(360px, 1fr) minmax(260px, 340px);
+      overflow: hidden;
     }
 
     .rail,
     .stage {
       min-width: 0;
       min-height: 0;
-      overflow: auto;
     }
 
     .rail {
       background: var(--panel);
       border-right: 1px solid var(--line);
+      overflow: auto;
     }
 
     #detail-rail {
@@ -152,6 +156,7 @@
       background: #edf2f6;
       display: grid;
       grid-template-rows: auto minmax(0, 1fr);
+      overflow: hidden;
     }
 
     .toolbar,
@@ -266,17 +271,111 @@
 
     .canvas-wrap {
       min-height: 0;
+      height: 100%;
       padding: 12px;
+      overflow: hidden;
     }
 
-    #graph-canvas {
-      width: 100%;
+    .evidence-grid {
+      min-height: 0;
       height: 100%;
-      min-height: 520px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .graph-panel {
+      min-width: 0;
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
       border: 1px solid var(--line);
       border-radius: 6px;
       background: #ffffff;
       overflow: hidden;
+    }
+
+    .graph-panel-header {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+      min-height: 38px;
+      padding: 7px 10px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcfd;
+    }
+
+    .graph-title {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .graph-status {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      overflow-wrap: anywhere;
+    }
+
+    .graph-panel svg,
+    .media-frame {
+      width: 100%;
+      height: 100%;
+      min-height: 0;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .media-frame {
+      position: relative;
+      display: grid;
+      place-items: center;
+      padding: 10px;
+    }
+
+    .evidence-image {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #ffffff;
+    }
+
+    .topdown-overlay {
+      position: absolute;
+      inset: 10px;
+      width: calc(100% - 20px);
+      height: calc(100% - 20px);
+      pointer-events: none;
+    }
+
+    .topdown-marker {
+      fill: var(--red);
+      stroke: #ffffff;
+      stroke-width: 4;
+    }
+
+    .topdown-marker-label {
+      fill: var(--text);
+      font-size: 28px;
+      font-weight: 700;
+      paint-order: stroke;
+      stroke: #ffffff;
+      stroke-width: 4;
+      stroke-linejoin: round;
+    }
+
+    .media-empty {
+      color: var(--muted);
+      font-weight: 600;
+      text-align: center;
+      overflow-wrap: anywhere;
     }
 
     .edge-line {
@@ -425,6 +524,10 @@
           <p class="section-title">QA</p>
           <div class="list" id="qa-list"></div>
         </section>
+        <section class="section">
+          <p class="section-title">Trajectory</p>
+          <div class="list" id="trajectory-list"></div>
+        </section>
       </aside>
 
       <section class="stage">
@@ -439,8 +542,55 @@
             <option value="state">State</option>
           </select>
         </div>
-        <div class="canvas-wrap">
-          <svg id="graph-canvas" role="img" aria-label="Dynamic scene graph"></svg>
+        <div class="canvas-wrap" id="graph-canvas">
+          <div class="evidence-grid">
+            <section class="graph-panel">
+              <div class="graph-panel-header">
+                <div>
+                  <p class="graph-title">Object Relations</p>
+                  <p class="graph-status" id="object-relation-status">Select an object</p>
+                </div>
+                <span class="pill" id="object-relation-count">0 nodes</span>
+              </div>
+              <svg id="object-relation-canvas" role="img" aria-label="Selected object relation graph"></svg>
+            </section>
+            <section class="graph-panel">
+              <div class="graph-panel-header">
+                <div>
+                  <p class="graph-title">Scene Position</p>
+                  <p class="graph-status" id="topdown-status">Select an object</p>
+                </div>
+                <span class="pill" id="topdown-count">topdown</span>
+              </div>
+              <div class="media-frame">
+                <svg id="topdown-image" class="evidence-image" role="img" aria-label="Top-down scene map"></svg>
+                <div id="topdown-empty" class="media-empty">No top-down image</div>
+              </div>
+            </section>
+            <section class="graph-panel">
+              <div class="graph-panel-header">
+                <div>
+                  <p class="graph-title">All Object Relations</p>
+                  <p class="graph-status" id="all-object-graph-status">Object-object relations</p>
+                </div>
+                <span class="pill" id="all-object-graph-count">0 nodes</span>
+              </div>
+              <svg id="all-object-graph-canvas" role="img" aria-label="All object relation graph"></svg>
+            </section>
+            <section class="graph-panel">
+              <div class="graph-panel-header">
+                <div>
+                  <p class="graph-title">RGB Evidence</p>
+                  <p class="graph-status" id="evidence-rgb-status">Select an object</p>
+                </div>
+                <span class="pill" id="evidence-rgb-count">rgb</span>
+              </div>
+              <div class="media-frame">
+                <img id="evidence-rgb-image" class="evidence-image" alt="Selected object RGB evidence">
+                <div id="evidence-rgb-empty" class="media-empty">No RGB evidence</div>
+              </div>
+            </section>
+          </div>
         </div>
       </section>
 
@@ -527,6 +677,9 @@
       const rows = [
         ['Objects', metrics.object_count],
         ['Edges', metrics.edge_count],
+        ['QA', metrics.qa_case_count],
+        ['Steps', metrics.trajectory_step_count],
+        ['Navigation', metrics.navigation_validated],
         ['Evidence', metrics.evidence_ready],
         ['Relation F1', metrics.relation_f1]
       ];
@@ -574,19 +727,146 @@
       for (const button of document.querySelectorAll('[data-select-case]')) {
         button.addEventListener('click', () => selectCase(button.dataset.selectCase));
       }
+
+      renderTrajectoryList();
+    }
+
+    function renderTrajectoryList() {
+      const trajectory = state.payload.trajectory || {};
+      const summary = trajectory.summary || {};
+      const steps = trajectory.steps || [];
+      const rows = [
+        ['Steps', summary.step_count],
+        ['Stations', summary.station_count],
+        ['Navigation', summary.navigation_validated],
+        ['Runtime', summary.real_ai2thor_runtime]
+      ];
+      const stepRows = steps.slice(0, 8).map((step) => {
+        const viewpoint = step.selected_viewpoint || {};
+        const label = viewpoint.candidate_id || `step ${step.step_index}`;
+        const status = step.navigation_success === false ? 'blocked' : 'ok';
+        return `
+          <button type="button" class="row" data-select-step="${escapeHtml(step.step_index)}">
+            <span class="row-name">${escapeHtml(label)}</span>
+            <span class="pill">${escapeHtml(status)}</span>
+          </button>
+        `;
+      }).join('');
+      byId('trajectory-list').innerHTML = `
+        ${rows.map(([label, value]) => `
+          <div class="row">
+            <span class="row-name">${escapeHtml(label)}</span>
+            <span class="pill">${escapeHtml(metricValue(value))}</span>
+          </div>
+        `).join('')}
+        ${stepRows || '<div class="empty">No trajectory steps</div>'}
+      `;
+      for (const button of document.querySelectorAll('[data-select-step]')) {
+        button.addEventListener('click', () => selectTrajectoryStep(button.dataset.selectStep));
+      }
     }
 
     function renderGraph() {
-      const svg = byId('graph-canvas');
-      svg.innerHTML = '';
-      const nodes = filteredNodes();
+      renderRelatedGraph();
+      renderTopdownPanel();
+      renderAllObjectGraph();
+      renderEvidenceRgbPanel();
+    }
+
+    function renderRelatedGraph() {
+      const nodes = relatedObjectNodes();
+      const edges = relatedObjectEdges(nodes);
+      const selected = selectedObjectNode();
+      byId('object-relation-status').textContent = selected
+        ? `${selected.label || selected.id} direct object relations`
+        : 'Select an object';
+      byId('object-relation-count').textContent = `${nodes.length} nodes`;
+      drawGraph(
+        'object-relation-canvas',
+        nodes,
+        edges,
+        'Select an object to inspect related objects',
+        layoutRelatedObjectNodes,
+      );
+    }
+
+    function renderAllObjectGraph() {
+      const nodes = allObjectNodes();
       const nodeIds = new Set(nodes.map((node) => node.id));
-      const edges = (state.payload.graph?.edges || [])
+      const edges = objectRelationEdges()
         .filter((edge) => nodeIds.has(edge.src) && nodeIds.has(edge.dst));
-      const width = Math.max(svg.clientWidth || 800, 800);
-      const height = Math.max(svg.clientHeight || 520, 520);
+      byId('all-object-graph-status').textContent = state.query
+        ? 'Filtered object-object relations'
+        : 'Object-object relations';
+      byId('all-object-graph-count').textContent = `${nodes.length} nodes`;
+      drawGraph(
+        'all-object-graph-canvas',
+        nodes,
+        edges,
+        'No matching object relations',
+        layoutNodes,
+      );
+    }
+
+    function renderTopdownPanel() {
+      const scene = byId('topdown-image');
+      const empty = byId('topdown-empty');
+      const selected = selectedObjectNode();
+      const pose = selected?.attributes?.pose || {};
+      const topdownPath = sceneTopdownPath(state.payload.trajectory?.paths || {});
+      if (topdownPath) {
+        drawTopdownScene(topdownPath, pose, selected?.label || selected?.id || '');
+        scene.style.display = '';
+        empty.style.display = 'none';
+      } else {
+        scene.innerHTML = '';
+        scene.style.display = 'none';
+        empty.style.display = '';
+      }
+      byId('topdown-status').textContent = selected
+        ? `x=${metricValue(pose.x)} z=${metricValue(pose.z)} yaw=${metricValue(pose.yaw)}`
+        : 'Select an object';
+      byId('topdown-count').textContent = topdownPath ? 'map' : 'n/a';
+    }
+
+    function renderEvidenceRgbPanel() {
+      const image = byId('evidence-rgb-image');
+      const empty = byId('evidence-rgb-empty');
+      const selected = selectedObjectNode();
+      const attributes = selected?.attributes || {};
+      const rgbPath = attributes.rgb_path || '';
+      if (rgbPath) {
+        image.src = assetUrl(rgbPath);
+        image.style.display = '';
+        empty.style.display = 'none';
+      } else {
+        image.removeAttribute('src');
+        image.style.display = 'none';
+        empty.style.display = '';
+      }
+      byId('evidence-rgb-status').textContent = selected
+        ? `${selected.label || selected.id} step=${metricValue(attributes.step)}`
+        : 'Select an object';
+      byId('evidence-rgb-count').textContent = rgbPath ? 'rgb' : 'n/a';
+    }
+
+    function drawGraph(svgId, nodes, edges, emptyText, layoutFn) {
+      const svg = byId(svgId);
+      svg.innerHTML = '';
+      const width = Math.max(svg.clientWidth || 520, 420);
+      const height = Math.max(svg.clientHeight || 260, 240);
       svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-      const positions = layoutNodes(nodes, width, height);
+      if (!nodes.length) {
+        const empty = document.createElementNS(svgNs, 'text');
+        empty.setAttribute('x', width / 2);
+        empty.setAttribute('y', height / 2);
+        empty.setAttribute('class', 'edge-label');
+        empty.setAttribute('text-anchor', 'middle');
+        empty.textContent = emptyText;
+        svg.appendChild(empty);
+        return;
+      }
+      const positions = layoutFn(nodes, width, height);
 
       for (const edge of edges) {
         const src = positions.get(edge.src);
@@ -607,11 +887,16 @@
         label.setAttribute('y', (src.y + dst.y) / 2 - 5);
         label.setAttribute('class', 'edge-label');
         label.textContent = edge.relation;
-        svg.appendChild(label);
+        if (edges.length <= 80) {
+          svg.appendChild(label);
+        }
       }
 
       for (const node of nodes) {
         const pos = positions.get(node.id);
+        if (!pos) {
+          continue;
+        }
         const group = document.createElementNS(svgNs, 'g');
         group.setAttribute('class', `node ${node.type}${node.id === state.selectedId ? ' selected' : ''}`);
         group.setAttribute('tabindex', '0');
@@ -630,6 +915,75 @@
         group.appendChild(label);
         svg.appendChild(group);
       }
+    }
+
+    function selectedObjectNode() {
+      return (state.payload.graph?.nodes || [])
+        .find((node) => node.id === state.selectedId && node.type === 'object') || null;
+    }
+
+    function relatedObjectNodes() {
+      const selected = selectedObjectNode();
+      if (!selected) {
+        return [];
+      }
+      const objectById = objectNodeById();
+      const relatedIds = new Set([selected.id]);
+      for (const edge of objectRelationEdges()) {
+        if (edge.src === selected.id) {
+          relatedIds.add(edge.dst);
+        }
+        if (edge.dst === selected.id) {
+          relatedIds.add(edge.src);
+        }
+      }
+      return [...relatedIds]
+        .map((id) => objectById.get(id))
+        .filter(Boolean)
+        .sort(nodeSort);
+    }
+
+    function relatedObjectEdges(nodes) {
+      if (!state.selectedId) {
+        return [];
+      }
+      const nodeIds = new Set(nodes.map((node) => node.id));
+      return objectRelationEdges()
+        .filter((edge) =>
+          nodeIds.has(edge.src)
+          && nodeIds.has(edge.dst)
+          && (edge.src === state.selectedId || edge.dst === state.selectedId)
+        );
+    }
+
+    function allObjectNodes() {
+      return (state.payload.graph?.nodes || [])
+        .filter((node) => node.type === 'object')
+        .filter((node) => matchesQuery(node.id, node.label, node.type))
+        .sort(nodeSort);
+    }
+
+    function objectRelationEdges() {
+      const objectById = objectNodeById();
+      return uniqueGraphEdges((state.payload.graph?.edges || [])
+        .filter((edge) => objectById.has(edge.src) && objectById.has(edge.dst)));
+    }
+
+    function objectNodeById() {
+      return new Map((state.payload.graph?.nodes || [])
+        .filter((node) => node.type === 'object')
+        .map((node) => [node.id, node]));
+    }
+
+    function uniqueGraphEdges(edges) {
+      const byKey = new Map();
+      for (const edge of edges) {
+        const key = `${edge.src}\u0000${edge.relation}\u0000${edge.dst}`;
+        if (!byKey.has(key)) {
+          byKey.set(key, edge);
+        }
+      }
+      return [...byKey.values()];
     }
 
     function renderDetail() {
@@ -678,6 +1032,119 @@
       renderGraph();
     }
 
+    function selectTrajectoryStep(stepIndex) {
+      const step = (state.payload.trajectory?.steps || [])
+        .find((row) => String(row.step_index) === String(stepIndex));
+      byId('selection-detail').innerHTML = `<pre>${escapeHtml(JSON.stringify(step || {}, null, 2))}</pre>`;
+    }
+
+    function sceneTopdownPath(paths) {
+      if (paths.scene_topdown_path_png) {
+        return paths.scene_topdown_path_png;
+      }
+      const overlayPath = paths.fixed_vs_nbv_overlay_png || '';
+      const suffix = '-fixed-vs-real-ai2thor-reachable-nbv-overlay.png';
+      if (overlayPath.endsWith(suffix)) {
+        return `${overlayPath.slice(0, -suffix.length)}-topdown-path.png`;
+      }
+      return paths.topdown_path_png || '';
+    }
+
+    function drawTopdownScene(path, pose, label) {
+      const scene = byId('topdown-image');
+      scene.innerHTML = '';
+      const size = topdownImageSize(path);
+      scene.setAttribute('viewBox', `0 0 ${size.width} ${size.height}`);
+
+      const image = document.createElementNS(svgNs, 'image');
+      image.setAttribute('href', assetUrl(path));
+      image.setAttribute('x', '0');
+      image.setAttribute('y', '0');
+      image.setAttribute('width', size.width);
+      image.setAttribute('height', size.height);
+      image.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+      scene.appendChild(image);
+
+      const point = projectScenePoint(pose, size);
+      if (!point) {
+        return;
+      }
+      const circle = document.createElementNS(svgNs, 'circle');
+      circle.setAttribute('cx', point.x);
+      circle.setAttribute('cy', point.y);
+      circle.setAttribute('r', Math.max(12, Math.round(Math.min(size.width, size.height) * 0.014)));
+      circle.setAttribute('class', 'topdown-marker');
+      scene.appendChild(circle);
+
+      const markerLabel = document.createElementNS(svgNs, 'text');
+      markerLabel.setAttribute('x', point.x + 22);
+      markerLabel.setAttribute('y', point.y - 20);
+      markerLabel.setAttribute('class', 'topdown-marker-label');
+      markerLabel.textContent = compactLabel(label || state.selectedId || 'object');
+      scene.appendChild(markerLabel);
+    }
+
+    function topdownImageSize(path) {
+      return path.includes('-topdown-path.png') && !path.includes('reachable-nbv')
+        ? {width: 1600, height: 1200, kind: 'scene'}
+        : {width: 1000, height: 850, kind: 'trajectory'};
+    }
+
+    function projectScenePoint(pose, size) {
+      const x = numberOrNull(pose?.x);
+      const z = numberOrNull(pose?.z);
+      const bounds = sceneBounds();
+      if (x === null || z === null || !bounds) {
+        return null;
+      }
+      const width = size.width;
+      const height = size.height;
+      const left = size.kind === 'scene' ? 70 : 70;
+      const right = size.kind === 'scene' ? width - 260 : width - 70;
+      const top = size.kind === 'scene' ? 90 : 70;
+      const bottom = size.kind === 'scene' ? height - 80 : height - 70;
+      const spanX = Math.max(0.25, bounds.maxX - bounds.minX);
+      const spanZ = Math.max(0.25, bounds.maxZ - bounds.minZ);
+      return {
+        x: left + Math.round((x - bounds.minX) / spanX * (right - left)),
+        y: bottom - Math.round((z - bounds.minZ) / spanZ * (bottom - top))
+      };
+    }
+
+    function sceneBounds() {
+      const points = [];
+      for (const node of state.payload.graph?.nodes || []) {
+        const pose = node.attributes?.pose || {};
+        const x = numberOrNull(pose.x);
+        const z = numberOrNull(pose.z);
+        if (x !== null && z !== null) {
+          points.push({x, z});
+        }
+      }
+      for (const step of state.payload.trajectory?.steps || []) {
+        for (const pose of [step.selected_viewpoint, step.agent_pose_after]) {
+          const x = numberOrNull(pose?.x);
+          const z = numberOrNull(pose?.z);
+          if (x !== null && z !== null) {
+            points.push({x, z});
+          }
+        }
+      }
+      if (!points.length) {
+        return null;
+      }
+      return {
+        minX: Math.min(...points.map((point) => point.x)),
+        maxX: Math.max(...points.map((point) => point.x)),
+        minZ: Math.min(...points.map((point) => point.z)),
+        maxZ: Math.max(...points.map((point) => point.z))
+      };
+    }
+
+    function assetUrl(path) {
+      return `asset?path=${encodeURIComponent(path)}`;
+    }
+
     function filteredNodes() {
       const nodes = state.payload?.graph?.nodes || [];
       return nodes.filter((node) => {
@@ -709,6 +1176,32 @@
         });
       });
       return positions;
+    }
+
+    function layoutRelatedObjectNodes(nodes, width, height) {
+      const positions = new Map();
+      const selected = nodes.find((node) => node.id === state.selectedId) || nodes[0];
+      const cx = width / 2;
+      const cy = height / 2;
+      positions.set(selected.id, {x: Math.round(cx), y: Math.round(cy)});
+
+      const neighbors = nodes.filter((node) => node.id !== selected.id);
+      const radius = Math.min(112, Math.max(74, Math.min(width, height) * 0.32));
+      neighbors.forEach((node, index) => {
+        const angle = neighbors.length < 2
+          ? -Math.PI / 2
+          : (Math.PI * 2 * index) / neighbors.length - Math.PI / 2;
+        positions.set(node.id, {
+          x: Math.round(cx + Math.cos(angle) * radius),
+          y: Math.round(cy + Math.sin(angle) * radius)
+        });
+      });
+      return positions;
+    }
+
+    function nodeSort(left, right) {
+      return text(left.label || left.id).localeCompare(text(right.label || right.id))
+        || text(left.id).localeCompare(text(right.id));
     }
 
     function detailTable(rows) {
@@ -753,6 +1246,10 @@
         return Number.isInteger(value) ? String(value) : value.toFixed(3);
       }
       return value === undefined || value === null ? 'n/a' : String(value);
+    }
+
+    function numberOrNull(value) {
+      return typeof value === 'number' && Number.isFinite(value) ? value : null;
     }
 
     function fileName(path) {

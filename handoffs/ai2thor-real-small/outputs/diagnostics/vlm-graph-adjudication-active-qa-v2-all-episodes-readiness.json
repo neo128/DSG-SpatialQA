@@ -1,10 +1,11 @@
 {
-  "blockers": [
-    "missing_adjudicated_predictions"
-  ],
+  "active_qa_record_count": 576,
+  "adjudicated_prediction_count": 576,
+  "blockers": [],
   "final_record_written": false,
-  "missing_path": "handoffs/ai2thor-real-small/inputs/candidate/vlm-graph-adjudication-active-qa-v2-all-episodes.jsonl",
-  "ready": false,
+  "missing_case_count": 0,
+  "missing_case_ids": [],
+  "ready": true,
   "research_ready": false,
   "schema_version": "dsg-spatialqa-lab.vlm-graph-adjudication-all-episodes-readiness.v1"
 }

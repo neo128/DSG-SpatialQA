@@ -22,6 +22,9 @@ from dsg_spatialqa_lab import (
     qa_predictions_digest,
     save_qa_predictions,
 )
+from dsg_spatialqa_lab.benchmark.active_qa_v2 import (
+    ACTIVE_QA_V2_REQUEST_BUNDLE_SCHEMA_VERSION,
+)
 
 
 TRACE_SCHEMA_VERSION = "dsg-spatialqa-lab.vlm-control-run-trace.v1"
@@ -114,7 +117,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     try:
-        bundle = load_offline_control_prediction_request_bundle(args.request_bundle)
+        bundle = _load_vlm_request_bundle(args.request_bundle)
         normalization_frame_index = _load_normalization_frame_index(
             args.normalization_frame_index
         )
@@ -235,7 +238,7 @@ def main(argv: list[str] | None = None) -> int:
 
 def _run_replay_mode(args: argparse.Namespace) -> int:
     try:
-        bundle = load_offline_control_prediction_request_bundle(args.request_bundle)
+        bundle = _load_vlm_request_bundle(args.request_bundle)
         normalization_frame_index = _load_normalization_frame_index(
             args.normalization_frame_index
         )
@@ -326,6 +329,33 @@ def _run_replay_mode(args: argparse.Namespace) -> int:
         }
     )
     return 0 if ready else 1
+
+
+def _load_vlm_request_bundle(path: Path) -> dict[str, Any]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, Mapping):
+        raise SpatialQAError("VLM request bundle JSON must be an object")
+    if payload.get("schema_version") == ACTIVE_QA_V2_REQUEST_BUNDLE_SCHEMA_VERSION:
+        cases = [
+            _active_prediction_case_to_runner_case(case)
+            for case in _mapping_sequence(payload.get("prediction_cases"))
+        ]
+        return {
+            "schema_version": ACTIVE_QA_V2_REQUEST_BUNDLE_SCHEMA_VERSION,
+            "case_count": len(cases),
+            "case_inputs": cases,
+            "active_qa_v2_request_bundle_digest": payload.get("request_bundle_digest"),
+        }
+    return load_offline_control_prediction_request_bundle(path)
+
+
+def _active_prediction_case_to_runner_case(case: Mapping[str, Any]) -> dict[str, Any]:
+    result = dict(case)
+    if not isinstance(result.get("question_text"), str):
+        question = result.get("question")
+        if isinstance(question, str):
+            result["question_text"] = question
+    return result
 
 
 def _chat_completion_payload(

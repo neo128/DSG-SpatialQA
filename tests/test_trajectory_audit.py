@@ -1,6 +1,8 @@
 from typing import Any
 
 from dsg_spatialqa_lab.navigation.trajectory_audit import (
+    canonical_id_aliases_for_qa,
+    canonicalize_id,
     compare_trajectory_protocols,
     diagnostic_protocol_metadata,
     filter_cases_for_trajectory,
@@ -173,3 +175,27 @@ def test_observed_node_ids_include_rooms_regions_and_objects() -> None:
         "visible_region",
         "apple_1",
     }
+
+
+def test_canonical_id_aliases_resolve_small_ai2thor_coordinate_drift_only() -> None:
+    aliases = canonical_id_aliases_for_qa(
+        observed_ids={
+            "countertop_00_02_00_96_00_51",
+            "drawer_01_50_00_52_01_22",
+            "bowl_00_28_00_92_01_09",
+        },
+        qa_ids={
+            "countertop_00_01_00_96_00_51",
+            "drawer_01_50_00_63_00_02",
+            "bowl_00_28_00_92_01_09",
+        },
+    )
+
+    assert aliases == {
+        "countertop_00_02_00_96_00_51": "countertop_00_01_00_96_00_51",
+    }
+    assert (
+        canonicalize_id("countertop_00_02_00_96_00_51", aliases)
+        == "countertop_00_01_00_96_00_51"
+    )
+    assert canonicalize_id("drawer_01_50_00_52_01_22", aliases) == "drawer_01_50_00_52_01_22"

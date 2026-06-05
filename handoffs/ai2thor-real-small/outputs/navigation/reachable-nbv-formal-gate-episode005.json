@@ -18,11 +18,11 @@
     },
     {
       "name": "target_support_same_frame_rate_gt_fixed",
-      "passed": false
+      "passed": true
     },
     {
       "name": "evidence_observable_qa_count_gte_fixed",
-      "passed": false
+      "passed": true
     },
     {
       "name": "missing_support_count_lte_fixed",
@@ -30,11 +30,11 @@
     },
     {
       "name": "missing_relation_count_lt_fixed",
-      "passed": false
+      "passed": true
     },
     {
       "name": "graphtool_semantic_match_gte_fixed",
-      "passed": false
+      "passed": true
     },
     {
       "name": "no_gold_leakage",
@@ -42,13 +42,8 @@
     }
   ],
   "episode_id": "ai2thor-real-small-episode-005",
-  "failed_checks": [
-    "target_support_same_frame_rate_gt_fixed",
-    "evidence_observable_qa_count_gte_fixed",
-    "missing_relation_count_lt_fixed",
-    "graphtool_semantic_match_gte_fixed"
-  ],
-  "formal_protocol_ready": false,
+  "failed_checks": [],
+  "formal_protocol_ready": true,
   "paths": {
     "decision_trace": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode005.jsonl",
     "fixed_audit": "handoffs/ai2thor-real-small/outputs/navigation/trajectory-audit-fixed-ai2thor-real-small-episode-005.json",

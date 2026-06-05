@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="320" viewBox="0 0 920 320">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="24" y="28" font-size="18" font-family="Arial" font-weight="700" fill="#1f2933">Active QA v2 semantic match</text>
+<text x="24" y="75" font-size="14" font-family="Arial" fill="#1f2933">VLM-only</text>
+<rect x="190" y="50" width="620" height="38" rx="4" fill="#eef2f6"/>
+<rect x="190" y="50" width="152" height="38" rx="4" fill="#4f8bff"/>
+<text x="354" y="75" font-size="14" font-family="Arial" fill="#1f2933">0.245</text>
+<text x="24" y="135" font-size="14" font-family="Arial" fill="#1f2933">VLM+DSG trusted</text>
+<rect x="190" y="110" width="620" height="38" rx="4" fill="#eef2f6"/>
+<rect x="190" y="110" width="211" height="38" rx="4" fill="#7a57d1"/>
+<text x="413" y="135" font-size="14" font-family="Arial" fill="#1f2933">0.340</text>
+<text x="24" y="195" font-size="14" font-family="Arial" fill="#1f2933">VLM+DSG adjudicated</text>
+<rect x="190" y="170" width="620" height="38" rx="4" fill="#eef2f6"/>
+<rect x="190" y="170" width="305" height="38" rx="4" fill="#0f9d7a"/>
+<text x="507" y="195" font-size="14" font-family="Arial" fill="#1f2933">0.491</text>
+<text x="24" y="255" font-size="14" font-family="Arial" fill="#1f2933">GraphTool-only DSG</text>
+<rect x="190" y="230" width="620" height="38" rx="4" fill="#eef2f6"/>
+<rect x="190" y="230" width="620" height="38" rx="4" fill="#d9822b"/>
+<text x="822" y="255" font-size="14" font-family="Arial" fill="#1f2933">1.000</text>
+<text x="24" y="300" font-size="12" font-family="Arial" fill="#52606d">GraphTool-only is a graph-query ablation / upper bound on active QA v2 graph records, not an external model.</text>
+</svg>

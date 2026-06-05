@@ -138,6 +138,7 @@ def viewpoint_score(
         + merged_weights["bbox_depth_quality"] * terms["bbox_depth_quality"]
         + merged_weights["support_surface_gap_gain"]
         * terms["support_surface_gap_gain"]
+        + merged_weights["spatial_spread_gain"] * terms["spatial_spread_gain"]
         - merged_weights["travel_cost"] * terms["travel_cost"]
         - merged_weights["repeated_view_penalty"] * terms["repeated_view_penalty"]
         - merged_weights["position_revisit_penalty"]
@@ -201,6 +202,10 @@ def _score_terms(
         "position_revisit_penalty": 1.0
         if candidate.position_key in memory.visited_position_keys
         else 0.0,
+        "spatial_spread_gain": _spatial_spread_gain(
+            candidate.position_key,
+            memory.visited_position_keys,
+        ),
     }
 
 
@@ -219,6 +224,7 @@ def _default_weights() -> dict[str, float]:
         "occlusion_risk": 0.4,
         "oracle_target_prior_penalty": 10.0,
         "support_surface_gap_gain": 2.2,
+        "spatial_spread_gain": 1.0,
         "position_revisit_penalty": 1.1,
     }
 
@@ -244,6 +250,37 @@ def _float_or_default(value: object, default: float) -> float:
     if isinstance(value, int | float) and not isinstance(value, bool):
         return float(value)
     return default
+
+
+def _spatial_spread_gain(
+    position_key: str,
+    visited_position_keys: frozenset[str],
+) -> float:
+    position = _parse_position_key(position_key)
+    if position is None or not visited_position_keys:
+        return 0.0
+    visited = [
+        parsed
+        for key in visited_position_keys
+        if (parsed := _parse_position_key(key)) is not None
+    ]
+    if not visited:
+        return 0.0
+    nearest = min(
+        math.sqrt((position[0] - other[0]) ** 2 + (position[1] - other[1]) ** 2)
+        for other in visited
+    )
+    return min(1.0, nearest)
+
+
+def _parse_position_key(value: str) -> tuple[float, float] | None:
+    parts = value.split(":")
+    if len(parts) < 2:
+        return None
+    try:
+        return float(parts[0]), float(parts[1])
+    except ValueError:
+        return None
 
 
 def _forbidden_paths(value: object, *, prefix: str = "$") -> list[str]:

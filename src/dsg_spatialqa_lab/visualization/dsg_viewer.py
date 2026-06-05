@@ -415,6 +415,9 @@ def _trajectory_payload(trajectory_report: Mapping[str, Any] | None) -> dict[str
         )
         if isinstance((value := trajectory_report.get(key)), str)
     }
+    scene_topdown_path = _scene_topdown_path(paths)
+    if scene_topdown_path is not None:
+        paths["scene_topdown_path_png"] = scene_topdown_path
     steps = _mapping_sequence(trajectory_report.get("steps"))
     stations = _mapping_sequence(trajectory_report.get("stations"))
     rejected_candidates = _mapping_sequence(trajectory_report.get("rejected_candidates"))
@@ -438,6 +441,14 @@ def _trajectory_payload(trajectory_report: Mapping[str, Any] | None) -> dict[str
         "stations": [dict(station) for station in stations],
         "rejected_candidates": [dict(candidate) for candidate in rejected_candidates],
     }
+
+
+def _scene_topdown_path(paths: Mapping[str, str]) -> str | None:
+    overlay_path = paths.get("fixed_vs_nbv_overlay_png")
+    suffix = "-fixed-vs-real-ai2thor-reachable-nbv-overlay.png"
+    if isinstance(overlay_path, str) and overlay_path.endswith(suffix):
+        return f"{overlay_path[:-len(suffix)]}-topdown-path.png"
+    return paths.get("topdown_path_png")
 
 
 def _graph_eval_metrics(

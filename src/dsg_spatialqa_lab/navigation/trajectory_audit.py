@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 import json
+import math
 from pathlib import Path
 from typing import Any
 
@@ -19,6 +20,7 @@ FORBIDDEN_TRAJECTORY_FIELDS = frozenset(
 FORMAL_PROTOCOL_GATE_SCHEMA_VERSION = (
     "dsg-spatialqa-lab.reachable-nbv-formal-protocol-gate.v1"
 )
+DEFAULT_CANONICAL_ID_ALIAS_DISTANCE = 0.035
 
 
 def diagnostic_protocol_metadata() -> dict[str, Any]:
@@ -61,6 +63,48 @@ def observed_node_ids_from_observations(observations: Sequence[Any]) -> set[str]
             if isinstance(object_id, str):
                 node_ids.add(object_id)
     return node_ids
+
+
+def canonical_id_aliases_for_qa(
+    *,
+    observed_ids: set[str] | frozenset[str],
+    qa_ids: set[str] | frozenset[str],
+    max_coordinate_distance: float = DEFAULT_CANONICAL_ID_ALIAS_DISTANCE,
+) -> dict[str, str]:
+    """Map observed AI2-THOR stable IDs to benchmark IDs for tiny coordinate drift.
+
+    This is an evaluation canonicalization only. It never creates new observed IDs:
+    an alias is emitted only when an observed ID and a QA/benchmark ID have the same
+    label and nearly identical encoded coordinates.
+    """
+    aliases: dict[str, str] = {}
+    qa_payloads = {
+        object_id: _coordinate_payload(object_id)
+        for object_id in sorted(qa_ids)
+    }
+    for observed_id in sorted(observed_ids):
+        if observed_id in qa_ids:
+            continue
+        observed_payload = _coordinate_payload(observed_id)
+        if observed_payload is None:
+            continue
+        candidates: list[tuple[float, str]] = []
+        for qa_id, qa_payload in qa_payloads.items():
+            if qa_payload is None or qa_payload[0] != observed_payload[0]:
+                continue
+            distance = _coordinate_distance(observed_payload[1], qa_payload[1])
+            if distance <= max_coordinate_distance:
+                candidates.append((distance, qa_id))
+        if not candidates:
+            continue
+        candidates.sort(key=lambda item: (item[0], item[1]))
+        if len(candidates) == 1 or candidates[0][0] < candidates[1][0]:
+            aliases[observed_id] = candidates[0][1]
+    return aliases
+
+
+def canonicalize_id(object_id: str, aliases: Mapping[str, str]) -> str:
+    return aliases.get(object_id, object_id)
 
 
 def trajectory_coverage_audit(
@@ -460,3 +504,24 @@ def _trajectory_uses_action(trajectory: Mapping[str, Any], action_name: str) -> 
         )
         if isinstance(action, Mapping)
     )
+
+
+def _coordinate_payload(object_id: str) -> tuple[str, tuple[float, ...]] | None:
+    parts = object_id.split("_")
+    if len(parts) < 7:
+        return None
+    label = parts[0]
+    values: list[float] = []
+    for index in range(1, 7, 2):
+        whole = parts[index]
+        fraction = parts[index + 1]
+        if not whole.isdigit() or not fraction.isdigit():
+            return None
+        values.append(float(f"{int(whole)}.{fraction}"))
+    return label, tuple(values)
+
+
+def _coordinate_distance(left: tuple[float, ...], right: tuple[float, ...]) -> float:
+    if len(left) != len(right):
+        return math.inf
+    return math.sqrt(sum((a - b) ** 2 for a, b in zip(left, right, strict=True)))

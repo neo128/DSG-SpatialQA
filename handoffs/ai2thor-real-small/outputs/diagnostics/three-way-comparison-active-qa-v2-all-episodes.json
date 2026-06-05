@@ -1,30 +1,24 @@
 {
-  "blockers": [
-    "directional_not_significant",
-    "missing_active_vlm_dsg_trusted_predictions",
-    "missing_active_vlm_only_predictions",
-    "paired_wins_not_above_losses",
-    "vlm_dsg_not_above_vlm_only"
-  ],
-  "case_count": 488,
+  "blockers": [],
+  "case_count": 576,
   "deltas": {
     "graph_tool_only_vs_vlm_only": {
       "paired_losses": 0,
-      "paired_ties": 0,
-      "paired_wins": 488,
+      "paired_ties": 141,
+      "paired_wins": 435,
       "sign_test_p_value": 0.0
     },
     "vlm_dsg_vs_graph_tool_only": {
-      "paired_losses": 488,
-      "paired_ties": 0,
+      "paired_losses": 380,
+      "paired_ties": 196,
       "paired_wins": 0,
       "sign_test_p_value": 0.0
     },
     "vlm_dsg_vs_vlm_only": {
       "paired_losses": 0,
-      "paired_ties": 488,
-      "paired_wins": 0,
-      "sign_test_p_value": 1.0
+      "paired_ties": 521,
+      "paired_wins": 55,
+      "sign_test_p_value": 0.0
     }
   },
   "episode_count": 5,
@@ -35,23 +29,23 @@
         "graph_tool_only_vs_vlm_only": {
           "decision": "significant_candidate_advantage",
           "paired_losses": 0,
-          "paired_ties": 0,
-          "paired_wins": 146,
+          "paired_ties": 36,
+          "paired_wins": 110,
           "sign_test_p_value": 0.0
         },
         "vlm_dsg_vs_graph_tool_only": {
           "decision": "no_candidate_advantage",
-          "paired_losses": 146,
-          "paired_ties": 0,
+          "paired_losses": 102,
+          "paired_ties": 44,
           "paired_wins": 0,
           "sign_test_p_value": 0.0
         },
         "vlm_dsg_vs_vlm_only": {
-          "decision": "no_candidate_advantage",
+          "decision": "significant_candidate_advantage",
           "paired_losses": 0,
-          "paired_ties": 146,
-          "paired_wins": 0,
-          "sign_test_p_value": 1.0
+          "paired_ties": 138,
+          "paired_wins": 8,
+          "sign_test_p_value": 0.007812
         }
       },
       "episode_id": "ai2thor-real-small-episode-001",
@@ -67,21 +61,21 @@
         },
         "vlm_dsg_trusted": {
           "case_count": 146,
-          "prediction_count": 0,
-          "semantic_match_count": 0,
-          "semantic_match_rate": 0.0,
-          "strict_exact_count": 0,
-          "strict_exact_rate": 0.0,
-          "unknown_or_missing_count": 146
+          "prediction_count": 146,
+          "semantic_match_count": 44,
+          "semantic_match_rate": 0.30137,
+          "strict_exact_count": 44,
+          "strict_exact_rate": 0.30137,
+          "unknown_or_missing_count": 0
         },
         "vlm_only": {
           "case_count": 146,
-          "prediction_count": 0,
-          "semantic_match_count": 0,
-          "semantic_match_rate": 0.0,
-          "strict_exact_count": 0,
-          "strict_exact_rate": 0.0,
-          "unknown_or_missing_count": 146
+          "prediction_count": 146,
+          "semantic_match_count": 36,
+          "semantic_match_rate": 0.246575,
+          "strict_exact_count": 36,
+          "strict_exact_rate": 0.246575,
+          "unknown_or_missing_count": 0
         }
       },
       "question_type_groups": {
@@ -97,21 +91,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 27,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 27
+            "prediction_count": 27,
+            "semantic_match_count": 1,
+            "semantic_match_rate": 0.037037,
+            "strict_exact_count": 1,
+            "strict_exact_rate": 0.037037,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 27,
-            "prediction_count": 0,
+            "prediction_count": 27,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 27
+            "unknown_or_missing_count": 0
           }
         },
         "situated_egocentric": {
@@ -126,21 +120,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 56,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 56
+            "prediction_count": 56,
+            "semantic_match_count": 30,
+            "semantic_match_rate": 0.535714,
+            "strict_exact_count": 30,
+            "strict_exact_rate": 0.535714,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 56,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 56
+            "prediction_count": 56,
+            "semantic_match_count": 30,
+            "semantic_match_rate": 0.535714,
+            "strict_exact_count": 30,
+            "strict_exact_rate": 0.535714,
+            "unknown_or_missing_count": 0
           }
         },
         "support_relation": {
@@ -155,21 +149,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 7,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 7
+            "prediction_count": 7,
+            "semantic_match_count": 7,
+            "semantic_match_rate": 1.0,
+            "strict_exact_count": 7,
+            "strict_exact_rate": 1.0,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 7,
-            "prediction_count": 0,
+            "prediction_count": 7,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 7
+            "unknown_or_missing_count": 0
           }
         },
         "temporal_last_seen": {
@@ -184,21 +178,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 56,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 56
+            "prediction_count": 56,
+            "semantic_match_count": 6,
+            "semantic_match_rate": 0.107143,
+            "strict_exact_count": 6,
+            "strict_exact_rate": 0.107143,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 56,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 56
+            "prediction_count": 56,
+            "semantic_match_count": 6,
+            "semantic_match_rate": 0.107143,
+            "strict_exact_count": 6,
+            "strict_exact_rate": 0.107143,
+            "unknown_or_missing_count": 0
           }
         }
       },
@@ -210,23 +204,23 @@
         "graph_tool_only_vs_vlm_only": {
           "decision": "significant_candidate_advantage",
           "paired_losses": 0,
-          "paired_ties": 0,
-          "paired_wins": 82,
+          "paired_ties": 14,
+          "paired_wins": 68,
           "sign_test_p_value": 0.0
         },
         "vlm_dsg_vs_graph_tool_only": {
           "decision": "no_candidate_advantage",
-          "paired_losses": 82,
-          "paired_ties": 0,
+          "paired_losses": 52,
+          "paired_ties": 30,
           "paired_wins": 0,
           "sign_test_p_value": 0.0
         },
         "vlm_dsg_vs_vlm_only": {
-          "decision": "no_candidate_advantage",
+          "decision": "significant_candidate_advantage",
           "paired_losses": 0,
-          "paired_ties": 82,
-          "paired_wins": 0,
-          "sign_test_p_value": 1.0
+          "paired_ties": 66,
+          "paired_wins": 16,
+          "sign_test_p_value": 3.1e-05
         }
       },
       "episode_id": "ai2thor-real-small-episode-002",
@@ -242,21 +236,21 @@
         },
         "vlm_dsg_trusted": {
           "case_count": 82,
-          "prediction_count": 0,
-          "semantic_match_count": 0,
-          "semantic_match_rate": 0.0,
-          "strict_exact_count": 0,
-          "strict_exact_rate": 0.0,
-          "unknown_or_missing_count": 82
+          "prediction_count": 82,
+          "semantic_match_count": 30,
+          "semantic_match_rate": 0.365854,
+          "strict_exact_count": 30,
+          "strict_exact_rate": 0.365854,
+          "unknown_or_missing_count": 0
         },
         "vlm_only": {
           "case_count": 82,
-          "prediction_count": 0,
-          "semantic_match_count": 0,
-          "semantic_match_rate": 0.0,
-          "strict_exact_count": 0,
-          "strict_exact_rate": 0.0,
-          "unknown_or_missing_count": 82
+          "prediction_count": 82,
+          "semantic_match_count": 14,
+          "semantic_match_rate": 0.170732,
+          "strict_exact_count": 14,
+          "strict_exact_rate": 0.170732,
+          "unknown_or_missing_count": 0
         }
       },
       "question_type_groups": {
@@ -272,21 +266,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 20,
-            "prediction_count": 0,
+            "prediction_count": 20,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 20
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 20,
-            "prediction_count": 0,
+            "prediction_count": 20,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 20
+            "unknown_or_missing_count": 0
           }
         },
         "situated_egocentric": {
@@ -301,21 +295,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 23,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 23
+            "prediction_count": 23,
+            "semantic_match_count": 11,
+            "semantic_match_rate": 0.478261,
+            "strict_exact_count": 11,
+            "strict_exact_rate": 0.478261,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 23,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 23
+            "prediction_count": 23,
+            "semantic_match_count": 11,
+            "semantic_match_rate": 0.478261,
+            "strict_exact_count": 11,
+            "strict_exact_rate": 0.478261,
+            "unknown_or_missing_count": 0
           }
         },
         "support_relation": {
@@ -330,21 +324,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 16,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 16
+            "prediction_count": 16,
+            "semantic_match_count": 16,
+            "semantic_match_rate": 1.0,
+            "strict_exact_count": 16,
+            "strict_exact_rate": 1.0,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 16,
-            "prediction_count": 0,
+            "prediction_count": 16,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 16
+            "unknown_or_missing_count": 0
           }
         },
         "temporal_last_seen": {
@@ -359,21 +353,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 23,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 23
+            "prediction_count": 23,
+            "semantic_match_count": 3,
+            "semantic_match_rate": 0.130435,
+            "strict_exact_count": 3,
+            "strict_exact_rate": 0.130435,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 23,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 23
+            "prediction_count": 23,
+            "semantic_match_count": 3,
+            "semantic_match_rate": 0.130435,
+            "strict_exact_count": 3,
+            "strict_exact_rate": 0.130435,
+            "unknown_or_missing_count": 0
           }
         }
       },
@@ -385,23 +379,23 @@
         "graph_tool_only_vs_vlm_only": {
           "decision": "significant_candidate_advantage",
           "paired_losses": 0,
-          "paired_ties": 0,
-          "paired_wins": 106,
+          "paired_ties": 33,
+          "paired_wins": 73,
           "sign_test_p_value": 0.0
         },
         "vlm_dsg_vs_graph_tool_only": {
           "decision": "no_candidate_advantage",
-          "paired_losses": 106,
-          "paired_ties": 0,
+          "paired_losses": 65,
+          "paired_ties": 41,
           "paired_wins": 0,
           "sign_test_p_value": 0.0
         },
         "vlm_dsg_vs_vlm_only": {
-          "decision": "no_candidate_advantage",
+          "decision": "significant_candidate_advantage",
           "paired_losses": 0,
-          "paired_ties": 106,
-          "paired_wins": 0,
-          "sign_test_p_value": 1.0
+          "paired_ties": 98,
+          "paired_wins": 8,
+          "sign_test_p_value": 0.007812
         }
       },
       "episode_id": "ai2thor-real-small-episode-003",
@@ -417,21 +411,21 @@
         },
         "vlm_dsg_trusted": {
           "case_count": 106,
-          "prediction_count": 0,
-          "semantic_match_count": 0,
-          "semantic_match_rate": 0.0,
-          "strict_exact_count": 0,
-          "strict_exact_rate": 0.0,
-          "unknown_or_missing_count": 106
+          "prediction_count": 106,
+          "semantic_match_count": 41,
+          "semantic_match_rate": 0.386792,
+          "strict_exact_count": 41,
+          "strict_exact_rate": 0.386792,
+          "unknown_or_missing_count": 0
         },
         "vlm_only": {
           "case_count": 106,
-          "prediction_count": 0,
-          "semantic_match_count": 0,
-          "semantic_match_rate": 0.0,
-          "strict_exact_count": 0,
-          "strict_exact_rate": 0.0,
-          "unknown_or_missing_count": 106
+          "prediction_count": 106,
+          "semantic_match_count": 33,
+          "semantic_match_rate": 0.311321,
+          "strict_exact_count": 33,
+          "strict_exact_rate": 0.311321,
+          "unknown_or_missing_count": 0
         }
       },
       "question_type_groups": {
@@ -447,21 +441,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 26,
-            "prediction_count": 0,
+            "prediction_count": 26,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 26
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 26,
-            "prediction_count": 0,
+            "prediction_count": 26,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 26
+            "unknown_or_missing_count": 0
           }
         },
         "situated_egocentric": {
@@ -476,21 +470,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 36,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 36
+            "prediction_count": 36,
+            "semantic_match_count": 26,
+            "semantic_match_rate": 0.722222,
+            "strict_exact_count": 26,
+            "strict_exact_rate": 0.722222,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 36,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 36
+            "prediction_count": 36,
+            "semantic_match_count": 26,
+            "semantic_match_rate": 0.722222,
+            "strict_exact_count": 26,
+            "strict_exact_rate": 0.722222,
+            "unknown_or_missing_count": 0
           }
         },
         "support_relation": {
@@ -505,21 +499,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 8,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 8
+            "prediction_count": 8,
+            "semantic_match_count": 8,
+            "semantic_match_rate": 1.0,
+            "strict_exact_count": 8,
+            "strict_exact_rate": 1.0,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 8,
-            "prediction_count": 0,
+            "prediction_count": 8,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 8
+            "unknown_or_missing_count": 0
           }
         },
         "temporal_last_seen": {
@@ -534,21 +528,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 36,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 36
+            "prediction_count": 36,
+            "semantic_match_count": 7,
+            "semantic_match_rate": 0.194444,
+            "strict_exact_count": 7,
+            "strict_exact_rate": 0.194444,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 36,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 36
+            "prediction_count": 36,
+            "semantic_match_count": 7,
+            "semantic_match_rate": 0.194444,
+            "strict_exact_count": 7,
+            "strict_exact_rate": 0.194444,
+            "unknown_or_missing_count": 0
           }
         }
       },
@@ -560,23 +554,23 @@
         "graph_tool_only_vs_vlm_only": {
           "decision": "significant_candidate_advantage",
           "paired_losses": 0,
-          "paired_ties": 0,
-          "paired_wins": 87,
+          "paired_ties": 19,
+          "paired_wins": 68,
           "sign_test_p_value": 0.0
         },
         "vlm_dsg_vs_graph_tool_only": {
           "decision": "no_candidate_advantage",
-          "paired_losses": 87,
-          "paired_ties": 0,
+          "paired_losses": 55,
+          "paired_ties": 32,
           "paired_wins": 0,
           "sign_test_p_value": 0.0
         },
         "vlm_dsg_vs_vlm_only": {
-          "decision": "no_candidate_advantage",
+          "decision": "significant_candidate_advantage",
           "paired_losses": 0,
-          "paired_ties": 87,
-          "paired_wins": 0,
-          "sign_test_p_value": 1.0
+          "paired_ties": 74,
+          "paired_wins": 13,
+          "sign_test_p_value": 0.000244
         }
       },
       "episode_id": "ai2thor-real-small-episode-004",
@@ -592,21 +586,21 @@
         },
         "vlm_dsg_trusted": {
           "case_count": 87,
-          "prediction_count": 0,
-          "semantic_match_count": 0,
-          "semantic_match_rate": 0.0,
-          "strict_exact_count": 0,
-          "strict_exact_rate": 0.0,
-          "unknown_or_missing_count": 87
+          "prediction_count": 87,
+          "semantic_match_count": 32,
+          "semantic_match_rate": 0.367816,
+          "strict_exact_count": 32,
+          "strict_exact_rate": 0.367816,
+          "unknown_or_missing_count": 0
         },
         "vlm_only": {
           "case_count": 87,
-          "prediction_count": 0,
-          "semantic_match_count": 0,
-          "semantic_match_rate": 0.0,
-          "strict_exact_count": 0,
-          "strict_exact_rate": 0.0,
-          "unknown_or_missing_count": 87
+          "prediction_count": 87,
+          "semantic_match_count": 19,
+          "semantic_match_rate": 0.218391,
+          "strict_exact_count": 19,
+          "strict_exact_rate": 0.218391,
+          "unknown_or_missing_count": 0
         }
       },
       "question_type_groups": {
@@ -622,21 +616,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 23,
-            "prediction_count": 0,
+            "prediction_count": 23,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 23
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 23,
-            "prediction_count": 0,
+            "prediction_count": 23,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 23
+            "unknown_or_missing_count": 0
           }
         },
         "situated_egocentric": {
@@ -651,21 +645,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 25,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 25
+            "prediction_count": 25,
+            "semantic_match_count": 13,
+            "semantic_match_rate": 0.52,
+            "strict_exact_count": 13,
+            "strict_exact_rate": 0.52,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 25,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 25
+            "prediction_count": 25,
+            "semantic_match_count": 13,
+            "semantic_match_rate": 0.52,
+            "strict_exact_count": 13,
+            "strict_exact_rate": 0.52,
+            "unknown_or_missing_count": 0
           }
         },
         "support_relation": {
@@ -680,21 +674,21 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 14,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 14
+            "prediction_count": 14,
+            "semantic_match_count": 13,
+            "semantic_match_rate": 0.928571,
+            "strict_exact_count": 13,
+            "strict_exact_rate": 0.928571,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 14,
-            "prediction_count": 0,
+            "prediction_count": 14,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 14
+            "unknown_or_missing_count": 0
           }
         },
         "temporal_last_seen": {
@@ -709,79 +703,79 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 25,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 25
+            "prediction_count": 25,
+            "semantic_match_count": 6,
+            "semantic_match_rate": 0.24,
+            "strict_exact_count": 6,
+            "strict_exact_rate": 0.24,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 25,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 25
+            "prediction_count": 25,
+            "semantic_match_count": 6,
+            "semantic_match_rate": 0.24,
+            "strict_exact_count": 6,
+            "strict_exact_rate": 0.24,
+            "unknown_or_missing_count": 0
           }
         }
       },
       "schema_version": "dsg-spatialqa-lab.three-way-active-qa-v2-episode-comparison.v1"
     },
     {
-      "case_count": 67,
+      "case_count": 155,
       "deltas": {
         "graph_tool_only_vs_vlm_only": {
           "decision": "significant_candidate_advantage",
           "paired_losses": 0,
-          "paired_ties": 0,
-          "paired_wins": 67,
+          "paired_ties": 39,
+          "paired_wins": 116,
           "sign_test_p_value": 0.0
         },
         "vlm_dsg_vs_graph_tool_only": {
           "decision": "no_candidate_advantage",
-          "paired_losses": 67,
-          "paired_ties": 0,
+          "paired_losses": 106,
+          "paired_ties": 49,
           "paired_wins": 0,
           "sign_test_p_value": 0.0
         },
         "vlm_dsg_vs_vlm_only": {
-          "decision": "no_candidate_advantage",
+          "decision": "significant_candidate_advantage",
           "paired_losses": 0,
-          "paired_ties": 67,
-          "paired_wins": 0,
-          "sign_test_p_value": 1.0
+          "paired_ties": 145,
+          "paired_wins": 10,
+          "sign_test_p_value": 0.001953
         }
       },
       "episode_id": "ai2thor-real-small-episode-005",
       "methods": {
         "graph_tool_only_dsg": {
-          "case_count": 67,
-          "prediction_count": 67,
-          "semantic_match_count": 67,
+          "case_count": 155,
+          "prediction_count": 155,
+          "semantic_match_count": 155,
           "semantic_match_rate": 1.0,
-          "strict_exact_count": 67,
+          "strict_exact_count": 155,
           "strict_exact_rate": 1.0,
           "unknown_or_missing_count": 0
         },
         "vlm_dsg_trusted": {
-          "case_count": 67,
-          "prediction_count": 0,
-          "semantic_match_count": 0,
-          "semantic_match_rate": 0.0,
-          "strict_exact_count": 0,
-          "strict_exact_rate": 0.0,
-          "unknown_or_missing_count": 67
+          "case_count": 155,
+          "prediction_count": 155,
+          "semantic_match_count": 49,
+          "semantic_match_rate": 0.316129,
+          "strict_exact_count": 49,
+          "strict_exact_rate": 0.316129,
+          "unknown_or_missing_count": 0
         },
         "vlm_only": {
-          "case_count": 67,
-          "prediction_count": 0,
-          "semantic_match_count": 0,
-          "semantic_match_rate": 0.0,
-          "strict_exact_count": 0,
-          "strict_exact_rate": 0.0,
-          "unknown_or_missing_count": 67
+          "case_count": 155,
+          "prediction_count": 155,
+          "semantic_match_count": 39,
+          "semantic_match_rate": 0.251613,
+          "strict_exact_count": 39,
+          "strict_exact_rate": 0.251613,
+          "unknown_or_missing_count": 0
         }
       },
       "question_type_groups": {
@@ -797,50 +791,50 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 25,
-            "prediction_count": 0,
+            "prediction_count": 25,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 25
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 25,
-            "prediction_count": 0,
+            "prediction_count": 25,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 25
+            "unknown_or_missing_count": 0
           }
         },
         "situated_egocentric": {
           "graph_tool_only_dsg": {
-            "case_count": 16,
-            "prediction_count": 16,
-            "semantic_match_count": 16,
+            "case_count": 60,
+            "prediction_count": 60,
+            "semantic_match_count": 60,
             "semantic_match_rate": 1.0,
-            "strict_exact_count": 16,
+            "strict_exact_count": 60,
             "strict_exact_rate": 1.0,
             "unknown_or_missing_count": 0
           },
           "vlm_dsg_trusted": {
-            "case_count": 16,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 16
+            "case_count": 60,
+            "prediction_count": 60,
+            "semantic_match_count": 34,
+            "semantic_match_rate": 0.566667,
+            "strict_exact_count": 34,
+            "strict_exact_rate": 0.566667,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
-            "case_count": 16,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 16
+            "case_count": 60,
+            "prediction_count": 60,
+            "semantic_match_count": 34,
+            "semantic_match_rate": 0.566667,
+            "strict_exact_count": 34,
+            "strict_exact_rate": 0.566667,
+            "unknown_or_missing_count": 0
           }
         },
         "support_relation": {
@@ -855,50 +849,50 @@
           },
           "vlm_dsg_trusted": {
             "case_count": 10,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 10
+            "prediction_count": 10,
+            "semantic_match_count": 10,
+            "semantic_match_rate": 1.0,
+            "strict_exact_count": 10,
+            "strict_exact_rate": 1.0,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
             "case_count": 10,
-            "prediction_count": 0,
+            "prediction_count": 10,
             "semantic_match_count": 0,
             "semantic_match_rate": 0.0,
             "strict_exact_count": 0,
             "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 10
+            "unknown_or_missing_count": 0
           }
         },
         "temporal_last_seen": {
           "graph_tool_only_dsg": {
-            "case_count": 16,
-            "prediction_count": 16,
-            "semantic_match_count": 16,
+            "case_count": 60,
+            "prediction_count": 60,
+            "semantic_match_count": 60,
             "semantic_match_rate": 1.0,
-            "strict_exact_count": 16,
+            "strict_exact_count": 60,
             "strict_exact_rate": 1.0,
             "unknown_or_missing_count": 0
           },
           "vlm_dsg_trusted": {
-            "case_count": 16,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 16
+            "case_count": 60,
+            "prediction_count": 60,
+            "semantic_match_count": 5,
+            "semantic_match_rate": 0.083333,
+            "strict_exact_count": 5,
+            "strict_exact_rate": 0.083333,
+            "unknown_or_missing_count": 0
           },
           "vlm_only": {
-            "case_count": 16,
-            "prediction_count": 0,
-            "semantic_match_count": 0,
-            "semantic_match_rate": 0.0,
-            "strict_exact_count": 0,
-            "strict_exact_rate": 0.0,
-            "unknown_or_missing_count": 16
+            "case_count": 60,
+            "prediction_count": 60,
+            "semantic_match_count": 5,
+            "semantic_match_rate": 0.083333,
+            "strict_exact_count": 5,
+            "strict_exact_rate": 0.083333,
+            "unknown_or_missing_count": 0
           }
         }
       },
@@ -907,28 +901,28 @@
   ],
   "methods": {
     "graph_tool_only_dsg": {
-      "case_count": 488,
-      "prediction_count": 488,
-      "semantic_match_count": 488,
+      "case_count": 576,
+      "prediction_count": 576,
+      "semantic_match_count": 576,
       "semantic_match_rate": 1.0,
-      "strict_exact_count": 488,
+      "strict_exact_count": 576,
       "strict_exact_rate": 1.0
     },
     "vlm_dsg_trusted": {
-      "case_count": 488,
-      "prediction_count": 0,
-      "semantic_match_count": 0,
-      "semantic_match_rate": 0.0,
-      "strict_exact_count": 0,
-      "strict_exact_rate": 0.0
+      "case_count": 576,
+      "prediction_count": 576,
+      "semantic_match_count": 196,
+      "semantic_match_rate": 0.340278,
+      "strict_exact_count": 196,
+      "strict_exact_rate": 0.340278
     },
     "vlm_only": {
-      "case_count": 488,
-      "prediction_count": 0,
-      "semantic_match_count": 0,
-      "semantic_match_rate": 0.0,
-      "strict_exact_count": 0,
-      "strict_exact_rate": 0.0
+      "case_count": 576,
+      "prediction_count": 576,
+      "semantic_match_count": 141,
+      "semantic_match_rate": 0.244792,
+      "strict_exact_count": 141,
+      "strict_exact_rate": 0.244792
     }
   },
   "question_type_count": 4,
@@ -938,7 +932,7 @@
     "support_relation",
     "temporal_last_seen"
   ],
-  "ready": false,
-  "research_ready": false,
+  "ready": true,
+  "research_ready": true,
   "schema_version": "dsg-spatialqa-lab.three-way-active-qa-v2-all-episodes-comparison.v1"
 }

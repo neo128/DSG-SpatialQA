@@ -3,10 +3,13 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+from collections.abc import Mapping
 from typing import Any
 
 from dsg_spatialqa_lab.benchmark import load_qa_dataset
 from dsg_spatialqa_lab.navigation.trajectory_audit import (
+    canonical_id_aliases_for_qa,
+    canonicalize_id,
     filter_cases_for_trajectory,
     observed_node_ids_from_observations,
     save_json,
@@ -37,19 +40,34 @@ def main(argv: list[str] | None = None) -> int:
         graph = load_graph_json(args.predicted_graph)
         qa_cases = filter_cases_for_trajectory(load_qa_dataset(args.qa), trajectory)
         targets, supports = _qa_target_support_ids(qa_cases)
+        qa_ids = targets | supports
         observed_objects = {
             obj.object_id
             for observation in observations
             for obj in observation.objects
         }
         observed_nodes = observed_node_ids_from_observations(observations)
-        observed_supports = observed_nodes & supports
+        aliases = canonical_id_aliases_for_qa(
+            observed_ids=observed_nodes,
+            qa_ids=qa_ids,
+        )
+        canonical_observed_objects = {
+            canonicalize_id(object_id, aliases) for object_id in observed_objects
+        }
+        canonical_observed_nodes = {
+            canonicalize_id(object_id, aliases) for object_id in observed_nodes
+        }
+        observed_supports = canonical_observed_nodes & supports
         current_edges = {
-            f"{edge.src}-{edge.relation}-{edge.dst}"
+            (
+                f"{canonicalize_id(edge.src, aliases)}-"
+                f"{edge.relation}-"
+                f"{canonicalize_id(edge.dst, aliases)}"
+            )
             for edge in graph.edges
             if edge.relation in {"ON", "INSIDE", "IN_ROOM", "IN_REGION"}
         }
-        same_frame_count = _same_frame_count(observations, qa_cases)
+        same_frame_count = _same_frame_count(observations, qa_cases, aliases)
         current_location_count = _current_location_count(current_edges, qa_cases)
         audit = trajectory_coverage_audit(
             trajectory,
@@ -58,12 +76,12 @@ def main(argv: list[str] | None = None) -> int:
             graph_tool_semantic_match_count=current_location_count,
             target_object_ids=targets,
             support_object_ids=supports,
-            observed_object_ids=observed_objects,
+            observed_object_ids=canonical_observed_objects,
             observed_support_ids=observed_supports,
             same_frame_relation_count=same_frame_count,
             current_location_edge_count=current_location_count,
             on_relation_observable_count=current_location_count,
-            state_evidence_observable_count=len(observed_objects),
+            state_evidence_observable_count=len(canonical_observed_objects),
             relation_recall=(
                 0.0 if not qa_cases else current_location_count / float(len(qa_cases))
             ),
@@ -71,6 +89,9 @@ def main(argv: list[str] | None = None) -> int:
                 0.0 if not current_edges else current_location_count / float(len(current_edges))
             ),
         )
+        if aliases:
+            audit["canonical_id_alias_count"] = len(aliases)
+            audit["canonical_id_aliases"] = aliases
         save_json(audit, args.output)
     except (OSError, SpatialQAError, ValueError, json.JSONDecodeError) as exc:
         _emit({"valid": False, "error": str(exc)})
@@ -79,10 +100,18 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-def _same_frame_count(observations: Any, qa_cases: Any) -> int:
+def _same_frame_count(
+    observations: Any,
+    qa_cases: Any,
+    aliases: Mapping[str, str] | None = None,
+) -> int:
     count = 0
+    alias_map = aliases or {}
     object_sets = [
-        observed_node_ids_from_observations((observation,))
+        {
+            canonicalize_id(object_id, alias_map)
+            for object_id in observed_node_ids_from_observations((observation,))
+        }
         for observation in observations
     ]
     for case in qa_cases:

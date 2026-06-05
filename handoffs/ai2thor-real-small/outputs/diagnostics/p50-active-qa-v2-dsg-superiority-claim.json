@@ -1,0 +1,163 @@
+{
+  "adjudication_readiness": {
+    "active_qa_record_count": 576,
+    "adjudicated_prediction_count": 576,
+    "blockers": [],
+    "ready": true
+  },
+  "claim_allowed": true,
+  "claim_scope": "active QA v2 over 5 real AI2-THOR reachable relation-centric NBV episodes, comparing real Qwen VLM-only against real Qwen VLM+DSG adjudication using local predicted DSG/GraphTool candidates",
+  "comparison": {
+    "case_count": 576,
+    "episode_count": 5,
+    "graph_tool_only_dsg": {
+      "case_count": 576,
+      "prediction_count": 576,
+      "semantic_match_count": 576,
+      "semantic_match_rate": 1.0,
+      "strict_exact_count": 576,
+      "strict_exact_rate": 1.0
+    },
+    "question_type_count": 4,
+    "question_types": [
+      "object_location",
+      "situated_egocentric",
+      "support_relation",
+      "temporal_last_seen"
+    ],
+    "vlm_dsg_adjudicated": {
+      "case_count": 576,
+      "prediction_count": 576,
+      "semantic_match_count": 283,
+      "semantic_match_rate": 0.491319,
+      "strict_exact_count": 283,
+      "strict_exact_rate": 0.491319
+    },
+    "vlm_dsg_vs_vlm_only": {
+      "paired_losses": 0,
+      "paired_ties": 434,
+      "paired_wins": 142,
+      "sign_test_p_value": 0.0
+    },
+    "vlm_only": {
+      "case_count": 576,
+      "prediction_count": 576,
+      "semantic_match_count": 141,
+      "semantic_match_rate": 0.244792,
+      "strict_exact_count": 141,
+      "strict_exact_rate": 0.244792
+    }
+  },
+  "episode_groups": [
+    {
+      "case_count": 146,
+      "delta": {
+        "decision": "significant_candidate_advantage",
+        "paired_losses": 0,
+        "paired_ties": 114,
+        "paired_wins": 32,
+        "sign_test_p_value": 0.0
+      },
+      "episode_id": "ai2thor-real-small-episode-001",
+      "vlm_dsg_semantic_match_count": 68,
+      "vlm_only_semantic_match_count": 36
+    },
+    {
+      "case_count": 82,
+      "delta": {
+        "decision": "significant_candidate_advantage",
+        "paired_losses": 0,
+        "paired_ties": 63,
+        "paired_wins": 19,
+        "sign_test_p_value": 4e-06
+      },
+      "episode_id": "ai2thor-real-small-episode-002",
+      "vlm_dsg_semantic_match_count": 33,
+      "vlm_only_semantic_match_count": 14
+    },
+    {
+      "case_count": 106,
+      "delta": {
+        "decision": "significant_candidate_advantage",
+        "paired_losses": 0,
+        "paired_ties": 88,
+        "paired_wins": 18,
+        "sign_test_p_value": 8e-06
+      },
+      "episode_id": "ai2thor-real-small-episode-003",
+      "vlm_dsg_semantic_match_count": 51,
+      "vlm_only_semantic_match_count": 33
+    },
+    {
+      "case_count": 87,
+      "delta": {
+        "decision": "significant_candidate_advantage",
+        "paired_losses": 0,
+        "paired_ties": 39,
+        "paired_wins": 48,
+        "sign_test_p_value": 0.0
+      },
+      "episode_id": "ai2thor-real-small-episode-004",
+      "vlm_dsg_semantic_match_count": 67,
+      "vlm_only_semantic_match_count": 19
+    },
+    {
+      "case_count": 155,
+      "delta": {
+        "decision": "significant_candidate_advantage",
+        "paired_losses": 0,
+        "paired_ties": 130,
+        "paired_wins": 25,
+        "sign_test_p_value": 0.0
+      },
+      "episode_id": "ai2thor-real-small-episode-005",
+      "vlm_dsg_semantic_match_count": 64,
+      "vlm_only_semantic_match_count": 39
+    }
+  ],
+  "navigation_gate": {
+    "all_episodes_formal_protocol_ready": true,
+    "episode_count": 5,
+    "formal_protocol_ready_episode_count": 5
+  },
+  "not_claimed": [
+    "not a general proof across all AI2-THOR scenes",
+    "not a claim that GraphTool-only is an external model",
+    "not a claim about unobserved full-oracle QA targets"
+  ],
+  "question_type_groups": {
+    "object_location": {
+      "case_count": 121,
+      "delta_semantic_match_count": 37,
+      "vlm_dsg_semantic_match_count": 37,
+      "vlm_dsg_semantic_match_rate": 0.305785,
+      "vlm_semantic_match_count": 0,
+      "vlm_semantic_match_rate": 0.0
+    },
+    "situated_egocentric": {
+      "case_count": 200,
+      "delta_semantic_match_count": 31,
+      "vlm_dsg_semantic_match_count": 145,
+      "vlm_dsg_semantic_match_rate": 0.725,
+      "vlm_semantic_match_count": 114,
+      "vlm_semantic_match_rate": 0.57
+    },
+    "support_relation": {
+      "case_count": 55,
+      "delta_semantic_match_count": 38,
+      "vlm_dsg_semantic_match_count": 38,
+      "vlm_dsg_semantic_match_rate": 0.690909,
+      "vlm_semantic_match_count": 0,
+      "vlm_semantic_match_rate": 0.0
+    },
+    "temporal_last_seen": {
+      "case_count": 200,
+      "delta_semantic_match_count": 36,
+      "vlm_dsg_semantic_match_count": 63,
+      "vlm_dsg_semantic_match_rate": 0.315,
+      "vlm_semantic_match_count": 27,
+      "vlm_semantic_match_rate": 0.135
+    }
+  },
+  "schema_version": "dsg-spatialqa-lab.p50-active-qa-v2-superiority-claim.v1"
+}

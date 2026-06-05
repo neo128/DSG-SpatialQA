@@ -125,7 +125,9 @@ def _reachable_nbv_trajectory_report(predicted_graph_path: str) -> dict[str, obj
         "predicted_graph_path": predicted_graph_path,
         "decision_trace_path": "outputs/navigation/decision-trace.jsonl",
         "topdown_path_png": "inputs/episodes/topdown-path.png",
-        "fixed_vs_nbv_overlay_png": "inputs/episodes/overlay.png",
+        "fixed_vs_nbv_overlay_png": (
+            "inputs/episodes/episode-1-fixed-vs-real-ai2thor-reachable-nbv-overlay.png"
+        ),
         "steps": [
             {
                 "step_index": 0,
@@ -256,6 +258,10 @@ def test_dsg_viewer_payload_accepts_active_qa_v2_and_trajectory_report() -> None
     assert payload["artifacts"]["trajectory_report_path"] == "trajectory.json"
     assert payload["trajectory"]["summary"]["step_count"] == 2
     assert payload["trajectory"]["summary"]["station_count"] == 2
+    assert (
+        payload["trajectory"]["paths"]["scene_topdown_path_png"]
+        == "inputs/episodes/episode-1-topdown-path.png"
+    )
     assert payload["metrics"]["qa_case_count"] == 1
     assert payload["metrics"]["trajectory_step_count"] == 2
     assert payload["metrics"]["navigation_validated"] is True
@@ -401,6 +407,39 @@ def test_serve_dsg_viewer_cli_writes_latest_active_payload(
     assert payload["trajectory"]["summary"]["step_count"] == 2
 
 
+def test_serve_dsg_viewer_asset_response_serves_workspace_ppm_as_png(
+    tmp_path: Path,
+) -> None:
+    module = load_serve_dsg_viewer_script()
+    asset_response = getattr(module, "_asset_response")
+    workspace = tmp_path / "workspace"
+    frame_dir = workspace / "frames" / "000001"
+    frame_dir.mkdir(parents=True)
+    ppm_path = frame_dir / "rgb.ppm"
+    ppm_path.write_bytes(b"P6\n2 1\n255\n" + bytes((255, 0, 0, 0, 255, 0)))
+
+    body, content_type = asset_response("/asset?path=frames/000001/rgb.ppm", workspace)
+
+    assert content_type == "image/png"
+    assert body.startswith(b"\x89PNG\r\n\x1a\n")
+
+
+def test_serve_dsg_viewer_asset_response_rejects_outside_workspace(
+    tmp_path: Path,
+) -> None:
+    module = load_serve_dsg_viewer_script()
+    asset_response = getattr(module, "_asset_response")
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+
+    try:
+        asset_response("/asset?path=../outside.ppm", workspace)
+    except lab.SpatialQAError as exc:
+        assert "outside workspace" in str(exc)
+    else:
+        raise AssertionError("expected outside workspace asset path to be rejected")
+
+
 def test_dsg_viewer_static_html_contains_workbench_regions() -> None:
     html = lab.dsg_viewer_html()
 
@@ -411,4 +450,27 @@ def test_dsg_viewer_static_html_contains_workbench_regions() -> None:
     assert "Debug" in html
     assert "Demo" in html
     assert "Analysis" in html
+    assert "Trajectory" in html
+    assert 'id="trajectory-list"' in html
+    assert "Object Relations" in html
+    assert "Scene Position" in html
+    assert "All Object Relations" in html
+    assert "RGB Evidence" in html
+    assert 'id="object-relation-canvas"' in html
+    assert 'id="topdown-image"' in html
+    assert 'id="all-object-graph-canvas"' in html
+    assert 'id="evidence-rgb-image"' in html
+    assert "renderRelatedGraph" in html
+    assert "relatedObjectNodes" in html
+    assert "layoutRelatedObjectNodes" in html
+    assert "evidence-grid" in html
+    assert "grid-template-columns: repeat(2, minmax(0, 1fr))" in html
+    assert "height: 100vh" in html
+    assert "overflow: hidden" in html
+    assert "grid-template-rows: repeat(2, minmax(0, 1fr))" in html
+    assert "renderTopdownPanel" in html
+    assert "sceneTopdownPath" in html
+    assert "drawTopdownScene" in html
+    assert "renderEvidenceRgbPanel" in html
+    assert "assetUrl" in html
     assert "fetch('payload.json')" in html

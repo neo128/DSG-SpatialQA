@@ -96,7 +96,17 @@ def test_active_qa_v2_generates_relation_situated_temporal_and_leak_free_bundle(
     )
     bundle = build_active_qa_v2_vlm_request_bundle(
         episode_id="episode-001",
-        records=splits["observation_aware"] + splits["relation_centric"],
+        records=(
+            splits["observation_aware"]
+            + splits["relation_centric"]
+            + splits["situated"]
+            + splits["temporal"]
+        ),
+    )
+    request_case = next(
+        case
+        for case in bundle["prediction_cases"]
+        if case["question_type"] == "support_relation"
     )
 
     assert splits["observation_aware"]
@@ -109,7 +119,14 @@ def test_active_qa_v2_generates_relation_situated_temporal_and_leak_free_bundle(
     assert relation["observability"]["evidence_observable"] is True
     assert report["valid"] is True
     assert report["summary"]["question_type_count"] >= 3
+    assert bundle["request_count"] == len(
+        {case["case_id"] for case in bundle["prediction_cases"]}
+    )
     assert bundle["leak_free"] is True
+    assert request_case["question_text"]
+    assert request_case["primary_frame"]["rgb_path"] == "rgb/000010.ppm"
+    assert request_case["answer_options"][0]["option_id"] == "option_1"
+    assert request_case["answer_options"][0]["destination_label"] == "countertop"
     assert "gold_answer" not in str(bundle)
     assert "required_nodes" not in str(bundle)
     assert "visible_object_ids" not in str(bundle)

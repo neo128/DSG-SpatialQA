@@ -4,23 +4,23 @@
     "graph_tool_only_vs_vlm_only": {
       "decision": "significant_candidate_advantage",
       "paired_losses": 0,
-      "paired_ties": 0,
-      "paired_wins": 106,
+      "paired_ties": 33,
+      "paired_wins": 73,
       "sign_test_p_value": 0.0
     },
     "vlm_dsg_vs_graph_tool_only": {
       "decision": "no_candidate_advantage",
-      "paired_losses": 106,
-      "paired_ties": 0,
+      "paired_losses": 55,
+      "paired_ties": 51,
       "paired_wins": 0,
       "sign_test_p_value": 0.0
     },
     "vlm_dsg_vs_vlm_only": {
-      "decision": "no_candidate_advantage",
+      "decision": "significant_candidate_advantage",
       "paired_losses": 0,
-      "paired_ties": 106,
-      "paired_wins": 0,
-      "sign_test_p_value": 1.0
+      "paired_ties": 88,
+      "paired_wins": 18,
+      "sign_test_p_value": 8e-06
     }
   },
   "episode_id": "ai2thor-real-small-episode-003",
@@ -36,21 +36,21 @@
     },
     "vlm_dsg_trusted": {
       "case_count": 106,
-      "prediction_count": 0,
-      "semantic_match_count": 0,
-      "semantic_match_rate": 0.0,
-      "strict_exact_count": 0,
-      "strict_exact_rate": 0.0,
-      "unknown_or_missing_count": 106
+      "prediction_count": 106,
+      "semantic_match_count": 51,
+      "semantic_match_rate": 0.481132,
+      "strict_exact_count": 51,
+      "strict_exact_rate": 0.481132,
+      "unknown_or_missing_count": 0
     },
     "vlm_only": {
       "case_count": 106,
-      "prediction_count": 0,
-      "semantic_match_count": 0,
-      "semantic_match_rate": 0.0,
-      "strict_exact_count": 0,
-      "strict_exact_rate": 0.0,
-      "unknown_or_missing_count": 106
+      "prediction_count": 106,
+      "semantic_match_count": 33,
+      "semantic_match_rate": 0.311321,
+      "strict_exact_count": 33,
+      "strict_exact_rate": 0.311321,
+      "unknown_or_missing_count": 0
     }
   },
   "question_type_groups": {
@@ -66,21 +66,21 @@
       },
       "vlm_dsg_trusted": {
         "case_count": 26,
-        "prediction_count": 0,
-        "semantic_match_count": 0,
-        "semantic_match_rate": 0.0,
-        "strict_exact_count": 0,
-        "strict_exact_rate": 0.0,
-        "unknown_or_missing_count": 26
+        "prediction_count": 26,
+        "semantic_match_count": 7,
+        "semantic_match_rate": 0.269231,
+        "strict_exact_count": 7,
+        "strict_exact_rate": 0.269231,
+        "unknown_or_missing_count": 0
       },
       "vlm_only": {
         "case_count": 26,
-        "prediction_count": 0,
+        "prediction_count": 26,
         "semantic_match_count": 0,
         "semantic_match_rate": 0.0,
         "strict_exact_count": 0,
         "strict_exact_rate": 0.0,
-        "unknown_or_missing_count": 26
+        "unknown_or_missing_count": 0
       }
     },
     "situated_egocentric": {
@@ -95,21 +95,21 @@
       },
       "vlm_dsg_trusted": {
         "case_count": 36,
-        "prediction_count": 0,
-        "semantic_match_count": 0,
-        "semantic_match_rate": 0.0,
-        "strict_exact_count": 0,
-        "strict_exact_rate": 0.0,
-        "unknown_or_missing_count": 36
+        "prediction_count": 36,
+        "semantic_match_count": 27,
+        "semantic_match_rate": 0.75,
+        "strict_exact_count": 27,
+        "strict_exact_rate": 0.75,
+        "unknown_or_missing_count": 0
       },
       "vlm_only": {
         "case_count": 36,
-        "prediction_count": 0,
-        "semantic_match_count": 0,
-        "semantic_match_rate": 0.0,
-        "strict_exact_count": 0,
-        "strict_exact_rate": 0.0,
-        "unknown_or_missing_count": 36
+        "prediction_count": 36,
+        "semantic_match_count": 26,
+        "semantic_match_rate": 0.722222,
+        "strict_exact_count": 26,
+        "strict_exact_rate": 0.722222,
+        "unknown_or_missing_count": 0
       }
     },
     "support_relation": {
@@ -124,21 +124,21 @@
       },
       "vlm_dsg_trusted": {
         "case_count": 8,
-        "prediction_count": 0,
-        "semantic_match_count": 0,
-        "semantic_match_rate": 0.0,
-        "strict_exact_count": 0,
-        "strict_exact_rate": 0.0,
-        "unknown_or_missing_count": 8
+        "prediction_count": 8,
+        "semantic_match_count": 4,
+        "semantic_match_rate": 0.5,
+        "strict_exact_count": 4,
+        "strict_exact_rate": 0.5,
+        "unknown_or_missing_count": 0
       },
       "vlm_only": {
         "case_count": 8,
-        "prediction_count": 0,
+        "prediction_count": 8,
         "semantic_match_count": 0,
         "semantic_match_rate": 0.0,
         "strict_exact_count": 0,
         "strict_exact_rate": 0.0,
-        "unknown_or_missing_count": 8
+        "unknown_or_missing_count": 0
       }
     },
     "temporal_last_seen": {
@@ -153,21 +153,21 @@
       },
       "vlm_dsg_trusted": {
         "case_count": 36,
-        "prediction_count": 0,
-        "semantic_match_count": 0,
-        "semantic_match_rate": 0.0,
-        "strict_exact_count": 0,
-        "strict_exact_rate": 0.0,
-        "unknown_or_missing_count": 36
+        "prediction_count": 36,
+        "semantic_match_count": 13,
+        "semantic_match_rate": 0.361111,
+        "strict_exact_count": 13,
+        "strict_exact_rate": 0.361111,
+        "unknown_or_missing_count": 0
       },
       "vlm_only": {
         "case_count": 36,
-        "prediction_count": 0,
-        "semantic_match_count": 0,
-        "semantic_match_rate": 0.0,
-        "strict_exact_count": 0,
-        "strict_exact_rate": 0.0,
-        "unknown_or_missing_count": 36
+        "prediction_count": 36,
+        "semantic_match_count": 7,
+        "semantic_match_rate": 0.194444,
+        "strict_exact_count": 7,
+        "strict_exact_rate": 0.194444,
+        "unknown_or_missing_count": 0
       }
     }
   },

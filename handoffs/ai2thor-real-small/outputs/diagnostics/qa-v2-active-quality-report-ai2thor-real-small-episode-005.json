@@ -26,7 +26,7 @@
     }
   ],
   "episode_id": "ai2thor-real-small-episode-005",
-  "report_digest": "70261c84319dd5124c34df3d7fe20cda1c50c99c28a4f9a5224484c3017dff33",
+  "report_digest": "fa567b9103e8d66b3a7ae02c96a50b1240031459e1f971533b904726a7472ea9",
   "schema_version": "dsg-spatialqa-lab.active-qa-v2-quality-report.v1",
   "source_paths": {
     "observation_sequence": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode005.json",
@@ -42,23 +42,23 @@
     "temporal": "handoffs/ai2thor-real-small/inputs/qa-v2-active/ai2thor-real-small-episode-005/qa-temporal.jsonl"
   },
   "summary": {
-    "object_location_rate": 0.373134,
+    "object_location_rate": 0.16129,
     "observation_aware_count": 35,
     "question_type_count": 4,
     "question_type_counts": {
       "object_location": 25,
-      "situated_egocentric": 16,
+      "situated_egocentric": 60,
       "support_relation": 10,
-      "temporal_last_seen": 16
+      "temporal_last_seen": 60
     },
-    "situated_temporal_relation_count": 67,
+    "situated_temporal_relation_count": 155,
     "split_counts": {
       "anti_shortcut": 35,
       "full_oracle": 10,
       "observation_aware": 35,
       "relation_centric": 35,
-      "situated": 16,
-      "temporal": 16
+      "situated": 60,
+      "temporal": 60
     }
   },
   "valid": true
