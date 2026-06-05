@@ -51,6 +51,7 @@ OBSERVATION_TOP_K_RELATIONS = frozenset(
 OBSERVATION_ON_VERTICAL_MARGIN = 0.08
 OBSERVATION_ON_OVERLAP_MARGIN = 0.05
 OBSERVATION_ON_SUPPORT_OVERLAP_RATIO = 0.25
+OBSERVATION_CURRENT_LOCATION_ALIAS_AMBIGUITY_MARGIN = 0.05
 OBSERVATION_ON_UNSUPPORTED_SOURCE_LABELS = frozenset(
     {
         "blinds",
@@ -2514,7 +2515,7 @@ class ObservationIngestor:
                 location_id,
                 normalized_relation,
                 observation,
-                source_object_id=obj.object_id,
+                source_object=obj,
             )
             if location_id not in self.graph.nodes:
                 self._ensure_explicit_current_location_node(
@@ -2550,15 +2551,15 @@ class ObservationIngestor:
         relation: str,
         observation: SceneObservation,
         *,
-        source_object_id: str,
+        source_object: ObjectObservation,
     ) -> str:
         if relation not in {"ON", "INSIDE"}:
             return location_id
         normalized_location = _normalized_location_alias(location_id)
         candidates = [
-            obj.object_id
+            (source_object.bbox.surface_distance_to(obj.bbox), obj.object_id)
             for obj in sorted(observation.objects, key=lambda item: item.object_id)
-            if obj.object_id != source_object_id
+            if obj.object_id != source_object.object_id
             and (
                 _normalized_location_alias(obj.object_id) == normalized_location
                 or _normalized_location_alias(obj.label) == normalized_location
@@ -2566,11 +2567,21 @@ class ObservationIngestor:
         ]
         if not candidates:
             return location_id
+        candidates = sorted(candidates)
+        if len(candidates) == 1:
+            return candidates[0][1]
         if len(candidates) > 1:
+            best_distance, best_object_id = candidates[0]
+            second_distance = candidates[1][0]
+            if (
+                second_distance - best_distance
+                > OBSERVATION_CURRENT_LOCATION_ALIAS_AMBIGUITY_MARGIN
+            ):
+                return best_object_id
             raise SpatialQAError(
                 f"Ambiguous current_location_id label alias: {location_id}"
             )
-        return candidates[0]
+        return candidates[0][1]
 
     def _ensure_explicit_current_location_node(
         self,
