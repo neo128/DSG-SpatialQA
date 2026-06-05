@@ -13,6 +13,30 @@ from dsg_spatialqa_lab.schema import Edge, Node, SpatialQAError
 
 
 DSG_VIEWER_PAYLOAD_SCHEMA_VERSION = "dsg-spatialqa-lab.dsg-viewer-payload.v1"
+DSG_VIEWER_WORKSPACE_PRESET_PATHS: Mapping[str, tuple[str, ...]] = {
+    "predicted_graph_path": ("outputs/predicted-dsg/predicted-graph.json",),
+    "oracle_graph_path": (
+        "outputs/benchmark/graphs/oracle-graph.json",
+        "outputs/benchmark/graphs/graph.json",
+    ),
+    "qa_path": (
+        "inputs/qa.jsonl",
+        "inputs/qa-dataset.jsonl",
+        "outputs/benchmark/qa.jsonl",
+    ),
+    "qa_eval_report_path": (
+        "outputs/offline-controls/qa-eval-observation-aware-p4-target60/qa-eval-report.json",
+        "outputs/offline-controls/qa-eval-report.json",
+    ),
+    "graph_eval_report_path": (
+        "outputs/benchmark/graph-eval-report.json",
+        "outputs/reports/graph-eval.json",
+    ),
+    "evidence_report_path": (
+        "outputs/predicted-dsg/predicted-evidence-report.json",
+        "outputs/reports/predicted-dsg-evidence-report.json",
+    ),
+}
 
 
 def dsg_viewer_payload(
@@ -102,6 +126,32 @@ def load_dsg_viewer_payload(path: str | Path) -> dict[str, Any]:
     if not isinstance(payload, Mapping):
         raise SpatialQAError("DSG viewer payload JSON must be an object")
     return cast(dict[str, Any], payload)
+
+
+def dsg_viewer_resolve_workspace_path(workspace: str | Path, path: str | Path) -> Path:
+    workspace_path = Path(workspace).resolve()
+    candidate = Path(path)
+    if not candidate.is_absolute():
+        candidate = workspace_path / candidate
+    resolved = candidate.resolve()
+    try:
+        resolved.relative_to(workspace_path)
+    except ValueError as exc:
+        raise SpatialQAError(f"Path is outside workspace: {path}") from exc
+    return resolved
+
+
+def dsg_viewer_workspace_preset(workspace: str | Path) -> dict[str, Any]:
+    workspace_path = Path(workspace)
+    paths: dict[str, str] = {}
+    for key, candidate_paths in DSG_VIEWER_WORKSPACE_PRESET_PATHS.items():
+        existing_path = _first_existing_workspace_path(workspace_path, candidate_paths)
+        if existing_path is not None:
+            paths[key] = str(existing_path)
+    return {
+        "workspace_path": str(workspace_path),
+        "paths": paths,
+    }
 
 
 def _node_row(node: Node) -> dict[str, Any]:
@@ -271,6 +321,17 @@ def _artifact_paths(**paths: str | Path | None) -> dict[str, str]:
         for key, path in sorted(paths.items())
         if path is not None
     }
+
+
+def _first_existing_workspace_path(
+    workspace: Path,
+    candidate_paths: Sequence[str],
+) -> Path | None:
+    for candidate_path in candidate_paths:
+        resolved = dsg_viewer_resolve_workspace_path(workspace, candidate_path)
+        if resolved.exists():
+            return resolved
+    return None
 
 
 def _mapping_or_empty(value: object) -> Mapping[str, Any]:

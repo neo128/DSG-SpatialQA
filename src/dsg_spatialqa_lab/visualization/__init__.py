@@ -14,6 +14,8 @@ from dsg_spatialqa_lab.visualization.dsg_viewer import (
     dsg_viewer_payload,
     dsg_viewer_payload_digest,
     dsg_viewer_payload_json,
+    dsg_viewer_resolve_workspace_path,
+    dsg_viewer_workspace_preset,
     load_dsg_viewer_payload,
     save_dsg_viewer_payload,
 )
@@ -28,6 +30,8 @@ __all__ = [
     "dsg_viewer_payload",
     "dsg_viewer_payload_digest",
     "dsg_viewer_payload_json",
+    "dsg_viewer_resolve_workspace_path",
+    "dsg_viewer_workspace_preset",
     "export_dashboard",
     "load_dashboard_bundle",
     "load_dsg_viewer_payload",

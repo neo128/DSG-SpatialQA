@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import dsg_spatialqa_lab as lab
 
 
@@ -122,3 +124,37 @@ def test_dsg_viewer_payload_links_qa_cases_and_oracle_delta() -> None:
     }
     assert payload["oracle"]["missing_relation_count"] == 1
     assert payload["metrics"]["relation_f1"] == 0.333333
+
+
+def test_dsg_viewer_workspace_preset_resolves_known_paths(tmp_path: Path) -> None:
+    workspace = tmp_path / "ai2thor-real-small"
+    (workspace / "outputs" / "predicted-dsg").mkdir(parents=True)
+    (workspace / "outputs" / "benchmark" / "graphs").mkdir(parents=True)
+    (workspace / "inputs").mkdir()
+    (
+        workspace
+        / "outputs"
+        / "offline-controls"
+        / "qa-eval-observation-aware-p4-target60"
+    ).mkdir(parents=True)
+    expected_graph = workspace / "outputs" / "predicted-dsg" / "predicted-graph.json"
+    expected_graph.write_text("{}", encoding="utf-8")
+
+    preset = lab.dsg_viewer_workspace_preset(workspace)
+
+    assert preset["workspace_path"] == str(workspace)
+    assert preset["paths"]["predicted_graph_path"] == str(expected_graph)
+
+
+def test_dsg_viewer_path_guard_rejects_paths_outside_workspace(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    outside = tmp_path / "outside.json"
+    outside.write_text("{}", encoding="utf-8")
+
+    try:
+        lab.dsg_viewer_resolve_workspace_path(workspace, outside)
+    except lab.SpatialQAError as exc:
+        assert "outside workspace" in str(exc)
+    else:
+        raise AssertionError("expected outside workspace path to be rejected")
