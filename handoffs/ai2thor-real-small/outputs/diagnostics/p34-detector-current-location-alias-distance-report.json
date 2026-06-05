@@ -1,0 +1,48 @@
+{
+  "change": {
+    "ambiguity_margin": 0.05,
+    "behavior": "For explicit detector current_location_relation ON/INSIDE, repeated label aliases are resolved to the closest same-frame observed object only when the nearest bbox surface distance is separated from the second nearest by more than the ambiguity margin. Near ties still raise SpatialQAError.",
+    "evidence_scope": "same-frame SceneObservation objects only; no QA gold answer, oracle required edges, or evaluator-only fields are read.",
+    "production_file": "src/dsg_spatialqa_lab/observations.py",
+    "test_file": "tests/test_predicted_graph_builder.py"
+  },
+  "expected_dsg_effect": {
+    "memory_storage_content": "support/container current-location edges survive when external detector uses common labels such as countertop, chair, or cabinet and one observed support is spatially clear",
+    "query_behavior": "GraphTool sees explicit detector_current_location edges before support fallback and room fallback",
+    "risk_control": "ambiguous same-label supports are not guessed; producer must return stable ids or better evidence for near ties"
+  },
+  "next_experiment": {
+    "input": "handoffs/ai2thor-real-small/inputs/predicted-dsg/p31-detector-recall-handoff.json",
+    "required_external_return": "detector/RGB-D JSONL can provide either stable support ids or common support labels; common labels are acceptable only when same-frame geometry makes the nearest support unambiguous.",
+    "rerun_needed": "Rebuild detector-only observation sequence and predicted DSG after external detector/RGB-D return, then compare P34/P35 DSG against VLM P26."
+  },
+  "not_final_real_detector_only_research_conclusion": true,
+  "objective": "increase DSG support/current-location memory retention after the VLM-only semantic gate has passed",
+  "problem": {
+    "dsg_failure_mode": "external detector/RGB-D current-location evidence may be dropped, causing GraphTool to fall back to IN_ROOM and lose support/container answers.",
+    "previous_behavior": "P33 accepted unique same-frame current_location_id label aliases but rejected all repeated support labels, even when one support was clearly nearest to the target."
+  },
+  "report_digest": "1eed23af8cfdf3d2fbb9c41f45795e4a289434362018a7780fb4dd76f4cb2791",
+  "schema_version": "dsg-spatialqa-lab.dsg-current-location-alias-distance-report.v1",
+  "stage": "p34_detector_current_location_alias_distance_disambiguation",
+  "verification": {
+    "full_verify_command": "python scripts/verify.py",
+    "full_verify_result": "all checks passed; 796 pytest cases passed; evaluation suite 52/52 passed",
+    "full_verify_run": true,
+    "green_commands": [
+      "python -m pytest -q tests/test_predicted_graph_builder.py -k \"current_location_label_alias or clear_nearest_support\"",
+      "python -m pytest -q tests/test_observations.py tests/test_observations_script.py",
+      "python -m pytest -q tests/test_predicted_graph_builder.py tests/test_spatial_qa.py -k \"current_location or support_fallback or support_like or predicted_graph\"",
+      "python -m ruff check src/dsg_spatialqa_lab/observations.py tests/test_predicted_graph_builder.py",
+      "python -m mypy src/dsg_spatialqa_lab/observations.py tests/test_predicted_graph_builder.py"
+    ],
+    "green_result": {
+      "current_location_alias_slice": "3 passed, 16 deselected",
+      "mypy": "Success: no issues found in 2 source files",
+      "observations_and_script": "45 passed",
+      "predicted_graph_and_spatial_qa_slice": "28 passed, 31 deselected",
+      "ruff": "All checks passed"
+    },
+    "red_test": "python -m pytest -q tests/test_predicted_graph_builder.py -k \"current_location_label_alias or clear_nearest_support\" failed before implementation on clear-nearest multi-label alias with Ambiguous current_location_id label alias"
+  }
+}
