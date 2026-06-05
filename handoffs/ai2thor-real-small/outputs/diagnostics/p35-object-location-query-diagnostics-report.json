@@ -28,11 +28,13 @@
     "dsg_failure_mode": "When detector-only DSG fell back to IN_ROOM, the saved answer did not explain whether support evidence was absent, ambiguous, or bypassed.",
     "previous_behavior": "object_location returned the same room-level fallback shape for missing support candidates and ambiguous same-frame support candidates."
   },
-  "report_digest": "09b35a2f696795539e5f2f47a83972001bb0d5e0608f4f041dc08dc66686cf93",
+  "report_digest": "e4b85816b98281a093d0e4b9d09f6086460d5203fb81b2aeee507bdbe68b81bc",
   "schema_version": "dsg-spatialqa-lab.object-location-query-diagnostics-report.v1",
   "stage": "p35_object_location_query_diagnostics",
   "verification": {
-    "full_verify_run": false,
+    "full_verify_command": "python scripts/verify.py",
+    "full_verify_result": "all checks passed; 798 pytest cases passed; evaluation suite 52/52 passed",
+    "full_verify_run": true,
     "green_commands": [
       "python -m pytest -q tests/test_spatial_qa.py -k 'diagnostics_reports'",
       "python -m pytest -q tests/test_spatial_qa.py -k 'object_location or support_fallback or current_location'",
