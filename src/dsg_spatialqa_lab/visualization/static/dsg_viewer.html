@@ -232,12 +232,49 @@
       border-color: var(--line-strong);
     }
 
+    .row.active {
+      border-color: var(--blue);
+      background: #f4f8ff;
+    }
+
     .row-name {
       min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
       font-weight: 600;
+    }
+
+    .qa-row {
+      min-height: 52px;
+      align-items: start;
+    }
+
+    .qa-copy {
+      min-width: 0;
+      display: grid;
+      gap: 3px;
+    }
+
+    .qa-question {
+      min-width: 0;
+      color: var(--ink);
+      font-weight: 700;
+      line-height: 1.25;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .qa-meta {
+      min-width: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.25;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .pill {
@@ -267,6 +304,11 @@
 
     .pill.state {
       background: var(--muted);
+    }
+
+    .pill.qa-type {
+      min-width: 42px;
+      justify-content: center;
     }
 
     .canvas-wrap {
@@ -345,6 +387,15 @@
       border: 1px solid var(--line);
       border-radius: 6px;
       background: #ffffff;
+    }
+
+    .rgb-evidence-image {
+      display: block;
+      width: 80%;
+      height: 80%;
+      max-width: none;
+      max-height: none;
+      object-fit: cover;
     }
 
     .topdown-overlay {
@@ -586,7 +637,7 @@
                 <span class="pill" id="evidence-rgb-count">rgb</span>
               </div>
               <div class="media-frame">
-                <img id="evidence-rgb-image" class="evidence-image" alt="Selected object RGB evidence">
+                <img id="evidence-rgb-image" class="evidence-image rgb-evidence-image" alt="Selected object RGB evidence">
                 <div id="evidence-rgb-empty" class="media-empty">No RGB evidence</div>
               </div>
             </section>
@@ -617,7 +668,8 @@
       mode: 'debug',
       query: '',
       typeFilter: '',
-      selectedId: ''
+      selectedId: '',
+      selectedCaseId: ''
     };
 
     const svgNs = 'http://www.w3.org/2000/svg';
@@ -713,11 +765,14 @@
       `).join('') : '<div class="empty">No matching objects</div>';
 
       const cases = state.payload.qa?.cases || [];
-      const qaRows = cases.filter((item) => matchesQuery(item.case_id, item.question_type));
+      const qaRows = cases.filter((item) => matchesQaQuery(item));
       byId('qa-list').innerHTML = qaRows.length ? qaRows.map((item) => `
-        <button type="button" class="row" data-select-case="${escapeHtml(item.case_id)}">
-          <span class="row-name">${escapeHtml(item.case_id)}</span>
-          <span class="pill">${escapeHtml(item.question_type)}</span>
+        <button type="button" class="row qa-row${item.case_id === state.selectedCaseId ? ' active' : ''}" data-select-case="${escapeHtml(item.case_id)}" title="${escapeHtml(item.case_id)}">
+          <span class="qa-copy">
+            <span class="qa-question">${escapeHtml(qaQuestionText(item))}</span>
+            <span class="qa-meta">${escapeHtml(qaMetaText(item))}</span>
+          </span>
+          <span class="pill qa-type" title="${escapeHtml(item.question_type || '')}">${escapeHtml(qaTypeBadge(item.question_type))}</span>
         </button>
       `).join('') : '<div class="empty">No matching QA cases</div>';
 
@@ -833,8 +888,9 @@
       const image = byId('evidence-rgb-image');
       const empty = byId('evidence-rgb-empty');
       const selected = selectedObjectNode();
+      const selectedCase = selectedQaCase();
       const attributes = selected?.attributes || {};
-      const rgbPath = attributes.rgb_path || '';
+      const rgbPath = qaEvidenceRgbPath(selectedCase, selected) || attributes.rgb_path || '';
       if (rgbPath) {
         image.src = assetUrl(rgbPath);
         image.style.display = '';
@@ -845,7 +901,7 @@
         empty.style.display = '';
       }
       byId('evidence-rgb-status').textContent = selected
-        ? `${selected.label || selected.id} step=${metricValue(attributes.step)}`
+        ? `${selected.label || selected.id} step=${metricValue(qaStepValue(selectedCase || {}) || attributes.step)}`
         : 'Select an object';
       byId('evidence-rgb-count').textContent = rgbPath ? 'rgb' : 'n/a';
     }
@@ -922,6 +978,11 @@
         .find((node) => node.id === state.selectedId && node.type === 'object') || null;
     }
 
+    function selectedQaCase() {
+      return (state.payload.qa?.cases || [])
+        .find((item) => item.case_id === state.selectedCaseId) || null;
+    }
+
     function relatedObjectNodes() {
       const selected = selectedObjectNode();
       if (!selected) {
@@ -991,8 +1052,11 @@
       if (!payload) {
         return;
       }
+      const selectedCase = selectedQaCase();
       const node = (payload.graph?.nodes || []).find((item) => item.id === state.selectedId);
-      if (node) {
+      if (selectedCase) {
+        byId('selection-detail').innerHTML = detailTable(qaDetailRows(selectedCase));
+      } else if (node) {
         byId('selection-detail').innerHTML = detailTable({
           id: node.id,
           type: node.type,
@@ -1018,18 +1082,22 @@
 
     function selectNode(id) {
       state.selectedId = id || '';
+      state.selectedCaseId = '';
       renderGraph();
       renderDetail();
+      renderLists();
     }
 
     function selectCase(caseId) {
-      const item = (state.payload.qa?.cases || []).find((row) => row.case_id === caseId);
+      state.selectedCaseId = caseId || '';
+      const item = selectedQaCase();
       const firstTarget = item?.target_object_ids?.[0] || '';
       if (firstTarget) {
         state.selectedId = firstTarget;
       }
-      byId('selection-detail').innerHTML = `<pre>${escapeHtml(JSON.stringify(item || {}, null, 2))}</pre>`;
+      renderLists();
       renderGraph();
+      renderDetail();
     }
 
     function selectTrajectoryStep(stepIndex) {
@@ -1069,16 +1137,20 @@
       if (!point) {
         return;
       }
+      const plot = topdownPlotBounds(size);
+      const markerRadius = Math.max(12, Math.round(Math.min(size.width, size.height) * 0.014));
       const circle = document.createElementNS(svgNs, 'circle');
       circle.setAttribute('cx', point.x);
       circle.setAttribute('cy', point.y);
-      circle.setAttribute('r', Math.max(12, Math.round(Math.min(size.width, size.height) * 0.014)));
+      circle.setAttribute('r', markerRadius);
       circle.setAttribute('class', 'topdown-marker');
       scene.appendChild(circle);
 
+      const labelOnRight = point.x < (plot.left + plot.right) / 2;
       const markerLabel = document.createElementNS(svgNs, 'text');
-      markerLabel.setAttribute('x', point.x + 22);
-      markerLabel.setAttribute('y', point.y - 20);
+      markerLabel.setAttribute('x', labelOnRight ? point.x + markerRadius + 10 : point.x - markerRadius - 10);
+      markerLabel.setAttribute('y', clamp(point.y - markerRadius - 4, plot.top + 30, plot.bottom - 16));
+      markerLabel.setAttribute('text-anchor', labelOnRight ? 'start' : 'end');
       markerLabel.setAttribute('class', 'topdown-marker-label');
       markerLabel.textContent = compactLabel(label || state.selectedId || 'object');
       scene.appendChild(markerLabel);
@@ -1093,21 +1165,24 @@
     function projectScenePoint(pose, size) {
       const x = numberOrNull(pose?.x);
       const z = numberOrNull(pose?.z);
-      const bounds = sceneBounds();
+      const bounds = projectionBounds(size);
       if (x === null || z === null || !bounds) {
         return null;
       }
-      const width = size.width;
-      const height = size.height;
-      const left = size.kind === 'scene' ? 70 : 70;
-      const right = size.kind === 'scene' ? width - 260 : width - 70;
-      const top = size.kind === 'scene' ? 90 : 70;
-      const bottom = size.kind === 'scene' ? height - 80 : height - 70;
+      const plot = topdownPlotBounds(size);
       const spanX = Math.max(0.25, bounds.maxX - bounds.minX);
       const spanZ = Math.max(0.25, bounds.maxZ - bounds.minZ);
       return {
-        x: left + Math.round((x - bounds.minX) / spanX * (right - left)),
-        y: bottom - Math.round((z - bounds.minZ) / spanZ * (bottom - top))
+        x: clamp(
+          plot.left + Math.round((x - bounds.minX) / spanX * (plot.right - plot.left)),
+          plot.left,
+          plot.right,
+        ),
+        y: clamp(
+          plot.bottom - Math.round((z - bounds.minZ) / spanZ * (plot.bottom - plot.top)),
+          plot.top,
+          plot.bottom,
+        )
       };
     }
 
@@ -1141,6 +1216,40 @@
       };
     }
 
+    function projectionBounds(size) {
+      const bounds = sceneBounds();
+      if (!bounds || size.kind !== 'scene') {
+        return bounds;
+      }
+      const spanX = Math.max(0.25, bounds.maxX - bounds.minX);
+      const spanZ = Math.max(0.25, bounds.maxZ - bounds.minZ);
+      const padX = Math.max(0.5, spanX * 0.1);
+      const padZ = Math.max(0.5, spanZ * 0.1);
+      return {
+        minX: bounds.minX - padX,
+        maxX: bounds.maxX + padX,
+        minZ: bounds.minZ - padZ,
+        maxZ: bounds.maxZ + padZ
+      };
+    }
+
+    function topdownPlotBounds(size) {
+      if (size.kind === 'scene') {
+        return {
+          left: 80,
+          right: Math.max(120, size.width - 360),
+          top: 120,
+          bottom: Math.max(120, size.height - 80)
+        };
+      }
+      return {
+        left: 70,
+        right: Math.max(120, size.width - 70),
+        top: 70,
+        bottom: Math.max(120, size.height - 70)
+      };
+    }
+
     function assetUrl(path) {
       return `asset?path=${encodeURIComponent(path)}`;
     }
@@ -1160,6 +1269,109 @@
         return true;
       }
       return values.some((value) => text(value).toLowerCase().includes(state.query));
+    }
+
+    function matchesQaQuery(item) {
+      return matchesQuery(
+        item.case_id,
+        item.question_type,
+        qaQuestionText(item),
+        qaTargetLabel(item),
+        qaAnswerText(item),
+        qaEvidenceText(item),
+        stringList(item.target_object_ids).join(' '),
+        item.step,
+      );
+    }
+
+    function qaQuestionText(item) {
+      const question = item.question || {};
+      return text(item.question_text || question.text || question.question || item.case_id || 'QA case');
+    }
+
+    function qaTargetLabel(item) {
+      const target = item.target || {};
+      const targetIds = stringList(item.target_object_ids);
+      const targetId = text(target.object_id || target.id || targetIds[0]);
+      const node = targetId ? objectNodeById().get(targetId) : null;
+      return text(target.label || node?.label || targetId);
+    }
+
+    function qaMetaText(item) {
+      const parts = [];
+      const target = qaTargetLabel(item);
+      const step = qaStepValue(item);
+      if (target) {
+        parts.push(`target=${target}`);
+      }
+      if (step !== '') {
+        parts.push(`step=${step}`);
+      }
+      if (item.question_type) {
+        parts.push(text(item.question_type));
+      }
+      const evidence = qaEvidenceText(item);
+      if (evidence) {
+        parts.push(evidence);
+      }
+      return parts.join(' · ');
+    }
+
+    function qaStepValue(item) {
+      const answer = item.answer || {};
+      const frames = stringList(item.evidence_frames);
+      return text(item.step ?? answer.step ?? frames[0]);
+    }
+
+    function qaAnswerText(item) {
+      const answer = item.answer;
+      if (!answer) {
+        return '';
+      }
+      if (typeof answer === 'string') {
+        return answer;
+      }
+      const relation = text(answer.relation);
+      const destination = text(answer.dst_label || answer.destination_label || answer.dst || answer.value);
+      return [relation, destination].filter(Boolean).join(' ');
+    }
+
+    function qaEvidenceText(item) {
+      const frames = stringList(item.evidence_frames);
+      return frames.length ? `evidence=${frames.join(',')}` : '';
+    }
+
+    function qaEvidenceRgbPath(item, selected) {
+      const frame = stringList(item?.evidence_frames)[0];
+      const rgbPath = selected?.attributes?.rgb_path || '';
+      if (!frame || !rgbPath) {
+        return '';
+      }
+      return rgbPath.replace(/\/\d+\/rgb\.ppm$/, `/${frame}/rgb.ppm`);
+    }
+
+    function qaTypeBadge(type) {
+      const key = text(type);
+      const labels = {
+        object_location: 'Loc',
+        support_relation: 'Support',
+        relation_centric: 'Rel',
+        situated_egocentric: 'Ego',
+        temporal: 'Time'
+      };
+      return labels[key] || compactLabel(key || 'QA');
+    }
+
+    function qaDetailRows(item) {
+      return {
+        question: qaQuestionText(item),
+        type: item.question_type || '',
+        target: qaTargetLabel(item),
+        answer: qaAnswerText(item),
+        evidence: qaEvidenceText(item),
+        case_id: item.case_id,
+        case: JSON.stringify(item, null, 2)
+      };
     }
 
     function layoutNodes(nodes, width, height) {
@@ -1250,6 +1462,18 @@
 
     function numberOrNull(value) {
       return typeof value === 'number' && Number.isFinite(value) ? value : null;
+    }
+
+    function stringList(value) {
+      if (Array.isArray(value)) {
+        return value.map((item) => text(item)).filter(Boolean);
+      }
+      const single = text(value);
+      return single ? [single] : [];
+    }
+
+    function clamp(value, min, max) {
+      return Math.min(max, Math.max(min, value));
     }
 
     function fileName(path) {

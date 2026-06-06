@@ -1,0 +1,25 @@
+{
+  "calibration_kind": "same_dataset_adjudication_derived",
+  "fusion_policy": "adjudication_derived_trusted_graph_or_vlm_fallback",
+  "not_final_research_claim": true,
+  "prediction_digest": "009a0d9aca6aa0c9c59974c20d72917d782f05132a77c518e8659e603b6cbf87",
+  "prediction_path": "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/vlm-dsg-adjudication-derived-trusted-active-qa-v2-all-episodes.jsonl",
+  "report_digest": "3638cb23a9eaa7b598402db3a3fa8ad2e9b567e3548e20837f705ba59e04904d",
+  "schema_version": "dsg-spatialqa-lab.adjudication-derived-fusion-report.v1",
+  "source_paths": {
+    "graph_predictions": "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-all-episodes.jsonl",
+    "qa_root": "handoffs/ai2thor-real-small/inputs/qa-v2-active",
+    "vlm_predictions": "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/vlm-only/vlm-only-qwen37-active-qa-v2-all-episodes.jsonl"
+  },
+  "summary": {
+    "case_count": 576,
+    "graph_source_count": 292,
+    "selection_reason_counts": {
+      "relation_or_object_location_graph_prior": 176,
+      "vlm_high_confidence_fallback": 284,
+      "vlm_unknown_or_low_confidence": 116
+    },
+    "vlm_source_count": 284
+  },
+  "vlm_confidence_threshold": 0.55
+}

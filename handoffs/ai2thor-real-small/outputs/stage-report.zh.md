@@ -121,6 +121,130 @@ Question-type 分组：
 3. 扩展更多 AI2-THOR 场景和不同房型，检查 superiority claim 是否仍稳定。
 4. 后续 P51 做更大规模泛化评估。
 
+## 0.7 P51-P52 最新进展
+
+本轮开始执行下一阶段目标：
+
+- P51：逐例归因 `142` 个 VLM+DSG adjudicated wins 与 `293` 个 adjudicated failures。
+- P52：把 P50 adjudication 经验固化为 deterministic trusted fusion gate。
+- P53-P55：后续继续扩展 QA 类型、扩到 20 episode，并根据失败归因反向优化 NBV/DSG 构图。
+
+### P51 逐例归因结果
+
+主报告使用 `match_mode=p50_comparison`，用于复现 P50 的三组对比口径。
+
+| bucket | count |
+| --- | ---: |
+| adjudicated_win | 142 |
+| adjudicated_failure | 293 |
+| tie_correct | 141 |
+| adjudicated_loss | 0 |
+
+按问题类型拆分：
+
+| question_type | wins | failures | tie_correct |
+| --- | ---: | ---: | ---: |
+| object_location | 37 | 84 | 0 |
+| situated_egocentric | 31 | 55 | 114 |
+| support_relation | 38 | 17 | 0 |
+| temporal_last_seen | 36 | 137 | 27 |
+
+主要提升来源：
+
+| attribution | count |
+| --- | ---: |
+| dsg_support_relation_correction | 38 |
+| dsg_location_correction | 37 |
+| dsg_temporal_memory_correction | 36 |
+| dsg_situated_evidence_correction | 31 |
+
+主要失败来源：
+
+| attribution | count |
+| --- | ---: |
+| accepted_vlm_but_wrong | 257 |
+| adjudicator_rejected_both | 31 |
+| adjudicator_uncertain | 5 |
+
+解释：
+
+- DSG 的正向收益不是单一类型，而是分布在 support relation、location、temporal memory、situated evidence 四类上。
+- 失败大头是 adjudicator 仍接受了错误 VLM answer，说明 P52 应重点固化“何时让 DSG 覆盖 VLM”的规则。
+- `temporal_last_seen` 仍有 `137` 个 failure，是下一步 DSG memory / timeline 构图的优先优化对象。
+
+P51 artifact：
+
+- `outputs/diagnostics/p51-active-qa-v2-case-attribution.json`
+- `outputs/diagnostics/p51-active-qa-v2-case-attribution.zh.md`
+
+另外补充了一个 `structured_text` 语义匹配敏感性报告。该口径会把 VLM 自然语言中正确表达的位置也计入，结果为：
+
+| bucket | count |
+| --- | ---: |
+| adjudicated_win | 120 |
+| adjudicated_failure | 206 |
+| tie_correct | 230 |
+| adjudicated_loss | 20 |
+
+这说明 P50 结论仍然方向成立，但 wins/losses 会受语义匹配口径影响。后续 P53/P54 应把 semantic evaluator 固化为更透明的多层指标，而不是只依赖一个 exact/semantic 判定。
+
+敏感性 artifact：
+
+- `outputs/diagnostics/p51-active-qa-v2-case-attribution-structured-text-sensitivity.json`
+- `outputs/diagnostics/p51-active-qa-v2-case-attribution-structured-text-sensitivity.zh.md`
+
+### P52 adjudication-derived trusted fusion
+
+P52 将 P50 adjudication 的经验固化成一个 deterministic gate：
+
+```text
+fusion_policy = adjudication_derived_trusted_graph_or_vlm_fallback
+calibration_kind = same_dataset_adjudication_derived
+not_final_research_claim = true
+```
+
+策略概要：
+
+- `object_location` / `support_relation` 且 GraphTool 有结构化位置时，优先使用 DSG。
+- VLM answer 为 unknown / not visible / cannot answer 或 confidence 低于阈值时，使用 DSG。
+- 其他高置信 VLM 情况保留 VLM。
+
+P52 fusion source 分布：
+
+| source | count |
+| --- | ---: |
+| graph_tool | 292 |
+| vlm | 284 |
+
+P52 在 P50 同一数据集上的对比结果：
+
+| method | semantic match |
+| --- | ---: |
+| VLM-only | 141/576 (0.244792) |
+| P50 VLM+DSG adjudicated | 283/576 (0.491319) |
+| P52 adjudication-derived trusted fusion | 433/576 (0.751736) |
+| GraphTool-only DSG | 576/576 (1.0) |
+
+重要边界：
+
+- P52 是同数据集校准，不是 held-out 泛化结果。
+- P52 可以作为下一轮 trusted fusion 策略候选，但不能单独替代 P50 的研究结论。
+- P54 扩到 20 episode 时，需要把 P52 gate 用在 held-out episode 上重新验证。
+
+P52 artifact：
+
+- `outputs/offline-controls/active-qa-v2/vlm-dsg-adjudication-derived-trusted-active-qa-v2-all-episodes.jsonl`
+- `outputs/diagnostics/p52-adjudication-derived-trusted-fusion-report.json`
+- `outputs/diagnostics/p52-adjudication-derived-trusted-fusion-report.zh.md`
+- `outputs/diagnostics/three-way-comparison-active-qa-v2-p52-adjudication-derived-all-episodes.json`
+- `outputs/diagnostics/three-way-comparison-active-qa-v2-p52-adjudication-derived-all-episodes.zh.md`
+
+### P53-P55 下一步执行重点
+
+1. P53：扩展 active QA v2 到 `relative_relation`、`nearest_object`、`multi_hop`、`state_change`，并固定多层 semantic evaluator。
+2. P54：扩展到至少 20 个真实 AI2-THOR reachable NBV episode，使用 held-out split 验证 P52 gate。
+3. P55：针对 P51 failure 中的 temporal / accepted_vlm_but_wrong，优化 DSG state timeline、last_seen 更新、support relation canonicalization 和 NBV stop condition。
+
 ## 1. 报告要求
 
 后续每次真实或半真实实验都需要给出中文阶段性实验报告。报告至少包含：

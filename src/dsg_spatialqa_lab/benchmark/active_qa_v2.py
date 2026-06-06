@@ -4,11 +4,12 @@ from collections import Counter, defaultdict
 from collections.abc import Mapping, Sequence
 import hashlib
 import json
+import math
 from pathlib import Path
 from typing import Any
 
 from dsg_spatialqa_lab.memory import CONTAINMENT_RELATIONS, DynamicSceneGraph
-from dsg_spatialqa_lab.observations import SceneObservation
+from dsg_spatialqa_lab.observations import ObjectObservation, SceneObservation
 from dsg_spatialqa_lab.scene_io import graph_json_digest
 
 
@@ -28,6 +29,7 @@ ACTIVE_QA_V2_SPLIT_NAMES = (
     "relation_centric",
 )
 SUPPORT_RELATIONS = frozenset({"ON", "INSIDE"})
+RELATIVE_RELATIONS = frozenset({"BEHIND", "FRONT_OF", "LEFT_OF", "RIGHT_OF"})
 FORBIDDEN_REQUEST_KEYS = frozenset(
     {
         "gold_answer",
@@ -114,6 +116,89 @@ def build_active_qa_v2_splits(
             _append(records, "anti_shortcut", {**base, "split": "anti_shortcut"}, max_records_per_split)
         if base["question_type"] != "object_location":
             _append(records, "full_oracle", {**base, "split": "full_oracle"}, max_records_per_split)
+
+    relative_edges = [
+        edge
+        for edge in sorted(
+            graph.edges,
+            key=lambda item: (item.step, item.src, item.relation, item.dst),
+        )
+        if edge.relation in RELATIVE_RELATIONS
+        and edge.src in graph.nodes
+        and edge.dst in graph.nodes
+    ][:max_records_per_split]
+    for edge in relative_edges:
+        src_node = graph.nodes[edge.src]
+        dst_node = graph.nodes[edge.dst]
+        evidence_frames = _same_frame_steps(index["object_steps"], edge.src, edge.dst) or [edge.step]
+        relative = _record(
+            episode_id=episode_id,
+            scene_id=scene_id,
+            split="situated",
+            question_type="relative_relation",
+            question_text=(
+                f"From the robot viewpoint, is the "
+                f"{src_node.label or _label(edge.src)} {edge.relation.lower()} "
+                f"the {dst_node.label or _label(edge.dst)}?"
+            ),
+            target_id=edge.src,
+            target_label=src_node.label or _label(edge.src),
+            relation=edge.relation,
+            dst_id=edge.dst,
+            dst_label=dst_node.label or _label(edge.dst),
+            step=edge.step,
+            situation=_situation(
+                index["step_pose"].get(evidence_frames[0]),
+                evidence_frames[0],
+                index["step_frame"].get(evidence_frames[0]),
+            ),
+            required_edges=[f"{edge.src}-{edge.relation}-{edge.dst}"],
+            evidence_frames=evidence_frames,
+            trajectory=trajectory,
+            source_graph_digest=graph_digest,
+            evidence_observable=True,
+            anti_shortcut={
+                "language_prior_risk": "low",
+                "requires_3d_evidence": True,
+                "has_distractor_same_category": index["label_counts"].get(src_node.label or _label(edge.src), 0) > 1,
+                "has_distractor_same_support": False,
+            },
+        )
+        _append(records, "situated", relative, max_records_per_split)
+        _append(records, "relation_centric", {**relative, "split": "relation_centric"}, max_records_per_split)
+
+    for nearest in _nearest_object_records(
+        episode_id=episode_id,
+        scene_id=scene_id,
+        trajectory=trajectory,
+        index=index,
+        source_graph_digest=graph_digest,
+        max_records=max_records_per_split,
+    ):
+        _append(records, "relation_centric", nearest, max_records_per_split)
+
+    for multi_hop in _multi_hop_records(
+        episode_id=episode_id,
+        scene_id=scene_id,
+        trajectory=trajectory,
+        graph=graph,
+        index=index,
+        relation_edges=relation_edges,
+        source_graph_digest=graph_digest,
+        max_records=max_records_per_split,
+    ):
+        _append(records, "relation_centric", multi_hop, max_records_per_split)
+        _append(records, "anti_shortcut", {**multi_hop, "split": "anti_shortcut"}, max_records_per_split)
+
+    for state_change in _state_change_records(
+        episode_id=episode_id,
+        scene_id=scene_id,
+        trajectory=trajectory,
+        index=index,
+        source_graph_digest=graph_digest,
+        max_records=max_records_per_split,
+    ):
+        _append(records, "temporal", state_change, max_records_per_split)
 
     for obj_id, steps in sorted(index["object_steps"].items())[:max_records_per_split]:
         node = graph.nodes.get(obj_id)
@@ -206,6 +291,7 @@ def active_qa_v2_quality_report(
     checks = [
         {"name": "object_location_lte_60_percent", "passed": object_location_rate <= 0.6},
         {"name": "at_least_three_question_types", "passed": len(question_type_counts) >= 3},
+        {"name": "at_least_eight_question_types", "passed": len(question_type_counts) >= 8},
         {"name": "situated_temporal_relation_nonzero", "passed": situated_temporal_relation > 0},
         {"name": "observation_aware_aligned", "passed": observation_aware_aligned},
         {"name": "anti_shortcut_cases_valid", "passed": anti_shortcut_ok},
@@ -220,6 +306,12 @@ def active_qa_v2_quality_report(
             "split_counts": {name: len(splits.get(name, ())) for name in ACTIVE_QA_V2_SPLIT_NAMES},
             "question_type_counts": dict(sorted(question_type_counts.items())),
             "question_type_count": len(question_type_counts),
+            "p53_required_question_types": [
+                "multi_hop",
+                "nearest_object",
+                "relative_relation",
+                "state_change",
+            ],
             "object_location_rate": object_location_rate,
             "situated_temporal_relation_count": situated_temporal_relation,
             "observation_aware_count": len(splits.get("observation_aware", ())),
@@ -365,6 +457,9 @@ def _record(
 
 def _observation_index(observations: Sequence[SceneObservation]) -> dict[str, Any]:
     object_steps: dict[str, set[int]] = defaultdict(set)
+    object_by_step: dict[int, dict[str, ObjectObservation]] = defaultdict(dict)
+    object_pose_by_step: dict[tuple[str, int], Any] = {}
+    object_state_by_step: dict[str, list[tuple[int, Mapping[str, Any]]]] = defaultdict(list)
     label_counts: Counter[str] = Counter()
     step_pose: dict[int, Any] = {}
     step_frame: dict[int, dict[str, Any]] = {}
@@ -383,12 +478,23 @@ def _observation_index(observations: Sequence[SceneObservation]) -> dict[str, An
                         "step": observation.step,
                     }
             object_steps[obj.object_id].add(observation.step)
+            object_by_step[observation.step][obj.object_id] = obj
+            object_pose_by_step[(obj.object_id, observation.step)] = obj.pose
+            state = obj.attributes.get("state")
+            if isinstance(state, Mapping):
+                object_state_by_step[obj.object_id].append((observation.step, state))
             key = (obj.object_id, obj.label)
             if key not in seen_labels:
                 label_counts[obj.label] += 1
                 seen_labels.add(key)
     return {
         "object_steps": {key: sorted(value) for key, value in object_steps.items()},
+        "object_by_step": {key: dict(value) for key, value in object_by_step.items()},
+        "object_pose_by_step": object_pose_by_step,
+        "object_state_by_step": {
+            key: sorted(value, key=lambda item: item[0])
+            for key, value in object_state_by_step.items()
+        },
         "label_counts": label_counts,
         "step_pose": step_pose,
         "step_frame": step_frame,
@@ -401,6 +507,268 @@ def _same_frame_steps(
     dst: str,
 ) -> list[int]:
     return sorted(set(object_steps.get(src, ())) & set(object_steps.get(dst, ())))
+
+
+def _nearest_object_records(
+    *,
+    episode_id: str,
+    scene_id: str,
+    trajectory: Mapping[str, Any],
+    index: Mapping[str, Any],
+    source_graph_digest: str,
+    max_records: int,
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    object_by_step = _step_object_mapping(index.get("object_by_step"))
+    step_pose = _int_key_mapping(index.get("step_pose"))
+    step_frame = _int_key_mapping(index.get("step_frame"))
+    for step, objects in sorted(object_by_step.items()):
+        if len(objects) < 2:
+            continue
+        for src_id, src in sorted(objects.items()):
+            nearest = _nearest_other(src, objects)
+            if nearest is None:
+                continue
+            dst_id, dst = nearest
+            rows.append(
+                _record(
+                    episode_id=episode_id,
+                    scene_id=scene_id,
+                    split="relation_centric",
+                    question_type="nearest_object",
+                    question_text=(
+                        f"Which observed object is nearest to the {src.label} at step {step}?"
+                    ),
+                    target_id=src_id,
+                    target_label=src.label,
+                    relation="NEAR",
+                    dst_id=dst_id,
+                    dst_label=dst.label,
+                    step=step,
+                    situation=_situation(
+                        step_pose.get(step),
+                        step,
+                        step_frame.get(step),
+                    ),
+                    required_edges=[f"{src_id}-NEAR-{dst_id}"],
+                    evidence_frames=[step],
+                    trajectory=trajectory,
+                    source_graph_digest=source_graph_digest,
+                    evidence_observable=True,
+                    anti_shortcut={
+                        "language_prior_risk": "low",
+                        "requires_3d_evidence": True,
+                        "has_distractor_same_category": False,
+                        "has_distractor_same_support": False,
+                    },
+                )
+            )
+            if len(rows) >= max_records:
+                return rows
+    return rows
+
+
+def _multi_hop_records(
+    *,
+    episode_id: str,
+    scene_id: str,
+    trajectory: Mapping[str, Any],
+    graph: DynamicSceneGraph,
+    index: Mapping[str, Any],
+    relation_edges: Sequence[Any],
+    source_graph_digest: str,
+    max_records: int,
+) -> list[dict[str, Any]]:
+    by_support: dict[str, list[Any]] = defaultdict(list)
+    for edge in relation_edges:
+        if edge.relation in SUPPORT_RELATIONS:
+            by_support[edge.dst].append(edge)
+    rows: list[dict[str, Any]] = []
+    step_pose = _int_key_mapping(index.get("step_pose"))
+    step_frame = _int_key_mapping(index.get("step_frame"))
+    for support_id, edges in sorted(by_support.items()):
+        if len(edges) < 2:
+            continue
+        support_node = graph.nodes.get(support_id)
+        if support_node is None:
+            continue
+        first, second = sorted(edges, key=lambda edge: (edge.step, edge.src))[:2]
+        first_node = graph.nodes.get(first.src)
+        second_node = graph.nodes.get(second.src)
+        if first_node is None or second_node is None:
+            continue
+        frames = sorted(
+            set(_same_frame_steps(_mapping(index.get("object_steps")), first.src, support_id))
+            & set(_same_frame_steps(_mapping(index.get("object_steps")), second.src, support_id))
+        )
+        if not frames:
+            frames = [first.step]
+        rows.append(
+            _record(
+                episode_id=episode_id,
+                scene_id=scene_id,
+                split="relation_centric",
+                question_type="multi_hop",
+                question_text=(
+                    f"Which support surface links the {first_node.label or _label(first.src)} "
+                    f"and the {second_node.label or _label(second.src)}?"
+                ),
+                target_id=first.src,
+                target_label=first_node.label or _label(first.src),
+                relation=first.relation,
+                dst_id=support_id,
+                dst_label=support_node.label or _label(support_id),
+                step=first.step,
+                situation=_situation(
+                    step_pose.get(frames[0]),
+                    frames[0],
+                    step_frame.get(frames[0]),
+                ),
+                required_edges=[
+                    f"{first.src}-{first.relation}-{support_id}",
+                    f"{second.src}-{second.relation}-{support_id}",
+                ],
+                evidence_frames=frames,
+                trajectory=trajectory,
+                source_graph_digest=source_graph_digest,
+                evidence_observable=True,
+                anti_shortcut={
+                    "language_prior_risk": "low",
+                    "requires_3d_evidence": True,
+                    "has_distractor_same_category": False,
+                    "has_distractor_same_support": True,
+                },
+            )
+        )
+        if len(rows) >= max_records:
+            break
+    return rows
+
+
+def _state_change_records(
+    *,
+    episode_id: str,
+    scene_id: str,
+    trajectory: Mapping[str, Any],
+    index: Mapping[str, Any],
+    source_graph_digest: str,
+    max_records: int,
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    object_by_step = _step_object_mapping(index.get("object_by_step"))
+    object_steps = _mapping(index.get("object_steps"))
+    state_by_object = _mapping(index.get("object_state_by_step"))
+    step_pose = _int_key_mapping(index.get("step_pose"))
+    step_frame = _int_key_mapping(index.get("step_frame"))
+    for obj_id, steps_value in sorted(object_steps.items()):
+        steps = [step for step in steps_value if isinstance(step, int)]
+        if len(steps) < 2:
+            continue
+        first_step, last_step = min(steps), max(steps)
+        first_obj = object_by_step.get(first_step, {}).get(obj_id)
+        last_obj = object_by_step.get(last_step, {}).get(obj_id)
+        if first_obj is None or last_obj is None:
+            continue
+        changed = _state_changed(state_by_object.get(obj_id)) or _pose_changed(first_obj, last_obj)
+        row = _record(
+            episode_id=episode_id,
+            scene_id=scene_id,
+            split="temporal",
+            question_type="state_change",
+            question_text=(
+                f"Did the {last_obj.label} change observed state between step "
+                f"{first_step} and step {last_step}?"
+            ),
+            target_id=obj_id,
+            target_label=last_obj.label,
+            relation="STATE_CHANGED",
+            dst_id=obj_id,
+            dst_label="changed" if changed else "unchanged",
+            step=last_step,
+            situation=_situation(
+                step_pose.get(last_step),
+                last_step,
+                step_frame.get(last_step),
+            ),
+            required_edges=[],
+            evidence_frames=[first_step, last_step],
+            trajectory=trajectory,
+            source_graph_digest=source_graph_digest,
+            evidence_observable=True,
+            anti_shortcut={
+                "language_prior_risk": "low",
+                "requires_3d_evidence": True,
+                "has_distractor_same_category": False,
+                "has_distractor_same_support": False,
+            },
+        )
+        row["required_evidence"]["states"] = [f"{obj_id}:{first_step}", f"{obj_id}:{last_step}"]
+        rows.append(row)
+        if len(rows) >= max_records:
+            break
+    return rows
+
+
+def _step_object_mapping(value: object) -> dict[int, dict[str, ObjectObservation]]:
+    if not isinstance(value, Mapping):
+        return {}
+    return {
+        step: {
+            object_id: obj
+            for object_id, obj in objects.items()
+            if isinstance(object_id, str) and isinstance(obj, ObjectObservation)
+        }
+        for step, objects in value.items()
+        if isinstance(step, int) and isinstance(objects, Mapping)
+    }
+
+
+def _int_key_mapping(value: object) -> dict[int, Any]:
+    if not isinstance(value, Mapping):
+        return {}
+    return {
+        key: item
+        for key, item in value.items()
+        if isinstance(key, int)
+    }
+
+
+def _nearest_other(
+    src: ObjectObservation,
+    objects: Mapping[str, ObjectObservation],
+) -> tuple[str, ObjectObservation] | None:
+    candidates = [
+        (_pose_distance(src.pose, other.pose), object_id, other)
+        for object_id, other in objects.items()
+        if object_id != src.object_id
+    ]
+    if not candidates:
+        return None
+    _, object_id, obj = min(candidates, key=lambda item: (item[0], item[1]))
+    return object_id, obj
+
+
+def _pose_distance(a: Any, b: Any) -> float:
+    return math.sqrt(
+        (float(getattr(a, "x", 0.0)) - float(getattr(b, "x", 0.0))) ** 2
+        + (float(getattr(a, "y", 0.0)) - float(getattr(b, "y", 0.0))) ** 2
+        + (float(getattr(a, "z", 0.0)) - float(getattr(b, "z", 0.0))) ** 2
+    )
+
+
+def _state_changed(value: object) -> bool:
+    if not isinstance(value, Sequence) or isinstance(value, str):
+        return False
+    states = [
+        dict(state)
+        for _, state in value
+        if isinstance(state, Mapping)
+    ]
+    return len({json.dumps(state, sort_keys=True) for state in states}) > 1
+
+
+def _pose_changed(first: ObjectObservation, last: ObjectObservation) -> bool:
+    return _pose_distance(first.pose, last.pose) > 0.01
 
 
 def _situation(

@@ -460,6 +460,16 @@ def test_dsg_viewer_static_html_contains_workbench_regions() -> None:
     assert 'id="topdown-image"' in html
     assert 'id="all-object-graph-canvas"' in html
     assert 'id="evidence-rgb-image"' in html
+    assert "rgb-evidence-image" in html
+    assert "qa-question" in html
+    assert "qa-meta" in html
+    assert "qaQuestionText" in html
+    assert "qaMetaText" in html
+    assert "qaTargetLabel" in html
+    assert "qaTypeBadge" in html
+    assert "qaEvidenceRgbPath" in html
+    assert "matchesQaQuery" in html
+    assert "selectedCaseId" in html
     assert "renderRelatedGraph" in html
     assert "relatedObjectNodes" in html
     assert "layoutRelatedObjectNodes" in html
@@ -471,6 +481,11 @@ def test_dsg_viewer_static_html_contains_workbench_regions() -> None:
     assert "renderTopdownPanel" in html
     assert "sceneTopdownPath" in html
     assert "drawTopdownScene" in html
+    assert "topdownPlotBounds" in html
+    assert "clamp(" in html
     assert "renderEvidenceRgbPanel" in html
+    assert "object-fit: cover" in html
+    assert "width: 80%" in html
+    assert "height: 80%" in html
     assert "assetUrl" in html
     assert "fetch('payload.json')" in html
