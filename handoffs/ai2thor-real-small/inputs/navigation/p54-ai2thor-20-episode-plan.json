@@ -1,0 +1,105 @@
+{
+  "episodes": [
+    {
+      "episode_id": "ai2thor-real-small-episode-001",
+      "scene_id": "FloorPlan1",
+      "short_id": "episode001"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-002",
+      "scene_id": "FloorPlan201",
+      "short_id": "episode002"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-003",
+      "scene_id": "FloorPlan301",
+      "short_id": "episode003"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-004",
+      "scene_id": "FloorPlan401",
+      "short_id": "episode004"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-005",
+      "scene_id": "FloorPlan2",
+      "short_id": "episode005"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-006",
+      "scene_id": "FloorPlan202",
+      "short_id": "episode006"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-007",
+      "scene_id": "FloorPlan302",
+      "short_id": "episode007"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-008",
+      "scene_id": "FloorPlan402",
+      "short_id": "episode008"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-009",
+      "scene_id": "FloorPlan3",
+      "short_id": "episode009"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-010",
+      "scene_id": "FloorPlan203",
+      "short_id": "episode010"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-011",
+      "scene_id": "FloorPlan303",
+      "short_id": "episode011"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-012",
+      "scene_id": "FloorPlan403",
+      "short_id": "episode012"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-013",
+      "scene_id": "FloorPlan4",
+      "short_id": "episode013"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-014",
+      "scene_id": "FloorPlan204",
+      "short_id": "episode014"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-015",
+      "scene_id": "FloorPlan304",
+      "short_id": "episode015"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-016",
+      "scene_id": "FloorPlan404",
+      "short_id": "episode016"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-017",
+      "scene_id": "FloorPlan5",
+      "short_id": "episode017"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-018",
+      "scene_id": "FloorPlan205",
+      "short_id": "episode018"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-019",
+      "scene_id": "FloorPlan305",
+      "short_id": "episode019"
+    },
+    {
+      "episode_id": "ai2thor-real-small-episode-020",
+      "scene_id": "FloorPlan405",
+      "short_id": "episode020"
+    }
+  ],
+  "schema_version": "dsg-spatialqa-lab.ai2thor-episode-plan.v1"
+}

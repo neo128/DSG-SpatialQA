@@ -19,13 +19,14 @@ import audit_trajectory_coverage  # noqa: E402
 import run_reachable_nbv_trajectory  # noqa: E402
 
 
-EPISODES: tuple[tuple[str, str, str], ...] = (
+DEFAULT_EPISODES: tuple[tuple[str, str, str], ...] = (
     ("episode001", "ai2thor-real-small-episode-001", "FloorPlan1"),
     ("episode002", "ai2thor-real-small-episode-002", "FloorPlan201"),
     ("episode003", "ai2thor-real-small-episode-003", "FloorPlan301"),
     ("episode004", "ai2thor-real-small-episode-004", "FloorPlan401"),
     ("episode005", "ai2thor-real-small-episode-005", "FloorPlan2"),
 )
+EPISODES = DEFAULT_EPISODES
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -33,7 +34,17 @@ def main(argv: list[str] | None = None) -> int:
         allow_abbrev=False,
         description="Run real AI2-THOR reachable NBV over the real-small episode set.",
     )
-    parser.add_argument("--episode", action="append", choices=[item[0] for item in EPISODES])
+    parser.add_argument("--episode", action="append")
+    parser.add_argument(
+        "--episode-plan",
+        type=Path,
+        help="JSON plan with episodes [{short_id, episode_id, scene_id}].",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Only materialize the planned paths/report; do not launch AI2-THOR.",
+    )
     parser.add_argument("--max-iterations", type=int, default=12)
     parser.add_argument("--yaw-sweep-degrees", default="0,90,180,270")
     parser.add_argument("--pitch-sweep-degrees", default="-30,0,30")
@@ -74,18 +85,35 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    selected = {item for item in args.episode or [episode[0] for episode in EPISODES]}
+    episodes = load_episode_plan(args.episode_plan)
+    selected = {item for item in args.episode or [episode[0] for episode in episodes]}
+    unknown = sorted(selected - {episode[0] for episode in episodes})
+    if unknown:
+        _emit(
+            {
+                "action": "run_reachable_nbv_all_episodes",
+                "valid": False,
+                "blockers": ["unknown_episode_short_id"],
+                "unknown_episode_short_ids": unknown,
+            }
+        )
+        return 1
     episode_rows: list[dict[str, Any]] = []
-    for short_id, full_id, scene_id in EPISODES:
+    for short_id, full_id, scene_id in episodes:
         if short_id not in selected:
             continue
         paths = _episode_paths(args, short_id, full_id)
-        result = _run_episode(args, short_id, full_id, scene_id, paths)
+        result = (
+            _dry_run_episode(short_id, full_id, scene_id, paths)
+            if args.dry_run
+            else _run_episode(args, short_id, full_id, scene_id, paths)
+        )
         episode_rows.append(result)
 
     report = {
         "schema_version": "dsg-spatialqa-lab.reachable-nbv-all-episodes-run-report.v1",
-        "runtime_kind": "real_ai2thor",
+        "runtime_kind": "dry_run" if args.dry_run else "real_ai2thor",
+        "episode_plan_path": str(args.episode_plan) if args.episode_plan is not None else None,
         "episode_count": len(episode_rows),
         "valid": all(row.get("valid") is True for row in episode_rows),
         "episodes": episode_rows,
@@ -94,6 +122,58 @@ def main(argv: list[str] | None = None) -> int:
     args.report.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     _emit({"action": "run_reachable_nbv_all_episodes", "report": str(args.report), **report})
     return 0 if report["valid"] is True else 1
+
+
+def load_episode_plan(path: Path | None = None) -> tuple[tuple[str, str, str], ...]:
+    if path is None:
+        return DEFAULT_EPISODES
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict):
+        raise ValueError(f"{path} must contain a JSON object")
+    rows = payload.get("episodes")
+    if not isinstance(rows, list):
+        raise ValueError(f"{path} must contain an episodes list")
+    episodes = []
+    seen_short_ids: set[str] = set()
+    for index, row in enumerate(rows):
+        if not isinstance(row, dict):
+            raise ValueError(f"{path} episodes[{index}] must be a JSON object")
+        short_id = row.get("short_id")
+        episode_id = row.get("episode_id")
+        scene_id = row.get("scene_id")
+        if (
+            not isinstance(short_id, str)
+            or not short_id
+            or not isinstance(episode_id, str)
+            or not episode_id
+            or not isinstance(scene_id, str)
+            or not scene_id
+        ):
+            raise ValueError(
+                f"{path} episodes[{index}] must include non-empty short_id, episode_id, scene_id"
+            )
+        if short_id in seen_short_ids:
+            raise ValueError(f"{path} duplicate short_id: {short_id}")
+        seen_short_ids.add(short_id)
+        episodes.append((short_id, episode_id, scene_id))
+    return tuple(episodes)
+
+
+def _dry_run_episode(
+    short_id: str,
+    full_id: str,
+    scene_id: str,
+    paths: dict[str, Path],
+) -> dict[str, Any]:
+    return {
+        "episode_id": full_id,
+        "short_id": short_id,
+        "scene_id": scene_id,
+        "valid": True,
+        "dry_run": True,
+        "blockers": [],
+        "paths": {key: str(value) for key, value in paths.items()},
+    }
 
 
 def _episode_paths(args: argparse.Namespace, short_id: str, full_id: str) -> dict[str, Path]:

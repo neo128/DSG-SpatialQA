@@ -239,11 +239,125 @@ P52 artifact：
 - `outputs/diagnostics/three-way-comparison-active-qa-v2-p52-adjudication-derived-all-episodes.json`
 - `outputs/diagnostics/three-way-comparison-active-qa-v2-p52-adjudication-derived-all-episodes.zh.md`
 
-### P53-P55 下一步执行重点
+### P53 active QA v2 类型扩展
 
-1. P53：扩展 active QA v2 到 `relative_relation`、`nearest_object`、`multi_hop`、`state_change`，并固定多层 semantic evaluator。
-2. P54：扩展到至少 20 个真实 AI2-THOR reachable NBV episode，使用 held-out split 验证 P52 gate。
-3. P55：针对 P51 failure 中的 temporal / accepted_vlm_but_wrong，优化 DSG state timeline、last_seen 更新、support relation canonicalization 和 NBV stop condition。
+P53 已将 active QA v2 从 4 类初版扩展到 8 类问题：
+
+```text
+object_location
+support_relation
+situated_egocentric
+temporal_last_seen
+relative_relation
+nearest_object
+multi_hop
+state_change
+```
+
+实现要点：
+
+- `nearest_object` 从同帧 detector observation 的 3D pose 中派生，用于测试局部几何距离推理。
+- `relative_relation` 优先使用 predicted graph 的 LEFT/RIGHT/FRONT/BEHIND 边；若图中没有显式相对边，则从同帧 object pose + agent yaw 派生 egocentric relation，不使用 oracle answer / required evidence。
+- `multi_hop` 从共享 support surface 的关系中派生，用于测试 support-centric 图查询。
+- `state_change` 从 observation memory 中同一 object 的 state / pose timeline 派生，用于测试动态记忆。
+- split 写入逻辑改为“新题型优先保留”：当 split 已满时，如果新 question_type 尚未出现，会替换掉一个过量题型，避免 location/relative 等早期题型挤掉 P53 required 类型。
+
+新增/更新测试：
+
+```text
+tests/test_active_qa_v2.py
+```
+
+覆盖：
+
+- duplicate location edges 不再挤掉 `nearest_object`；
+- 没有 graph relative edge 时，可从同帧 observation 派生 `relative_relation`；
+- state_change 填满 temporal split 时仍保留 `temporal_last_seen`。
+
+P53 5 episode QA quality gate 均为 `valid=true`：
+
+| episode | observation-aware | question_type_count | object_location_rate | question_type_counts |
+| --- | ---: | ---: | ---: | --- |
+| episode001 | 34 | 8 | 0.156069 | multi_hop=2, nearest=17, object_location=27, relative=9, situated=51, state_change=56, support=7, temporal_last_seen=4 |
+| episode002 | 36 | 8 | 0.151515 | multi_hop=3, nearest=15, object_location=20, relative=9, situated=23, state_change=23, support=16, temporal_last_seen=23 |
+| episode003 | 34 | 8 | 0.166667 | multi_hop=1, nearest=1, object_location=26, relative=26, situated=34, state_change=36, support=8, temporal_last_seen=24 |
+| episode004 | 37 | 8 | 0.167883 | multi_hop=2, nearest=6, object_location=23, relative=17, situated=25, state_change=25, support=14, temporal_last_seen=25 |
+| episode005 | 35 | 8 | 0.147059 | multi_hop=2, nearest=13, object_location=25, relative=12, situated=48, state_change=59, support=10, temporal_last_seen=1 |
+
+P53 artifact：
+
+- `inputs/qa-v2-active-p53/<episode>/qa-full-oracle.jsonl`
+- `inputs/qa-v2-active-p53/<episode>/qa-observation-aware.jsonl`
+- `inputs/qa-v2-active-p53/<episode>/qa-situated.jsonl`
+- `inputs/qa-v2-active-p53/<episode>/qa-temporal.jsonl`
+- `inputs/qa-v2-active-p53/<episode>/qa-anti-shortcut.jsonl`
+- `inputs/qa-v2-active-p53/<episode>/qa-relation-centric.jsonl`
+- `inputs/qa-v2-active-p53/<episode>/vlm-request-bundle.json`
+- `outputs/diagnostics/qa-v2-active-p53-quality-report-<episode>.json`
+
+所有 P53 VLM request bundle 均保持 `leak_free=true`，不包含 gold answer、required nodes/edges、visible object ids/labels。
+
+### P54-P55 下一步执行重点
+
+P54 已完成第一层工程入口：`run/audit/compare_reachable_nbv_all_episodes.py`
+现在支持显式 `--episode-plan`，可以由同一个 JSON plan 驱动 run、formal gate 和
+comparison；`run_reachable_nbv_all_episodes.py --dry-run` 可在不启动 AI2-THOR 的情况下
+验证 20 episode artifact 路径。
+
+P54 20 episode plan：
+
+```text
+handoffs/ai2thor-real-small/inputs/navigation/p54-ai2thor-20-episode-plan.json
+```
+
+计划覆盖：
+
+```text
+FloorPlan1 / FloorPlan2 / FloorPlan3 / FloorPlan4 / FloorPlan5
+FloorPlan201 / FloorPlan202 / FloorPlan203 / FloorPlan204 / FloorPlan205
+FloorPlan301 / FloorPlan302 / FloorPlan303 / FloorPlan304 / FloorPlan305
+FloorPlan401 / FloorPlan402 / FloorPlan403 / FloorPlan404 / FloorPlan405
+```
+
+P54 dry-run artifact：
+
+```text
+handoffs/ai2thor-real-small/outputs/navigation/p54-reachable-nbv-20-episode-dry-run-report.json
+```
+
+dry-run 结果：
+
+```json
+{
+  "runtime_kind": "dry_run",
+  "episode_count": 20,
+  "valid": true
+}
+```
+
+P54 formal gate artifact：
+
+```text
+handoffs/ai2thor-real-small/outputs/navigation/p54-reachable-nbv-20-episode-formal-gate.json
+handoffs/ai2thor-real-small/outputs/navigation/p54-reachable-nbv-20-episode-comparison.json
+handoffs/ai2thor-real-small/outputs/navigation/p54-reachable-nbv-20-episode-comparison.zh.md
+```
+
+当前 P54 formal gate：
+
+| group | count | status |
+| --- | ---: | --- |
+| episode001-005 | 5 | formal_protocol_ready=true |
+| episode006-020 | 15 | missing trajectory / decision trace / fixed audit / NBV audit |
+| all episodes | 20 | all_episodes_formal_protocol_ready=false |
+
+解释：
+
+- 这一步没有伪造 20 个真实结果；它只把 20 episode 的真实运行入口、artifact 命名和 gate blocker 固化下来。
+- episode006-020 下一步必须实际运行 real AI2-THOR reachable NBV，并生成 fixed audit、NBV trajectory、decision trace、observation sequence、predicted graph 和 formal gate。
+- P52 trusted fusion 仍不能在 P54 上报告 held-out 结论，因为 20 episode active QA v2 / VLM-only / VLM+DSG prediction 尚未齐备。
+
+P55 下一步：针对 P51 failure 中的 temporal / accepted_vlm_but_wrong，优化 DSG state timeline、last_seen 更新、support relation canonicalization 和 NBV stop condition，并在 P54 held-out episodes 上验证。
 
 ## 1. 报告要求
 
@@ -4757,8 +4871,8 @@ episode005：navigation validated 但 relation/evidence 收益未达标，不能
 fixed trajectory：在 5 个 episode 上仍显示覆盖不足；
 coverage diagnostic：仍只作为上限诊断，不作为自主探索 evidence；
 reachable NBV：已实现多 episode navigation validation，但全 5 episode formal gate 未通过；
-QA v2：已从 smoke QA 升级为 active-exploration QA v2 初版；
-VLM+DSG：缺 active QA v2 对齐真实 VLM-only / VLM+DSG predictions，不能显著超过 VLM-only；
+QA v2：P53 已从 active-exploration QA v2 初版扩展到 8 类问题，并生成 5 episode valid=true 质量报告；
+VLM+DSG：仍缺与 P53 8 类 active QA v2 对齐的真实 VLM-only / VLM+DSG predictions，不能显著超过 VLM-only；
 P46 adjudication：缺 adjudicated structured prediction，not ready；
 最终：当前不允许 DSG superiority claim。
 ```

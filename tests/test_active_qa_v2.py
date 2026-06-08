@@ -255,3 +255,202 @@ def test_active_qa_v2_generates_relation_situated_temporal_and_leak_free_bundle(
     assert "gold_answer" not in str(bundle)
     assert "required_nodes" not in str(bundle)
     assert "visible_object_ids" not in str(bundle)
+
+
+def test_active_qa_v2_keeps_nearest_object_when_duplicate_location_edges_saturate_limit() -> None:
+    pose = Pose3D(0.0, 0.9, 0.0, yaw=0.0)
+    apple_pose = Pose3D(0.0, 0.9, 0.0, yaw=0.0)
+    mug_pose = Pose3D(0.2, 0.9, 0.0, yaw=0.0)
+    observations = (
+        SceneObservation(
+            step=1,
+            agent_pose=pose,
+            objects=(
+                ObjectObservation(
+                    "apple_1",
+                    "apple",
+                    apple_pose,
+                    BBox3D(apple_pose, (0.1, 0.1, 0.1)),
+                    confidence=1.0,
+                    visible=True,
+                    attributes={"rgb_path": "rgb/000001.ppm"},
+                ),
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    mug_pose,
+                    BBox3D(mug_pose, (0.1, 0.1, 0.1)),
+                    confidence=1.0,
+                    visible=True,
+                    attributes={"rgb_path": "rgb/000001.ppm"},
+                ),
+            ),
+        ),
+    )
+    graph = DynamicSceneGraph()
+    graph.upsert_object(
+        "apple_1",
+        "apple",
+        apple_pose,
+        BBox3D(apple_pose, (0.1, 0.1, 0.1)),
+        confidence=1.0,
+        visible=True,
+        step=1,
+    )
+    graph.upsert_object(
+        "mug_1",
+        "mug",
+        mug_pose,
+        BBox3D(mug_pose, (0.1, 0.1, 0.1)),
+        confidence=1.0,
+        visible=True,
+        step=1,
+    )
+    for index in range(80):
+        room_id = f"room_{index:02d}"
+        graph.add_room(room_id, "room", step=1)
+        graph.add_edge(
+            "apple_1",
+            "IN_ROOM",
+            room_id,
+            "world",
+            1.0,
+            step=1,
+            evidence=["rgb/000001.ppm"],
+        )
+
+    splits = build_active_qa_v2_splits(
+        episode_id="episode-duplicate-limit",
+        scene_id="FloorPlan1",
+        trajectory={"collection_kind": "reachable_relation_centric_nbv"},
+        observations=observations,
+        graph=graph,
+    )
+
+    assert any(
+        row["question_type"] == "nearest_object"
+        for row in splits["relation_centric"]
+    )
+
+
+def test_active_qa_v2_derives_relative_relation_from_same_frame_observations() -> None:
+    agent_pose = Pose3D(0.0, 0.9, 0.0, yaw=0.0)
+    apple_pose = Pose3D(-0.4, 0.9, 0.5, yaw=0.0)
+    mug_pose = Pose3D(0.4, 0.9, 0.5, yaw=0.0)
+    observations = (
+        SceneObservation(
+            step=3,
+            agent_pose=agent_pose,
+            objects=(
+                ObjectObservation(
+                    "apple_1",
+                    "apple",
+                    apple_pose,
+                    BBox3D(apple_pose, (0.1, 0.1, 0.1)),
+                    confidence=1.0,
+                    visible=True,
+                    attributes={"rgb_path": "rgb/000003.ppm"},
+                ),
+                ObjectObservation(
+                    "mug_1",
+                    "mug",
+                    mug_pose,
+                    BBox3D(mug_pose, (0.1, 0.1, 0.1)),
+                    confidence=1.0,
+                    visible=True,
+                    attributes={"rgb_path": "rgb/000003.ppm"},
+                ),
+            ),
+        ),
+    )
+    graph = DynamicSceneGraph()
+    for object_id, label, pose in (
+        ("apple_1", "apple", apple_pose),
+        ("mug_1", "mug", mug_pose),
+    ):
+        graph.upsert_object(
+            object_id,
+            label,
+            pose,
+            BBox3D(pose, (0.1, 0.1, 0.1)),
+            confidence=1.0,
+            visible=True,
+            step=3,
+        )
+
+    splits = build_active_qa_v2_splits(
+        episode_id="episode-relative-fallback",
+        scene_id="FloorPlan1",
+        trajectory={"collection_kind": "reachable_relation_centric_nbv"},
+        observations=observations,
+        graph=graph,
+    )
+
+    relative = [
+        row for row in splits["situated"]
+        if row["question_type"] == "relative_relation"
+    ]
+    assert relative
+    assert relative[0]["answer"]["relation"] in {"LEFT_OF", "RIGHT_OF"}
+
+
+def test_active_qa_v2_preserves_temporal_last_seen_when_state_changes_fill_split() -> None:
+    observations = []
+    graph = DynamicSceneGraph()
+    for index in range(70):
+        object_id = f"object_{index:02d}"
+        first_pose = Pose3D(float(index), 0.9, 0.0, yaw=0.0)
+        last_pose = Pose3D(float(index) + 0.1, 0.9, 0.0, yaw=0.0)
+        first_obj = ObjectObservation(
+            object_id,
+            "object",
+            first_pose,
+            BBox3D(first_pose, (0.1, 0.1, 0.1)),
+            confidence=1.0,
+            visible=True,
+            attributes={"rgb_path": f"rgb/{index:06d}.ppm"},
+        )
+        last_obj = ObjectObservation(
+            object_id,
+            "object",
+            last_pose,
+            BBox3D(last_pose, (0.1, 0.1, 0.1)),
+            confidence=1.0,
+            visible=True,
+            attributes={"rgb_path": f"rgb/{index + 100:06d}.ppm"},
+        )
+        observations.extend(
+            [
+                SceneObservation(
+                    step=index,
+                    agent_pose=Pose3D(0.0, 0.9, 0.0, yaw=0.0),
+                    objects=(first_obj,),
+                ),
+                SceneObservation(
+                    step=index + 100,
+                    agent_pose=Pose3D(0.0, 0.9, 0.0, yaw=0.0),
+                    objects=(last_obj,),
+                ),
+            ]
+        )
+        graph.upsert_object(
+            object_id,
+            "object",
+            first_pose,
+            BBox3D(first_pose, (0.1, 0.1, 0.1)),
+            confidence=1.0,
+            visible=True,
+            step=index,
+        )
+
+    splits = build_active_qa_v2_splits(
+        episode_id="episode-temporal-limit",
+        scene_id="FloorPlan1",
+        trajectory={"collection_kind": "reachable_relation_centric_nbv"},
+        observations=tuple(observations),
+        graph=graph,
+    )
+    temporal_types = {row["question_type"] for row in splits["temporal"]}
+
+    assert "state_change" in temporal_types
+    assert "temporal_last_seen" in temporal_types

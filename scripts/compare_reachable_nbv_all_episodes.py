@@ -16,7 +16,7 @@ SCRIPTS_ROOT = Path(__file__).resolve().parent
 if str(SCRIPTS_ROOT) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_ROOT))
 
-from run_reachable_nbv_all_episodes import EPISODES  # noqa: E402
+from run_reachable_nbv_all_episodes import load_episode_plan  # noqa: E402
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -30,6 +30,11 @@ def main(argv: list[str] | None = None) -> int:
         default=Path("handoffs/ai2thor-real-small/outputs/navigation"),
     )
     parser.add_argument(
+        "--episode-plan",
+        type=Path,
+        help="JSON plan with episodes [{short_id, episode_id, scene_id}].",
+    )
+    parser.add_argument(
         "--output",
         type=Path,
         default=Path("handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-all-episodes-comparison.json"),
@@ -41,13 +46,15 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
+    episodes = load_episode_plan(args.episode_plan)
     rows = [
         _episode_row(args.output_root, short_id, full_id, scene_id)
-        for short_id, full_id, scene_id in EPISODES
+        for short_id, full_id, scene_id in episodes
     ]
     ready_count = sum(1 for row in rows if row.get("formal_protocol_ready") is True)
     report = {
         "schema_version": "dsg-spatialqa-lab.reachable-nbv-all-episodes-comparison.v1",
+        "episode_plan_path": str(args.episode_plan) if args.episode_plan is not None else None,
         "episode_count": len(rows),
         "formal_protocol_ready_episode_count": ready_count,
         "all_episodes_formal_protocol_ready": ready_count == len(rows),

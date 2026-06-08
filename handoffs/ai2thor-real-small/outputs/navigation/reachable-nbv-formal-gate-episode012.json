@@ -1,0 +1,18 @@
+{
+  "episode_id": "ai2thor-real-small-episode-012",
+  "failed_checks": [
+    "missing_trajectory",
+    "missing_decision_trace",
+    "missing_fixed_audit",
+    "missing_nbv_audit"
+  ],
+  "formal_protocol_ready": false,
+  "paths": {
+    "decision_trace": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode012.jsonl",
+    "fixed_audit": "handoffs/ai2thor-real-small/outputs/navigation/trajectory-audit-fixed-ai2thor-real-small-episode-012.json",
+    "gate": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-formal-gate-episode012.json",
+    "nbv_audit": "handoffs/ai2thor-real-small/outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode012.json",
+    "trajectory": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode012.json"
+  },
+  "short_id": "episode012"
+}

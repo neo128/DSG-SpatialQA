@@ -10,7 +10,7 @@
     },
     {
       "name": "at_least_eight_question_types",
-      "passed": false
+      "passed": true
     },
     {
       "name": "situated_temporal_relation_nonzero",
@@ -30,7 +30,7 @@
     }
   ],
   "episode_id": "ai2thor-real-small-episode-001",
-  "report_digest": "9e7a1424e976764f1837f87bc2fe635e277e42255c9738c4372498a5fc19b7f4",
+  "report_digest": "8da2b194f9f28e8b8b75a945cf22a8b0a6408c56432b041f3a4b2cbf4891bc8b",
   "schema_version": "dsg-spatialqa-lab.active-qa-v2-quality-report.v1",
   "source_paths": {
     "observation_sequence": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode001.json",
@@ -46,7 +46,7 @@
     "temporal": "handoffs/ai2thor-real-small/inputs/qa-v2-active-p53/ai2thor-real-small-episode-001/qa-temporal.jsonl"
   },
   "summary": {
-    "object_location_rate": 0.177632,
+    "object_location_rate": 0.156069,
     "observation_aware_count": 34,
     "p53_required_question_types": [
       "multi_hop",
@@ -54,24 +54,26 @@
       "relative_relation",
       "state_change"
     ],
-    "question_type_count": 6,
+    "question_type_count": 8,
     "question_type_counts": {
       "multi_hop": 2,
+      "nearest_object": 17,
       "object_location": 27,
-      "situated_egocentric": 56,
+      "relative_relation": 9,
+      "situated_egocentric": 51,
       "state_change": 56,
       "support_relation": 7,
       "temporal_last_seen": 4
     },
-    "situated_temporal_relation_count": 150,
+    "situated_temporal_relation_count": 180,
     "split_counts": {
       "anti_shortcut": 36,
       "full_oracle": 7,
       "observation_aware": 34,
-      "relation_centric": 34,
-      "situated": 56,
+      "relation_centric": 60,
+      "situated": 60,
       "temporal": 60
     }
   },
-  "valid": false
+  "valid": true
 }

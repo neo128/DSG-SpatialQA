@@ -167,6 +167,17 @@ def build_active_qa_v2_splits(
         _append(records, "situated", relative, max_records_per_split)
         _append(records, "relation_centric", {**relative, "split": "relation_centric"}, max_records_per_split)
 
+    for relative in _relative_relation_records_from_observations(
+        episode_id=episode_id,
+        scene_id=scene_id,
+        trajectory=trajectory,
+        index=index,
+        source_graph_digest=graph_digest,
+        max_records=max_records_per_split,
+    ):
+        _append(records, "situated", relative, max_records_per_split)
+        _append(records, "relation_centric", {**relative, "split": "relation_centric"}, max_records_per_split)
+
     for nearest in _nearest_object_records(
         episode_id=episode_id,
         scene_id=scene_id,
@@ -645,6 +656,73 @@ def _multi_hop_records(
     return rows
 
 
+def _relative_relation_records_from_observations(
+    *,
+    episode_id: str,
+    scene_id: str,
+    trajectory: Mapping[str, Any],
+    index: Mapping[str, Any],
+    source_graph_digest: str,
+    max_records: int,
+) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    object_by_step = _step_object_mapping(index.get("object_by_step"))
+    step_pose = _int_key_mapping(index.get("step_pose"))
+    step_frame = _int_key_mapping(index.get("step_frame"))
+    for step, objects in sorted(object_by_step.items()):
+        object_items = sorted(objects.items())
+        if len(object_items) < 2:
+            continue
+        for src_id, src in object_items:
+            for dst_id, dst in object_items:
+                if src_id == dst_id:
+                    continue
+                relation = _egocentric_relation(
+                    src.pose,
+                    dst.pose,
+                    step_pose.get(step),
+                )
+                if relation is None:
+                    continue
+                rows.append(
+                    _record(
+                        episode_id=episode_id,
+                        scene_id=scene_id,
+                        split="situated",
+                        question_type="relative_relation",
+                        question_text=(
+                            f"From the robot viewpoint at step {step}, is the "
+                            f"{src.label} {relation.lower()} the {dst.label}?"
+                        ),
+                        target_id=src_id,
+                        target_label=src.label,
+                        relation=relation,
+                        dst_id=dst_id,
+                        dst_label=dst.label,
+                        step=step,
+                        situation=_situation(
+                            step_pose.get(step),
+                            step,
+                            step_frame.get(step),
+                        ),
+                        required_edges=[f"{src_id}-{relation}-{dst_id}"],
+                        evidence_frames=[step],
+                        trajectory=trajectory,
+                        source_graph_digest=source_graph_digest,
+                        evidence_observable=True,
+                        anti_shortcut={
+                            "language_prior_risk": "low",
+                            "requires_3d_evidence": True,
+                            "has_distractor_same_category": False,
+                            "has_distractor_same_support": False,
+                        },
+                    )
+                )
+                if len(rows) >= max_records:
+                    return rows
+    return rows
+
+
 def _state_change_records(
     *,
     episode_id: str,
@@ -756,6 +834,20 @@ def _pose_distance(a: Any, b: Any) -> float:
     )
 
 
+def _egocentric_relation(src_pose: Any, dst_pose: Any, agent_pose: Any) -> str | None:
+    dx = float(getattr(src_pose, "x", 0.0)) - float(getattr(dst_pose, "x", 0.0))
+    dz = float(getattr(src_pose, "z", 0.0)) - float(getattr(dst_pose, "z", 0.0))
+    if abs(dx) < 1e-6 and abs(dz) < 1e-6:
+        return None
+    yaw_degrees = float(getattr(agent_pose, "yaw", 0.0)) if agent_pose is not None else 0.0
+    yaw = math.radians(-yaw_degrees)
+    ego_x = dx * math.cos(yaw) - dz * math.sin(yaw)
+    ego_z = dx * math.sin(yaw) + dz * math.cos(yaw)
+    if abs(ego_x) >= abs(ego_z):
+        return "LEFT_OF" if ego_x < 0 else "RIGHT_OF"
+    return "FRONT_OF" if ego_z > 0 else "BEHIND"
+
+
 def _state_changed(value: object) -> bool:
     if not isinstance(value, Sequence) or isinstance(value, str):
         return False
@@ -818,8 +910,41 @@ def _append(
     row: dict[str, Any],
     limit: int,
 ) -> None:
+    normalized = {**row, "split": split}
+    row_id = normalized.get("id")
+    existing_ids = {
+        existing.get("id")
+        for existing in records[split]
+        if isinstance(existing.get("id"), str)
+    }
+    if isinstance(row_id, str):
+        if row_id in existing_ids:
+            return
+        if len(existing_ids) < limit:
+            records[split].append(normalized)
+            return
+        row_type = normalized.get("question_type")
+        existing_types = [
+            str(existing.get("question_type"))
+            for existing in records[split]
+            if isinstance(existing.get("question_type"), str)
+        ]
+        if isinstance(row_type, str) and row_type not in existing_types:
+            type_counts = Counter(existing_types)
+            replace_type = max(
+                sorted(type_counts),
+                key=lambda item: (type_counts[item], item),
+            )
+            replace_indices = [
+                index
+                for index, existing in enumerate(records[split])
+                if existing.get("question_type") == replace_type
+            ]
+            if replace_indices:
+                records[split][replace_indices[-1]] = normalized
+        return
     if len(records[split]) < limit:
-        records[split].append({**row, "split": split})
+        records[split].append(normalized)
 
 
 def _dedupe_records(rows: Sequence[dict[str, Any]]) -> list[dict[str, Any]]:
