@@ -37,6 +37,7 @@ def test_trajectory_audit_flags_unvalidated_fixed_and_diagnostic_protocol() -> N
 
     assert audit["navigation_validated"] is False
     assert audit["trajectory_length"] == 1
+    assert audit["qa_case_count"] == 10
 
     diagnostic = diagnostic_protocol_metadata()
     assert diagnostic["collection_kind"] == "coverage_diagnostic"
@@ -89,6 +90,7 @@ def test_comparison_report_distinguishes_fixed_diagnostic_and_reachable_nbv() ->
 
 def test_reachable_nbv_formal_protocol_gate_requires_real_navigation_and_no_leakage() -> None:
     fixed = {
+        "qa_case_count": 10,
         "navigation_validated": False,
         "target_support_same_frame_rate": 0.1,
         "evidence_observable_qa_count": 2,
@@ -97,6 +99,7 @@ def test_reachable_nbv_formal_protocol_gate_requires_real_navigation_and_no_leak
         "GraphTool_semantic_match": 1,
     }
     nbv = {
+        "qa_case_count": 10,
         "navigation_validated": True,
         "target_support_same_frame_rate": 0.4,
         "evidence_observable_qa_count": 5,
@@ -135,6 +138,49 @@ def test_reachable_nbv_formal_protocol_gate_requires_real_navigation_and_no_leak
     assert ready["formal_protocol_ready"] is True
     assert leaked["formal_protocol_ready"] is False
     assert "no_gold_leakage" in leaked["failed_checks"]
+
+
+def test_reachable_nbv_formal_protocol_gate_requires_episode_qa_cases() -> None:
+    fixed = {
+        "qa_case_count": 0,
+        "navigation_validated": False,
+        "target_support_same_frame_rate": 0.0,
+        "evidence_observable_qa_count": 0,
+        "missing_support_count": 0,
+        "missing_relation_count": 0,
+        "GraphTool_semantic_match": 0,
+    }
+    nbv = {
+        "qa_case_count": 0,
+        "navigation_validated": True,
+        "target_support_same_frame_rate": 0.0,
+        "evidence_observable_qa_count": 0,
+        "missing_support_count": 0,
+        "missing_relation_count": 0,
+        "GraphTool_semantic_match": 0,
+    }
+    trajectory = {
+        "real_ai2thor_runtime": True,
+        "navigation_validated": True,
+        "teleport_used": False,
+        "closed_loop_memory_update": True,
+        "uses_gold_answer": False,
+        "uses_gold_evidence": False,
+        "uses_required_edges": False,
+        "uses_required_nodes": False,
+        "steps": [{"executed_actions": [{"action": "MoveAhead"}]}],
+    }
+
+    gate = reachable_nbv_formal_protocol_gate(
+        episode_id="episode-006",
+        trajectory=trajectory,
+        fixed_audit=fixed,
+        nbv_audit=nbv,
+        decisions=[{"memory_before": {}, "memory_after": {}}],
+    )
+
+    assert gate["formal_protocol_ready"] is False
+    assert "qa_case_count_gt_zero" in gate["failed_checks"]
 
 
 def test_filter_cases_for_trajectory_uses_episode_id() -> None:

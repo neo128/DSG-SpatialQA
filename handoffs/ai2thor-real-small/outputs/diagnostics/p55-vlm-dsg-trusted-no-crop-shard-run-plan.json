@@ -1,0 +1,109 @@
+{
+  "api_key_env": "DSG_SPATIALQA_DASHSCOPE_API_KEY",
+  "blockers": [],
+  "commands": [
+    {
+      "argv": [
+        "python",
+        "external_tools/run_vlm_graph_adjudication_active.py",
+        "--request-bundle",
+        "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop/p55-vlm-dsg-trusted-missing-no-crop-0001.json",
+        "--vlm-predictions",
+        "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-qwen37-active-qa-v2-20-episodes-merged.jsonl",
+        "--graph-predictions",
+        "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl",
+        "--output",
+        "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop/p55-vlm-dsg-trusted-missing-no-crop-0001.jsonl",
+        "--trace-output",
+        "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop-traces/p55-vlm-dsg-trusted-missing-no-crop-0001-trace.jsonl",
+        "--model",
+        "qwen3.7-plus",
+        "--base-url",
+        "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "--api-key-env",
+        "DSG_SPATIALQA_DASHSCOPE_API_KEY",
+        "--batch-size",
+        "1",
+        "--allow-network",
+        "--resume"
+      ],
+      "output": "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop/p55-vlm-dsg-trusted-missing-no-crop-0001.jsonl",
+      "request_bundle": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop/p55-vlm-dsg-trusted-missing-no-crop-0001.json",
+      "shard_index": 1,
+      "trace_output": "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop-traces/p55-vlm-dsg-trusted-missing-no-crop-0001-trace.jsonl"
+    },
+    {
+      "argv": [
+        "python",
+        "external_tools/run_vlm_graph_adjudication_active.py",
+        "--request-bundle",
+        "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop/p55-vlm-dsg-trusted-missing-no-crop-0002.json",
+        "--vlm-predictions",
+        "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-qwen37-active-qa-v2-20-episodes-merged.jsonl",
+        "--graph-predictions",
+        "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl",
+        "--output",
+        "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop/p55-vlm-dsg-trusted-missing-no-crop-0002.jsonl",
+        "--trace-output",
+        "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop-traces/p55-vlm-dsg-trusted-missing-no-crop-0002-trace.jsonl",
+        "--model",
+        "qwen3.7-plus",
+        "--base-url",
+        "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        "--api-key-env",
+        "DSG_SPATIALQA_DASHSCOPE_API_KEY",
+        "--batch-size",
+        "1",
+        "--allow-network",
+        "--resume"
+      ],
+      "output": "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop/p55-vlm-dsg-trusted-missing-no-crop-0002.jsonl",
+      "request_bundle": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop/p55-vlm-dsg-trusted-missing-no-crop-0002.json",
+      "shard_index": 2,
+      "trace_output": "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop-traces/p55-vlm-dsg-trusted-missing-no-crop-0002-trace.jsonl"
+    }
+  ],
+  "dedicated_api_key_env_set": true,
+  "dry_run": false,
+  "execute": true,
+  "executed_shard_count": 2,
+  "execution_blockers": [],
+  "execution_ready": true,
+  "failed_command": null,
+  "max_parallel": 2,
+  "pending_shard_count": 2,
+  "prediction_input_coverage": {
+    "graph_predictions": {
+      "expected_case_count": 390,
+      "missing_case_count": 0,
+      "missing_case_ids": [],
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl",
+      "prediction_case_count": 3104
+    },
+    "vlm_predictions": {
+      "expected_case_count": 390,
+      "missing_case_count": 0,
+      "missing_case_ids": [],
+      "path": "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-qwen37-active-qa-v2-20-episodes-merged.jsonl",
+      "prediction_case_count": 3246
+    }
+  },
+  "ready": true,
+  "report_digest": "72cd2fa355f298e5ce7a02776807657139ad8880c2d213491e6292186e122732",
+  "request_input_summary": {
+    "missing_target_crop_case_count": 390,
+    "request_case_count": 390,
+    "target_crop_case_count": 0,
+    "target_crop_enriched": false,
+    "target_visual_context_case_count": 390,
+    "visual_context_fallback_case_count": 390
+  },
+  "resume": true,
+  "schema_version": "dsg-spatialqa-lab.p55-prediction-shard-run-plan.v1",
+  "shard_count": 2,
+  "shard_manifest": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop-shard-manifest.json",
+  "skipped_existing_shard_count": 0,
+  "system_dashscope_key_set": false,
+  "target_method": "vlm_dsg_trusted",
+  "uses_system_dashscope_key": false
+}

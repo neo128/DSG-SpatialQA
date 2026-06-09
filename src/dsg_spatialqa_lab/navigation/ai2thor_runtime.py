@@ -203,10 +203,14 @@ def ai2thor_event_to_observation(
         stable_ai2thor_object_id(_required_str(item, "objectId"))
         for item in visible_objects
     }
+    segmentation_colors = _segmentation_colors_by_stable_id(event)
     objects = tuple(
         _object_observation_from_ai2thor(
             item,
             frame_paths=frame_paths,
+            segmentation_color_rgb=segmentation_colors.get(
+                stable_ai2thor_object_id(_required_str(item, "objectId"))
+            ),
             visible_object_ids=visible_ids,
         )
         for item in visible_objects
@@ -313,6 +317,7 @@ def _object_observation_from_ai2thor(
     payload: Mapping[str, Any],
     *,
     frame_paths: Mapping[str, str],
+    segmentation_color_rgb: tuple[int, int, int] | None = None,
     visible_object_ids: set[str],
 ) -> ObjectObservation:
     raw_id = _required_str(payload, "objectId")
@@ -356,6 +361,9 @@ def _object_observation_from_ai2thor(
     )
     if current_location is not None:
         attributes.update(current_location)
+    if segmentation_color_rgb is not None:
+        attributes["segmentation_color_rgb"] = list(segmentation_color_rgb)
+        attributes["segmentation_source"] = "ai2thor_instance_segmentation_frame"
     return ObjectObservation(
         object_id=object_id,
         label=label,
@@ -372,6 +380,33 @@ def _object_observation_from_ai2thor(
         visible=True,
         attributes=attributes,
     )
+
+
+def _segmentation_colors_by_stable_id(event: object) -> dict[str, tuple[int, int, int]]:
+    color_map = getattr(event, "color_to_object_id", None)
+    if not isinstance(color_map, Mapping):
+        return {}
+    colors: dict[str, tuple[int, int, int]] = {}
+    for color, raw_object_id in color_map.items():
+        if not isinstance(raw_object_id, str) or raw_object_id == "":
+            continue
+        rgb = _color_key_to_rgb(color)
+        if rgb is None:
+            continue
+        colors.setdefault(stable_ai2thor_object_id(raw_object_id), rgb)
+    return colors
+
+
+def _color_key_to_rgb(value: object) -> tuple[int, int, int] | None:
+    if isinstance(value, str) or not isinstance(value, Sequence) or len(value) < 3:
+        return None
+    try:
+        channels = tuple(int(channel) for channel in value[:3])
+    except (TypeError, ValueError):
+        return None
+    if any(channel < 0 or channel > 255 for channel in channels):
+        return None
+    return cast(tuple[int, int, int], channels)
 
 
 def _current_location_from_parent(

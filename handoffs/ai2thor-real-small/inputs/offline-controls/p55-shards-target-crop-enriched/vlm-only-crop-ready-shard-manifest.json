@@ -1,0 +1,74 @@
+{
+  "input": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-only-active-qa-v2-20-episode-request-bundle-target-crop-enriched.json",
+  "manifest_digest": "60c529f873dff0250a6840861877717faa06b829082b909f5eaa5883f6b93cce",
+  "schema_version": "dsg-spatialqa-lab.active-qa-v2-request-bundle-shard-manifest.v1",
+  "shard_count": 10,
+  "shard_size": 250,
+  "shards": [
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready/p55-vlm-only-missing-crop-ready-0001.json",
+      "request_bundle_digest": "e5b4cc2f060e965acd29321856ffcb280125f1c52b2bfcea735ec2dba364949e",
+      "request_count": 250,
+      "shard_index": 1
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready/p55-vlm-only-missing-crop-ready-0002.json",
+      "request_bundle_digest": "9bee3465855e6ad3e39932458005f09830a09d3ec4c77e7f8338aaa496dd75a7",
+      "request_count": 250,
+      "shard_index": 2
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready/p55-vlm-only-missing-crop-ready-0003.json",
+      "request_bundle_digest": "ed635849e423d260308e9f341b55d9dcc2f530fd322d9af73d15d504506653e9",
+      "request_count": 250,
+      "shard_index": 3
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready/p55-vlm-only-missing-crop-ready-0004.json",
+      "request_bundle_digest": "f2e76c014d4f43a07ed8542a529ca9945efe264b22f320477fb85e92557845d0",
+      "request_count": 250,
+      "shard_index": 4
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready/p55-vlm-only-missing-crop-ready-0005.json",
+      "request_bundle_digest": "dd9af345357d19db152d31de89e9c3ddaf6f6ca078aecaca89d3367b5292e8b8",
+      "request_count": 250,
+      "shard_index": 5
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready/p55-vlm-only-missing-crop-ready-0006.json",
+      "request_bundle_digest": "e5455ce24be7db589d46fc46f1e6e1cced90727146cdc1a49fff922bfe7b1b55",
+      "request_count": 250,
+      "shard_index": 6
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready/p55-vlm-only-missing-crop-ready-0007.json",
+      "request_bundle_digest": "0db5fbe0b428889c7fab0820ef384a552ec9ded7ab24d03104afee4b063bbc4d",
+      "request_count": 250,
+      "shard_index": 7
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready/p55-vlm-only-missing-crop-ready-0008.json",
+      "request_bundle_digest": "233c4a26c4db42734649da3c6939caa94e57150104ff96adeaf06204c834a92d",
+      "request_count": 250,
+      "shard_index": 8
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready/p55-vlm-only-missing-crop-ready-0009.json",
+      "request_bundle_digest": "f363678693b8055d1885ccabae72f7f0e964d3f46042fb4fe26c79d77e2415e8",
+      "request_count": 250,
+      "shard_index": 9
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready/p55-vlm-only-missing-crop-ready-0010.json",
+      "request_bundle_digest": "ebc3f2a7d21d03f8175ac6c9ff89d509e5ecb7087f153f399fe6768f4d41b0f4",
+      "request_count": 30,
+      "shard_index": 10
+    }
+  ],
+  "source_total_case_count": 2670,
+  "target_crop_case_count": 2280,
+  "target_crop_filter": "with",
+  "target_method": "vlm_only",
+  "total_case_count": 2280
+}

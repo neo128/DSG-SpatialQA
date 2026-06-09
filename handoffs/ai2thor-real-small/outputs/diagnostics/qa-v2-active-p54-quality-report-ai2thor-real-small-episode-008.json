@@ -1,0 +1,79 @@
+{
+  "checks": [
+    {
+      "name": "object_location_lte_60_percent",
+      "passed": true
+    },
+    {
+      "name": "at_least_three_question_types",
+      "passed": true
+    },
+    {
+      "name": "at_least_eight_question_types",
+      "passed": true
+    },
+    {
+      "name": "situated_temporal_relation_nonzero",
+      "passed": true
+    },
+    {
+      "name": "observation_aware_aligned",
+      "passed": true
+    },
+    {
+      "name": "anti_shortcut_cases_valid",
+      "passed": true
+    },
+    {
+      "name": "required_quality_fields_present",
+      "passed": true
+    }
+  ],
+  "episode_id": "ai2thor-real-small-episode-008",
+  "report_digest": "c84341653564a86176892321c0bbbc4ad1d329c932aa07d790af80326f2210ac",
+  "schema_version": "dsg-spatialqa-lab.active-qa-v2-quality-report.v1",
+  "source_paths": {
+    "observation_sequence": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode008.json",
+    "predicted_graph": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-real-ai2thor-reachable-nbv-episode008.json",
+    "trajectory": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode008.json"
+  },
+  "split_paths": {
+    "anti_shortcut": "handoffs/ai2thor-real-small/inputs/qa-v2-active-p54/ai2thor-real-small-episode-008/qa-anti-shortcut.jsonl",
+    "full_oracle": "handoffs/ai2thor-real-small/inputs/qa-v2-active-p54/ai2thor-real-small-episode-008/qa-full-oracle.jsonl",
+    "observation_aware": "handoffs/ai2thor-real-small/inputs/qa-v2-active-p54/ai2thor-real-small-episode-008/qa-observation-aware.jsonl",
+    "relation_centric": "handoffs/ai2thor-real-small/inputs/qa-v2-active-p54/ai2thor-real-small-episode-008/qa-relation-centric.jsonl",
+    "situated": "handoffs/ai2thor-real-small/inputs/qa-v2-active-p54/ai2thor-real-small-episode-008/qa-situated.jsonl",
+    "temporal": "handoffs/ai2thor-real-small/inputs/qa-v2-active-p54/ai2thor-real-small-episode-008/qa-temporal.jsonl"
+  },
+  "summary": {
+    "object_location_rate": 0.157233,
+    "observation_aware_count": 35,
+    "p53_required_question_types": [
+      "multi_hop",
+      "nearest_object",
+      "relative_relation",
+      "state_change"
+    ],
+    "question_type_count": 8,
+    "question_type_counts": {
+      "multi_hop": 3,
+      "nearest_object": 18,
+      "object_location": 25,
+      "relative_relation": 7,
+      "situated_egocentric": 36,
+      "state_change": 36,
+      "support_relation": 10,
+      "temporal_last_seen": 24
+    },
+    "situated_temporal_relation_count": 163,
+    "split_counts": {
+      "anti_shortcut": 38,
+      "full_oracle": 10,
+      "observation_aware": 35,
+      "relation_centric": 60,
+      "situated": 43,
+      "temporal": 60
+    }
+  },
+  "valid": true
+}

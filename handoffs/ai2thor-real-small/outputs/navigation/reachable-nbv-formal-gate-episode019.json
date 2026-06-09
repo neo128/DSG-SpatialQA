@@ -1,12 +1,53 @@
 {
-  "episode_id": "ai2thor-real-small-episode-019",
-  "failed_checks": [
-    "missing_trajectory",
-    "missing_decision_trace",
-    "missing_fixed_audit",
-    "missing_nbv_audit"
+  "checks": [
+    {
+      "name": "real_ai2thor_runtime",
+      "passed": true
+    },
+    {
+      "name": "navigation_validated",
+      "passed": true
+    },
+    {
+      "name": "teleport_used_false",
+      "passed": true
+    },
+    {
+      "name": "closed_loop_memory_update",
+      "passed": true
+    },
+    {
+      "name": "qa_case_count_gt_zero",
+      "passed": true
+    },
+    {
+      "name": "target_support_same_frame_rate_gt_fixed",
+      "passed": true
+    },
+    {
+      "name": "evidence_observable_qa_count_gte_fixed",
+      "passed": true
+    },
+    {
+      "name": "missing_support_count_lte_fixed",
+      "passed": true
+    },
+    {
+      "name": "missing_relation_count_lt_fixed",
+      "passed": true
+    },
+    {
+      "name": "graphtool_semantic_match_gte_fixed",
+      "passed": true
+    },
+    {
+      "name": "no_gold_leakage",
+      "passed": true
+    }
   ],
-  "formal_protocol_ready": false,
+  "episode_id": "ai2thor-real-small-episode-019",
+  "failed_checks": [],
+  "formal_protocol_ready": true,
   "paths": {
     "decision_trace": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode019.jsonl",
     "fixed_audit": "handoffs/ai2thor-real-small/outputs/navigation/trajectory-audit-fixed-ai2thor-real-small-episode-019.json",
@@ -14,5 +55,6 @@
     "nbv_audit": "handoffs/ai2thor-real-small/outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode019.json",
     "trajectory": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode019.json"
   },
+  "schema_version": "dsg-spatialqa-lab.reachable-nbv-formal-protocol-gate.v1",
   "short_id": "episode019"
 }

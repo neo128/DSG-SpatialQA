@@ -1,0 +1,80 @@
+{
+  "input": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-only-active-qa-v2-20-episode-request-bundle-target-crop-enriched.json",
+  "manifest_digest": "d87c2447d2a20e656f252b731ef514ae8ab179cac83cbd5ecb87915cd371f59f",
+  "schema_version": "dsg-spatialqa-lab.active-qa-v2-request-bundle-shard-manifest.v1",
+  "shard_count": 11,
+  "shard_size": 250,
+  "shards": [
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only/p55-vlm-only-missing-target-crop-enriched-0001.json",
+      "request_bundle_digest": "f2a64393c31c75208ccb35f0dc9adc1f307f77dc01492a52ac70db6d4bb3c947",
+      "request_count": 250,
+      "shard_index": 1
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only/p55-vlm-only-missing-target-crop-enriched-0002.json",
+      "request_bundle_digest": "d62cf7f66a2b2044d67565a0343886f9da59024e47831933d92d6b3288be0f25",
+      "request_count": 250,
+      "shard_index": 2
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only/p55-vlm-only-missing-target-crop-enriched-0003.json",
+      "request_bundle_digest": "4f2559b523558984f147c59eaac0b7166082838f9aeba7d291a7a01ee2cfe76c",
+      "request_count": 250,
+      "shard_index": 3
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only/p55-vlm-only-missing-target-crop-enriched-0004.json",
+      "request_bundle_digest": "f5f90b781c943ee6bfed8a05e7c421da2bfb0c6df9f54e03726125e312b840bd",
+      "request_count": 250,
+      "shard_index": 4
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only/p55-vlm-only-missing-target-crop-enriched-0005.json",
+      "request_bundle_digest": "94f7906a7130101336dfd8b93bbd0b775ad5a53e74cea5752285a61c52c7a9dc",
+      "request_count": 250,
+      "shard_index": 5
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only/p55-vlm-only-missing-target-crop-enriched-0006.json",
+      "request_bundle_digest": "571a1b98775c2f1ac82777c0f639e8ab22035ff2247f087549f53c894c116644",
+      "request_count": 250,
+      "shard_index": 6
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only/p55-vlm-only-missing-target-crop-enriched-0007.json",
+      "request_bundle_digest": "eecfd322554f218f6fb0859dc42188bffa53da9d683656a68d0403afe8ffbf8a",
+      "request_count": 250,
+      "shard_index": 7
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only/p55-vlm-only-missing-target-crop-enriched-0008.json",
+      "request_bundle_digest": "e773cacb9411274ffca26acbf7017685fe3b1be43bdb1ef1f34d78820cec0622",
+      "request_count": 250,
+      "shard_index": 8
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only/p55-vlm-only-missing-target-crop-enriched-0009.json",
+      "request_bundle_digest": "fc8cd3ebc5d9335107f75e97cf33658da745df5ec40291e61a61d5edf064d444",
+      "request_count": 250,
+      "shard_index": 9
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only/p55-vlm-only-missing-target-crop-enriched-0010.json",
+      "request_bundle_digest": "655f644a3623ba83ef02784b925e9aecfe2e925c236c6d3472f4689a682cc1d4",
+      "request_count": 250,
+      "shard_index": 10
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only/p55-vlm-only-missing-target-crop-enriched-0011.json",
+      "request_bundle_digest": "ff12640f451e86a79a8247163bd2686e22ea1612ebfc50e2a171b60d676dc779",
+      "request_count": 170,
+      "shard_index": 11
+    }
+  ],
+  "source_total_case_count": 2670,
+  "target_crop_case_count": 2280,
+  "target_crop_filter": "all",
+  "target_method": "vlm_only",
+  "total_case_count": 2670
+}

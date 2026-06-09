@@ -1,0 +1,3256 @@
+{
+  "bundle_kind": "request_bundle_shard",
+  "episode_id": "multiple",
+  "leak_free": true,
+  "leak_paths": [],
+  "prediction_cases": [
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "unchanged",
+          "option_id": "option_1",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "STATE_CHANGED"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:state_change:toiletpaper_03_25_01_04_01_24:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Did the toiletpaper change observed state between step 200001 and step 200179?",
+      "question_task_hint": "Choose the state option supported by visible evidence; if the change is not visible, return insufficient evidence.",
+      "question_text": "Did the toiletpaper change observed state between step 200001 and step 200179?",
+      "question_type": "state_change",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "toiletpaper"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          123,
+          87,
+          149,
+          116
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/54fe8848872ec27597736055.ppm",
+        "object_id": "toiletpaper_03_25_01_04_01_24",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/54fe8848872ec27597736055.ppm",
+        "segmentation_color_rgb": [
+          230,
+          78,
+          151
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "toiletpaper_03_25_01_04_01_24",
+        "unpadded_bbox_2d_xyxy": [
+          131,
+          95,
+          141,
+          108
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "unchanged",
+          "option_id": "option_1",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "STATE_CHANGED"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:state_change:toiletpaper_03_28_01_04_01_53:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Did the toiletpaper change observed state between step 200001 and step 200179?",
+      "question_task_hint": "Choose the state option supported by visible evidence; if the change is not visible, return insufficient evidence.",
+      "question_text": "Did the toiletpaper change observed state between step 200001 and step 200179?",
+      "question_type": "state_change",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "toiletpaper"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          153,
+          86,
+          172,
+          114
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/1e2cedbf5302ef3b63303399.ppm",
+        "object_id": "toiletpaper_03_28_01_04_01_53",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/1e2cedbf5302ef3b63303399.ppm",
+        "segmentation_color_rgb": [
+          84,
+          136,
+          76
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "toiletpaper_03_28_01_04_01_53",
+        "unpadded_bbox_2d_xyxy": [
+          161,
+          94,
+          164,
+          106
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "unchanged",
+          "option_id": "option_1",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "STATE_CHANGED"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:state_change:toiletpaperhanger_03_11_00_83_00_63:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Did the toiletpaperhanger change observed state between step 200027 and step 200179?",
+      "question_task_hint": "Choose the state option supported by visible evidence; if the change is not visible, return insufficient evidence.",
+      "question_text": "Did the toiletpaperhanger change observed state between step 200027 and step 200179?",
+      "question_type": "state_change",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "toiletpaperhanger"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          70,
+          117,
+          103,
+          153
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/87949aa1362b7ed5380c1830.ppm",
+        "object_id": "toiletpaperhanger_03_11_00_83_00_63",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/87949aa1362b7ed5380c1830.ppm",
+        "segmentation_color_rgb": [
+          164,
+          195,
+          105
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "toiletpaperhanger_03_11_00_83_00_63",
+        "unpadded_bbox_2d_xyxy": [
+          78,
+          125,
+          95,
+          145
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:cabinet_02_76_00_42_00_27:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the cabinet last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the cabinet last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "cabinet"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          0,
+          149,
+          53,
+          207
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/be382446b8660bf3c52e820a.ppm",
+        "object_id": "cabinet_02_76_00_42_00_27",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/be382446b8660bf3c52e820a.ppm",
+        "segmentation_color_rgb": [
+          170,
+          244,
+          164
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "cabinet_02_76_00_42_00_27",
+        "unpadded_bbox_2d_xyxy": [
+          0,
+          157,
+          45,
+          199
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:cabinet_02_76_00_42_00_76:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the cabinet last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the cabinet last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "cabinet"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          0,
+          186,
+          12,
+          207
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/38ea14e46b9f07c5a5cba611.ppm",
+        "object_id": "cabinet_02_76_00_42_00_76",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/38ea14e46b9f07c5a5cba611.ppm",
+        "segmentation_color_rgb": [
+          160,
+          172,
+          136
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "cabinet_02_76_00_42_00_76",
+        "unpadded_bbox_2d_xyxy": [
+          0,
+          194,
+          4,
+          199
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:cabinet_02_76_00_45_00_60:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the cabinet last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the cabinet last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "cabinet"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          2,
+          149,
+          91,
+          207
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/61f443fef6d61220fa64fb3d.ppm",
+        "object_id": "cabinet_02_76_00_45_00_60",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/61f443fef6d61220fa64fb3d.ppm",
+        "segmentation_color_rgb": [
+          41,
+          190,
+          21
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "cabinet_02_76_00_45_00_60",
+        "unpadded_bbox_2d_xyxy": [
+          10,
+          157,
+          83,
+          199
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:countertop_03_05_01_04_00_44:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the countertop last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the countertop last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "countertop"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          0,
+          98,
+          97,
+          145
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/fefbc923a00cfcdb44d13e94.ppm",
+        "object_id": "countertop_03_05_01_04_00_44",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/fefbc923a00cfcdb44d13e94.ppm",
+        "segmentation_color_rgb": [
+          219,
+          173,
+          1
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "countertop_03_05_01_04_00_44",
+        "unpadded_bbox_2d_xyxy": [
+          0,
+          106,
+          89,
+          137
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:faucet_03_31_00_99_00_21:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the faucet last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the faucet last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "faucet"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          19,
+          78,
+          63,
+          116
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/b0a5edfde5a7b2612b757098.ppm",
+        "object_id": "faucet_03_31_00_99_00_21",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/b0a5edfde5a7b2612b757098.ppm",
+        "segmentation_color_rgb": [
+          179,
+          168,
+          247
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "faucet_03_31_00_99_00_21",
+        "unpadded_bbox_2d_xyxy": [
+          27,
+          86,
+          55,
+          108
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:floor_01_69_00_04_00_81:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the floor last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the floor last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "floor"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          0,
+          155,
+          208,
+          240
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/cf8e0b6f7c549a0ff282ac1d.ppm",
+        "object_id": "floor_01_69_00_04_00_81",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/cf8e0b6f7c549a0ff282ac1d.ppm",
+        "segmentation_color_rgb": [
+          27,
+          87,
+          41
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "floor_01_69_00_04_00_81",
+        "unpadded_bbox_2d_xyxy": [
+          0,
+          163,
+          200,
+          240
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:garbagecan_03_08_00_01_00_90:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the garbagecan last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the garbagecan last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "garbagecan"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          84,
+          133,
+          136,
+          195
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/a1529dd966b71f3b6587f686.ppm",
+        "object_id": "garbagecan_03_08_00_01_00_90",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/a1529dd966b71f3b6587f686.ppm",
+        "segmentation_color_rgb": [
+          122,
+          69,
+          46
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "garbagecan_03_08_00_01_00_90",
+        "unpadded_bbox_2d_xyxy": [
+          92,
+          141,
+          128,
+          187
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:plunger_03_02_00_00_01_76:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the plunger last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the plunger last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "plunger"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          166,
+          145,
+          192,
+          195
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/0c109bda590bedfe063a3581.ppm",
+        "object_id": "plunger_03_02_00_00_01_76",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/0c109bda590bedfe063a3581.ppm",
+        "segmentation_color_rgb": [
+          147,
+          132,
+          232
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "plunger_03_02_00_00_01_76",
+        "unpadded_bbox_2d_xyxy": [
+          174,
+          153,
+          184,
+          187
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:scrubbrush_03_23_00_00_01_79:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the scrubbrush last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the scrubbrush last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "scrubbrush"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          166,
+          137,
+          191,
+          180
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/5361a71501149997c6792964.ppm",
+        "object_id": "scrubbrush_03_23_00_00_01_79",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/5361a71501149997c6792964.ppm",
+        "segmentation_color_rgb": [
+          105,
+          59,
+          23
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "scrubbrush_03_23_00_00_01_79",
+        "unpadded_bbox_2d_xyxy": [
+          174,
+          145,
+          183,
+          172
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:sink_03_02_00_87_00_21_sinkbasin:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the sinkbasin last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the sinkbasin last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "sinkbasin"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          0,
+          100,
+          75,
+          144
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/62512168e02f916f4a4451a4.ppm",
+        "object_id": "sink_03_02_00_87_00_21_sinkbasin",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/62512168e02f916f4a4451a4.ppm",
+        "segmentation_color_rgb": [
+          81,
+          149,
+          28
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "sink_03_02_00_87_00_21_sinkbasin",
+        "unpadded_bbox_2d_xyxy": [
+          0,
+          108,
+          67,
+          136
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:soapbar_03_28_00_99_00_51:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the soapbar last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the soapbar last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "soapbar"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          63,
+          97,
+          88,
+          118
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/b08b48ab4de0e367afaf5035.ppm",
+        "object_id": "soapbar_03_28_00_99_00_51",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/b08b48ab4de0e367afaf5035.ppm",
+        "segmentation_color_rgb": [
+          168,
+          86,
+          108
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "soapbar_03_28_00_99_00_51",
+        "unpadded_bbox_2d_xyxy": [
+          71,
+          105,
+          80,
+          110
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:toilet_02_93_00_00_01_36:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the toilet last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the toilet last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "toilet"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          111,
+          94,
+          180,
+          234
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/065d93bf6516d1a84f56f379.ppm",
+        "object_id": "toilet_02_93_00_00_01_36",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/065d93bf6516d1a84f56f379.ppm",
+        "segmentation_color_rgb": [
+          253,
+          217,
+          33
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "toilet_02_93_00_00_01_36",
+        "unpadded_bbox_2d_xyxy": [
+          119,
+          102,
+          172,
+          226
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:toiletpaper_03_25_01_04_01_24:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the toiletpaper last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the toiletpaper last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "toiletpaper"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          123,
+          87,
+          149,
+          116
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/bea784cdbe7a7e18731f1617.ppm",
+        "object_id": "toiletpaper_03_25_01_04_01_24",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/bea784cdbe7a7e18731f1617.ppm",
+        "segmentation_color_rgb": [
+          230,
+          78,
+          151
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "toiletpaper_03_25_01_04_01_24",
+        "unpadded_bbox_2d_xyxy": [
+          131,
+          95,
+          141,
+          108
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:toiletpaper_03_28_01_04_01_53:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the toiletpaper last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the toiletpaper last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "toiletpaper"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          153,
+          86,
+          172,
+          114
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/edca5f6e5f0d875774e29d23.ppm",
+        "object_id": "toiletpaper_03_28_01_04_01_53",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/edca5f6e5f0d875774e29d23.ppm",
+        "segmentation_color_rgb": [
+          84,
+          136,
+          76
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "toiletpaper_03_28_01_04_01_53",
+        "unpadded_bbox_2d_xyxy": [
+          161,
+          94,
+          164,
+          106
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200179:temporal_last_seen:toiletpaperhanger_03_11_00_83_00_63:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200179",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "scene_id": "",
+        "step": 200179
+      },
+      "question": "Where was the toiletpaperhanger last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the toiletpaperhanger last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200179,
+        "view_frame": {
+          "frame_id": "200179",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+          "scene_id": "",
+          "step": 200179
+        }
+      },
+      "target": {
+        "label": "toiletpaperhanger"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          70,
+          117,
+          103,
+          153
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/f5b4d109a5b28e9a4e65db64.ppm",
+        "object_id": "toiletpaperhanger_03_11_00_83_00_63",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/f5b4d109a5b28e9a4e65db64.ppm",
+        "segmentation_color_rgb": [
+          164,
+          195,
+          105
+        ],
+        "source_frame_id": "200179",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200179/segmentation.ppm",
+        "step": 200179,
+        "target_object_id": "toiletpaperhanger_03_11_00_83_00_63",
+        "unpadded_bbox_2d_xyxy": [
+          78,
+          125,
+          95,
+          145
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200180:situated_egocentric:cabinet_02_90_02_05_01_01:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200180",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "scene_id": "",
+        "step": 200180
+      },
+      "question": "From the robot pose at step 200180, where is the cabinet relative to the agent?",
+      "question_task_hint": "Answer from the robot pose and primary RGB frame only; do not use hidden scene knowledge.",
+      "question_text": "From the robot pose at step 200180, where is the cabinet relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      },
+      "target": {
+        "label": "cabinet"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          87,
+          93,
+          162,
+          158
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/d155eeaccd651a296884f14b.ppm",
+        "object_id": "cabinet_02_90_02_05_01_01",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/d155eeaccd651a296884f14b.ppm",
+        "segmentation_color_rgb": [
+          229,
+          114,
+          172
+        ],
+        "source_frame_id": "200180",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/segmentation.ppm",
+        "step": 200180,
+        "target_object_id": "cabinet_02_90_02_05_01_01",
+        "unpadded_bbox_2d_xyxy": [
+          95,
+          101,
+          154,
+          150
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200180:situated_egocentric:cabinet_02_91_02_10_01_88:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200180",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "scene_id": "",
+        "step": 200180
+      },
+      "question": "From the robot pose at step 200180, where is the cabinet relative to the agent?",
+      "question_task_hint": "Answer from the robot pose and primary RGB frame only; do not use hidden scene knowledge.",
+      "question_text": "From the robot pose at step 200180, where is the cabinet relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      },
+      "target": {
+        "label": "cabinet"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          145,
+          93,
+          218,
+          158
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/07b7363178da5c0ed2bc8113.ppm",
+        "object_id": "cabinet_02_91_02_10_01_88",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/07b7363178da5c0ed2bc8113.ppm",
+        "segmentation_color_rgb": [
+          193,
+          140,
+          246
+        ],
+        "source_frame_id": "200180",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/segmentation.ppm",
+        "step": 200180,
+        "target_object_id": "cabinet_02_91_02_10_01_88",
+        "unpadded_bbox_2d_xyxy": [
+          153,
+          101,
+          210,
+          150
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200180:situated_egocentric:handtowelholder_03_36_01_57_00_76:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200180",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "scene_id": "",
+        "step": 200180
+      },
+      "question": "From the robot pose at step 200180, where is the handtowelholder relative to the agent?",
+      "question_task_hint": "Answer from the robot pose and primary RGB frame only; do not use hidden scene knowledge.",
+      "question_text": "From the robot pose at step 200180, where is the handtowelholder relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      },
+      "target": {
+        "label": "handtowelholder"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          62,
+          178,
+          97,
+          221
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/cd68d746b0402a94717d1d9e.ppm",
+        "object_id": "handtowelholder_03_36_01_57_00_76",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/cd68d746b0402a94717d1d9e.ppm",
+        "segmentation_color_rgb": [
+          16,
+          4,
+          13
+        ],
+        "source_frame_id": "200180",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/segmentation.ppm",
+        "step": 200180,
+        "target_object_id": "handtowelholder_03_36_01_57_00_76",
+        "unpadded_bbox_2d_xyxy": [
+          70,
+          186,
+          89,
+          213
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200180:situated_egocentric:mirror_03_35_01_48_00_02:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200180",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "scene_id": "",
+        "step": 200180
+      },
+      "question": "From the robot pose at step 200180, where is the mirror relative to the agent?",
+      "question_task_hint": "Answer from the robot pose and primary RGB frame only; do not use hidden scene knowledge.",
+      "question_text": "From the robot pose at step 200180, where is the mirror relative to the agent?",
+      "question_type": "situated_egocentric",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      },
+      "target": {
+        "label": "mirror"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          0,
+          125,
+          95,
+          240
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/10ae3a80ab0aa63ab218ad18.ppm",
+        "object_id": "mirror_03_35_01_48_00_02",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/10ae3a80ab0aa63ab218ad18.ppm",
+        "segmentation_color_rgb": [
+          179,
+          150,
+          160
+        ],
+        "source_frame_id": "200180",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/segmentation.ppm",
+        "step": 200180,
+        "target_object_id": "mirror_03_35_01_48_00_02",
+        "unpadded_bbox_2d_xyxy": [
+          0,
+          133,
+          87,
+          240
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "unchanged",
+          "option_id": "option_1",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "STATE_CHANGED"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200180:state_change:cabinet_02_90_02_05_01_01:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200180",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "scene_id": "",
+        "step": 200180
+      },
+      "question": "Did the cabinet change observed state between step 200001 and step 200180?",
+      "question_task_hint": "Choose the state option supported by visible evidence; if the change is not visible, return insufficient evidence.",
+      "question_text": "Did the cabinet change observed state between step 200001 and step 200180?",
+      "question_type": "state_change",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      },
+      "target": {
+        "label": "cabinet"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          87,
+          93,
+          162,
+          158
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/a8c954ee9067a8e2ac945832.ppm",
+        "object_id": "cabinet_02_90_02_05_01_01",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/a8c954ee9067a8e2ac945832.ppm",
+        "segmentation_color_rgb": [
+          229,
+          114,
+          172
+        ],
+        "source_frame_id": "200180",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/segmentation.ppm",
+        "step": 200180,
+        "target_object_id": "cabinet_02_90_02_05_01_01",
+        "unpadded_bbox_2d_xyxy": [
+          95,
+          101,
+          154,
+          150
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "unchanged",
+          "option_id": "option_1",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "STATE_CHANGED"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200180:state_change:cabinet_02_91_02_10_01_88:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200180",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "scene_id": "",
+        "step": 200180
+      },
+      "question": "Did the cabinet change observed state between step 200001 and step 200180?",
+      "question_task_hint": "Choose the state option supported by visible evidence; if the change is not visible, return insufficient evidence.",
+      "question_text": "Did the cabinet change observed state between step 200001 and step 200180?",
+      "question_type": "state_change",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      },
+      "target": {
+        "label": "cabinet"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          145,
+          93,
+          218,
+          158
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/df50b04475b8f73f0543f56e.ppm",
+        "object_id": "cabinet_02_91_02_10_01_88",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/df50b04475b8f73f0543f56e.ppm",
+        "segmentation_color_rgb": [
+          193,
+          140,
+          246
+        ],
+        "source_frame_id": "200180",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/segmentation.ppm",
+        "step": 200180,
+        "target_object_id": "cabinet_02_91_02_10_01_88",
+        "unpadded_bbox_2d_xyxy": [
+          153,
+          101,
+          210,
+          150
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "unchanged",
+          "option_id": "option_1",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "STATE_CHANGED"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200180:state_change:handtowelholder_03_36_01_57_00_76:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200180",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "scene_id": "",
+        "step": 200180
+      },
+      "question": "Did the handtowelholder change observed state between step 200012 and step 200180?",
+      "question_task_hint": "Choose the state option supported by visible evidence; if the change is not visible, return insufficient evidence.",
+      "question_text": "Did the handtowelholder change observed state between step 200012 and step 200180?",
+      "question_type": "state_change",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      },
+      "target": {
+        "label": "handtowelholder"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          62,
+          178,
+          97,
+          221
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/fb593112a96044f6650bf7e7.ppm",
+        "object_id": "handtowelholder_03_36_01_57_00_76",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/fb593112a96044f6650bf7e7.ppm",
+        "segmentation_color_rgb": [
+          16,
+          4,
+          13
+        ],
+        "source_frame_id": "200180",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/segmentation.ppm",
+        "step": 200180,
+        "target_object_id": "handtowelholder_03_36_01_57_00_76",
+        "unpadded_bbox_2d_xyxy": [
+          70,
+          186,
+          89,
+          213
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "unchanged",
+          "option_id": "option_1",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "STATE_CHANGED"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "STATE_CHANGED"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200180:state_change:mirror_03_35_01_48_00_02:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200180",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "scene_id": "",
+        "step": 200180
+      },
+      "question": "Did the mirror change observed state between step 200012 and step 200180?",
+      "question_task_hint": "Choose the state option supported by visible evidence; if the change is not visible, return insufficient evidence.",
+      "question_text": "Did the mirror change observed state between step 200012 and step 200180?",
+      "question_type": "state_change",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      },
+      "target": {
+        "label": "mirror"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          0,
+          125,
+          95,
+          240
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/705e2998224e983a83d43cbf.ppm",
+        "object_id": "mirror_03_35_01_48_00_02",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/705e2998224e983a83d43cbf.ppm",
+        "segmentation_color_rgb": [
+          179,
+          150,
+          160
+        ],
+        "source_frame_id": "200180",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/segmentation.ppm",
+        "step": 200180,
+        "target_object_id": "mirror_03_35_01_48_00_02",
+        "unpadded_bbox_2d_xyxy": [
+          0,
+          133,
+          87,
+          240
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200180:temporal_last_seen:cabinet_02_90_02_05_01_01:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200180",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "scene_id": "",
+        "step": 200180
+      },
+      "question": "Where was the cabinet last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the cabinet last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      },
+      "target": {
+        "label": "cabinet"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          87,
+          93,
+          162,
+          158
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/c8bf371d3ed5ce9c5e4ec573.ppm",
+        "object_id": "cabinet_02_90_02_05_01_01",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/c8bf371d3ed5ce9c5e4ec573.ppm",
+        "segmentation_color_rgb": [
+          229,
+          114,
+          172
+        ],
+        "source_frame_id": "200180",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/segmentation.ppm",
+        "step": 200180,
+        "target_object_id": "cabinet_02_90_02_05_01_01",
+        "unpadded_bbox_2d_xyxy": [
+          95,
+          101,
+          154,
+          150
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200180:temporal_last_seen:cabinet_02_91_02_10_01_88:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200180",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "scene_id": "",
+        "step": 200180
+      },
+      "question": "Where was the cabinet last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the cabinet last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      },
+      "target": {
+        "label": "cabinet"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          145,
+          93,
+          218,
+          158
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/3df9a8bdbd6e625f4993583a.ppm",
+        "object_id": "cabinet_02_91_02_10_01_88",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/3df9a8bdbd6e625f4993583a.ppm",
+        "segmentation_color_rgb": [
+          193,
+          140,
+          246
+        ],
+        "source_frame_id": "200180",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/segmentation.ppm",
+        "step": 200180,
+        "target_object_id": "cabinet_02_91_02_10_01_88",
+        "unpadded_bbox_2d_xyxy": [
+          153,
+          101,
+          210,
+          150
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200180:temporal_last_seen:handtowelholder_03_36_01_57_00_76:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200180",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "scene_id": "",
+        "step": 200180
+      },
+      "question": "Where was the handtowelholder last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the handtowelholder last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      },
+      "target": {
+        "label": "handtowelholder"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          62,
+          178,
+          97,
+          221
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/bee45309fd5c298361f13c6a.ppm",
+        "object_id": "handtowelholder_03_36_01_57_00_76",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/bee45309fd5c298361f13c6a.ppm",
+        "segmentation_color_rgb": [
+          16,
+          4,
+          13
+        ],
+        "source_frame_id": "200180",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/segmentation.ppm",
+        "step": 200180,
+        "target_object_id": "handtowelholder_03_36_01_57_00_76",
+        "unpadded_bbox_2d_xyxy": [
+          70,
+          186,
+          89,
+          213
+        ]
+      }
+    },
+    {
+      "answer_option_response_schema": {
+        "allowed_answer_option_ids": [
+          "option_1",
+          "option_2",
+          "option_3",
+          "option_4"
+        ],
+        "answer_current_location_rule": "Copy relation and destination_label from the selected answer option.",
+        "answer_option_id_field": "answer.answer_option_id",
+        "required_when_answer_options_present": true
+      },
+      "answer_options": [
+        {
+          "destination_label": "agent",
+          "option_id": "option_1",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "countertop",
+          "option_id": "option_2",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "table",
+          "option_id": "option_3",
+          "relation": "VISIBLE_FROM"
+        },
+        {
+          "destination_label": "chair",
+          "option_id": "option_4",
+          "relation": "VISIBLE_FROM"
+        }
+      ],
+      "case_id": "ai2thor-real-small-episode-020:FloorPlan405:200180:temporal_last_seen:mirror_03_35_01_48_00_02:temporal",
+      "episode_id": "ai2thor-real-small-episode-020",
+      "frames": [
+        {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      ],
+      "primary_frame": {
+        "frame_id": "200180",
+        "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "scene_id": "",
+        "step": 200180
+      },
+      "question": "Where was the mirror last seen during this trajectory?",
+      "question_task_hint": "Use the provided frame as the visible last-seen evidence for this single-frame VLM request; do not invent earlier observations.",
+      "question_text": "Where was the mirror last seen during this trajectory?",
+      "question_type": "temporal_last_seen",
+      "required_output_schema": {
+        "answer": "string or structured current_location JSON",
+        "confidence": "number in [0,1]",
+        "evidence_summary": "brief text"
+      },
+      "scene_id": "FloorPlan405",
+      "situation": {
+        "agent_pose": {
+          "x": -2.0,
+          "y": 0.9048510789871216,
+          "yaw": 270.0,
+          "z": 1.5
+        },
+        "reference_frame": "agent_egocentric",
+        "step": 200180,
+        "view_frame": {
+          "frame_id": "200180",
+          "rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+          "scene_id": "",
+          "step": 200180
+        }
+      },
+      "target": {
+        "label": "mirror"
+      },
+      "target_crop": {
+        "bbox_2d_xyxy": [
+          0,
+          125,
+          95,
+          240
+        ],
+        "crop_kind": "segmentation_color_mask",
+        "crop_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/11c2fd3625547bc84254be21.ppm",
+        "object_id": "mirror_03_35_01_48_00_02",
+        "rgb_path": "handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/ai2thor-real-small-episode-020/11c2fd3625547bc84254be21.ppm",
+        "segmentation_color_rgb": [
+          179,
+          150,
+          160
+        ],
+        "source_frame_id": "200180",
+        "source_rgb_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/rgb.ppm",
+        "source_segmentation_path": "handoffs/ai2thor-real-small/outputs/navigation/real-ai2thor-frame-assets/ai2thor-real-small-episode-020/200180/segmentation.ppm",
+        "step": 200180,
+        "target_object_id": "mirror_03_35_01_48_00_02",
+        "unpadded_bbox_2d_xyxy": [
+          0,
+          133,
+          87,
+          240
+        ]
+      }
+    }
+  ],
+  "request_bundle_digest": "ebc3f2a7d21d03f8175ac6c9ff89d509e5ecb7087f153f399fe6768f4d41b0f4",
+  "request_count": 30,
+  "schema_version": "dsg-spatialqa-lab.active-qa-v2-vlm-request-bundle.v1",
+  "shard_count": 10,
+  "shard_index": 10,
+  "source_bundle_digest": "9d6fd7ff9a66d3ec7bca2ce46a680662891b231cedcfb960e2ad6f509ea74a0d",
+  "source_bundle_path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-only-active-qa-v2-20-episode-request-bundle-target-crop-enriched.json",
+  "target_method": "vlm_only"
+}

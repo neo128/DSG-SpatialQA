@@ -1,0 +1,32 @@
+{
+  "episode_count": 1,
+  "episode_plan_path": "handoffs/ai2thor-real-small/inputs/navigation/p54-ai2thor-20-episode-plan.json",
+  "episodes": [
+    {
+      "blockers": [],
+      "episode_id": "ai2thor-real-small-episode-015",
+      "paths": {
+        "active_qa_dir": "handoffs/ai2thor-real-small/inputs/qa-v2-active-p54/ai2thor-real-small-episode-015",
+        "active_qa_observation_aware": "handoffs/ai2thor-real-small/inputs/qa-v2-active-p54/ai2thor-real-small-episode-015/qa-observation-aware.jsonl",
+        "active_qa_quality_report": "handoffs/ai2thor-real-small/outputs/diagnostics/qa-v2-active-p54-quality-report-ai2thor-real-small-episode-015.json",
+        "active_qa_vlm_request_bundle": "handoffs/ai2thor-real-small/inputs/qa-v2-active-p54/ai2thor-real-small-episode-015/vlm-request-bundle.json",
+        "audit": "handoffs/ai2thor-real-small/outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode015.json",
+        "decision_trace": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode015.jsonl",
+        "episode": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-015.jsonl",
+        "fixed_episode_topdown": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-015-topdown-path.png",
+        "fixed_vs_overlay_json": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-015-fixed-vs-real-ai2thor-reachable-nbv-overlay.json",
+        "fixed_vs_overlay_png": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-015-fixed-vs-real-ai2thor-reachable-nbv-overlay.png",
+        "graph": "handoffs/ai2thor-real-small/outputs/predicted-dsg/predicted-graph-real-ai2thor-reachable-nbv-episode015.json",
+        "observation": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode015.json",
+        "topdown": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-015-real-ai2thor-reachable-nbv-topdown-path.png",
+        "trajectory": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode015.json"
+      },
+      "scene_id": "FloorPlan304",
+      "short_id": "episode015",
+      "valid": true
+    }
+  ],
+  "runtime_kind": "real_ai2thor",
+  "schema_version": "dsg-spatialqa-lab.reachable-nbv-all-episodes-run-report.v1",
+  "valid": true
+}

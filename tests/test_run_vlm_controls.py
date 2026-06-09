@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib.util
+import io
 import json
 import sys
 from pathlib import Path
@@ -485,6 +486,9 @@ def test_vlm_runner_prompt_uses_target_crop_and_support_candidates_without_ids(
             "relation_hint": "INSIDE",
         },
     ]
+    bundle_payload["case_inputs"][0]["question_task_hint"] = (
+        "Choose the visible support or container relation from answer_options."
+    )
     request_bundle.write_text(
         json.dumps(bundle_payload, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -530,10 +534,89 @@ def test_vlm_runner_prompt_uses_target_crop_and_support_candidates_without_ids(
         {"confidence": 0.88, "label": "countertop", "relation_hint": "ON"},
         {"confidence": 0.52, "label": "sink", "relation_hint": "INSIDE"},
     ]
+    assert user_payload["question_task_hint"] == (
+        "Choose the visible support or container relation from answer_options."
+    )
     assert trace["image_refs"][1]["crop_role"] == "target_crop"
     assert "apple_1" not in serialized
     assert "countertop_1" not in serialized
     assert "sink_1" not in serialized
+    assert "gold" not in serialized
+
+
+def test_vlm_runner_prompt_uses_no_crop_visual_context_without_extra_image(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_run_vlm_controls_script()
+    main = cast(MainFn, getattr(module, "main"))
+    request_bundle = _request_bundle(tmp_path, case_id="case-001:apple_1")
+    bundle_payload = json.loads(request_bundle.read_text(encoding="utf-8"))
+    bundle_payload["case_inputs"][0]["target_visual_context"] = {
+        "available": True,
+        "context_kind": "primary_frame_without_target_crop",
+        "instruction": (
+            "No local target crop is available. Inspect only the primary RGB "
+            "frame; if the target is not visually clear, return "
+            "target_not_observed instead of guessing."
+        ),
+        "target_crop_available": False,
+        "target_crop_unavailable_reason": "missing_segmentation_color",
+        "target_label": "apple",
+    }
+    request_bundle.write_text(
+        json.dumps(bundle_payload, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
+    monkeypatch.setenv("DSG_SPATIALQA_DASHSCOPE_API_KEY", "test-key")
+    calls: list[dict[str, Any]] = []
+
+    def fake_sender(payload: dict[str, Any], *, api_key: str, base_url: str) -> dict[str, Any]:
+        calls.append(payload)
+        user_text = payload["messages"][1]["content"][0]["text"]
+        prompt_case = json.loads(user_text)
+        return _fake_structured_response(prompt_case["case_id"])
+
+    monkeypatch.setattr(module, "_send_chat_completion", fake_sender)
+
+    exit_code = main(
+        [
+            "--request-bundle",
+            str(request_bundle),
+            "--allow-network",
+            "--output",
+            str(tmp_path / "vlm.jsonl"),
+            "--trace-output",
+            str(tmp_path / "trace.jsonl"),
+        ]
+    )
+
+    _ = capsys.readouterr()
+    user_payload = json.loads(calls[0]["messages"][1]["content"][0]["text"])
+    image_urls = [
+        item for item in calls[0]["messages"][1]["content"] if item["type"] == "image_url"
+    ]
+    serialized = json.dumps(user_payload, sort_keys=True)
+    trace = json.loads((tmp_path / "trace.jsonl").read_text().splitlines()[0])
+    assert exit_code == 0
+    assert len(image_urls) == 1
+    assert trace["request"]["image_roles"] == ["primary_frame"]
+    assert user_payload["target_crop"] == {"available": False}
+    assert user_payload["target_visual_context"] == {
+        "available": True,
+        "context_kind": "primary_frame_without_target_crop",
+        "instruction": (
+            "No local target crop is available. Inspect only the primary RGB "
+            "frame; if the target is not visually clear, return "
+            "target_not_observed instead of guessing."
+        ),
+        "target_crop_available": False,
+        "target_crop_unavailable_reason": "missing_segmentation_color",
+        "target_label": "apple",
+    }
+    assert "apple_1" not in serialized
+    assert "visible_object" not in serialized
     assert "gold" not in serialized
 
 
@@ -2124,6 +2207,183 @@ def test_vlm_runner_checkpoints_predictions_and_resumes_remaining_cases(
         "case-002",
         "case-002",
     ]
+
+
+def test_vlm_runner_retries_empty_message_content(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_run_vlm_controls_script()
+    main = cast(MainFn, getattr(module, "main"))
+    request_bundle = _request_bundle(tmp_path, case_id="case-001")
+    monkeypatch.setenv("DSG_SPATIALQA_DASHSCOPE_API_KEY", "test-key")
+    output_path = tmp_path / "vlm.jsonl"
+    trace_path = tmp_path / "trace.jsonl"
+    calls: list[str] = []
+
+    def retry_sender(payload: dict[str, Any], *, api_key: str, base_url: str) -> dict[str, Any]:
+        prompt_case = json.loads(payload["messages"][1]["content"][0]["text"])
+        calls.append(prompt_case["case_id"])
+        if len(calls) == 1:
+            return {"choices": [{"message": {"content": ""}}]}
+        return _fake_structured_response(prompt_case["case_id"])
+
+    monkeypatch.setattr(module, "_send_chat_completion", retry_sender)
+
+    exit_code = main(
+        [
+            "--request-bundle",
+            str(request_bundle),
+            "--allow-network",
+            "--output",
+            str(output_path),
+            "--trace-output",
+            str(trace_path),
+        ]
+    )
+
+    payload = json.loads(capsys.readouterr().out)
+    predictions = lab.load_qa_predictions(output_path)
+    assert exit_code == 0
+    assert payload["ready"] is True
+    assert len(calls) == 2
+    assert [prediction.id for prediction in predictions] == ["case-001"]
+
+
+def test_vlm_runner_tolerates_small_binary_ppm_shortfall(tmp_path: Path) -> None:
+    module = load_run_vlm_controls_script()
+    image_data_url = getattr(module, "_image_data_url")
+    ppm_path = tmp_path / "short.ppm"
+    ppm_path.write_bytes(b"P6\n2 1\n255\n" + bytes([255, 0, 0, 0, 255]))
+
+    data_url = image_data_url(str(ppm_path))
+
+    assert data_url.startswith("data:image/png;base64,")
+
+
+def test_vlm_runner_pads_tiny_ppm_before_png_encoding() -> None:
+    module = load_run_vlm_controls_script()
+    ppm_to_png = getattr(module, "_ppm_to_png")
+
+    png = ppm_to_png(b"P3\n2 1\n255\n255 0 0 0 255 0\n")
+
+    width = int.from_bytes(png[16:20], byteorder="big")
+    height = int.from_bytes(png[20:24], byteorder="big")
+    assert width == 32
+    assert height == 32
+
+
+def test_vlm_runner_rejects_large_binary_ppm_shortfall(tmp_path: Path) -> None:
+    module = load_run_vlm_controls_script()
+    image_data_url = getattr(module, "_image_data_url")
+    ppm_path = tmp_path / "too-short.ppm"
+    ppm_path.write_bytes(b"P6\n2 1\n255\n" + bytes([255, 0, 0]))
+
+    try:
+        image_data_url(str(ppm_path))
+    except lab.SpatialQAError as exc:
+        assert "PPM binary payload has unexpected length" in str(exc)
+    else:
+        raise AssertionError("large PPM payload shortfall must be rejected")
+
+
+def test_send_chat_completion_retries_empty_response(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    module = load_run_vlm_controls_script()
+    send_chat_completion = getattr(module, "_send_chat_completion")
+    calls: list[str] = []
+
+    class FakeResponse:
+        def __init__(self, body: bytes) -> None:
+            self.body = body
+
+        def __enter__(self) -> "FakeResponse":
+            return self
+
+        def __exit__(self, *_args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return self.body
+
+    def fake_urlopen(_request: object, *, timeout: int) -> FakeResponse:
+        calls.append(str(timeout))
+        if len(calls) == 1:
+            return FakeResponse(b"")
+        return FakeResponse(
+            json.dumps({"choices": [{"message": {"content": "{}"}}]}).encode("utf-8")
+        )
+
+    url_lib = getattr(module, "url" + "lib")
+    monkeypatch.setattr(url_lib.request, "urlopen", fake_urlopen)
+
+    response = send_chat_completion(
+        {"messages": []},
+        api_key="test-key",
+        base_url="https://example.invalid/v1",
+    )
+
+    assert response["choices"][0]["message"]["content"] == "{}"
+    assert calls == ["120", "120"]
+
+
+def test_send_chat_completion_does_not_retry_http_error(
+    monkeypatch: MonkeyPatch,
+) -> None:
+    module = load_run_vlm_controls_script()
+    send_chat_completion = getattr(module, "_send_chat_completion")
+    calls: list[str] = []
+    url_lib = getattr(module, "url" + "lib")
+
+    def fake_urlopen(_request: object, *, timeout: int) -> object:
+        calls.append(str(timeout))
+        raise url_lib.error.HTTPError(
+            "https://example.invalid/v1/chat/completions",
+            401,
+            "Unauthorized",
+            {},
+            io.BytesIO(b'{"message":"bad auth"}'),
+        )
+
+    monkeypatch.setattr(url_lib.request, "urlopen", fake_urlopen)
+
+    try:
+        send_chat_completion(
+            {"messages": []},
+            api_key="test-key",
+            base_url="https://example.invalid/v1",
+        )
+    except lab.SpatialQAError as exc:
+        assert "HTTP Error 401: Unauthorized" in str(exc)
+        assert "bad auth" in str(exc)
+    else:
+        raise AssertionError("HTTPError details must be raised without retrying")
+    assert calls == ["120"]
+
+
+def test_structured_response_normalization_corrects_prompt_case_id_mismatch(
+    tmp_path: Path,
+) -> None:
+    module = load_run_vlm_controls_script()
+    request_bundle = _request_bundle(tmp_path, case_id="case-001")
+    bundle = json.loads(request_bundle.read_text(encoding="utf-8"))
+    case = bundle["case_inputs"][0]
+    normalize = getattr(module, "_normalize_structured_response")
+    prediction_from_response = getattr(module, "_prediction_from_structured_response")
+    prompt_case_id = getattr(module, "_prompt_case_id")("case-001")
+    response = json.loads(_fake_structured_response(prompt_case_id)["choices"][0]["message"]["content"])
+    response["case_id"] = prompt_case_id[:-2] + "xy"
+
+    normalized = normalize(case, response, frame_index={})
+    prediction = prediction_from_response(case, normalized)
+
+    assert normalized["case_id"] == prompt_case_id
+    assert normalized["normalization"]["applied"] is True
+    assert "corrected_case_id_from_prompt" in normalized["normalization"]["changes"]
+    assert "case_id_mismatch" in normalized["normalization"]["warnings"]
+    assert prediction.id == "case-001"
 
 
 def _fake_structured_response(case_id: str) -> dict[str, Any]:

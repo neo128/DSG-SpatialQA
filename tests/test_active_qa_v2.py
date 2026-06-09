@@ -214,6 +214,11 @@ def test_active_qa_v2_generates_relation_situated_temporal_and_leak_free_bundle(
         for case in bundle["prediction_cases"]
         if case["question_type"] == "support_relation"
     )
+    state_change_case = next(
+        case
+        for case in bundle["prediction_cases"]
+        if case["question_type"] == "state_change"
+    )
 
     assert splits["observation_aware"]
     assert splits["relation_centric"]
@@ -252,6 +257,17 @@ def test_active_qa_v2_generates_relation_situated_temporal_and_leak_free_bundle(
     assert request_case["primary_frame"]["rgb_path"] == "rgb/000010.ppm"
     assert request_case["answer_options"][0]["option_id"] == "option_1"
     assert request_case["answer_options"][0]["destination_label"] == "countertop"
+    assert request_case["question_task_hint"] == (
+        "Choose the visible support or container relation from answer_options; "
+        "do not infer hidden support surfaces."
+    )
+    assert request_case["support_candidates"][0] == {
+        "label": "countertop",
+        "relation_hint": "ON",
+    }
+    assert all("dst" not in candidate for candidate in request_case["support_candidates"])
+    assert state_change_case["answer_options"]
+    assert "support_candidates" not in state_change_case
     assert "gold_answer" not in str(bundle)
     assert "required_nodes" not in str(bundle)
     assert "visible_object_ids" not in str(bundle)

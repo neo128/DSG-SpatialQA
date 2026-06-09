@@ -167,6 +167,7 @@ def trajectory_coverage_audit(
         "navigation_validated": trajectory.get("navigation_validated") is True,
         "runtime_kind": trajectory.get("runtime_kind"),
         "real_ai2thor_runtime": trajectory.get("real_ai2thor_runtime"),
+        "qa_case_count": qa_case_count,
         "trajectory_length": len(steps),
         "action_count": action_count,
         "visited_reachable_position_count": len(visited_positions),
@@ -279,6 +280,11 @@ def reachable_nbv_formal_protocol_gate(
                 and isinstance(_mapping(decision).get("memory_after"), Mapping)
                 for decision in decisions
             ),
+        },
+        {
+            "name": "qa_case_count_gt_zero",
+            "passed": _audit_qa_case_count(fixed_audit) > 0
+            and _audit_qa_case_count(nbv_audit) > 0,
         },
         {
             "name": "target_support_same_frame_rate_gt_fixed",
@@ -461,6 +467,15 @@ def _float(value: object) -> float:
 
 def _number(value: object) -> float:
     return _float(value)
+
+
+def _audit_qa_case_count(audit: Mapping[str, Any]) -> float:
+    explicit = audit.get("qa_case_count")
+    if isinstance(explicit, int | float) and not isinstance(explicit, bool):
+        return float(explicit)
+    return _number(audit.get("missing_relation_count")) + _number(
+        audit.get("target_support_same_frame_count")
+    )
 
 
 def _ratio(numerator: float, denominator: float) -> float:

@@ -1,0 +1,128 @@
+{
+  "attribution_digest": "d90d7dd95f5052fb1ad6ec2f97fe61ea8fd58ed2f17a09a36150fb32bec63ab6",
+  "attribution_summary": {
+    "adjudicated_failure_count": 2075,
+    "adjudicated_loss_count": 0,
+    "adjudicated_win_count": 428,
+    "case_count": 3104,
+    "outcome_counts": {
+      "adjudicated_failure": 2075,
+      "adjudicated_win": 428,
+      "tie_correct": 601
+    },
+    "outcomes_by_question_type": {
+      "multi_hop": {
+        "adjudicated_failure": 16,
+        "adjudicated_win": 4
+      },
+      "nearest_object": {
+        "adjudicated_failure": 213,
+        "adjudicated_win": 55
+      },
+      "object_location": {
+        "adjudicated_failure": 458,
+        "adjudicated_win": 9
+      },
+      "relative_relation": {
+        "adjudicated_failure": 140,
+        "adjudicated_win": 96
+      },
+      "situated_egocentric": {
+        "adjudicated_failure": 214,
+        "adjudicated_win": 48,
+        "tie_correct": 481
+      },
+      "state_change": {
+        "adjudicated_failure": 640,
+        "adjudicated_win": 126
+      },
+      "support_relation": {
+        "adjudicated_failure": 195,
+        "adjudicated_win": 67
+      },
+      "temporal_last_seen": {
+        "adjudicated_failure": 199,
+        "adjudicated_win": 23,
+        "tie_correct": 120
+      }
+    },
+    "primary_attribution_counts": {
+      "accepted_vlm_but_wrong": 1794,
+      "adjudicator_other_win": 51,
+      "adjudicator_rejected_both": 12,
+      "both_correct": 601,
+      "dsg_evidence_correction": 281,
+      "dsg_location_correction": 8,
+      "dsg_situated_evidence_correction": 48,
+      "dsg_support_relation_correction": 17,
+      "dsg_temporal_memory_correction": 23,
+      "trusted_gate_missed_correct_graph": 269
+    },
+    "selected_candidate_counts": {
+      "graph_tool_dsg": 388,
+      "none": 12,
+      "unknown": 434,
+      "vlm": 2270
+    },
+    "tie_correct_count": 601
+  },
+  "claim": "vlm_dsg_trusted_fusion_significantly_beats_vlm_only_on_active_qa_v2",
+  "comparison_digest": "8c48986fc1e30decea51a3f3556f9532f871b3eb3b4341ce4f2d142b55ceb428",
+  "comparison_summary": {
+    "case_count": 3104,
+    "deltas": {
+      "graph_tool_only_vs_vlm_only": {
+        "paired_losses": 0,
+        "paired_ties": 601,
+        "paired_wins": 2503,
+        "sign_test_p_value": 0.0
+      },
+      "vlm_dsg_vs_graph_tool_only": {
+        "paired_losses": 2075,
+        "paired_ties": 1029,
+        "paired_wins": 0,
+        "sign_test_p_value": 0.0
+      },
+      "vlm_dsg_vs_vlm_only": {
+        "paired_losses": 0,
+        "paired_ties": 2676,
+        "paired_wins": 428,
+        "sign_test_p_value": 0.0
+      }
+    },
+    "episode_count": 20,
+    "methods": {
+      "graph_tool_only_dsg": {
+        "case_count": 3104,
+        "prediction_count": 3104,
+        "semantic_match_count": 3104,
+        "semantic_match_rate": 1.0,
+        "strict_exact_count": 3104,
+        "strict_exact_rate": 1.0
+      },
+      "vlm_dsg_trusted": {
+        "case_count": 3104,
+        "prediction_count": 3104,
+        "semantic_match_count": 1029,
+        "semantic_match_rate": 0.331508,
+        "strict_exact_count": 1029,
+        "strict_exact_rate": 0.331508
+      },
+      "vlm_only": {
+        "case_count": 3104,
+        "prediction_count": 3104,
+        "semantic_match_count": 601,
+        "semantic_match_rate": 0.193621,
+        "strict_exact_count": 601,
+        "strict_exact_rate": 0.193621
+      }
+    },
+    "question_type_count": 8
+  },
+  "graph_predictions_path": "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl",
+  "merged_trusted_predictions_path": "handoffs/ai2thor-real-small/outputs/diagnostics/p55-finalize-target-crop-enriched/p55-vlm-dsg-trusted-qwen37-active-qa-v2-20-episodes.jsonl",
+  "merged_vlm_predictions_path": "handoffs/ai2thor-real-small/outputs/diagnostics/p55-finalize-target-crop-enriched/p55-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl",
+  "ready": true,
+  "record_digest": "b7c8e1f2a2cb90647cffaa8fae6ebb7034598977eff492f4aef82c4833f2795f",
+  "schema_version": "dsg-spatialqa-lab.p55-dsg-superiority-claim.v1"
+}

@@ -243,6 +243,134 @@ def test_adjudication_runner_accepts_batched_structured_responses(
     assert call_count == 1
 
 
+def test_adjudication_runner_retries_empty_message_content(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_run_adjudication_script()
+    main = cast(MainFn, getattr(module, "main"))
+    request_bundle, vlm_path, graph_path = _inputs(tmp_path)
+    monkeypatch.setenv("DSG_SPATIALQA_DASHSCOPE_API_KEY", "test-key")
+    calls: list[str] = []
+
+    def retry_sender(
+        payload: dict[str, Any],
+        *,
+        api_key: str,
+        base_url: str,
+    ) -> dict[str, Any]:
+        prompt_payload = json.loads(payload["messages"][1]["content"][0]["text"])
+        calls.append(prompt_payload["case_id"])
+        if len(calls) == 1:
+            return {"choices": [{"message": {"content": ""}}]}
+        return _adjudication_response(prompt_payload["case_id"])
+
+    monkeypatch.setattr(module, "_send_chat_completion", retry_sender)
+    output = tmp_path / "adjudicated.jsonl"
+
+    exit_code = main(
+        [
+            "--request-bundle",
+            str(request_bundle),
+            "--vlm-predictions",
+            str(vlm_path),
+            "--graph-predictions",
+            str(graph_path),
+            "--output",
+            str(output),
+            "--trace-output",
+            str(tmp_path / "trace.jsonl"),
+            "--allow-network",
+        ]
+    )
+
+    payload = json.loads(capsys.readouterr().out)
+    predictions = lab.load_qa_predictions(output)
+    assert exit_code == 0
+    assert payload["ready"] is True
+    assert len(calls) == 2
+    assert [prediction.id for prediction in predictions] == ["case-001"]
+
+
+def test_adjudication_runner_corrects_single_response_case_id_mismatch(
+    tmp_path: Path,
+    monkeypatch: MonkeyPatch,
+    capsys: CaptureFixture[str],
+) -> None:
+    module = load_run_adjudication_script()
+    main = cast(MainFn, getattr(module, "main"))
+    request_bundle, vlm_path, graph_path = _inputs(tmp_path)
+    monkeypatch.setenv("DSG_SPATIALQA_DASHSCOPE_API_KEY", "test-key")
+
+    def mismatch_sender(
+        payload: dict[str, Any],
+        *,
+        api_key: str,
+        base_url: str,
+    ) -> dict[str, Any]:
+        prompt_payload = json.loads(payload["messages"][1]["content"][0]["text"])
+        response = _adjudication_response(prompt_payload["case_id"])
+        content = json.loads(response["choices"][0]["message"]["content"])
+        content["case_id"] = "wrong_case_id"
+        response["choices"][0]["message"]["content"] = json.dumps(content)
+        return response
+
+    monkeypatch.setattr(module, "_send_chat_completion", mismatch_sender)
+    output = tmp_path / "adjudicated.jsonl"
+
+    exit_code = main(
+        [
+            "--request-bundle",
+            str(request_bundle),
+            "--vlm-predictions",
+            str(vlm_path),
+            "--graph-predictions",
+            str(graph_path),
+            "--output",
+            str(output),
+            "--trace-output",
+            str(tmp_path / "trace.jsonl"),
+            "--allow-network",
+        ]
+    )
+
+    payload = json.loads(capsys.readouterr().out)
+    predictions = lab.load_qa_predictions(output)
+    assert exit_code == 0
+    assert payload["ready"] is True
+    assert [prediction.id for prediction in predictions] == ["case-001"]
+
+
+def _adjudication_response(prompt_case_id: str) -> dict[str, Any]:
+    return {
+        "choices": [
+            {
+                "message": {
+                    "content": json.dumps(
+                        {
+                            "answer": {
+                                "confidence": 0.91,
+                                "current_location": {
+                                    "dst_label": "countertop",
+                                    "relation": "ON",
+                                },
+                                "decision": "accept_dsg",
+                                "evidence_summary": "The DSG candidate is grounded.",
+                            },
+                            "case_id": prompt_case_id,
+                            "confidence": 0.91,
+                            "error": None,
+                        },
+                        separators=(",", ":"),
+                        sort_keys=True,
+                    )
+                }
+            }
+        ]
+    }
+
+
 def _inputs(tmp_path: Path, *, case_count: int = 1) -> tuple[Path, Path, Path]:
     cases = []
     for index in range(1, case_count + 1):

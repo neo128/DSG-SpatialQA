@@ -23,6 +23,7 @@ TRACE_SCHEMA_VERSION = "dsg-spatialqa-lab.vlm-graph-adjudication-run-trace.v1"
 DEFAULT_API_KEY_ENV = "DSG_SPATIALQA_DASHSCOPE_API_KEY"
 DEFAULT_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 DEFAULT_MODEL = "qwen3.7-plus"
+CHAT_COMPLETION_MAX_ATTEMPTS = 5
 ACTIVE_QA_V2_REQUEST_BUNDLE_SCHEMA_VERSION = (
     "dsg-spatialqa-lab.active-qa-v2-vlm-request-bundle.v1"
 )
@@ -117,39 +118,68 @@ def main(argv: list[str] | None = None) -> int:
                 graph_by_id,
                 model=args.model,
             )
-            try:
-                raw_response = _send_chat_completion(
-                    request_payload,
-                    api_key=api_key,
-                    base_url=args.base_url,
-                )
-                structured = _extract_structured_response(raw_response)
-                responses_by_prompt_id = _structured_responses_by_prompt_id(structured)
-                batch_predictions: list[QAPrediction] = []
-                for case in batch:
-                    case_id = _required_str(case, "case_id")
-                    prompt_id = _prompt_case_id(case_id)
-                    response = responses_by_prompt_id.get(prompt_id)
-                    if response is None:
-                        raise SpatialQAError(
-                            "Missing adjudication response for prompt case: "
-                            f"{prompt_id}"
-                        )
-                    batch_predictions.append(
-                        _prediction_from_response(
-                            case,
-                            response,
-                            vlm_by_id[case_id],
-                            graph_by_id[case_id],
-                        )
+            raw_response: dict[str, Any] | None = None
+            structured: dict[str, Any] | None = None
+            batch_predictions: list[QAPrediction] | None = None
+            last_error: Exception | None = None
+            for attempt_index in range(CHAT_COMPLETION_MAX_ATTEMPTS):
+                try:
+                    raw_response = _send_chat_completion(
+                        request_payload,
+                        api_key=api_key,
+                        base_url=args.base_url,
                     )
-            except (
-                OSError,
-                SpatialQAError,
-                ValueError,
-                json.JSONDecodeError,
-                urllib.error.URLError,
-            ) as exc:
+                    structured = _extract_structured_response(raw_response)
+                    responses_by_prompt_id = _structured_responses_by_prompt_id(
+                        structured
+                    )
+                    batch_predictions = []
+                    for case in batch:
+                        case_id = _required_str(case, "case_id")
+                        prompt_id = _prompt_case_id(case_id)
+                        response = responses_by_prompt_id.get(prompt_id)
+                        if response is None:
+                            response = _single_response_with_corrected_case_id(
+                                responses_by_prompt_id,
+                                prompt_id,
+                                batch,
+                            )
+                        if response is None:
+                            raise SpatialQAError(
+                                "Missing adjudication response for prompt case: "
+                                f"{prompt_id}"
+                            )
+                        batch_predictions.append(
+                            _prediction_from_response(
+                                case,
+                                response,
+                                vlm_by_id[case_id],
+                                graph_by_id[case_id],
+                            )
+                        )
+                    break
+                except urllib.error.HTTPError as exc:
+                    last_error = exc
+                    break
+                except SpatialQAError as exc:
+                    last_error = exc
+                    if str(exc).startswith("HTTP Error "):
+                        break
+                    if attempt_index + 1 >= CHAT_COMPLETION_MAX_ATTEMPTS:
+                        break
+                except (
+                    OSError,
+                    ValueError,
+                    json.JSONDecodeError,
+                    urllib.error.URLError,
+                ) as exc:
+                    last_error = exc
+                    if attempt_index + 1 >= CHAT_COMPLETION_MAX_ATTEMPTS:
+                        break
+            if batch_predictions is None:
+                error = last_error or SpatialQAError(
+                    "Adjudication batch prediction failed without an exception"
+                )
                 for case in batch:
                     case_id = _required_str(case, "case_id")
                     traces.append(
@@ -159,7 +189,7 @@ def main(argv: list[str] | None = None) -> int:
                             graph_by_id[case_id],
                             request_payload=request_payload,
                             model=args.model,
-                            error=str(exc),
+                            error=str(error),
                         )
                     )
                 if predictions:
@@ -170,7 +200,7 @@ def main(argv: list[str] | None = None) -> int:
                         "action": "run_vlm_graph_adjudication_active",
                         "checkpoint_prediction_count": len(predictions),
                         "checkpoint_trace_count": len(traces),
-                        "error": str(exc),
+                        "error": str(error),
                         "failed_case_ids": [
                             _required_str(case, "case_id") for case in batch
                         ],
@@ -187,8 +217,8 @@ def main(argv: list[str] | None = None) -> int:
                         vlm_by_id[case_id],
                         graph_by_id[case_id],
                         request_payload=request_payload,
-                        raw_response=raw_response,
-                        structured_response=structured,
+                        raw_response=raw_response or {},
+                        structured_response=structured or {},
                         prediction=prediction,
                         model=args.model,
                     )
@@ -436,20 +466,52 @@ def _send_chat_completion(
     base_url: str,
 ) -> dict[str, Any]:
     endpoint = base_url.rstrip("/") + "/chat/completions"
-    request = urllib.request.Request(
-        endpoint,
-        data=json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-        },
-        method="POST",
-    )
-    with urllib.request.urlopen(request, timeout=120) as response:
-        parsed = json.loads(response.read().decode("utf-8"))
-    if not isinstance(parsed, Mapping):
-        raise SpatialQAError("Adjudication response must be a JSON object")
-    return cast(dict[str, Any], parsed)
+    data = json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    last_error: Exception | None = None
+    for attempt_index in range(CHAT_COMPLETION_MAX_ATTEMPTS):
+        request = urllib.request.Request(
+            endpoint,
+            data=data,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=120) as response:
+                body = response.read().decode("utf-8")
+            if not body.strip():
+                raise SpatialQAError("Adjudication response body was empty")
+            parsed = json.loads(body)
+            if not isinstance(parsed, Mapping):
+                raise SpatialQAError("Adjudication response must be a JSON object")
+            return cast(dict[str, Any], parsed)
+        except urllib.error.HTTPError as exc:
+            raise SpatialQAError(_http_error_message(exc)) from exc
+        except (OSError, urllib.error.URLError, json.JSONDecodeError, SpatialQAError) as exc:
+            if (
+                isinstance(exc, SpatialQAError)
+                and str(exc) != "Adjudication response body was empty"
+            ):
+                raise
+            last_error = exc
+            if attempt_index + 1 >= CHAT_COMPLETION_MAX_ATTEMPTS:
+                raise
+    if last_error is not None:
+        raise last_error
+    raise SpatialQAError("Adjudication chat completion request failed")
+
+
+def _http_error_message(exc: urllib.error.HTTPError) -> str:
+    message = f"HTTP Error {exc.code}: {exc.reason}"
+    try:
+        body = exc.read().decode("utf-8", errors="replace").strip()
+    except OSError:
+        body = ""
+    if body:
+        message += f"; response_body={body[:500]}"
+    return message
 
 
 def _extract_structured_response(raw_response: Mapping[str, Any]) -> dict[str, Any]:
@@ -486,6 +548,18 @@ def _structured_responses_by_prompt_id(response: Mapping[str, Any]) -> dict[str,
         case_id = _required_str(item, "case_id")
         result[case_id] = item
     return result
+
+
+def _single_response_with_corrected_case_id(
+    responses_by_prompt_id: Mapping[str, Mapping[str, Any]],
+    prompt_id: str,
+    batch: Sequence[Mapping[str, Any]],
+) -> Mapping[str, Any] | None:
+    if len(batch) != 1 or len(responses_by_prompt_id) != 1:
+        return None
+    response = dict(next(iter(responses_by_prompt_id.values())))
+    response["case_id"] = prompt_id
+    return response
 
 
 def _prediction_from_response(

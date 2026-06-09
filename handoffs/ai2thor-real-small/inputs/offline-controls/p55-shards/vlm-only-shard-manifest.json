@@ -1,0 +1,77 @@
+{
+  "input": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-only-active-qa-v2-20-episode-request-bundle.json",
+  "manifest_digest": "32ff9f714378a0d5aaa1fc933aaab9ac88c8be94f37c091f4091be7ca396986e",
+  "schema_version": "dsg-spatialqa-lab.active-qa-v2-request-bundle-shard-manifest.v1",
+  "shard_count": 11,
+  "shard_size": 250,
+  "shards": [
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only/p55-vlm-only-missing-0001.json",
+      "request_bundle_digest": "51afa3b4b2deda1a84ecddb78c9e383fcbadbf8d46eb8e62552ad1db9f44cb66",
+      "request_count": 250,
+      "shard_index": 1
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only/p55-vlm-only-missing-0002.json",
+      "request_bundle_digest": "291a0657d5d753cb675ede651610ff46b862e6bfb8901d9b301be379cf290986",
+      "request_count": 250,
+      "shard_index": 2
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only/p55-vlm-only-missing-0003.json",
+      "request_bundle_digest": "45f42a20eda4ca73e23b70dee23d26a223ae2de6605f7c35fb9dd04989da8ca3",
+      "request_count": 250,
+      "shard_index": 3
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only/p55-vlm-only-missing-0004.json",
+      "request_bundle_digest": "8650fc27551cb80616aa60d539c60033f7c4cbb39dae8c74647a2c4f7fae2805",
+      "request_count": 250,
+      "shard_index": 4
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only/p55-vlm-only-missing-0005.json",
+      "request_bundle_digest": "7d9eaaaa527a043deb787120f4ee3c592a80efb0396be44b707472d21a29a632",
+      "request_count": 250,
+      "shard_index": 5
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only/p55-vlm-only-missing-0006.json",
+      "request_bundle_digest": "3383859c5a53f7c757eb94a06762a63e22c89fc92ced26174e52ed8c725fd946",
+      "request_count": 250,
+      "shard_index": 6
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only/p55-vlm-only-missing-0007.json",
+      "request_bundle_digest": "0b5840dc6fa006838d444743891032edd61565e1294cdb9e4e494ab0a6513047",
+      "request_count": 250,
+      "shard_index": 7
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only/p55-vlm-only-missing-0008.json",
+      "request_bundle_digest": "fc0b5787dc938790c72913dc232608e9885c6ccf5bafe91f6bb91266370d1a93",
+      "request_count": 250,
+      "shard_index": 8
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only/p55-vlm-only-missing-0009.json",
+      "request_bundle_digest": "60ff99dfbe7c9f64ef4d25bffc95015abcf32385919150b95fe23e18e4995293",
+      "request_count": 250,
+      "shard_index": 9
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only/p55-vlm-only-missing-0010.json",
+      "request_bundle_digest": "c990fbf5d899c636449f0618201bf479cb336c262c1ce470de180130c481c0dd",
+      "request_count": 250,
+      "shard_index": 10
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only/p55-vlm-only-missing-0011.json",
+      "request_bundle_digest": "190cbece8012e86e928dcead91a18cbb923fc19d21877c23115d93149c5e757d",
+      "request_count": 170,
+      "shard_index": 11
+    }
+  ],
+  "target_method": "vlm_only",
+  "total_case_count": 2670
+}

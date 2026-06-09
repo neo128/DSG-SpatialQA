@@ -17,6 +17,10 @@
       "passed": true
     },
     {
+      "name": "qa_case_count_gt_zero",
+      "passed": true
+    },
+    {
       "name": "target_support_same_frame_rate_gt_fixed",
       "passed": true
     },

@@ -143,6 +143,27 @@ def test_ai2thor_event_to_observation_preserves_stable_ids_and_support_relation(
     assert Path(str(apple.attributes["rgb_path"])).exists()
 
 
+def test_ai2thor_event_to_observation_preserves_segmentation_color_evidence(
+    tmp_path: Path,
+) -> None:
+    observation = ai2thor_event_to_observation(
+        FakeRuntimeEvent("Pass"),
+        scene_id="FloorPlan1",
+        episode_id="episode001",
+        step=7,
+        artifact_root=tmp_path,
+    )
+
+    apple = observation.objects[0]
+    countertop = observation.objects[1]
+    assert apple.attributes["segmentation_color_rgb"] == [0, 0, 255]
+    assert apple.attributes["segmentation_source"] == "ai2thor_instance_segmentation_frame"
+    assert countertop.attributes["segmentation_color_rgb"] == [255, 255, 0]
+    assert countertop.attributes["segmentation_source"] == (
+        "ai2thor_instance_segmentation_frame"
+    )
+
+
 def test_ai2thor_event_to_observation_deduplicates_stable_object_ids(
     tmp_path: Path,
 ) -> None:
@@ -223,3 +244,7 @@ class FakeRuntimeEvent:
         self.frame = [[[255, 0, 0]]]
         self.depth_frame = [[1.0]]
         self.instance_segmentation_frame = [[[0, 0, 255]]]
+        self.color_to_object_id = {
+            (0, 0, 255): "Apple|-00.47|+01.15|+00.48",
+            (255, 255, 0): "CounterTop|-00.08|+01.15|00.00",
+        }

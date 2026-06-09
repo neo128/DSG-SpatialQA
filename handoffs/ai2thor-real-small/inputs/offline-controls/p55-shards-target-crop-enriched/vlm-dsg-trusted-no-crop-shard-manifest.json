@@ -1,0 +1,26 @@
+{
+  "input": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-dsg-trusted-active-qa-v2-20-episode-request-bundle-target-crop-enriched.json",
+  "manifest_digest": "32e84cdf8ccfa5b86f4a6803349c67103b6b67d50252f48595775f8c14048151",
+  "schema_version": "dsg-spatialqa-lab.active-qa-v2-request-bundle-shard-manifest.v1",
+  "shard_count": 2,
+  "shard_size": 250,
+  "shards": [
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop/p55-vlm-dsg-trusted-missing-no-crop-0001.json",
+      "request_bundle_digest": "66e99fac6a7b6704886d380e4869951fdbbc02d4aeec93b97358693c57f2eca9",
+      "request_count": 250,
+      "shard_index": 1
+    },
+    {
+      "path": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop/p55-vlm-dsg-trusted-missing-no-crop-0002.json",
+      "request_bundle_digest": "611c4d11cc175f258a2188651cb5fc77eff3be2828139460c58cf6e599d6d6f6",
+      "request_count": 140,
+      "shard_index": 2
+    }
+  ],
+  "source_total_case_count": 2670,
+  "target_crop_case_count": 0,
+  "target_crop_filter": "without",
+  "target_method": "vlm_dsg_trusted",
+  "total_case_count": 390
+}

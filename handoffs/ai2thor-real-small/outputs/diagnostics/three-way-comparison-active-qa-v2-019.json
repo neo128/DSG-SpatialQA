@@ -1,0 +1,291 @@
+{
+  "case_count": 158,
+  "deltas": {
+    "graph_tool_only_vs_vlm_only": {
+      "decision": "significant_candidate_advantage",
+      "paired_losses": 0,
+      "paired_ties": 32,
+      "paired_wins": 126,
+      "sign_test_p_value": 0.0
+    },
+    "vlm_dsg_vs_graph_tool_only": {
+      "decision": "no_candidate_advantage",
+      "paired_losses": 110,
+      "paired_ties": 48,
+      "paired_wins": 0,
+      "sign_test_p_value": 0.0
+    },
+    "vlm_dsg_vs_vlm_only": {
+      "decision": "significant_candidate_advantage",
+      "paired_losses": 0,
+      "paired_ties": 142,
+      "paired_wins": 16,
+      "sign_test_p_value": 3.1e-05
+    }
+  },
+  "episode_id": "ai2thor-real-small-episode-019",
+  "methods": {
+    "graph_tool_only_dsg": {
+      "case_count": 158,
+      "prediction_count": 158,
+      "semantic_match_count": 158,
+      "semantic_match_rate": 1.0,
+      "strict_exact_count": 158,
+      "strict_exact_rate": 1.0,
+      "unknown_or_missing_count": 0
+    },
+    "vlm_dsg_trusted": {
+      "case_count": 158,
+      "prediction_count": 158,
+      "semantic_match_count": 48,
+      "semantic_match_rate": 0.303797,
+      "strict_exact_count": 48,
+      "strict_exact_rate": 0.303797,
+      "unknown_or_missing_count": 0
+    },
+    "vlm_only": {
+      "case_count": 158,
+      "prediction_count": 158,
+      "semantic_match_count": 32,
+      "semantic_match_rate": 0.202532,
+      "strict_exact_count": 32,
+      "strict_exact_rate": 0.202532,
+      "unknown_or_missing_count": 0
+    }
+  },
+  "question_type_groups": {
+    "multi_hop": {
+      "graph_tool_only_dsg": {
+        "case_count": 1,
+        "prediction_count": 1,
+        "semantic_match_count": 1,
+        "semantic_match_rate": 1.0,
+        "strict_exact_count": 1,
+        "strict_exact_rate": 1.0,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_dsg_trusted": {
+        "case_count": 1,
+        "prediction_count": 1,
+        "semantic_match_count": 0,
+        "semantic_match_rate": 0.0,
+        "strict_exact_count": 0,
+        "strict_exact_rate": 0.0,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_only": {
+        "case_count": 1,
+        "prediction_count": 1,
+        "semantic_match_count": 0,
+        "semantic_match_rate": 0.0,
+        "strict_exact_count": 0,
+        "strict_exact_rate": 0.0,
+        "unknown_or_missing_count": 0
+      }
+    },
+    "nearest_object": {
+      "graph_tool_only_dsg": {
+        "case_count": 17,
+        "prediction_count": 17,
+        "semantic_match_count": 17,
+        "semantic_match_rate": 1.0,
+        "strict_exact_count": 17,
+        "strict_exact_rate": 1.0,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_dsg_trusted": {
+        "case_count": 17,
+        "prediction_count": 17,
+        "semantic_match_count": 3,
+        "semantic_match_rate": 0.176471,
+        "strict_exact_count": 3,
+        "strict_exact_rate": 0.176471,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_only": {
+        "case_count": 17,
+        "prediction_count": 17,
+        "semantic_match_count": 0,
+        "semantic_match_rate": 0.0,
+        "strict_exact_count": 0,
+        "strict_exact_rate": 0.0,
+        "unknown_or_missing_count": 0
+      }
+    },
+    "object_location": {
+      "graph_tool_only_dsg": {
+        "case_count": 23,
+        "prediction_count": 23,
+        "semantic_match_count": 23,
+        "semantic_match_rate": 1.0,
+        "strict_exact_count": 23,
+        "strict_exact_rate": 1.0,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_dsg_trusted": {
+        "case_count": 23,
+        "prediction_count": 23,
+        "semantic_match_count": 0,
+        "semantic_match_rate": 0.0,
+        "strict_exact_count": 0,
+        "strict_exact_rate": 0.0,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_only": {
+        "case_count": 23,
+        "prediction_count": 23,
+        "semantic_match_count": 0,
+        "semantic_match_rate": 0.0,
+        "strict_exact_count": 0,
+        "strict_exact_rate": 0.0,
+        "unknown_or_missing_count": 0
+      }
+    },
+    "relative_relation": {
+      "graph_tool_only_dsg": {
+        "case_count": 9,
+        "prediction_count": 9,
+        "semantic_match_count": 9,
+        "semantic_match_rate": 1.0,
+        "strict_exact_count": 9,
+        "strict_exact_rate": 1.0,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_dsg_trusted": {
+        "case_count": 9,
+        "prediction_count": 9,
+        "semantic_match_count": 5,
+        "semantic_match_rate": 0.555556,
+        "strict_exact_count": 5,
+        "strict_exact_rate": 0.555556,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_only": {
+        "case_count": 9,
+        "prediction_count": 9,
+        "semantic_match_count": 0,
+        "semantic_match_rate": 0.0,
+        "strict_exact_count": 0,
+        "strict_exact_rate": 0.0,
+        "unknown_or_missing_count": 0
+      }
+    },
+    "situated_egocentric": {
+      "graph_tool_only_dsg": {
+        "case_count": 37,
+        "prediction_count": 37,
+        "semantic_match_count": 37,
+        "semantic_match_rate": 1.0,
+        "strict_exact_count": 37,
+        "strict_exact_rate": 1.0,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_dsg_trusted": {
+        "case_count": 37,
+        "prediction_count": 37,
+        "semantic_match_count": 28,
+        "semantic_match_rate": 0.756757,
+        "strict_exact_count": 28,
+        "strict_exact_rate": 0.756757,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_only": {
+        "case_count": 37,
+        "prediction_count": 37,
+        "semantic_match_count": 25,
+        "semantic_match_rate": 0.675676,
+        "strict_exact_count": 25,
+        "strict_exact_rate": 0.675676,
+        "unknown_or_missing_count": 0
+      }
+    },
+    "state_change": {
+      "graph_tool_only_dsg": {
+        "case_count": 37,
+        "prediction_count": 37,
+        "semantic_match_count": 37,
+        "semantic_match_rate": 1.0,
+        "strict_exact_count": 37,
+        "strict_exact_rate": 1.0,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_dsg_trusted": {
+        "case_count": 37,
+        "prediction_count": 37,
+        "semantic_match_count": 3,
+        "semantic_match_rate": 0.081081,
+        "strict_exact_count": 3,
+        "strict_exact_rate": 0.081081,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_only": {
+        "case_count": 37,
+        "prediction_count": 37,
+        "semantic_match_count": 0,
+        "semantic_match_rate": 0.0,
+        "strict_exact_count": 0,
+        "strict_exact_rate": 0.0,
+        "unknown_or_missing_count": 0
+      }
+    },
+    "support_relation": {
+      "graph_tool_only_dsg": {
+        "case_count": 11,
+        "prediction_count": 11,
+        "semantic_match_count": 11,
+        "semantic_match_rate": 1.0,
+        "strict_exact_count": 11,
+        "strict_exact_rate": 1.0,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_dsg_trusted": {
+        "case_count": 11,
+        "prediction_count": 11,
+        "semantic_match_count": 1,
+        "semantic_match_rate": 0.090909,
+        "strict_exact_count": 1,
+        "strict_exact_rate": 0.090909,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_only": {
+        "case_count": 11,
+        "prediction_count": 11,
+        "semantic_match_count": 0,
+        "semantic_match_rate": 0.0,
+        "strict_exact_count": 0,
+        "strict_exact_rate": 0.0,
+        "unknown_or_missing_count": 0
+      }
+    },
+    "temporal_last_seen": {
+      "graph_tool_only_dsg": {
+        "case_count": 23,
+        "prediction_count": 23,
+        "semantic_match_count": 23,
+        "semantic_match_rate": 1.0,
+        "strict_exact_count": 23,
+        "strict_exact_rate": 1.0,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_dsg_trusted": {
+        "case_count": 23,
+        "prediction_count": 23,
+        "semantic_match_count": 8,
+        "semantic_match_rate": 0.347826,
+        "strict_exact_count": 8,
+        "strict_exact_rate": 0.347826,
+        "unknown_or_missing_count": 0
+      },
+      "vlm_only": {
+        "case_count": 23,
+        "prediction_count": 23,
+        "semantic_match_count": 7,
+        "semantic_match_rate": 0.304348,
+        "strict_exact_count": 7,
+        "strict_exact_rate": 0.304348,
+        "unknown_or_missing_count": 0
+      }
+    }
+  },
+  "schema_version": "dsg-spatialqa-lab.three-way-active-qa-v2-episode-comparison.v1"
+}

@@ -347,17 +347,147 @@ handoffs/ai2thor-real-small/outputs/navigation/p54-reachable-nbv-20-episode-comp
 
 | group | count | status |
 | --- | ---: | --- |
-| episode001-005 | 5 | formal_protocol_ready=true |
-| episode006-020 | 15 | missing trajectory / decision trace / fixed audit / NBV audit |
-| all episodes | 20 | all_episodes_formal_protocol_ready=false |
+| episode001-020 | 20 | formal_protocol_ready=true |
+| all episodes | 20 | all_episodes_formal_protocol_ready=true |
 
 解释：
 
-- 这一步没有伪造 20 个真实结果；它只把 20 episode 的真实运行入口、artifact 命名和 gate blocker 固化下来。
-- episode006-020 下一步必须实际运行 real AI2-THOR reachable NBV，并生成 fixed audit、NBV trajectory、decision trace、observation sequence、predicted graph 和 formal gate。
+- 这一步没有伪造 20 个真实结果；它把 20 episode 的真实运行入口、artifact 命名和 gate blocker 固化下来，并已把 `episode006 / FloorPlan202` 推进为真实 formal-ready episode。
+- episode006 已完成真实 AI2-THOR reachable NBV、固定轨迹俯视图自动生成、fixed-vs-NBV overlay、active QA v2 observation-aware audit 对齐。其 formal gate 指标为：same-frame `0.026316→1.0`，evidence `2→38`，missing support `8→0`，missing relation `37→0`，GraphTool semantic `2→38`。
+- episode007 / FloorPlan302 也已完成同一条真实链路并通过 gate。其 formal gate 指标为：same-frame `0.026316→1.0`，evidence `2→38`，missing support `8→0`，missing relation `37→0`，GraphTool semantic `4→38`。
+- episode008 / FloorPlan402 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.028571→1.0`，evidence `2→35`，missing support `6→0`，missing relation `34→0`，GraphTool semantic `1→35`。
+- episode009 / FloorPlan3 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.027027→1.0`，evidence `2→37`，missing support `5→0`，missing relation `36→0`，GraphTool semantic `5→37`。
+- episode010 / FloorPlan203 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.028571→1.0`，evidence `2→35`，missing support `16→0`，missing relation `34→0`，GraphTool semantic `0→35`。
+- episode011 / FloorPlan303 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.025641→1.0`，evidence `2→39`，missing support `9→0`，missing relation `38→0`，GraphTool semantic `1→39`。
+- episode012 / FloorPlan403 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.027027→1.0`，evidence `2→37`，missing support `6→0`，missing relation `36→0`，GraphTool semantic `5→37`。
+- episode013 / FloorPlan4 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.028571→1.0`，evidence `2→35`，missing support `7→0`，missing relation `34→0`，GraphTool semantic `7→35`。
+- episode014 / FloorPlan204 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.025641→1.0`，evidence `2→39`，missing support `6→0`，missing relation `38→0`，GraphTool semantic `2→39`。
+- episode015 / FloorPlan304 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.026316→1.0`，evidence `2→38`，missing support `9→0`，missing relation `37→0`，GraphTool semantic `0→38`。
+- episode016 / FloorPlan404 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.027778→1.0`，evidence `2→36`，missing support `9→0`，missing relation `35→0`，GraphTool semantic `3→36`。
+- episode017 / FloorPlan5 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.027027→1.0`，evidence `2→37`，missing support `4→0`，missing relation `36→0`，GraphTool semantic `4→37`。
+- episode018 / FloorPlan205 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.025641→1.0`，evidence `2→39`，missing support `5→0`，missing relation `38→0`，GraphTool semantic `2→39`。
+- episode019 / FloorPlan305 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.029412→1.0`，evidence `2→34`，missing support `7→0`，missing relation `33→0`，GraphTool semantic `3→34`。
+- episode020 / FloorPlan405 已完成真实 AI2-THOR reachable NBV、active QA v2 和 fixed-vs-NBV 审计，并通过 gate。其 formal gate 指标为：same-frame `0.027778→1.0`，evidence `2→36`，missing support `7→0`，missing relation `35→0`，GraphTool semantic `4→36`。
+- 新增 gate 显式检查 `qa_case_count_gt_zero`。若 episode 只有轨迹但没有对应 QA，不再误报为“NBV 没提升”，而是标明 QA 缺失。
+- P54 真实 reachable NBV 轨迹协议已扩展到 20 episode 并通过 formal gate；下一步不是继续补轨迹，而是生成/导入 20 episode active QA v2 的 VLM-only 与 VLM+DSG trusted fusion prediction，并做 held-out 三组对比。
 - P52 trusted fusion 仍不能在 P54 上报告 held-out 结论，因为 20 episode active QA v2 / VLM-only / VLM+DSG prediction 尚未齐备。
 
-P55 下一步：针对 P51 failure 中的 temporal / accepted_vlm_but_wrong，优化 DSG state timeline、last_seen 更新、support relation canonicalization 和 NBV stop condition，并在 P54 held-out episodes 上验证。
+P54 episode006 新增 artifact：
+
+- `inputs/episodes/ai2thor-real-small-episode-006.jsonl`
+- `inputs/episodes/ai2thor-real-small-episode-006-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-006-real-ai2thor-reachable-nbv-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-006-fixed-vs-real-ai2thor-reachable-nbv-overlay.png`
+- `outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode006.json`
+- `outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode006.jsonl`
+- `outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode006.json`
+
+P54 episode007 新增 artifact：
+
+- `inputs/episodes/ai2thor-real-small-episode-007.jsonl`
+- `inputs/episodes/ai2thor-real-small-episode-007-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-007-real-ai2thor-reachable-nbv-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-007-fixed-vs-real-ai2thor-reachable-nbv-overlay.png`
+- `outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode007.json`
+- `outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode007.jsonl`
+- `outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode007.json`
+- `outputs/diagnostics/qa-v2-active-p54-quality-report-ai2thor-real-small-episode-007.json`
+
+P54 episode008 新增 artifact：
+
+- `inputs/episodes/ai2thor-real-small-episode-008.jsonl`
+- `inputs/episodes/ai2thor-real-small-episode-008-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-008-real-ai2thor-reachable-nbv-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-008-fixed-vs-real-ai2thor-reachable-nbv-overlay.png`
+- `outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode008.json`
+- `outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode008.jsonl`
+- `outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode008.json`
+- `outputs/diagnostics/qa-v2-active-p54-quality-report-ai2thor-real-small-episode-008.json`
+
+episode008 active QA v2 quality gate 也为 `valid=true`：observation-aware `35`，question_type_count `8`，object_location_rate `0.157233`，包含 `multi_hop / nearest_object / relative_relation / state_change` 等 P53 required types。
+
+P54 episode009 新增 artifact：
+
+- `inputs/episodes/ai2thor-real-small-episode-009.jsonl`
+- `inputs/episodes/ai2thor-real-small-episode-009-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-009-real-ai2thor-reachable-nbv-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-009-fixed-vs-real-ai2thor-reachable-nbv-overlay.png`
+- `outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode009.json`
+- `outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode009.jsonl`
+- `outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode009.json`
+- `outputs/diagnostics/qa-v2-active-p54-quality-report-ai2thor-real-small-episode-009.json`
+
+episode009 active QA v2 quality gate 也为 `valid=true`：observation-aware `37`，question_type_count `8`，object_location_rate `0.129213`，包含 `multi_hop / nearest_object / relative_relation / state_change` 等 P53 required types。
+
+P54 episode010 新增 artifact：
+
+- `inputs/episodes/ai2thor-real-small-episode-010.jsonl`
+- `inputs/episodes/ai2thor-real-small-episode-010-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-010-real-ai2thor-reachable-nbv-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-010-fixed-vs-real-ai2thor-reachable-nbv-overlay.png`
+- `outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode010.json`
+- `outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode010.jsonl`
+- `outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode010.json`
+- `outputs/diagnostics/qa-v2-active-p54-quality-report-ai2thor-real-small-episode-010.json`
+
+episode010 active QA v2 quality gate 也为 `valid=true`：observation-aware `35`，question_type_count `8`，object_location_rate `0.252525`。但该 episode 的 `missing_state_count=33`、`state_evidence_observable_rate=0.057143`，说明 P55 需要重点优化 state evidence / temporal memory，而不能只看 support/relation gate 通过。
+- `outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode006.json`
+- `outputs/predicted-dsg/predicted-graph-real-ai2thor-reachable-nbv-episode006.json`
+- `inputs/qa-v2-active-p54/ai2thor-real-small-episode-006/qa-observation-aware.jsonl`
+- `outputs/diagnostics/qa-v2-active-p54-quality-report-ai2thor-real-small-episode-006.json`
+
+P54 episode011 新增 artifact：
+
+- `inputs/episodes/ai2thor-real-small-episode-011.jsonl`
+- `inputs/episodes/ai2thor-real-small-episode-011-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-011-real-ai2thor-reachable-nbv-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-011-fixed-vs-real-ai2thor-reachable-nbv-overlay.png`
+- `outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode011.json`
+- `outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode011.jsonl`
+- `outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode011.json`
+- `outputs/diagnostics/qa-v2-active-p54-quality-report-ai2thor-real-small-episode-011.json`
+
+episode011 active QA v2 quality gate 也为 `valid=true`：observation-aware `39`，question_type_count `8`，object_location_rate `0.121387`，包含 `multi_hop / nearest_object / relative_relation / state_change` 等 P53 required types；trajectory audit 的 `missing_state_count=0`、`state_evidence_observable_rate=1.0`。
+
+P54 episode012 新增 artifact：
+
+- `inputs/episodes/ai2thor-real-small-episode-012.jsonl`
+- `inputs/episodes/ai2thor-real-small-episode-012-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-012-real-ai2thor-reachable-nbv-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-012-fixed-vs-real-ai2thor-reachable-nbv-overlay.png`
+- `outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode012.json`
+- `outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode012.jsonl`
+- `outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode012.json`
+- `outputs/diagnostics/qa-v2-active-p54-quality-report-ai2thor-real-small-episode-012.json`
+
+episode012 active QA v2 quality gate 也为 `valid=true`：observation-aware `37`，question_type_count `8`，object_location_rate `0.142857`，包含 `multi_hop / nearest_object / relative_relation / state_change` 等 P53 required types；trajectory audit 的 `missing_state_count=0`、`state_evidence_observable_rate=1.0`。
+
+P54 episode013 新增 artifact：
+
+- `inputs/episodes/ai2thor-real-small-episode-013.jsonl`
+- `inputs/episodes/ai2thor-real-small-episode-013-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-013-real-ai2thor-reachable-nbv-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-013-fixed-vs-real-ai2thor-reachable-nbv-overlay.png`
+- `outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode013.json`
+- `outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode013.jsonl`
+- `outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode013.json`
+- `outputs/diagnostics/qa-v2-active-p54-quality-report-ai2thor-real-small-episode-013.json`
+
+episode013 active QA v2 quality gate 也为 `valid=true`：observation-aware `35`，question_type_count `8`，object_location_rate `0.147727`，包含 `multi_hop / nearest_object / relative_relation / state_change` 等 P53 required types；trajectory audit 的 `missing_state_count=0`、`state_evidence_observable_rate=1.0`。该厨房场景仍有 `unlocated_object_count=18`，P55 可继续检查 relation / location canonicalization 是否还可压低未定位对象数。
+
+P54 episode014-020 新增 artifact：
+
+- `inputs/episodes/ai2thor-real-small-episode-014.jsonl` 到 `inputs/episodes/ai2thor-real-small-episode-020.jsonl`
+- `inputs/episodes/ai2thor-real-small-episode-014-real-ai2thor-reachable-nbv-topdown-path.png` 到 `inputs/episodes/ai2thor-real-small-episode-020-real-ai2thor-reachable-nbv-topdown-path.png`
+- `inputs/episodes/ai2thor-real-small-episode-014-fixed-vs-real-ai2thor-reachable-nbv-overlay.png` 到 `inputs/episodes/ai2thor-real-small-episode-020-fixed-vs-real-ai2thor-reachable-nbv-overlay.png`
+- `outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode014.json` 到 `outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode020.json`
+- `outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode014.jsonl` 到 `outputs/navigation/reachable-nbv-real-ai2thor-decision-trace-episode020.jsonl`
+- `outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode014.json` 到 `outputs/navigation/trajectory-audit-real-ai2thor-reachable-nbv-episode020.json`
+- `outputs/diagnostics/qa-v2-active-p54-quality-report-ai2thor-real-small-episode-014.json` 到 `outputs/diagnostics/qa-v2-active-p54-quality-report-ai2thor-real-small-episode-020.json`
+
+episode014-020 active QA v2 quality gate 均为 `valid=true`，每个 episode 都包含 8 类问题，observation-aware QA 数分别为 `39 / 38 / 36 / 37 / 39 / 34 / 36`，object_location rate 分别为 `0.125749 / 0.150327 / 0.160256 / 0.127778 / 0.133758 / 0.14375 / 0.151316`。其中 episode015、episode016、episode018、episode020 仍有 `missing_state_count=7 / 5 / 4 / 6`，episode017 有 `unlocated_object_count=37`，是 P55 优先反向优化目标。
+
+P55 下一步：针对 P51 failure 中的 temporal / accepted_vlm_but_wrong，优化 DSG state timeline、last_seen 更新、support relation canonicalization、location canonicalization 和 NBV stop condition，并在 P54 held-out episodes 上验证。与此同时，P54 已满足 20 episode 轨迹侧前置条件；下一步应进入 20 episode active QA v2 的 VLM-only / GraphTool-only / VLM+DSG trusted fusion 对比。
 
 ## 1. 报告要求
 
@@ -4875,4 +5005,1699 @@ QA v2：P53 已从 active-exploration QA v2 初版扩展到 8 类问题，并生
 VLM+DSG：仍缺与 P53 8 类 active QA v2 对齐的真实 VLM-only / VLM+DSG predictions，不能显著超过 VLM-only；
 P46 adjudication：缺 adjudicated structured prediction，not ready；
 最终：当前不允许 DSG superiority claim。
+```
+
+## P55 20 episode prediction coverage audit
+
+P54 已把 real AI2-THOR reachable relation-centric NBV 扩展到 20 个 episode，并且 20/20 formal gate 通过。P55 首先做的是防止旧的 5 episode prediction 文件被误读为 20 episode 结论。
+
+本轮新增/更新：
+
+```text
+scripts/compare_active_qa_v2_three_way.py
+scripts/build_active_qa_v2_missing_prediction_request_bundle.py
+scripts/build_active_qa_v2_graph_tool_predictions.py
+scripts/merge_qa_predictions.py
+scripts/shard_active_qa_v2_request_bundle.py
+tests/test_compare_active_qa_v2_three_way.py
+tests/test_active_qa_v2_missing_request_bundle.py
+tests/test_build_active_qa_v2_graph_tool_predictions.py
+tests/test_merge_qa_predictions.py
+tests/test_shard_active_qa_v2_request_bundle.py
+```
+
+关键改动：
+
+```text
+1. compare_active_qa_v2_three_way.py 支持多个 --qa-root；
+2. 新增 --required-episode-count；
+3. 对 VLM-only / GraphTool-only / VLM+DSG trusted 做逐 case prediction coverage gate；
+4. coverage 不完整时 ready=false / research_ready=false；
+5. 输出 next_missing_predictions，列出每个 episode 每个 method 缺多少 prediction；
+6. 新增 missing prediction request bundle 生成脚本，复用 active QA v2 no-gold request schema。
+7. 新增显式 GraphTool-only DSG prediction 构建脚本，供 adjudication runner 使用。
+8. 新增 QA prediction merge 脚本，补齐预测回来后可按 case id 合并并检查 20 episode coverage。
+9. 新增 active QA v2 request bundle 分片脚本，支持 2670 个缺失 cases 分片外部调用与断点续跑。
+```
+
+20 episode active QA v2 coverage audit：
+
+```text
+report:
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-three-way-comparison-active-qa-v2-20-episode-vlm-coverage-audit.json
+
+markdown:
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-three-way-comparison-active-qa-v2-20-episode-vlm-coverage-audit.zh.md
+```
+
+结果：
+
+| item | value |
+| --- | ---: |
+| episode_count | 20 |
+| active QA v2 comparison cases | 3104 |
+| question_type_count | 8 |
+| GraphTool-only local coverage | 3104 / 3104 |
+| VLM-only prediction coverage | 434 / 3104 |
+| VLM+DSG trusted prediction coverage | 434 / 3104 |
+| VLM-only missing cases | 2670 |
+| VLM+DSG trusted missing cases | 2670 |
+| ready | false |
+| research_ready | false |
+
+当前 blockers：
+
+```json
+[
+  "vlm_dsg_trusted_prediction_coverage_incomplete",
+  "vlm_only_prediction_coverage_incomplete"
+]
+```
+
+已生成两个无 gold 泄漏的缺失预测请求包：
+
+```text
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-only-active-qa-v2-20-episode-request-bundle.json
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-dsg-trusted-active-qa-v2-20-episode-request-bundle.json
+```
+
+两个 request bundle 均为：
+
+```json
+{
+  "request_count": 2670,
+  "missing_case_count": 2670,
+  "leak_free": true
+}
+```
+
+同时已生成 20 episode 显式 GraphTool-only DSG prediction：
+
+```text
+handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-graph-tool-only-dsg-active-qa-v2-20-episodes-build-report.json
+```
+
+该文件为本地图查询消融，不是外部模型结果：
+
+```json
+{
+  "prediction_count": 3104,
+  "not_external_model_result": true,
+  "ablation_kind": "graph_tool_only_dsg_from_active_qa_v2_graph_records"
+}
+```
+
+已生成当前 coverage check 报告，均为 ready=false，证明现有旧预测不能覆盖 20 episode：
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-only-current-merged-coverage-check-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-dsg-trusted-current-merged-coverage-check-report.json
+```
+
+两个报告当前均为：
+
+```json
+{
+  "merged_prediction_count": 576,
+  "coverage": {
+    "expected_case_count": 3104,
+    "missing_case_count": 2670,
+    "prediction_coverage_rate": 0.185567
+  },
+  "ready": false
+}
+```
+
+P55 外部补齐命令链：
+
+```bash
+# 1. 补 VLM-only missing predictions
+python external_tools/run_vlm_controls.py \
+  --request-bundle handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-only-active-qa-v2-20-episode-request-bundle.json \
+  --output handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-missing-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl \
+  --trace-output handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-missing-vlm-only-qwen37-active-qa-v2-20-episodes-trace.jsonl \
+  --source-kind vlm \
+  --api-key-env DSG_SPATIALQA_DASHSCOPE_API_KEY \
+  --allow-network \
+  --resume
+
+# 2. 合并成完整 VLM-only 20 episode prediction
+python scripts/merge_qa_predictions.py \
+  --input handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/vlm-only/vlm-only-qwen37-active-qa-v2-all-episodes.jsonl \
+  --input handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-missing-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl \
+  --expected-qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active-p53 \
+  --expected-qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active-p54 \
+  --output handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-only-qwen37-active-qa-v2-20-episodes-merge-report.json
+
+# 3. 用完整 VLM-only + 显式 GraphTool-only 补 VLM+DSG adjudicated/trusted missing predictions
+python external_tools/run_vlm_graph_adjudication_active.py \
+  --request-bundle handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-dsg-trusted-active-qa-v2-20-episode-request-bundle.json \
+  --vlm-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl \
+  --graph-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl \
+  --output handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-missing-vlm-dsg-adjudicated-qwen37-active-qa-v2-20-episodes.jsonl \
+  --trace-output handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-missing-vlm-dsg-adjudicated-qwen37-active-qa-v2-20-episodes-trace.jsonl \
+  --api-key-env DSG_SPATIALQA_DASHSCOPE_API_KEY \
+  --allow-network \
+  --resume
+
+# 4. 合并成完整 VLM+DSG trusted/adjudicated 20 episode prediction
+python scripts/merge_qa_predictions.py \
+  --input handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/vlm-dsg-trusted-qwen37-active-qa-v2-all-episodes.jsonl \
+  --input handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-missing-vlm-dsg-adjudicated-qwen37-active-qa-v2-20-episodes.jsonl \
+  --expected-qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active-p53 \
+  --expected-qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active-p54 \
+  --output handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-dsg-trusted-qwen37-active-qa-v2-20-episodes.jsonl \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-dsg-trusted-qwen37-active-qa-v2-20-episodes-merge-report.json
+```
+
+本地兼容性检查：
+
+```text
+run_vlm_controls.py 能解析 p55-missing-vlm-only request bundle: 2670 cases
+run_vlm_graph_adjudication_active.py 能解析 p55-missing-vlm-dsg request bundle: 2670 cases
+```
+
+P55 request bundle 分片：
+
+```text
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only-shard-manifest.json
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-dsg-trusted-shard-manifest.json
+```
+
+分片结果：
+
+| target_method | shard_count | total_case_count | shard sizes | leak_free |
+| --- | ---: | ---: | --- | --- |
+| vlm_only | 11 | 2670 | 250 x 10 + 170 x 1 | true |
+| vlm_dsg_trusted | 11 | 2670 | 250 x 10 + 170 x 1 | true |
+
+单片 VLM-only 运行模板：
+
+```bash
+python external_tools/run_vlm_controls.py \
+  --request-bundle handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only/p55-vlm-only-missing-0001.json \
+  --output handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards/vlm-only/p55-vlm-only-missing-0001.jsonl \
+  --trace-output handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards/vlm-only/p55-vlm-only-missing-0001-trace.jsonl \
+  --source-kind vlm \
+  --api-key-env DSG_SPATIALQA_DASHSCOPE_API_KEY \
+  --allow-network \
+  --resume
+```
+
+单片 VLM+DSG adjudication 运行模板：
+
+```bash
+python external_tools/run_vlm_graph_adjudication_active.py \
+  --request-bundle handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-dsg-trusted/p55-vlm-dsg-trusted-missing-0001.json \
+  --vlm-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl \
+  --graph-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl \
+  --output handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards/vlm-dsg-trusted/p55-vlm-dsg-trusted-missing-0001.jsonl \
+  --trace-output handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards/vlm-dsg-trusted/p55-vlm-dsg-trusted-missing-0001-trace.jsonl \
+  --api-key-env DSG_SPATIALQA_DASHSCOPE_API_KEY \
+  --allow-network \
+  --resume
+```
+
+注意：当前 shell 中 `DSG_SPATIALQA_DASHSCOPE_API_KEY` 未设置；系统 `DASHSCOPE_API_KEY` 存在但本项目不使用它，避免修改或依赖系统默认 key。
+
+解释：
+
+```text
+20 episode NBV 与 QA v2 已经具备正式比较的本地基础；
+GraphTool-only DSG 消融可以覆盖全部 3104 个 active QA v2 cases；
+但真实 VLM-only 与 VLM+DSG trusted/adjudicated prediction 只覆盖 434 个 cases；
+因此现在仍不能得出 “VLM+DSG 显著优于 VLM-only” 的研究结论。
+```
+
+下一步 P55：
+
+```text
+1. 用两个 P55 request bundle 补齐 2670 个 VLM-only / VLM+DSG trusted predictions；
+2. 补齐后重跑 20 episode three-way comparison；
+3. 对 wins / losses / failures 做逐例 attribution；
+4. 根据 attribution 优化 DSG state timeline、unlocated object handling 和 NBV reobserve target；
+5. 只有在 20 episode、8 类 QA、prediction coverage=100%、paired wins>losses 且 sign test p<0.05 后，才允许 superiority claim。
+```
+
+## P55 finalize 入口补充
+
+本轮继续补齐 P55 的“预测回来后闭环”入口，新增：
+
+```text
+scripts/finalize_active_qa_v2_p55.py
+tests/test_attribute_active_qa_v2_cases.py
+tests/test_finalize_active_qa_v2_p55.py
+```
+
+关键行为：
+
+```text
+1. attribute_active_qa_v2_cases.py 现在支持多个 --qa-root，避免 P53/P54 双 root 作用域漏算；
+2. finalize_active_qa_v2_p55.py 消费显式本地 prediction JSONL；
+3. 先合并 VLM-only / VLM+DSG trusted predictions 并做 3104 case coverage gate；
+4. coverage 不完整时 ready=false / research_ready=false / final_claim_written=false；
+5. coverage 完整后才运行 three-way comparison 和逐例 attribution；
+6. 只有 comparison ready=true 时才写 p55-dsg-superiority-claim.json。
+```
+
+当前 dry-run 命令：
+
+```bash
+python scripts/finalize_active_qa_v2_p55.py \
+  --qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active-p53 \
+  --qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active-p54 \
+  --vlm-input handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/vlm-only/vlm-only-qwen37-active-qa-v2-all-episodes.jsonl \
+  --trusted-input handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/vlm-dsg-trusted-qwen37-active-qa-v2-all-episodes.jsonl \
+  --graph-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl \
+  --required-episode-count 20 \
+  --output-dir handoffs/ai2thor-real-small/outputs/diagnostics/p55-finalize \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-active-qa-v2-finalize-report.json
+```
+
+当前输出：
+
+```json
+{
+  "ready": false,
+  "research_ready": false,
+  "coverage_ready": false,
+  "final_claim_written": false,
+  "blockers": [
+    "vlm_dsg_trusted_prediction_coverage_incomplete",
+    "vlm_only_prediction_coverage_incomplete"
+  ]
+}
+```
+
+生成的 finalize report：
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-active-qa-v2-finalize-report.json
+```
+
+解释：
+
+```text
+P55 现在已有完整的本地接收/合并/比较/归因/claim gate 入口；
+但外部 VLM-only 与 VLM+DSG trusted prediction 仍未覆盖全部 3104 个 active QA v2 cases；
+因此当前仍不能得出 VLM+DSG trusted fusion 显著优于 VLM-only 的研究结论。
+```
+
+### P55 shard 输出聚合入口
+
+本轮新增：
+
+```text
+scripts/finalize_p55_from_shards.py
+tests/test_finalize_p55_from_shards.py
+```
+
+用途：
+
+```text
+1. 读取 P55 shard manifest；
+2. 按 shard input 文件名推导每个外部 prediction shard 的本地 JSONL 输出；
+3. 如果任一 shard 输出缺失，只写 structured blockers，不调用 finalize；
+4. 如果所有 shard 输出齐全，自动把 base prediction + shard predictions 交给 finalize_active_qa_v2_p55.py；
+5. 仍然只有 P55 finalize ready=true 时才会写 superiority claim。
+```
+
+当前检查命令：
+
+```bash
+python scripts/finalize_p55_from_shards.py \
+  --qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active-p53 \
+  --qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active-p54 \
+  --vlm-base-input handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/vlm-only/vlm-only-qwen37-active-qa-v2-all-episodes.jsonl \
+  --trusted-base-input handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/vlm-dsg-trusted-qwen37-active-qa-v2-all-episodes.jsonl \
+  --graph-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl \
+  --required-episode-count 20 \
+  --vlm-shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only-shard-manifest.json \
+  --vlm-shard-output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards/vlm-only \
+  --trusted-shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-dsg-trusted-shard-manifest.json \
+  --trusted-shard-output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards/vlm-dsg-trusted \
+  --finalize-output-dir handoffs/ai2thor-real-small/outputs/diagnostics/p55-finalize-from-shards \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-finalize-from-shards-report.json
+```
+
+当前输出：
+
+```json
+{
+  "ready": false,
+  "research_ready": false,
+  "shard_coverage_ready": false,
+  "finalize_invoked": false,
+  "missing_shard_output_count": 22,
+  "blockers": [
+    "missing_vlm_only_shard_outputs",
+    "missing_vlm_dsg_trusted_shard_outputs"
+  ]
+}
+```
+
+本轮进一步增强了 shard finalize gate：不再只检查 JSONL 文件是否存在，还会读取每个 shard request bundle 的 `case_id`，并核对对应 shard prediction JSONL 是否覆盖这些 case。这样外部模型中断后留下的半截 shard 文件不会被误认为完成。
+
+当前逐 shard prediction coverage：
+
+| method | expected shard cases | prediction cases present | missing cases | coverage |
+| --- | ---: | ---: | ---: | ---: |
+| VLM-only | 2670 | 0 | 2670 | 0.000000 |
+| VLM+DSG trusted/adjudicated | 2670 | 0 | 2670 | 0.000000 |
+
+含义：
+
+```text
+VLM-only 还缺 11 个 shard JSONL 输出；
+VLM+DSG trusted/adjudicated 还缺 11 个 shard JSONL 输出；
+这些输出回来后，不需要手工拼接长命令，直接重跑 finalize_p55_from_shards.py 即可进入 merge / comparison / attribution / claim gate。
+```
+
+### P55 shard 批量运行计划入口
+
+本轮新增：
+
+```text
+scripts/run_p55_prediction_shards.py
+tests/test_run_p55_prediction_shards.py
+```
+
+这个脚本用于把 P55 的 11 个 VLM-only shard / 11 个 VLM+DSG trusted shard 转成确定性的运行计划；默认 `--dry-run` 不调用网络、不调用模型，只写 plan。真正执行必须显式传：
+
+```text
+--execute --allow-network
+```
+
+并且必须设置专用：
+
+```text
+DSG_SPATIALQA_DASHSCOPE_API_KEY
+```
+
+脚本不会使用系统 `DASHSCOPE_API_KEY`。
+
+当前 VLM-only dry-run：
+
+```bash
+python scripts/run_p55_prediction_shards.py \
+  --target-method vlm_only \
+  --shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only-shard-manifest.json \
+  --output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards/vlm-only \
+  --trace-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards/vlm-only \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-only-shard-run-plan.json \
+  --dry-run
+```
+
+结果：
+
+```json
+{
+  "ready": true,
+  "dry_run": true,
+  "execute": false,
+  "pending_shard_count": 11,
+  "blockers": [],
+  "uses_system_dashscope_key": false
+}
+```
+
+当前 VLM+DSG trusted dry-run：
+
+```bash
+python scripts/run_p55_prediction_shards.py \
+  --target-method vlm_dsg_trusted \
+  --shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-dsg-trusted-shard-manifest.json \
+  --output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards/vlm-dsg-trusted \
+  --trace-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards/vlm-dsg-trusted \
+  --vlm-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl \
+  --graph-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-dsg-trusted-shard-run-plan.json \
+  --dry-run
+```
+
+结果：
+
+```json
+{
+  "ready": false,
+  "dry_run": true,
+  "execute": false,
+  "pending_shard_count": 11,
+  "blockers": ["missing_vlm_predictions"],
+  "uses_system_dashscope_key": false
+}
+```
+
+解释：
+
+```text
+这是正确的顺序约束：VLM+DSG adjudication 需要完整 VLM-only 20 episode prediction 作为输入；
+因此必须先执行 VLM-only 11 个 shard，merge 成 p55-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl；
+再执行 VLM+DSG trusted/adjudicated 11 个 shard。
+```
+
+### P55 VLM-only shard merge 入口
+
+本轮新增：
+
+```text
+scripts/merge_p55_prediction_shards.py
+tests/test_merge_p55_prediction_shards.py
+```
+
+用途：
+
+```text
+1. 将已有 base prediction 与 shard prediction JSONL 按 case id 合并；
+2. 根据 shard manifest 核对每片 shard 的 case 覆盖；
+3. 根据 active QA v2 root 核对完整 3104 case 覆盖；
+4. 只有 shard coverage 与 expected QA coverage 都完整时，ready=true；
+5. VLM-only ready=true 后，才能作为 VLM+DSG adjudication 输入。
+```
+
+当前 VLM-only merge 命令：
+
+```bash
+python scripts/merge_p55_prediction_shards.py \
+  --base-input handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/vlm-only/vlm-only-qwen37-active-qa-v2-all-episodes.jsonl \
+  --shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only-shard-manifest.json \
+  --shard-output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards/vlm-only \
+  --expected-qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active-p53 \
+  --expected-qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active-p54 \
+  --target-method vlm_only \
+  --output handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-only-shard-merge-report.json
+```
+
+当前输出：
+
+```json
+{
+  "ready": false,
+  "merged_prediction_count": 576,
+  "blockers": [
+    "expected_qa_prediction_coverage_incomplete",
+    "missing_shard_outputs"
+  ],
+  "shard_prediction_coverage": {
+    "expected_case_count": 2670,
+    "prediction_case_count": 0,
+    "missing_case_count": 2670,
+    "missing_output_count": 11
+  },
+  "expected_qa_coverage": {
+    "expected_case_count": 3104,
+    "missing_case_count": 2670,
+    "prediction_coverage_rate": 0.13982
+  }
+}
+```
+
+解释：
+
+```text
+当前 p55-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl 只是旧 base + 空 shard 的 merge 产物；
+它没有通过 ready gate，不能作为 VLM+DSG adjudication 的输入；
+必须先跑完 VLM-only 11 个 shard，再重跑该 merge 命令。
+```
+
+### P55 shard execution guard 强化
+
+本轮进一步修正了 P55 外部 prediction 执行计划的语义：
+
+```text
+scripts/run_p55_prediction_shards.py
+tests/test_run_p55_prediction_shards.py
+```
+
+新增字段：
+
+```json
+{
+  "execution_ready": false,
+  "execution_blockers": [
+    "dedicated_api_key_env_unset",
+    "missing_vlm_prediction_cases"
+  ],
+  "prediction_input_coverage": {
+    "vlm_predictions": {
+      "missing_case_count": 2670
+    },
+    "graph_predictions": {
+      "missing_case_count": 0
+    }
+  }
+}
+```
+
+关键变化：
+
+```text
+1. dry-run 计划可生成时，ready 可以为 true；
+2. 但真实执行是否可启动由 execution_ready 单独表达；
+3. VLM-only shard 执行必须使用专用 DSG_SPATIALQA_DASHSCOPE_API_KEY；
+4. 系统 DASHSCOPE_API_KEY 即使存在也不会被当作可用 key；
+5. VLM+DSG trusted/adjudication 不再只检查 VLM prediction 文件是否存在；
+6. 它会读取 shard request bundle 的 case_id，并检查 VLM-only 与 GraphTool prediction 是否覆盖这些 case；
+7. 当前 GraphTool 覆盖 2670/2670，但 VLM-only 对这些 missing shard case 覆盖 0/2670；
+8. 因此 VLM+DSG shard run-plan 现在正确返回 ready=false。
+```
+
+当前结论：
+
+```text
+P55 的执行顺序已经被更强地固化：
+先补齐 VLM-only 11 个 shard -> merge 到 3104/3104 -> 再生成/执行 VLM+DSG adjudication shard。
+现在不能再把残缺的 p55-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl 误当作 VLM+DSG 输入。
+```
+
+### P55 VLM request bundle 输入质量优化
+
+本轮继续补强 VLM-only 的外部请求质量，目标是让后续 VLM-only 作为强 baseline，而不是弱 baseline。
+
+修改：
+
+```text
+src/dsg_spatialqa_lab/benchmark/active_qa_v2.py
+tests/test_active_qa_v2.py
+tests/test_active_qa_v2_missing_request_bundle.py
+```
+
+新增行为：
+
+```text
+1. active QA v2 VLM request case 会从公开 answer_options 派生 support_candidates；
+2. support_candidates 只包含 label 和 relation_hint；
+3. 不包含 dst、object_id、required_nodes、required_edges 或 gold answer；
+4. support_candidates 只在 ON / INSIDE / IN_ROOM 等真实空间支撑/位置关系中出现；
+5. state_change / temporal / relative relation 不再带 “unchanged” 这类伪 support candidate，避免误导 VLM。
+```
+
+已重建：
+
+```text
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-only-active-qa-v2-20-episode-request-bundle.json
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-dsg-trusted-active-qa-v2-20-episode-request-bundle.json
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-only-shard-manifest.json
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards/vlm-dsg-trusted-shard-manifest.json
+```
+
+当前 request bundle 质量检查：
+
+```json
+{
+  "request_count": 2670,
+  "leak_free": true,
+  "support_candidates_case_count": 227,
+  "support_candidates_by_type": {
+    "multi_hop": 20,
+    "support_relation": 207
+  },
+  "target_crop_case_count": 0
+}
+```
+
+解释：
+
+```text
+这是一个有意收窄的 enrichment：
+support_candidates 只用于真正需要支撑面/位置选择的 case；
+其它类型仍依靠 answer_options、question_text、primary frame 和结构化 schema。
+target crop 仍为 0，因为当前没有把像素级 bbox/crop 可靠接入 active QA v2 request bundle；下一步如果要继续提升 VLM-only 成功率，应优先补 detector bbox / segmentation crop，而不是伪造 crop。
+```
+
+验证：
+
+```text
+python -m pytest tests/test_active_qa_v2.py tests/test_active_qa_v2_missing_request_bundle.py tests/test_shard_active_qa_v2_request_bundle.py tests/test_run_p55_prediction_shards.py -q
+11 passed
+
+python scripts/verify.py
+898 passed；ruff / mypy / build / evaluation suite 全部通过。
+```
+
+当前 P55 外部执行状态保持不变：
+
+```text
+VLM-only shard plan: ready=true, execution_ready=false, pending_shard_count=11, blocker=dedicated_api_key_env_unset
+VLM+DSG shard plan: ready=false, execution_ready=false, blocker=missing_vlm_prediction_cases
+```
+
+### P55 question-type task hint 优化
+
+本轮继续优化 VLM-only 请求包，但仍保持单帧 VLM-only 公平口径：
+
+```text
+src/dsg_spatialqa_lab/benchmark/active_qa_v2.py
+external_tools/run_vlm_controls.py
+tests/test_active_qa_v2.py
+tests/test_run_vlm_controls.py
+```
+
+新增字段：
+
+```text
+question_task_hint
+```
+
+它按 question_type 给 VLM 一个公开任务说明，例如：
+
+```text
+support_relation:
+Choose the visible support or container relation from answer_options; do not infer hidden support surfaces.
+
+relative_relation:
+Use the agent egocentric reference frame in situation.agent_pose; do not answer from world-map memory.
+
+state_change:
+Choose the state option supported by visible evidence; if the change is not visible, return insufficient evidence.
+```
+
+约束：
+
+```text
+1. question_task_hint 不包含 gold answer；
+2. 不包含 required_nodes / required_edges；
+3. 不增加 evidence_frames 到 VLM-only，因此不会把单帧 VLM-only 变成 multi-frame / video-memory control；
+4. external_tools/run_vlm_controls.py 会把该字段写入实际 visual prompt payload 和 trace，方便外部预测后审计。
+```
+
+已重建 P55 request bundles 与 shards：
+
+```json
+{
+  "request_count": 2670,
+  "question_task_hint_case_count": 2670,
+  "support_candidates_case_count": 227,
+  "target_crop_case_count": 0,
+  "leak_free": true
+}
+```
+
+解释：
+
+```text
+这一步是为了提高 VLM-only baseline 的质量和可解释性，而不是削弱 baseline；
+VLM 仍只看 primary RGB frame + question_text + answer_options + 安全任务提示；
+真正的 target crop 仍未接入，因为当前 active QA v2 request bundle 没有可靠 bbox/crop artifact。
+```
+
+验证：
+
+```text
+python -m pytest tests/test_active_qa_v2.py tests/test_active_qa_v2_missing_request_bundle.py tests/test_run_vlm_controls.py::test_vlm_runner_prompt_uses_target_crop_and_support_candidates_without_ids tests/test_run_p55_prediction_shards.py -q
+10 passed
+
+python scripts/verify.py
+898 passed；ruff / mypy / build / evaluation suite 全部通过。
+```
+
+### P55 request quality audit
+
+本轮新增一个外部预测前的 request bundle 质量审计入口：
+
+```text
+scripts/audit_active_qa_v2_request_bundle.py
+tests/test_audit_active_qa_v2_request_bundle.py
+```
+
+用途：
+
+```text
+1. 检查 active QA v2 VLM request bundle 是否 leak_free；
+2. 检查所有 request case 是否有 question_task_hint；
+3. 检查 primary_frame.rgb_path 是否存在；
+4. 统计 support_candidates / target_crop 覆盖；
+5. 输出稳定 digest 的 JSON report；
+6. 不调用网络，不调用模型，不读取 gold answer。
+```
+
+已生成真实 P55 request quality reports：
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-missing-vlm-only-active-qa-v2-request-quality-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-missing-vlm-dsg-trusted-active-qa-v2-request-quality-report.json
+```
+
+VLM-only missing request quality：
+
+```json
+{
+  "ready": true,
+  "request_count": 2670,
+  "question_task_hint_count": 2670,
+  "primary_frame_exists_count": 2670,
+  "support_candidates_case_count": 227,
+  "target_crop_case_count": 0,
+  "blockers": []
+}
+```
+
+解释：
+
+```text
+P55 的待跑 VLM-only request bundle 已经具备外部预测前的基本质量门槛：
+所有 case 都有 task hint；
+所有 primary RGB frame 本地存在；
+support_relation / multi_hop 等空间支撑题有公开 support_candidates；
+仍无 target crop，这是下一轮提高 VLM-only 的最明确输入缺口。
+```
+
+当前不能因此写结论：
+
+```text
+request quality ready 只说明“可以发给外部 VLM 跑”；
+它不等于 VLM prediction ready；
+也不等于 VLM+DSG superiority claim ready。
+```
+
+### P55 target crop feasibility audit
+
+本轮新增一个专门审计 target crop 可行性的入口：
+
+```text
+scripts/audit_active_qa_v2_target_crop_feasibility.py
+tests/test_audit_active_qa_v2_target_crop_feasibility.py
+```
+
+用途：
+
+```text
+1. 读取 active QA v2 VLM request bundle；
+2. 读取 20 episode real reachable NBV observation sequence；
+3. 按 case_id / step / target object 匹配 observation object；
+4. 检查是否存在可生成 target crop 的 2D bbox、mask_path 或 segmentation color；
+5. 明确区分“有 RGB/segmentation/3D bbox”与“可生成像素 crop”；
+6. 不调用网络、不调用模型、不读取 gold answer。
+```
+
+已生成：
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-missing-vlm-only-target-crop-feasibility-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-missing-vlm-dsg-trusted-target-crop-feasibility-report.json
+```
+
+VLM-only missing cases 的结果：
+
+```json
+{
+  "ready": true,
+  "crop_generation_ready": false,
+  "blockers": ["target_crop_artifacts_missing"],
+  "request_count": 2670,
+  "cases_with_target_id": 2670,
+  "cases_with_matching_observation_object": 2670,
+  "cases_with_existing_rgb_path": 2670,
+  "cases_with_segmentation_path": 2670,
+  "cases_with_bbox_3d": 2670,
+  "cases_with_bbox_2d": 0,
+  "cases_with_existing_mask_path": 0,
+  "cases_with_segmentation_color": 0,
+  "feasible_target_crop_case_count": 0
+}
+```
+
+解释：
+
+```text
+P55 pending VLM cases 并不是找不到目标或缺 RGB；
+2670/2670 都能匹配到 target observation object，且都有 RGB、segmentation path 和 3D bbox。
+真正缺的是像素级定位证据：2D bbox / mask_path / segmentation_color_rgb 全部为 0。
+因此当前不能可靠生成 target crop；下一步若要继续提升 VLM-only baseline，
+应把 AI2-THOR instance segmentation color map 或 detector 2D bbox/mask 接入 real NBV observation sequence，
+然后再重建 request bundle，而不是伪造 crop。
+```
+
+### P55 real NBV segmentation color propagation
+
+本轮进一步把上述缺口定位到代码路径：
+
+```text
+src/dsg_spatialqa_lab/navigation/ai2thor_runtime.py
+tests/test_ai2thor_reachable_runtime.py
+```
+
+变更：
+
+```text
+1. real AI2-THOR NBV runtime 的 ai2thor_event_to_observation()
+   现在会读取 event.color_to_object_id；
+2. 将 AI2-THOR raw object id 稳定化为 DSG object_id；
+3. 把对应 RGB segmentation color 写入 object.attributes.segmentation_color_rgb；
+4. 同时写入 segmentation_source="ai2thor_instance_segmentation_frame"；
+5. 该字段不包含 gold answer / required_nodes / required_edges。
+```
+
+解释：
+
+```text
+这修复的是采集链路，而不是离线伪补历史数据。
+当前已保存的 20 episode observation JSON 仍然没有 segmentation_color_rgb，
+因此 P55 target crop feasibility report 仍正确显示 crop_generation_ready=false。
+要让 2670 条 pending VLM request 真正具备 target crop，需要重跑 real reachable NBV
+或重新导入带 segmentation color / 2D bbox / mask 的 detector observation，
+再重建 active QA v2 request bundle 和 shard manifest。
+```
+
+### P55 historical segmentation color recovery
+
+本轮继续尝试从显式本地 episode JSONL 中恢复历史 observation 的像素级颜色证据：
+
+```text
+scripts/recover_observation_segmentation_colors.py
+tests/test_recover_observation_segmentation_colors.py
+```
+
+恢复策略：
+
+```text
+1. 只使用同 episode 的 metadata.segmentation_color_map；
+2. 只按 object.attributes.ai2thor_object_id 精确匹配；
+3. 不按 label 猜测、不跨 episode 猜测；
+4. 不覆盖已有 segmentation_color_rgb；
+5. 为恢复字段写入 segmentation_color_recovery_source="episode_jsonl_segmentation_color_map"。
+```
+
+已生成：
+
+```text
+handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-observation-segmentation-color-recovery-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-missing-vlm-only-target-crop-feasibility-recovered-colors-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-missing-vlm-dsg-trusted-target-crop-feasibility-recovered-colors-report.json
+```
+
+恢复结果：
+
+```json
+{
+  "observation_object_count": 21435,
+  "recovered_object_count": 15119,
+  "unmatched_object_count": 6316
+}
+```
+
+对 P55 pending VLM cases 的影响：
+
+```json
+{
+  "request_count": 2670,
+  "cases_with_target_id": 2670,
+  "cases_with_matching_observation_object": 2670,
+  "cases_with_existing_rgb_path": 2670,
+  "cases_with_segmentation_path": 2670,
+  "cases_with_segmentation_color": 2356,
+  "feasible_target_crop_case_count": 2356,
+  "infeasible_target_crop_case_count": 314,
+  "blockers": ["target_crop_artifacts_partial"]
+}
+```
+
+解释：
+
+```text
+这一步把 target crop feasibility 从 0/2670 提高到 2356/2670，
+说明多数历史 NBV observation 可以从已有本地 color map 安全恢复像素级目标颜色。
+剩余 314 条仍不可 crop-ready，主要因为 episode001-005 的历史 episode JSONL 没有
+segmentation_color_map，不能离线精确恢复；这些 case 需要重跑 real NBV 或重新导入
+带 2D bbox / mask / color map 的 detector observation。
+```
+
+### P55 target crop enrichment for missing VLM requests
+
+在 feasibility audit 之后，本轮新增真实 crop 生成与 request bundle 注入链路：
+
+```text
+scripts/enrich_active_qa_v2_request_bundle_with_target_crops.py
+tests/test_enrich_active_qa_v2_request_bundle_with_target_crops.py
+```
+
+实现策略：
+
+```text
+1. 读取 leak-free active QA v2 request bundle；
+2. 按 case step + target object_id 匹配 recovered observation object；
+3. 使用 RGB PPM + segmentation PPM + segmentation_color_rgb 精确找到目标像素；
+4. 按目标像素 bbox 生成本地 target crop PPM；
+5. 将 crop 作为 case.target_crop 注入 request bundle；
+6. 不写入 gold_answer / gold_evidence / required_nodes / required_edges；
+7. 如果颜色缺失或 segmentation 图中找不到该颜色，则保留 blocker，不伪造 crop。
+```
+
+新增 artifact：
+
+```text
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-only-active-qa-v2-20-episode-request-bundle-target-crop-enriched.json
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-dsg-trusted-active-qa-v2-20-episode-request-bundle-target-crop-enriched.json
+handoffs/ai2thor-real-small/inputs/offline-controls/target-crops/p55-active-qa-v2-missing/
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-shard-manifest.json
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-shard-manifest.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-missing-vlm-only-target-crop-enrichment-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-missing-vlm-dsg-trusted-target-crop-enrichment-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-missing-vlm-only-target-crop-enriched-request-quality-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-missing-vlm-dsg-trusted-target-crop-enriched-request-quality-report.json
+```
+
+实际生成结果：
+
+```json
+{
+  "request_count": 2670,
+  "cases_with_target_crop": 2280,
+  "infeasible_target_crop_case_count": 390,
+  "infeasible_reasons": {
+    "missing_segmentation_color": 314,
+    "segmentation_color_not_found": 76
+  },
+  "blockers": ["target_crop_artifacts_partial"]
+}
+```
+
+解释：
+
+```text
+feasibility audit 统计的是“字段是否足够”，得到 2356/2670；
+actual crop enrichment 进一步检查 segmentation 图中是否真的存在该 RGB 实例颜色，
+最终可生成 2280/2670。
+额外 76 条说明历史 segmentation_color_map 和对应 NBV segmentation frame 不完全一致，
+因此不能把这些 case 强行裁剪。
+```
+
+新的 shard manifest：
+
+```json
+{
+  "vlm_only": {
+    "shard_count": 11,
+    "total_case_count": 2670,
+    "manifest_digest": "8e2dd3e42ec8e0ca149083e03529cec8065f88c062174763791ccd47a48a7062"
+  },
+  "vlm_dsg_trusted": {
+    "shard_count": 11,
+    "total_case_count": 2670,
+    "manifest_digest": "75eb450c7a0f9bf3b9873f980e7ae2cf1f11b8065d8da4fc696522cb40b4d751"
+  }
+}
+```
+
+当前结论：
+
+```text
+P55 missing VLM request 已经从“只有整帧 RGB”升级为“2280/2670 带 target crop 的整帧+局部目标输入”。
+这会直接提升 VLM-only 与 VLM+DSG adjudication 的可判别性。
+但仍有 390 条不具备可靠 crop，其中 314 条缺颜色、76 条颜色不在 segmentation frame 中。
+下一步应优先重跑 episode001-005 real NBV，或补导入 detector bbox/mask，
+再补齐剩余 390 条后运行真实外部 VLM。
+```
+
+### P55 target-crop-enriched shard run plans
+
+为避免外部 VLM 补跑误用旧 request bundle，本轮进一步加强：
+
+```text
+scripts/run_p55_prediction_shards.py
+tests/test_run_p55_prediction_shards.py
+```
+
+新增 run plan 字段：
+
+```json
+{
+  "request_input_summary": {
+    "request_case_count": 2670,
+    "target_crop_case_count": 2280,
+    "missing_target_crop_case_count": 390,
+    "target_crop_enriched": false
+  }
+}
+```
+
+已生成 dry-run plan：
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-only-target-crop-enriched-shard-run-plan.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-dsg-trusted-target-crop-enriched-shard-run-plan.json
+```
+
+当前计划状态：
+
+```json
+{
+  "vlm_only": {
+    "ready": true,
+    "execution_ready": false,
+    "execution_blockers": ["dedicated_api_key_env_unset"],
+    "pending_shard_count": 11,
+    "api_key_env": "DSG_SPATIALQA_DASHSCOPE_API_KEY"
+  },
+  "vlm_dsg_trusted": {
+    "ready": false,
+    "blockers": ["missing_vlm_prediction_cases"],
+    "missing_vlm_prediction_cases": 2670,
+    "missing_graph_prediction_cases": 0,
+    "pending_shard_count": 11
+  }
+}
+```
+
+解释：
+
+```text
+VLM-only 现在已有 crop-enriched shards，可在设置 DSG_SPATIALQA_DASHSCOPE_API_KEY 后执行；
+当前不会读取系统 DASHSCOPE_API_KEY。
+VLM+DSG trusted/adjudication 不能先跑，因为它必须消费完整 VLM-only prediction；
+当前 2670 条 VLM-only 缺失仍是 P55 的主 blocker。
+```
+
+### P55 crop-ready / no-crop shard split
+
+为了让真实外部 VLM 补跑优先吃到更强视觉输入，本轮进一步扩展 sharding：
+
+```text
+scripts/shard_active_qa_v2_request_bundle.py
+tests/test_shard_active_qa_v2_request_bundle.py
+```
+
+新增参数：
+
+```text
+--target-crop-filter all|with|without
+```
+
+新增 manifest：
+
+```text
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready-shard-manifest.json
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-no-crop-shard-manifest.json
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-crop-ready-shard-manifest.json
+handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop-shard-manifest.json
+```
+
+分流结果：
+
+```json
+{
+  "crop_ready": {
+    "case_count": 2280,
+    "shard_count": 10,
+    "target_crop_filter": "with",
+    "target_crop_enriched": true
+  },
+  "no_crop": {
+    "case_count": 390,
+    "shard_count": 2,
+    "target_crop_filter": "without",
+    "target_crop_enriched": false
+  }
+}
+```
+
+新增 dry-run plan：
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-only-crop-ready-shard-run-plan.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-only-no-crop-shard-run-plan.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-dsg-trusted-crop-ready-shard-run-plan.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-dsg-trusted-no-crop-shard-run-plan.json
+```
+
+当前执行顺序建议：
+
+```text
+1. 设置 DSG_SPATIALQA_DASHSCOPE_API_KEY；
+2. 先执行 vlm-only-crop-ready 10 shards / 2280 cases；
+3. 再执行 vlm-only-no-crop 2 shards / 390 cases；
+4. merge 成完整 2670-case VLM-only prediction；
+5. 再执行 VLM+DSG trusted crop-ready / no-crop shards；
+6. 最后 merge + three-way comparison + attribution。
+```
+
+当前阻塞仍然是外部输入：
+
+```json
+{
+  "dedicated_api_key_env_set": false,
+  "system_dashscope_key_set": true,
+  "system_dashscope_key_used": false,
+  "vlm_only_crop_ready": {
+    "ready": true,
+    "execution_ready": false
+  },
+  "vlm_dsg_trusted_crop_ready": {
+    "ready": false,
+    "blockers": ["missing_vlm_prediction_cases"]
+  }
+}
+```
+
+### P55 下一步外部预测执行包
+
+当前 runner 已经强制使用专用环境变量：
+
+```text
+api_key_env = DSG_SPATIALQA_DASHSCOPE_API_KEY
+uses_system_dashscope_key = false
+```
+
+因此下一步不能使用系统 `DASHSCOPE_API_KEY`。需要先在运行 shell 中设置 `DSG_SPATIALQA_DASHSCOPE_API_KEY`，然后按下面顺序执行。
+
+先跑 VLM-only crop-ready shards：
+
+```bash
+python scripts/run_p55_prediction_shards.py \
+  --target-method vlm_only \
+  --shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready-shard-manifest.json \
+  --output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-only-crop-ready \
+  --trace-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-only-crop-ready-traces \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-only-crop-ready-shard-run-plan.json \
+  --execute --allow-network --resume
+```
+
+再跑 VLM-only no-crop shards：
+
+```bash
+python scripts/run_p55_prediction_shards.py \
+  --target-method vlm_only \
+  --shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-no-crop-shard-manifest.json \
+  --output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-only-no-crop \
+  --trace-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-only-no-crop-traces \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-only-no-crop-shard-run-plan.json \
+  --execute --allow-network --resume
+```
+
+VLM-only 两路回来后，先 merge 到完整 20-episode VLM-only prediction：
+
+```bash
+python scripts/merge_p55_prediction_shards.py \
+  --base-input handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/vlm-only/vlm-only-qwen37-active-qa-v2-all-episodes.jsonl \
+  --shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready-shard-manifest.json \
+  --shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-no-crop-shard-manifest.json \
+  --shard-output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-only-crop-ready \
+  --shard-output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-only-no-crop \
+  --expected-qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active \
+  --expected-qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active-p54 \
+  --target-method vlm_only \
+  --output handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-only-split-shard-merge-report.json
+```
+
+只有上一步 ready=true 后，才跑 VLM+DSG trusted crop-ready / no-crop shards：
+
+```bash
+python scripts/run_p55_prediction_shards.py \
+  --target-method vlm_dsg_trusted \
+  --shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-crop-ready-shard-manifest.json \
+  --output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-crop-ready \
+  --trace-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-crop-ready-traces \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-dsg-trusted-crop-ready-shard-run-plan.json \
+  --vlm-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl \
+  --graph-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl \
+  --execute --allow-network --resume
+
+python scripts/run_p55_prediction_shards.py \
+  --target-method vlm_dsg_trusted \
+  --shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop-shard-manifest.json \
+  --output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop \
+  --trace-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop-traces \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-dsg-trusted-no-crop-shard-run-plan.json \
+  --vlm-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-qwen37-active-qa-v2-20-episodes.jsonl \
+  --graph-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl \
+  --execute --allow-network --resume
+```
+
+最后执行 split finalize gate。这个命令只有在 24 个 shard output 全部存在且 case 覆盖完整时才会真正调用 P55 finalizer：
+
+```bash
+python scripts/finalize_p55_from_shards.py \
+  --qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active \
+  --qa-root handoffs/ai2thor-real-small/inputs/qa-v2-active-p54 \
+  --vlm-base-input handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/vlm-only/vlm-only-qwen37-active-qa-v2-all-episodes.jsonl \
+  --trusted-base-input handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/vlm-dsg-trusted-qwen37-active-qa-v2-all-episodes.jsonl \
+  --graph-predictions handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl \
+  --vlm-shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-crop-ready-shard-manifest.json \
+  --vlm-shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-only-no-crop-shard-manifest.json \
+  --vlm-shard-output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-only-crop-ready \
+  --vlm-shard-output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-only-no-crop \
+  --trusted-shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-crop-ready-shard-manifest.json \
+  --trusted-shard-manifest handoffs/ai2thor-real-small/inputs/offline-controls/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop-shard-manifest.json \
+  --trusted-shard-output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-crop-ready \
+  --trusted-shard-output-dir handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-shards-target-crop-enriched/vlm-dsg-trusted-no-crop \
+  --finalize-output-dir handoffs/ai2thor-real-small/outputs/diagnostics/p55-finalize \
+  --report handoffs/ai2thor-real-small/outputs/diagnostics/p55-finalize-from-split-shards-report.json
+```
+
+### P55 no-crop visual context fallback
+
+本轮继续优化 P55 missing VLM request 的输入质量，但没有伪造 target crop，也没有把 detector 可见对象列表暴露给 VLM。
+
+新增或增强：
+
+```text
+scripts/enrich_active_qa_v2_request_bundle_with_target_crops.py
+external_tools/run_vlm_controls.py
+scripts/audit_active_qa_v2_request_bundle.py
+scripts/run_p55_prediction_shards.py
+
+tests/test_enrich_active_qa_v2_request_bundle_with_target_crops.py
+tests/test_run_vlm_controls.py
+tests/test_audit_active_qa_v2_request_bundle.py
+tests/test_run_p55_prediction_shards.py
+```
+
+关键行为：
+
+```text
+1. 对无法生成 target_crop 的 case，新增 leak-free target_visual_context；
+2. target_visual_context 只说明“无局部 crop，必须检查 primary RGB frame，看不清则 target_not_observed”；
+3. 不写 object_id / ai2thor_object_id / visible_object_ids / visible_object_labels；
+4. run_vlm_controls.py 会把 target_visual_context 写入 visual_prompt_payload；
+5. 不增加额外图片，因此 no-crop 仍是 primary-frame-only VLM 输入；
+6. request quality audit 与 shard run plan 均统计 target_visual_context 覆盖。
+```
+
+当前 P55 target-crop-enriched request quality：
+
+```json
+{
+  "request_count": 2670,
+  "target_crop_case_count": 2280,
+  "target_visual_context_case_count": 390,
+  "visual_context_fallback_case_count": 390,
+  "leak_free": true,
+  "ready": true
+}
+```
+
+当前 run plan 输入摘要：
+
+```json
+{
+  "vlm_only_all": {
+    "request_case_count": 2670,
+    "target_crop_case_count": 2280,
+    "target_visual_context_case_count": 390,
+    "visual_context_fallback_case_count": 390
+  },
+  "vlm_only_crop_ready": {
+    "request_case_count": 2280,
+    "target_crop_enriched": true,
+    "visual_context_fallback_case_count": 0
+  },
+  "vlm_only_no_crop": {
+    "request_case_count": 390,
+    "target_crop_case_count": 0,
+    "target_visual_context_case_count": 390,
+    "visual_context_fallback_case_count": 390
+  }
+}
+```
+
+解释：
+
+```text
+这一步不是把 390 条 no-crop 变成有 crop，也不是降低真实 VLM 难度；
+它只是把 no-crop case 的输入语义变清楚：模型知道没有局部图，必须只看 primary frame，
+看不清就返回 target_not_observed。这样可以减少“以为有 crop / 盲猜答案”的解析噪声。
+```
+
+### P55 split shard merge / finalize gate
+
+本轮把 P55 的 `crop-ready` 与 `no-crop` 两路 shard 进一步接入 merge/finalize gate，避免外部模型补跑回来后还要手工拼接，也避免把半完成 shard 误当作完整预测。
+
+新增或增强：
+
+```text
+scripts/merge_p55_prediction_shards.py
+tests/test_merge_p55_prediction_shards.py
+
+scripts/finalize_p55_from_shards.py
+tests/test_finalize_p55_from_shards.py
+```
+
+关键行为：
+
+```text
+--shard-manifest 可以重复传入；
+--shard-output-dir 可以重复传入；
+VLM-only crop-ready/no-crop 两套 manifest 可以合并成同一个 prediction JSONL；
+VLM+DSG trusted crop-ready/no-crop 两套 manifest 也使用同一套 gate；
+finalize 只有在 VLM-only 与 VLM+DSG trusted shard output 全部存在且 case 覆盖完整时才会调用；
+ready=false 时不会写 final superiority claim。
+```
+
+本轮生成的预检查 artifact：
+
+```text
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-only-split-shard-merge-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-dsg-trusted-split-shard-merge-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-finalize-from-split-shards-report.json
+
+handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-split-merged-coverage-check.jsonl
+handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-dsg-trusted-split-merged-coverage-check.jsonl
+```
+
+当前 split merge 状态：
+
+```json
+{
+  "qa_case_count": 3104,
+  "existing_in_scope_prediction_count": 434,
+  "base_prediction_count": 576,
+  "base_out_of_scope_prediction_count": 142,
+  "missing_prediction_case_count": 2670,
+  "vlm_only": {
+    "shard_manifest_count": 2,
+    "expected_shard_cases": 2670,
+    "missing_shard_outputs": 12,
+    "ready": false
+  },
+  "vlm_dsg_trusted": {
+    "shard_manifest_count": 2,
+    "expected_shard_cases": 2670,
+    "missing_shard_outputs": 12,
+    "ready": false
+  }
+}
+```
+
+当前 finalize gate 状态：
+
+```json
+{
+  "ready": false,
+  "research_ready": false,
+  "finalize_invoked": false,
+  "missing_shard_output_count": 24,
+  "shard_manifest_counts": {
+    "vlm_only": 2,
+    "vlm_dsg_trusted": 2
+  },
+  "blockers": [
+    "missing_vlm_only_shard_outputs",
+    "missing_vlm_dsg_trusted_shard_outputs"
+  ]
+}
+```
+
+解释：
+
+```text
+1. 3104 是 P53 + P54 active QA v2 comparison scope；
+2. 当前 base prediction 文件有 576 条，其中只有 434 条属于该正式 scope；
+3. 2670 条 missing case 已被拆成 crop-ready 2280 + no-crop 390；
+4. VLM-only 必须先跑完这 12 个 shard 并 merge 到 3104/3104；
+5. VLM+DSG trusted/adjudication 仍被完整 VLM-only 缺失阻塞；
+6. 当前没有写 superiority claim。
+```
+
+验证：
+
+```text
+python -m pytest tests/test_audit_active_qa_v2_target_crop_feasibility.py tests/test_audit_active_qa_v2_request_bundle.py -q
+4 passed
+
+python -m pytest tests/test_ai2thor_reachable_runtime.py -q
+8 passed
+
+python -m pytest tests/test_recover_observation_segmentation_colors.py -q
+3 passed
+
+python -m pytest tests/test_enrich_active_qa_v2_request_bundle_with_target_crops.py -q
+4 passed
+
+python -m pytest tests/test_run_p55_prediction_shards.py -q
+6 passed
+
+python -m pytest tests/test_run_vlm_controls.py::test_vlm_runner_prompt_uses_no_crop_visual_context_without_extra_image tests/test_run_vlm_controls.py::test_vlm_runner_prompt_uses_target_crop_and_support_candidates_without_ids -q
+2 passed
+
+python -m pytest tests/test_shard_active_qa_v2_request_bundle.py -q
+3 passed
+
+python -m pytest tests/test_merge_p55_prediction_shards.py tests/test_finalize_p55_from_shards.py -q
+7 passed
+
+python scripts/verify.py
+917 passed；ruff / mypy / build / evaluation suite 全部通过。
+```
+
+### P55 continuation refresh: external VLM key gate
+
+本轮继续实验时先检查了外部 VLM 执行条件：
+
+```text
+DSG_SPATIALQA_DASHSCOPE_API_KEY_SET=false
+DASHSCOPE_API_KEY_SET=true
+```
+
+根据当前实验约束，P55 外部 VLM 只能使用 `DSG_SPATIALQA_DASHSCOPE_API_KEY`。系统 `DASHSCOPE_API_KEY` 即使存在，也不能被 runner 当作可用 key；`scripts/run_p55_prediction_shards.py` 的默认 `api_key_env` 已固定为 `DSG_SPATIALQA_DASHSCOPE_API_KEY`，且会显式记录 `uses_system_dashscope_key=false`。
+
+本轮刷新了四个 shard run-plan：
+
+```json
+{
+  "vlm_only_crop_ready": {
+    "ready": true,
+    "execution_ready": false,
+    "pending_shard_count": 10,
+    "execution_blockers": ["dedicated_api_key_env_unset"]
+  },
+  "vlm_only_no_crop": {
+    "ready": true,
+    "execution_ready": false,
+    "pending_shard_count": 2,
+    "execution_blockers": ["dedicated_api_key_env_unset"]
+  },
+  "vlm_dsg_trusted_crop_ready": {
+    "ready": false,
+    "pending_shard_count": 10,
+    "blockers": ["missing_vlm_prediction_cases"]
+  },
+  "vlm_dsg_trusted_no_crop": {
+    "ready": false,
+    "pending_shard_count": 2,
+    "blockers": ["missing_vlm_prediction_cases"]
+  }
+}
+```
+
+同时刷新 split merge / finalize gate：
+
+```json
+{
+  "vlm_only_merge_ready": false,
+  "vlm_dsg_trusted_merge_ready": false,
+  "finalize_ready": false,
+  "research_ready": false,
+  "finalize_invoked": false,
+  "blockers": [
+    "missing_vlm_only_shard_outputs",
+    "missing_vlm_dsg_trusted_shard_outputs"
+  ]
+}
+```
+
+结论：
+
+```text
+1. 外部 VLM runner 可用，但当前 shell 缺少专用 DSG_SPATIALQA_DASHSCOPE_API_KEY；
+2. VLM-only crop-ready/no-crop 共 12 个 shard 已准备好，只差专用 key 执行；
+3. VLM+DSG trusted 必须等完整 VLM-only 3104/3104 prediction 生成后再跑；
+4. finalize gate 正确保持 ready=false，没有写 20-episode superiority claim；
+5. 下一步仍是设置专用 key 后执行 VLM-only 12 shards。
+```
+
+### P55 continuation run: VLM-only crop-ready partial execution
+
+用户提供了专用 DashScope key 后，本轮没有修改系统 `DASHSCOPE_API_KEY`，只在命令环境中临时设置 `DSG_SPATIALQA_DASHSCOPE_API_KEY` 并开始执行 VLM-only crop-ready shards。
+
+执行中发现并修复了两个实验执行层问题：
+
+```text
+1. run_p55_prediction_shards.py 原先只要 shard output 文件存在就会跳过；
+   如果中途停止导致 output 只有部分 case，也会被误判为 complete。
+   现在改为：只有 output 覆盖 request bundle 中所有 case_id 时才跳过；
+   半成品 output 会继续 pending，并由 --resume 跳过已完成 case。
+
+2. target crop 中有 34 个 P6 PPM 文件 payload 比 header 期望短 1-2 字节；
+   原先 run_vlm_controls.py 会直接报 “PPM binary payload has unexpected length”。
+   现在只对 1-2 字节短缺做保守 zero-padding 后转 PNG；
+   更大损坏仍然拒绝，避免把任意坏图伪装为可用图。
+```
+
+新增/增强测试：
+
+```text
+tests/test_run_p55_prediction_shards.py
+- test_run_p55_prediction_shards_execute_supports_limited_parallelism
+- test_run_p55_prediction_shards_keeps_incomplete_existing_output_pending
+
+tests/test_run_vlm_controls.py
+- test_vlm_runner_tolerates_small_binary_ppm_shortfall
+- test_vlm_runner_rejects_large_binary_ppm_shortfall
+```
+
+已通过的局部验证：
+
+```text
+python -m pytest tests/test_run_vlm_controls.py tests/test_run_p55_prediction_shards.py -q
+38 passed
+
+python -m ruff check external_tools/run_vlm_controls.py scripts/run_p55_prediction_shards.py tests/test_run_vlm_controls.py tests/test_run_p55_prediction_shards.py
+All checks passed
+
+python -m mypy external_tools/run_vlm_controls.py scripts/run_p55_prediction_shards.py tests/test_run_vlm_controls.py tests/test_run_p55_prediction_shards.py
+Success
+```
+
+本轮真实 VLM 执行进展：
+
+```json
+{
+  "target": "vlm_only_crop_ready",
+  "total_expected_crop_ready_cases": 2280,
+  "checkpoint_prediction_count": 480,
+  "checkpoint_prediction_rate": 0.210526,
+  "max_parallel_used": 8,
+  "pending_shard_count_after_refresh": 10,
+  "resume_safe": true
+}
+```
+
+当前各 crop-ready shard checkpoint：
+
+| shard | predictions |
+| --- | ---: |
+| p55-vlm-only-missing-crop-ready-0001 | 73 |
+| p55-vlm-only-missing-crop-ready-0002 | 64 |
+| p55-vlm-only-missing-crop-ready-0003 | 68 |
+| p55-vlm-only-missing-crop-ready-0004 | 21 |
+| p55-vlm-only-missing-crop-ready-0005 | 56 |
+| p55-vlm-only-missing-crop-ready-0006 | 59 |
+| p55-vlm-only-missing-crop-ready-0007 | 52 |
+| p55-vlm-only-missing-crop-ready-0008 | 53 |
+| p55-vlm-only-missing-crop-ready-0009 | 32 |
+| p55-vlm-only-missing-crop-ready-0010 | 2 |
+
+解释：
+
+```text
+1. 真实外部 VLM 已开始产出 prediction，不再只是 request bundle；
+2. crop-ready 已完成 480/2280，仍未达到可 merge 的完整覆盖；
+3. 运行过程中出现过网络 read timeout / 空响应类错误，checkpoint 保留；
+4. 下一次继续执行同一命令即可从 checkpoint resume；
+5. 当前仍不能跑 VLM+DSG trusted，因为完整 VLM-only 3104/3104 仍未生成；
+6. 当前仍不能写 20-episode DSG superiority claim。
+```
+
+## P55 target-crop-enriched full external run completed
+
+在继续使用专用环境变量 `DSG_SPATIALQA_DASHSCOPE_API_KEY` 的前提下，本阶段补齐了 P55 的外部 VLM-only 与 VLM+DSG trusted 两组真实 prediction。未修改系统 `DASHSCOPE_API_KEY`，也未把 key 写入任何 artifact。
+
+本阶段新增的执行层修复：
+
+```text
+1. run_vlm_controls.py
+   - 对 HTTP/空 body/空 content 做 case-level retry；
+   - 对单 case response 的 case_id 轻微错配做 prompt-id 归一化；
+   - 对过小 PPM crop 做最小边 32px padding 后再编码成 PNG data URL；
+   - HTTPError 记录 response body，便于定位 provider 400。
+
+2. run_vlm_graph_adjudication_active.py
+   - 同步 case-level retry；
+   - 支持单 case adjudication response case_id 纠正；
+   - HTTPError 记录 response body。
+
+3. active_qa_v2_analysis.py
+   - attribution summary 中将空 selected_candidate / attribution 归为 unknown，
+     避免 None 与 str 混排导致 finalizer 崩溃。
+```
+
+完成的真实外部 prediction 覆盖：
+
+| prediction group | expected shard cases | completed |
+| --- | ---: | ---: |
+| VLM-only crop-ready | 2280 | 2280 |
+| VLM-only no-crop | 390 | 390 |
+| VLM+DSG trusted crop-ready | 2280 | 2280 |
+| VLM+DSG trusted no-crop | 390 | 390 |
+
+合并与覆盖检查：
+
+```json
+{
+  "active_qa_v2_expected_cases": 3104,
+  "vlm_only_expected_coverage": "3104/3104",
+  "vlm_dsg_trusted_expected_coverage": "3104/3104",
+  "graph_tool_only_dsg_coverage": "3104/3104",
+  "episode_count": 20,
+  "question_type_count": 8
+}
+```
+
+关键输出：
+
+```text
+handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-only-qwen37-active-qa-v2-20-episodes-merged.jsonl
+handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/p55-vlm-dsg-trusted-qwen37-active-qa-v2-20-episodes-merged.jsonl
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-only-target-crop-enriched-shard-merge-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-vlm-dsg-trusted-target-crop-enriched-shard-merge-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-active-qa-v2-target-crop-enriched-finalize-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-finalize-target-crop-enriched-from-shards-report.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-finalize-target-crop-enriched/p55-three-way-comparison-active-qa-v2.json
+handoffs/ai2thor-real-small/outputs/diagnostics/p55-finalize-target-crop-enriched/p55-dsg-superiority-claim.json
+```
+
+三组对比结果：
+
+| method | semantic match | rate |
+| --- | ---: | ---: |
+| VLM-only | 601 / 3104 | 0.193621 |
+| VLM+DSG trusted | 1029 / 3104 | 0.331508 |
+| GraphTool-only DSG | 3104 / 3104 | 1.000000 |
+
+paired result：
+
+```json
+{
+  "vlm_dsg_vs_vlm_only": {
+    "paired_wins": 428,
+    "paired_losses": 0,
+    "paired_ties": 2676,
+    "sign_test_p_value": 0.0
+  }
+}
+```
+
+当前允许的结论：
+
+```text
+在当前 P55 active QA v2、20 个 real AI2-THOR reachable-NBV episode、
+8 类问题、3104 条 comparison cases 上，VLM+DSG trusted fusion
+显著优于 VLM-only：1029/3104 vs 601/3104，paired wins=428，
+losses=0，sign test p=0.0。
+```
+
+必须同时保留的限制：
+
+```text
+1. GraphTool-only DSG 为 3104/3104，说明 active QA v2 的 gold answer 与 graph query
+   仍高度同源；它是结构化图查询上限，不应直接解释为端到端机器人系统达到 100%。
+2. VLM+DSG trusted 仍远低于 GraphTool-only DSG，主要失败来自 adjudicator
+   未采纳正确 graph answer 或保守 fallback。
+3. 当前结论只支持 “VLM+DSG trusted fusion 优于 VLM-only”，
+   不支持 “VLM+DSG 已达到 GraphTool 上限”。
+4. 下一阶段应降低 graph/QA 同源性，并引入更独立的人工或程序化反捷径 QA 审核。
+```
+
+本阶段验证：
+
+```text
+python scripts/verify.py
+all checks passed
+pytest: 928 passed
+evaluation suite: 52 passed / 0 failed
 ```

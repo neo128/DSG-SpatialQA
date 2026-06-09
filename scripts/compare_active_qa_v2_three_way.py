@@ -19,7 +19,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--qa-root",
         type=Path,
-        default=Path("handoffs/ai2thor-real-small/inputs/qa-v2-active"),
+        action="append",
+        default=None,
+        help="Active QA v2 root. May be supplied multiple times.",
     )
     parser.add_argument("--vlm-predictions", type=Path)
     parser.add_argument("--graph-predictions", type=Path)
@@ -39,9 +41,16 @@ def main(argv: list[str] | None = None) -> int:
         type=Path,
         default=Path("handoffs/ai2thor-real-small/outputs/diagnostics/three-way-comparison-active-qa-v2-all-episodes.zh.md"),
     )
+    parser.add_argument(
+        "--required-episode-count",
+        type=int,
+        default=5,
+        help="Minimum episode count needed for the requested comparison scope.",
+    )
     args = parser.parse_args(argv)
 
-    records_by_episode = _load_records_by_episode(args.qa_root)
+    qa_roots = args.qa_root or [Path("handoffs/ai2thor-real-small/inputs/qa-v2-active")]
+    records_by_episode = _load_records_by_episode(qa_roots)
     blockers: list[str] = []
     if not records_by_episode:
         blockers.append("missing_active_qa_v2_records")
@@ -71,7 +80,21 @@ def main(argv: list[str] | None = None) -> int:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
-    all_report = _all_episode_report(episode_reports, blockers)
+    coverage = _prediction_coverage(
+        records_by_episode,
+        {
+            "vlm_only": vlm_predictions,
+            "graph_tool_only_dsg": graph_predictions,
+            "vlm_dsg_trusted": vlm_dsg_predictions,
+        },
+    )
+    all_report = _all_episode_report(
+        episode_reports,
+        blockers,
+        qa_roots=qa_roots,
+        prediction_coverage=coverage,
+        required_episode_count=args.required_episode_count,
+    )
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(all_report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     args.markdown_output.parent.mkdir(parents=True, exist_ok=True)
@@ -89,7 +112,7 @@ def main(argv: list[str] | None = None) -> int:
     return 0 if all_report["ready"] is True else 1
 
 
-def _load_records_by_episode(root: Path) -> dict[str, list[dict[str, Any]]]:
+def _load_records_by_episode(roots: list[Path]) -> dict[str, list[dict[str, Any]]]:
     grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
     comparison_splits = {
         "qa-observation-aware.jsonl",
@@ -97,12 +120,13 @@ def _load_records_by_episode(root: Path) -> dict[str, list[dict[str, Any]]]:
         "qa-situated.jsonl",
         "qa-temporal.jsonl",
     }
-    for path in sorted(root.glob("*/qa-*.jsonl")):
-        if path.name not in comparison_splits:
-            continue
-        for row in load_active_qa_v2_records(path):
-            episode_id = str(row.get("episode_id", "unknown"))
-            grouped[episode_id].append(row)
+    for root in roots:
+        for path in sorted(root.glob("*/qa-*.jsonl")):
+            if path.name not in comparison_splits:
+                continue
+            for row in load_active_qa_v2_records(path):
+                episode_id = str(row.get("episode_id", "unknown"))
+                grouped[episode_id].append(row)
     return {key: _dedupe(rows) for key, rows in grouped.items()}
 
 
@@ -273,7 +297,14 @@ def _question_type_groups(
     return groups
 
 
-def _all_episode_report(episode_reports: list[dict[str, Any]], blockers: list[str]) -> dict[str, Any]:
+def _all_episode_report(
+    episode_reports: list[dict[str, Any]],
+    blockers: list[str],
+    *,
+    qa_roots: list[Path],
+    prediction_coverage: dict[str, Any],
+    required_episode_count: int,
+) -> dict[str, Any]:
     total_cases = sum(report["case_count"] for report in episode_reports)
     episode_count = len(episode_reports)
     question_types = sorted(
@@ -289,8 +320,11 @@ def _all_episode_report(episode_reports: list[dict[str, Any]], blockers: list[st
     }
     aggregate_delta = _aggregate_delta(episode_reports, "vlm_dsg_vs_vlm_only")
     conclusion_blockers = list(blockers)
-    if episode_count < 5:
-        conclusion_blockers.append("episode_count_lt_5")
+    for method, coverage in prediction_coverage.items():
+        if coverage["missing_case_count"] > 0:
+            conclusion_blockers.append(f"{method}_prediction_coverage_incomplete")
+    if episode_count < required_episode_count:
+        conclusion_blockers.append(f"episode_count_lt_{required_episode_count}")
     if len(question_types) < 3:
         conclusion_blockers.append("question_type_count_lt_3")
     if aggregate_methods["vlm_dsg_trusted"]["semantic_match_rate"] <= aggregate_methods["vlm_only"]["semantic_match_rate"]:
@@ -301,13 +335,17 @@ def _all_episode_report(episode_reports: list[dict[str, Any]], blockers: list[st
         conclusion_blockers.append("directional_not_significant")
     return {
         "schema_version": "dsg-spatialqa-lab.three-way-active-qa-v2-all-episodes-comparison.v1",
-        "ready": not blockers and total_cases > 0,
+        "ready": not conclusion_blockers and total_cases > 0,
         "research_ready": not conclusion_blockers,
         "blockers": sorted(set(conclusion_blockers)),
         "episode_count": episode_count,
         "case_count": total_cases,
         "question_type_count": len(question_types),
         "question_types": question_types,
+        "qa_roots": [str(root) for root in qa_roots],
+        "required_episode_count": required_episode_count,
+        "prediction_coverage": prediction_coverage,
+        "next_missing_predictions": _next_missing_predictions(prediction_coverage),
         "methods": aggregate_methods,
         "deltas": {
             "vlm_dsg_vs_vlm_only": aggregate_delta,
@@ -316,6 +354,45 @@ def _all_episode_report(episode_reports: list[dict[str, Any]], blockers: list[st
         },
         "episode_groups": episode_reports,
     }
+
+
+def _prediction_coverage(
+    records_by_episode: dict[str, list[dict[str, Any]]],
+    predictions_by_method: dict[str, dict[str, dict[str, Any]]],
+) -> dict[str, Any]:
+    coverage = {}
+    for method, predictions in sorted(predictions_by_method.items()):
+        missing_by_episode = {}
+        present = 0
+        total = 0
+        for episode_id, records in sorted(records_by_episode.items()):
+            missing_count = sum(1 for row in records if str(row.get("id")) not in predictions)
+            total += len(records)
+            present += len(records) - missing_count
+            if missing_count:
+                missing_by_episode[episode_id] = missing_count
+        coverage[method] = {
+            "case_count": total,
+            "missing_by_episode": missing_by_episode,
+            "missing_case_count": total - present,
+            "prediction_case_count": present,
+            "prediction_coverage_rate": _ratio(present, total),
+        }
+    return coverage
+
+
+def _next_missing_predictions(prediction_coverage: dict[str, Any]) -> list[dict[str, Any]]:
+    rows = []
+    for method, coverage in sorted(prediction_coverage.items()):
+        for episode_id, missing_count in sorted(coverage["missing_by_episode"].items()):
+            rows.append(
+                {
+                    "episode_id": episode_id,
+                    "method": method,
+                    "missing_count": missing_count,
+                }
+            )
+    return rows
 
 
 def _aggregate_method(episode_reports: list[dict[str, Any]], method: str) -> dict[str, Any]:

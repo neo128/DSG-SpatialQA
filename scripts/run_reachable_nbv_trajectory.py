@@ -8,7 +8,6 @@ import sys
 from collections.abc import Mapping, Sequence
 from typing import Any
 
-from dsg_spatialqa_lab.benchmark import load_qa_dataset
 from dsg_spatialqa_lab.episodes import load_episode_sequence
 from dsg_spatialqa_lab.navigation.action_planner import (
     ReachablePosition,
@@ -43,6 +42,8 @@ from dsg_spatialqa_lab.observations import (
 )
 from dsg_spatialqa_lab.scene_io import save_graph_json
 from dsg_spatialqa_lab.schema import SpatialQAError
+
+from audit_trajectory_coverage import load_audit_cases
 
 
 SUPPORT_LABELS = frozenset(
@@ -485,7 +486,7 @@ def _write_baseline_audits(
 ) -> None:
     qa_cases = (
         filter_cases_for_trajectory(
-            load_qa_dataset(qa_path),
+            load_audit_cases(qa_path),
             {"episode_id": frames[0].episode_id},
         )
         if qa_path.exists()

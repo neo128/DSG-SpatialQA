@@ -30,7 +30,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--qa-root",
         type=Path,
-        default=Path("handoffs/ai2thor-real-small/inputs/qa-v2-active"),
+        action="append",
+        default=None,
+        help="Active QA v2 root. May be supplied multiple times.",
     )
     parser.add_argument("--vlm-predictions", type=Path, required=True)
     parser.add_argument("--graph-predictions", type=Path, required=True)
@@ -59,7 +61,8 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    records = _load_comparison_records(args.qa_root)
+    qa_roots = args.qa_root or [Path("handoffs/ai2thor-real-small/inputs/qa-v2-active")]
+    records = _load_comparison_records(qa_roots)
     if not records:
         payload = _not_ready("missing_active_qa_v2_records", args.output)
         _emit(payload)
@@ -94,7 +97,7 @@ def main(argv: list[str] | None = None) -> int:
         source_paths={
             "adjudicated_predictions": str(args.adjudicated_predictions),
             "graph_predictions": str(args.graph_predictions),
-            "qa_root": str(args.qa_root),
+            "qa_roots": [str(root) for root in qa_roots],
             "trusted_predictions": str(args.trusted_predictions),
             "vlm_predictions": str(args.vlm_predictions),
         },
@@ -116,18 +119,19 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-def _load_comparison_records(root: Path) -> list[dict[str, Any]]:
+def _load_comparison_records(roots: list[Path]) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     seen: set[str] = set()
-    for path in sorted(root.glob("*/qa-*.jsonl")):
-        if path.name not in COMPARISON_SPLITS:
-            continue
-        for row in load_active_qa_v2_records(path):
-            case_id = str(row.get("id"))
-            if case_id in seen:
+    for root in roots:
+        for path in sorted(root.glob("*/qa-*.jsonl")):
+            if path.name not in COMPARISON_SPLITS:
                 continue
-            seen.add(case_id)
-            rows.append(row)
+            for row in load_active_qa_v2_records(path):
+                case_id = str(row.get("id"))
+                if case_id in seen:
+                    continue
+                seen.add(case_id)
+                rows.append(row)
     return rows
 
 

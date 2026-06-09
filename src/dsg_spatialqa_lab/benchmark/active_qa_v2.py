@@ -338,15 +338,19 @@ def build_active_qa_v2_vlm_request_bundle(
     records: Sequence[Mapping[str, Any]],
 ) -> dict[str, Any]:
     prediction_cases = _dedupe_prediction_cases([
-        {
+        _without_empty_optional_fields({
             "case_id": row.get("id"),
             "episode_id": row.get("episode_id"),
             "scene_id": row.get("scene_id"),
             "question": row.get("question_text"),
             "question_text": row.get("question_text"),
             "question_type": row.get("question_type"),
+            "question_task_hint": _question_task_hint(row.get("question_type")),
             "answer_options": _request_answer_options(row.get("answer_options")),
             "answer_option_response_schema": _answer_option_response_schema(
+                row.get("answer_options")
+            ),
+            "support_candidates": _request_support_candidates(
                 row.get("answer_options")
             ),
             "primary_frame": _mapping(row.get("situation")).get("view_frame"),
@@ -360,7 +364,7 @@ def build_active_qa_v2_vlm_request_bundle(
                 "evidence_summary": "brief text",
                 "confidence": "number in [0,1]",
             },
-        }
+        })
         for row in records
     ])
     bundle: dict[str, Any] = {
@@ -1000,6 +1004,74 @@ def _answer_option_response_schema(value: object) -> dict[str, Any] | None:
             "Copy relation and destination_label from the selected answer option."
         ),
         "required_when_answer_options_present": True,
+    }
+
+
+def _request_support_candidates(value: object) -> list[dict[str, str]]:
+    support_relations = {"IN_ROOM", "INSIDE", "ON"}
+    candidates: list[dict[str, str]] = []
+    seen: set[tuple[str, str]] = set()
+    for option in _request_answer_options(value):
+        relation = option.get("relation")
+        label = option.get("destination_label")
+        if not isinstance(relation, str) or not isinstance(label, str):
+            continue
+        if relation not in support_relations:
+            continue
+        key = (label, relation)
+        if key in seen:
+            continue
+        seen.add(key)
+        candidates.append({"label": label, "relation_hint": relation})
+    return candidates
+
+
+def _question_task_hint(value: object) -> str | None:
+    if not isinstance(value, str):
+        return None
+    hints = {
+        "multi_hop": (
+            "Use the visible objects and answer_options to choose the shared "
+            "support/place; do not infer hidden scene structure."
+        ),
+        "nearest_object": (
+            "Choose the nearest visible object from answer_options using the "
+            "primary RGB frame and agent-centric layout."
+        ),
+        "object_location": (
+            "Choose the visible location from answer_options; return insufficient "
+            "evidence if the target is not visible."
+        ),
+        "relative_relation": (
+            "Use the agent egocentric reference frame in situation.agent_pose; "
+            "do not answer from world-map memory."
+        ),
+        "situated_egocentric": (
+            "Answer from the robot pose and primary RGB frame only; do not use "
+            "hidden scene knowledge."
+        ),
+        "state_change": (
+            "Choose the state option supported by visible evidence; if the "
+            "change is not visible, return insufficient evidence."
+        ),
+        "support_relation": (
+            "Choose the visible support or container relation from answer_options; "
+            "do not infer hidden support surfaces."
+        ),
+        "temporal_last_seen": (
+            "Use the provided frame as the visible last-seen evidence for this "
+            "single-frame VLM request; do not invent earlier observations."
+        ),
+    }
+    return hints.get(value)
+
+
+def _without_empty_optional_fields(payload: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: value
+        for key, value in payload.items()
+        if (key != "support_candidates" or value)
+        and (key != "question_task_hint" or value)
     }
 
 

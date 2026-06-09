@@ -52,7 +52,11 @@ class AI2ThorEpisodeCollector:
         if self.config.artifact_root is None or self.config.artifact_root == "":
             raise SpatialQAError(AI2THOR_REAL_COLLECTION_REQUIRES_ARTIFACT_ROOT_MESSAGE)
         actions = _real_actions_for_config(self.config)
-        controller = controller_factory(scene=self.config.scene_id)
+        controller = controller_factory(
+            scene=self.config.scene_id,
+            renderDepthImage=True,
+            renderInstanceSegmentation=True,
+        )
         frames: list[EpisodeFrame] = []
         try:
             for index, step in enumerate(self.config.steps):
@@ -285,6 +289,15 @@ def _real_event_payload(
     ]
     segmentation_color_map = _segmentation_color_map(event)
     artifact_paths = _write_real_event_artifacts(event, config=config, step=step)
+    segmentation_metadata: dict[str, Any] = {
+        "segmentation_color_map": segmentation_color_map,
+        "segmentation_color_map_available": bool(segmentation_color_map),
+        "segmentation_source": "ai2thor_instance_segmentation_frame",
+    }
+    if not segmentation_color_map:
+        segmentation_metadata["segmentation_color_map_unavailable_reason"] = (
+            "ai2thor_event_color_maps_empty"
+        )
     return {
         "agent_pose": {
             "x": _required_float(position, "x"),
@@ -299,11 +312,10 @@ def _real_event_payload(
         "metadata": {
             "collection_kind": "real",
             "objects": objects,
-            "segmentation_color_map": segmentation_color_map,
-            "segmentation_source": "ai2thor_instance_segmentation_frame",
             "simulator": "ai2thor",
             "source_kind": "real_simulator",
             "source_step": step,
+            **segmentation_metadata,
         },
     }
 
@@ -432,7 +444,7 @@ def _segmentation_color_map(event: object) -> list[dict[str, Any]]:
         ]
         return sorted(entries, key=lambda item: (item["rgb"], str(item["object_id"])))
 
-    raise SpatialQAError("AI2-THOR event segmentation color map is required")
+    return []
 
 
 def _segmentation_object_id(value: object) -> str:

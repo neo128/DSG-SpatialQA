@@ -72,6 +72,13 @@ def test_ai2thor_real_collector_uses_fake_controller_and_writes_artifacts(
 
     controller = controller_factory.instances[0]
     assert controller.scene == "FloorPlan1"
+    assert controller_factory.calls == [
+        {
+            "renderDepthImage": True,
+            "renderInstanceSegmentation": True,
+            "scene": "FloorPlan1",
+        }
+    ]
     assert controller.actions == ["Initialize", "MoveAhead"]
     assert [frame.step for frame in frames] == [1, 2]
     assert [frame.action for frame in frames] == ["Initialize", "MoveAhead"]
@@ -121,7 +128,7 @@ def test_ai2thor_real_collector_uses_fake_controller_and_writes_artifacts(
     assert controller.stopped is True
 
 
-def test_ai2thor_real_collector_requires_segmentation_color_map(
+def test_ai2thor_real_collector_marks_missing_segmentation_color_map(
     tmp_path: Path,
 ) -> None:
     config = lab.AI2ThorAdapterConfig(
@@ -132,15 +139,42 @@ def test_ai2thor_real_collector_requires_segmentation_color_map(
         artifact_root=str(tmp_path / "raw"),
     )
 
-    with pytest.raises(
-        SpatialQAError,
-        match="AI2-THOR event segmentation color map is required",
-    ):
-        lab.AI2ThorEpisodeCollector(
-            config,
-            ai2thor_available=True,
-            controller_factory=NoColorMapControllerFactory(),
-        ).collect_episode()
+    frames = lab.AI2ThorEpisodeCollector(
+        config,
+        ai2thor_available=True,
+        controller_factory=NoColorMapControllerFactory(),
+    ).collect_episode()
+
+    assert frames[0].metadata["segmentation_color_map"] == []
+    assert frames[0].metadata["segmentation_color_map_available"] is False
+    assert frames[0].metadata["segmentation_color_map_unavailable_reason"] == (
+        "ai2thor_event_color_maps_empty"
+    )
+    assert frames[0].segmentation_path is not None
+    assert Path(frames[0].segmentation_path).exists()
+
+
+def test_ai2thor_real_collector_writes_array_like_segmentation_frame(
+    tmp_path: Path,
+) -> None:
+    config = lab.AI2ThorAdapterConfig(
+        scene_id="FloorPlan1",
+        episode_id="ai2thor_real_smoke_001",
+        steps=(1,),
+        actions=("Initialize",),
+        artifact_root=str(tmp_path / "raw"),
+    )
+
+    frames = lab.AI2ThorEpisodeCollector(
+        config,
+        ai2thor_available=True,
+        controller_factory=ArrayLikeControllerFactory(),
+    ).collect_episode()
+
+    assert frames[0].segmentation_path is not None
+    assert Path(frames[0].segmentation_path).read_text(encoding="utf-8").startswith(
+        "P3\n2 1\n255\n"
+    )
 
 
 def test_ai2thor_real_collector_rejects_missing_artifact_root() -> None:
@@ -336,8 +370,10 @@ def test_collect_ai2thor_cli_returns_structured_json_when_real_collector_is_unav
 class FakeControllerFactory:
     def __init__(self) -> None:
         self.instances: list[FakeController] = []
+        self.calls: list[dict[str, Any]] = []
 
-    def __call__(self, *, scene: str) -> "FakeController":
+    def __call__(self, *, scene: str, **kwargs: Any) -> "FakeController":
+        self.calls.append({"scene": scene, **kwargs})
         controller = FakeController(scene)
         self.instances.append(controller)
         return controller
@@ -379,11 +415,11 @@ class FakeEvent:
                 }
             ],
         }
-        self.frame = [
+        self.frame: Any = [
             [[255, 0, 0], [0, 255, 0]],
         ]
-        self.depth_frame = [[1.0 + offset, 1.1 + offset]]
-        self.instance_segmentation_frame = [
+        self.depth_frame: Any = [[1.0 + offset, 1.1 + offset]]
+        self.instance_segmentation_frame: Any = [
             [[0, 0, 255], [255, 255, 0]],
         ]
         self.color_to_object_id = {
@@ -393,7 +429,7 @@ class FakeEvent:
 
 
 class NoColorMapControllerFactory:
-    def __call__(self, *, scene: str) -> "NoColorMapController":
+    def __call__(self, *, scene: str, **_kwargs: Any) -> "NoColorMapController":
         return NoColorMapController(scene)
 
 
@@ -415,7 +451,7 @@ class NoColorMapEvent(FakeEvent):
 
 
 class BrokenControllerFactory:
-    def __call__(self, *, scene: str) -> "BrokenController":
+    def __call__(self, *, scene: str, **_kwargs: Any) -> "BrokenController":
         return BrokenController(scene)
 
 
@@ -432,3 +468,36 @@ class BrokenEvent:
     frame = [[[0, 0, 0]]]
     depth_frame = [[0.0]]
     instance_segmentation_frame = [[[0, 0, 0]]]
+
+
+class ArrayLikeControllerFactory:
+    def __call__(self, *, scene: str, **_kwargs: Any) -> "ArrayLikeController":
+        return ArrayLikeController(scene)
+
+
+class ArrayLikeController:
+    def __init__(self, scene: str) -> None:
+        self.scene = scene
+
+    def step(self, *, action: str) -> "ArrayLikeEvent":
+        return ArrayLikeEvent(action)
+
+    def stop(self) -> None:
+        return None
+
+
+class ArrayLikeEvent(FakeEvent):
+    def __init__(self, action: str) -> None:
+        super().__init__(action)
+        self.frame = ArrayLike([[[255, 0, 0], [0, 255, 0]]])
+        self.instance_segmentation_frame = ArrayLike(
+            [[[0, 0, 255], [255, 255, 0]]]
+        )
+
+
+class ArrayLike:
+    def __init__(self, value: list[list[list[int]]]) -> None:
+        self._value = value
+
+    def tolist(self) -> list[list[list[int]]]:
+        return self._value

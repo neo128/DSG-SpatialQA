@@ -1,0 +1,237 @@
+{
+  "blockers": [],
+  "enriched_observation_sequences": [
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 0,
+      "episode_id": "ai2thor-real-small-episode-001",
+      "object_count": 1904,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode001.json",
+      "recovered_object_count": 0,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode001.json",
+      "unmatched_object_count": 1904
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 0,
+      "episode_id": "ai2thor-real-small-episode-002",
+      "object_count": 791,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode002.json",
+      "recovered_object_count": 0,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode002.json",
+      "unmatched_object_count": 791
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 0,
+      "episode_id": "ai2thor-real-small-episode-003",
+      "object_count": 1217,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode003.json",
+      "recovered_object_count": 0,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode003.json",
+      "unmatched_object_count": 1217
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 0,
+      "episode_id": "ai2thor-real-small-episode-004",
+      "object_count": 1228,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode004.json",
+      "recovered_object_count": 0,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode004.json",
+      "unmatched_object_count": 1228
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 0,
+      "episode_id": "ai2thor-real-small-episode-005",
+      "object_count": 1176,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode005.json",
+      "recovered_object_count": 0,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode005.json",
+      "unmatched_object_count": 1176
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 111,
+      "episode_id": "ai2thor-real-small-episode-006",
+      "object_count": 672,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode006.json",
+      "recovered_object_count": 672,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode006.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 128,
+      "episode_id": "ai2thor-real-small-episode-007",
+      "object_count": 1164,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode007.json",
+      "recovered_object_count": 1164,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode007.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 140,
+      "episode_id": "ai2thor-real-small-episode-008",
+      "object_count": 1099,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode008.json",
+      "recovered_object_count": 1099,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode008.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 199,
+      "episode_id": "ai2thor-real-small-episode-009",
+      "object_count": 1473,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode009.json",
+      "recovered_object_count": 1473,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode009.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 155,
+      "episode_id": "ai2thor-real-small-episode-010",
+      "object_count": 147,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode010.json",
+      "recovered_object_count": 147,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode010.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 153,
+      "episode_id": "ai2thor-real-small-episode-011",
+      "object_count": 1077,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode011.json",
+      "recovered_object_count": 1077,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode011.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 141,
+      "episode_id": "ai2thor-real-small-episode-012",
+      "object_count": 1323,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode012.json",
+      "recovered_object_count": 1323,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode012.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 178,
+      "episode_id": "ai2thor-real-small-episode-013",
+      "object_count": 1359,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode013.json",
+      "recovered_object_count": 1359,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode013.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 163,
+      "episode_id": "ai2thor-real-small-episode-014",
+      "object_count": 767,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode014.json",
+      "recovered_object_count": 767,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode014.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 121,
+      "episode_id": "ai2thor-real-small-episode-015",
+      "object_count": 666,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode015.json",
+      "recovered_object_count": 666,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode015.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 127,
+      "episode_id": "ai2thor-real-small-episode-016",
+      "object_count": 964,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode016.json",
+      "recovered_object_count": 964,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode016.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 206,
+      "episode_id": "ai2thor-real-small-episode-017",
+      "object_count": 1478,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode017.json",
+      "recovered_object_count": 1478,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode017.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 133,
+      "episode_id": "ai2thor-real-small-episode-018",
+      "object_count": 642,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode018.json",
+      "recovered_object_count": 642,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode018.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 129,
+      "episode_id": "ai2thor-real-small-episode-019",
+      "object_count": 964,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode019.json",
+      "recovered_object_count": 964,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode019.json",
+      "unmatched_object_count": 0
+    },
+    {
+      "already_colored_object_count": 0,
+      "color_map_object_count": 128,
+      "episode_id": "ai2thor-real-small-episode-020",
+      "object_count": 1324,
+      "output_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/recovered-segmentation-color-observations/detector-observations-real-ai2thor-reachable-nbv-episode020.json",
+      "recovered_object_count": 1324,
+      "source_path": "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode020.json",
+      "unmatched_object_count": 0
+    }
+  ],
+  "episode_jsonls": [
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-001.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-002.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-003.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-004.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-005.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-006.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-007.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-008.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-009.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-010.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-011.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-012.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-013.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-014.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-015.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-016.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-017.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-018.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-019.jsonl",
+    "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-020.jsonl"
+  ],
+  "ready": true,
+  "report_digest": "2f11d4cd6cc5ab9ebea61e30dfbecc831163ebe9af99569f86aa9680926ba787",
+  "schema_version": "dsg-spatialqa-lab.observation-segmentation-color-recovery-report.v1",
+  "summary": {
+    "already_colored_object_count": 0,
+    "object_count": 21435,
+    "recovered_object_count": 15119,
+    "sequence_count": 20,
+    "unmatched_object_count": 6316
+  }
+}

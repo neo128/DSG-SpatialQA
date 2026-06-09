@@ -28,7 +28,7 @@ def active_qa_v2_case_attribution_report(
     adjudicated_predictions: Mapping[str, Mapping[str, Any]],
     *,
     match_mode: str = "p50_comparison",
-    source_paths: Mapping[str, str] | None = None,
+    source_paths: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     rows = [
         _case_attribution_row(
@@ -274,7 +274,7 @@ def _primary_attribution(
 
 
 def _case_attribution_summary(rows: Sequence[Mapping[str, Any]]) -> dict[str, Any]:
-    outcomes = Counter(_string(row.get("outcome")) for row in rows)
+    outcomes = Counter(_string(row.get("outcome")) or "unknown" for row in rows)
     by_question_type: dict[str, dict[str, int]] = {}
     for row in rows:
         qtype = _string(row.get("question_type")) or "unknown"
@@ -291,10 +291,20 @@ def _case_attribution_summary(rows: Sequence[Mapping[str, Any]]) -> dict[str, An
             key: dict(sorted(value.items())) for key, value in sorted(by_question_type.items())
         },
         "primary_attribution_counts": dict(
-            sorted(Counter(_string(row.get("primary_attribution")) for row in rows).items())
+            sorted(
+                Counter(
+                    _string(row.get("primary_attribution")) or "unknown"
+                    for row in rows
+                ).items()
+            )
         ),
         "selected_candidate_counts": dict(
-            sorted(Counter(_string(row.get("selected_candidate")) for row in rows).items())
+            sorted(
+                Counter(
+                    _string(row.get("selected_candidate")) or "unknown"
+                    for row in rows
+                ).items()
+            )
         ),
         "tie_correct_count": outcomes.get("tie_correct", 0),
     }

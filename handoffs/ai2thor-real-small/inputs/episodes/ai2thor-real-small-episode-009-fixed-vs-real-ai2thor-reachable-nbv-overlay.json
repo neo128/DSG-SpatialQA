@@ -1,0 +1,13 @@
+{
+  "base_topdown_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-009-topdown-path.png",
+  "episode_id": "ai2thor-real-small-episode-009",
+  "fixed_point_count": 1,
+  "fixed_topdown_generated": true,
+  "mapping_source": "local_bounds_from_fixed_and_nbv_points",
+  "nbv_point_count": 12,
+  "overlay_png_path": "handoffs/ai2thor-real-small/inputs/episodes/ai2thor-real-small-episode-009-fixed-vs-real-ai2thor-reachable-nbv-overlay.png",
+  "scene_id": "FloorPlan3",
+  "schema_version": "dsg-spatialqa-lab.fixed-vs-reachable-nbv-overlay.v1",
+  "short_id": "episode009",
+  "trajectory_path": "handoffs/ai2thor-real-small/outputs/navigation/reachable-nbv-real-ai2thor-trajectory-episode009.json"
+}

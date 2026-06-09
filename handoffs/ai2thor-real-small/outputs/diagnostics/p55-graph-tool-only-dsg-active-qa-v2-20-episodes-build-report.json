@@ -1,0 +1,35 @@
+{
+  "ablation_kind": "graph_tool_only_dsg_from_active_qa_v2_graph_records",
+  "episode_counts": {
+    "ai2thor-real-small-episode-001": 172,
+    "ai2thor-real-small-episode-002": 130,
+    "ai2thor-real-small-episode-003": 156,
+    "ai2thor-real-small-episode-004": 136,
+    "ai2thor-real-small-episode-005": 169,
+    "ai2thor-real-small-episode-006": 133,
+    "ai2thor-real-small-episode-007": 157,
+    "ai2thor-real-small-episode-008": 157,
+    "ai2thor-real-small-episode-009": 176,
+    "ai2thor-real-small-episode-010": 99,
+    "ai2thor-real-small-episode-011": 171,
+    "ai2thor-real-small-episode-012": 160,
+    "ai2thor-real-small-episode-013": 174,
+    "ai2thor-real-small-episode-014": 166,
+    "ai2thor-real-small-episode-015": 152,
+    "ai2thor-real-small-episode-016": 153,
+    "ai2thor-real-small-episode-017": 178,
+    "ai2thor-real-small-episode-018": 156,
+    "ai2thor-real-small-episode-019": 158,
+    "ai2thor-real-small-episode-020": 151
+  },
+  "not_external_model_result": true,
+  "prediction_count": 3104,
+  "prediction_digest": "b4c30f9da32bb20eaf622f6808d2ca751cd83f663020f72ea98957bd72c601e9",
+  "prediction_path": "handoffs/ai2thor-real-small/outputs/offline-controls/active-qa-v2/graph-tool-only-dsg-active-qa-v2-20-episodes.jsonl",
+  "qa_roots": [
+    "handoffs/ai2thor-real-small/inputs/qa-v2-active-p53",
+    "handoffs/ai2thor-real-small/inputs/qa-v2-active-p54"
+  ],
+  "report_digest": "c686f36d743cd4da7da5c83b649d353f2c49e79207770cb456b44e8c3822c21a",
+  "schema_version": "dsg-spatialqa-lab.active-qa-v2-graph-tool-prediction-build-report.v1"
+}

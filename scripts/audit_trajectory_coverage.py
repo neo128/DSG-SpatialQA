@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 from collections.abc import Mapping
+from dataclasses import dataclass
 from typing import Any
 
 from dsg_spatialqa_lab.benchmark import load_qa_dataset
@@ -18,6 +19,13 @@ from dsg_spatialqa_lab.navigation.trajectory_audit import (
 from dsg_spatialqa_lab.observations import load_scene_observation_sequence
 from dsg_spatialqa_lab.scene_io import load_graph_json
 from dsg_spatialqa_lab.schema import SpatialQAError
+
+
+@dataclass(frozen=True)
+class _AuditCase:
+    episode_id: str
+    question: dict[str, Any]
+    answer: dict[str, Any]
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -38,7 +46,7 @@ def main(argv: list[str] | None = None) -> int:
             raise SpatialQAError("trajectory must be a JSON object")
         observations = load_scene_observation_sequence(args.observation_sequence)
         graph = load_graph_json(args.predicted_graph)
-        qa_cases = filter_cases_for_trajectory(load_qa_dataset(args.qa), trajectory)
+        qa_cases = filter_cases_for_trajectory(_load_audit_cases(args.qa), trajectory)
         targets, supports = _qa_target_support_ids(qa_cases)
         qa_ids = targets | supports
         observed_objects = {
@@ -98,6 +106,53 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     _emit({"valid": True, "path": str(args.output), "summary": audit})
     return 0
+
+
+def load_audit_cases(path: Path) -> list[Any]:
+    rows: list[Mapping[str, Any]] = []
+    for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        if not line.strip():
+            continue
+        payload = json.loads(line)
+        if not isinstance(payload, Mapping):
+            raise SpatialQAError(f"QA dataset line {line_number} must be an object")
+        rows.append(payload)
+    if not rows:
+        return []
+    if rows[0].get("schema_version") != "dsg-spatialqa-lab.active-qa-case.v2":
+        return load_qa_dataset(path)
+    cases: list[_AuditCase] = []
+    for index, row in enumerate(rows, start=1):
+        target = row.get("target")
+        answer = row.get("answer")
+        episode_id = row.get("episode_id")
+        if (
+            not isinstance(target, Mapping)
+            or not isinstance(answer, Mapping)
+            or not isinstance(episode_id, str)
+        ):
+            raise SpatialQAError(f"active QA v2 line {index} is missing target, answer, or episode_id")
+        object_id = target.get("object_id")
+        relation = answer.get("relation")
+        dst = answer.get("dst")
+        if (
+            not isinstance(object_id, str)
+            or not isinstance(relation, str)
+            or not isinstance(dst, str)
+        ):
+            raise SpatialQAError(f"active QA v2 line {index} is missing object_id, relation, or dst")
+        cases.append(
+            _AuditCase(
+                episode_id=episode_id,
+                question={"object_id": object_id},
+                answer={"current_location": {"relation": relation, "dst": dst}},
+            )
+        )
+    return cases
+
+
+def _load_audit_cases(path: Path) -> list[Any]:
+    return load_audit_cases(path)
 
 
 def _same_frame_count(

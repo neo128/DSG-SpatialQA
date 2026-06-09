@@ -1,0 +1,253 @@
+{
+  "blockers": [
+    "target_crop_artifacts_missing"
+  ],
+  "crop_generation_ready": false,
+  "feasible_case_ids": [],
+  "infeasible_cases_sample": [
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:nearest_object:cabinet_01_85_02_02_00_38:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:nearest_object:coffeemachine_01_98_00_90_00_19:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:nearest_object:fridge_02_10_00_00_01_07:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:nearest_object:toaster_01_84_00_90_00_13:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:nearest_object:window_02_23_01_43_01_20:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:relative_relation:cabinet_01_85_02_02_00_38:situated",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:relative_relation:coffeemachine_01_98_00_90_00_19:situated",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:relative_relation:fridge_02_10_00_00_01_07:situated",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:relative_relation:toaster_01_84_00_90_00_13:situated",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200001:relative_relation:window_02_23_01_43_01_20:situated",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:multi_hop:coffeemachine_01_98_00_90_00_19:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:nearest_object:cabinet_01_55_00_50_00_38:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:nearest_object:cabinet_01_85_02_02_00_38:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:nearest_object:coffeemachine_01_98_00_90_00_19:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:nearest_object:countertop_01_87_00_95_01_21:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:nearest_object:drawer_01_56_00_33_00_20:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:nearest_object:drawer_01_56_00_66_00_20:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:nearest_object:drawer_01_56_00_84_00_20:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:nearest_object:floor_00_00_00_00_00_00:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:nearest_object:fridge_02_10_00_00_01_07:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:nearest_object:garbagecan_01_94_00_00_02_03:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:nearest_object:toaster_01_84_00_90_00_13:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:nearest_object:window_02_23_01_43_01_20:relation_centric",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:relative_relation:cabinet_01_55_00_50_00_38:situated",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:relative_relation:cabinet_01_85_02_02_00_38:situated",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:relative_relation:coffeemachine_01_98_00_90_00_19:situated",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200002:relative_relation:countertop_01_87_00_95_01_21:situated",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200070:state_change:garbagecan_01_94_00_00_02_03:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200131:state_change:creditcard_00_46_01_10_00_87:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200146:state_change:fridge_02_10_00_00_01_07:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:cabinet_00_68_00_50_02_20:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:countertop_00_69_00_95_02_48:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:drawer_00_95_00_22_02_20:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:drawer_00_95_00_39_02_20:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:drawer_00_95_00_56_02_20:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:drawer_00_95_00_71_02_20:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:drawer_00_95_00_83_02_20:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:kettle_01_04_00_90_02_60:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:pan_00_72_00_90_02_42:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:peppershaker_00_30_00_90_02_47:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:saltshaker_00_35_00_90_02_57:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:spatula_00_38_00_91_02_33:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:stoveburner_00_04_00_92_02_37:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:stoveburner_00_04_00_92_02_58:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:stoveburner_00_47_00_92_02_37:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:stoveburner_00_47_00_92_02_58:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:stoveknob_00_02_00_88_02_19:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:stoveknob_00_18_00_88_02_19:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:stoveknob_00_33_00_88_02_19:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    },
+    {
+      "case_id": "ai2thor-real-small-episode-001:FloorPlan1:200171:state_change:stoveknob_00_48_00_88_02_19:temporal",
+      "reason": "missing_bbox_2d_mask_or_segmentation_color"
+    }
+  ],
+  "infeasible_reasons": {
+    "missing_bbox_2d_mask_or_segmentation_color": 2670
+  },
+  "observation_sequences": [
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode001.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode002.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode003.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode004.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode005.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode006.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode007.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode008.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode009.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode010.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode011.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode012.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode013.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode014.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode015.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode016.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode017.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode018.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode019.json",
+    "handoffs/ai2thor-real-small/outputs/predicted-dsg/detector-observations-real-ai2thor-reachable-nbv-episode020.json"
+  ],
+  "ready": true,
+  "report_digest": "43a64acbd4719e78c1b7067468ab1f6a1b3947c329bf4086bd75ed08c4a13273",
+  "request_bundle": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-dsg-trusted-active-qa-v2-20-episode-request-bundle.json",
+  "schema_version": "dsg-spatialqa-lab.active-qa-v2-target-crop-feasibility-report.v1",
+  "summary": {
+    "cases_with_bbox_2d": 0,
+    "cases_with_bbox_3d": 2670,
+    "cases_with_bbox_3d_only": 2670,
+    "cases_with_existing_mask_path": 0,
+    "cases_with_existing_rgb_path": 2670,
+    "cases_with_matching_observation_object": 2670,
+    "cases_with_segmentation_color": 0,
+    "cases_with_segmentation_path": 2670,
+    "cases_with_target_id": 2670,
+    "feasible_target_crop_case_count": 0,
+    "infeasible_target_crop_case_count": 2670,
+    "observation_object_count": 20331,
+    "request_count": 2670
+  }
+}

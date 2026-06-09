@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import argparse
 import base64
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping, MutableMapping, Sequence
 import hashlib
 import json
 import os
@@ -31,6 +31,9 @@ TRACE_SCHEMA_VERSION = "dsg-spatialqa-lab.vlm-control-run-trace.v1"
 DEFAULT_API_KEY_ENV = "DSG_SPATIALQA_DASHSCOPE_API_KEY"
 DEFAULT_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 DEFAULT_MODEL = "qwen3.7-plus"
+CHAT_COMPLETION_MAX_ATTEMPTS = 5
+MIN_VLM_IMAGE_SIDE_PX = 32
+PPM_BINARY_SHORTFALL_TOLERANCE = 2
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -138,19 +141,54 @@ def main(argv: list[str] | None = None) -> int:
                 max_frames=args.max_frames,
                 model=args.model,
             )
-            try:
-                raw_response = _send_chat_completion(
-                    request_payload,
-                    api_key=api_key,
-                    base_url=args.base_url,
+            prediction: QAPrediction | None = None
+            raw_response: dict[str, Any] | None = None
+            structured_response: dict[str, Any] | None = None
+            normalized_response: dict[str, Any] | None = None
+            last_error: Exception | None = None
+            for attempt_index in range(CHAT_COMPLETION_MAX_ATTEMPTS):
+                try:
+                    raw_response = _send_chat_completion(
+                        request_payload,
+                        api_key=api_key,
+                        base_url=args.base_url,
+                    )
+                    structured_response = _extract_structured_response(
+                        raw_response,
+                        case=case,
+                    )
+                    normalized_response = _normalize_structured_response(
+                        case,
+                        structured_response,
+                        frame_index=normalization_frame_index,
+                    )
+                    prediction = _prediction_from_structured_response(
+                        case,
+                        normalized_response,
+                    )
+                    break
+                except urllib.error.HTTPError as exc:
+                    last_error = exc
+                    break
+                except SpatialQAError as exc:
+                    last_error = exc
+                    if str(exc).startswith("HTTP Error "):
+                        break
+                    if attempt_index + 1 >= CHAT_COMPLETION_MAX_ATTEMPTS:
+                        break
+                except (
+                    OSError,
+                    ValueError,
+                    json.JSONDecodeError,
+                    urllib.error.URLError,
+                ) as exc:
+                    last_error = exc
+                    if attempt_index + 1 >= CHAT_COMPLETION_MAX_ATTEMPTS:
+                        break
+            if prediction is None:
+                error = last_error or SpatialQAError(
+                    "VLM case prediction failed without an exception"
                 )
-            except (
-                OSError,
-                SpatialQAError,
-                ValueError,
-                json.JSONDecodeError,
-                urllib.error.URLError,
-            ) as exc:
                 traces.append(
                     _failure_trace_record(
                         case,
@@ -158,7 +196,7 @@ def main(argv: list[str] | None = None) -> int:
                         model=args.model,
                         request_payload=request_payload,
                         image_refs=image_refs,
-                        error=str(exc),
+                        error=str(error),
                     )
                 )
                 if predictions:
@@ -170,7 +208,7 @@ def main(argv: list[str] | None = None) -> int:
                         "checkpoint_prediction_count": len(predictions),
                         "checkpoint_trace_count": len(traces),
                         "ready": False,
-                        "error": str(exc),
+                        "error": str(error),
                         "failed_case_id": _required_str(case, "case_id"),
                         "resumed_prediction_count": len(resumed_predictions),
                         "trace_count": len(traces),
@@ -178,16 +216,6 @@ def main(argv: list[str] | None = None) -> int:
                     }
                 )
                 return 1
-            structured_response = _extract_structured_response(raw_response, case=case)
-            normalized_response = _normalize_structured_response(
-                case,
-                structured_response,
-                frame_index=normalization_frame_index,
-            )
-            prediction = _prediction_from_structured_response(
-                case,
-                normalized_response,
-            )
             predictions.append(prediction)
             traces.append(
                 _trace_record(
@@ -196,9 +224,9 @@ def main(argv: list[str] | None = None) -> int:
                     model=args.model,
                     request_payload=request_payload,
                     image_refs=image_refs,
-                    raw_response=raw_response,
-                    structured_response=structured_response,
-                    normalized_structured_response=normalized_response,
+                    raw_response=raw_response or {},
+                    structured_response=structured_response or {},
+                    normalized_structured_response=normalized_response or {},
                     prediction=prediction,
                 )
             )
@@ -613,20 +641,49 @@ def _send_chat_completion(
     base_url: str,
 ) -> dict[str, Any]:
     endpoint = base_url.rstrip("/") + "/chat/completions"
-    request = urllib.request.Request(
-        endpoint,
-        data=json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8"),
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-        },
-        method="POST",
-    )
-    with urllib.request.urlopen(request, timeout=120) as response:
-        parsed = json.loads(response.read().decode("utf-8"))
-    if not isinstance(parsed, Mapping):
-        raise SpatialQAError("VLM response must be a JSON object")
-    return cast(dict[str, Any], parsed)
+    data = json.dumps(payload, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    last_error: Exception | None = None
+    for attempt_index in range(CHAT_COMPLETION_MAX_ATTEMPTS):
+        request = urllib.request.Request(
+            endpoint,
+            data=data,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(request, timeout=120) as response:
+                body = response.read().decode("utf-8")
+            if not body.strip():
+                raise SpatialQAError("VLM response body was empty")
+            parsed = json.loads(body)
+            if not isinstance(parsed, Mapping):
+                raise SpatialQAError("VLM response must be a JSON object")
+            return cast(dict[str, Any], parsed)
+        except urllib.error.HTTPError as exc:
+            raise SpatialQAError(_http_error_message(exc)) from exc
+        except (OSError, urllib.error.URLError, json.JSONDecodeError, SpatialQAError) as exc:
+            if isinstance(exc, SpatialQAError) and str(exc) != "VLM response body was empty":
+                raise
+            last_error = exc
+            if attempt_index + 1 >= CHAT_COMPLETION_MAX_ATTEMPTS:
+                raise
+    if last_error is not None:
+        raise last_error
+    raise SpatialQAError("VLM chat completion request failed")
+
+
+def _http_error_message(exc: urllib.error.HTTPError) -> str:
+    message = f"HTTP Error {exc.code}: {exc.reason}"
+    try:
+        body = exc.read().decode("utf-8", errors="replace").strip()
+    except OSError:
+        body = ""
+    if body:
+        message += f"; response_body={body[:500]}"
+    return message
 
 
 def _extract_structured_response(
@@ -795,6 +852,9 @@ def _visual_prompt_payload(case: Mapping[str, Any], *, source_kind: str) -> dict
         "case_id": _prompt_case_id(_required_str(case, "case_id")),
         "choices": case.get("choices", []),
         "question": _visual_question_payload(case.get("question")),
+        "question_task_hint": _visual_question_task_hint(
+            case.get("question_task_hint")
+        ),
         "question_text": case.get("question_text"),
         "question_type": case.get("question_type"),
         "source_kind": source_kind,
@@ -803,6 +863,9 @@ def _visual_prompt_payload(case: Mapping[str, Any], *, source_kind: str) -> dict
         ),
         "target": _visual_target_payload(case.get("target")),
         "target_crop": _visual_target_crop_payload(case.get("target_crop")),
+        "target_visual_context": _visual_target_context_payload(
+            case.get("target_visual_context")
+        ),
         "visual_answer_option_strategy": _visual_answer_option_strategy(
             case.get("answer_options")
         ),
@@ -820,6 +883,12 @@ def _visual_question_payload(value: object) -> dict[str, Any] | None:
         if isinstance(item, (str, int, float, bool)) or item is None:
             payload[key] = item
     return payload
+
+
+def _visual_question_task_hint(value: object) -> str | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    return value.strip()
 
 
 def _visual_target_payload(value: object) -> dict[str, Any] | None:
@@ -845,6 +914,27 @@ def _visual_target_crop_payload(value: object) -> dict[str, Any]:
     source_frame_id = _optional_string(value.get("source_frame_id"))
     if source_frame_id is not None:
         payload["source_frame_id"] = source_frame_id
+    return payload
+
+
+def _visual_target_context_payload(value: object) -> dict[str, Any]:
+    if not isinstance(value, Mapping):
+        return {"available": False}
+    if value.get("available") is not True:
+        return {"available": False}
+    payload: dict[str, Any] = {"available": True}
+    for key in (
+        "context_kind",
+        "instruction",
+        "target_crop_unavailable_reason",
+        "target_label",
+    ):
+        item = _optional_string(value.get(key))
+        if item is not None:
+            payload[key] = item
+    crop_available = value.get("target_crop_available")
+    if isinstance(crop_available, bool):
+        payload["target_crop_available"] = crop_available
     return payload
 
 
@@ -1127,14 +1217,24 @@ def _ppm_to_png(payload: bytes) -> bytes:
     if width <= 0 or height <= 0 or max_value <= 0 or max_value > 255:
         raise SpatialQAError("Unsupported PPM dimensions or max value")
     if tokens[0] == b"P6":
-        rgb = payload[data_start : data_start + width * height * 3]
-        if len(rgb) != width * height * 3:
+        expected_length = width * height * 3
+        rgb = payload[data_start : data_start + expected_length]
+        shortfall = expected_length - len(rgb)
+        if shortfall > PPM_BINARY_SHORTFALL_TOLERANCE:
             raise SpatialQAError("PPM binary payload has unexpected length")
+        if shortfall > 0:
+            rgb += b"\x00" * shortfall
     else:
         values = [int(token) for token in payload[data_start:].split()]
         if len(values) != width * height * 3:
             raise SpatialQAError("PPM text payload has unexpected length")
         rgb = bytes(values)
+    width, height, rgb = _pad_rgb_to_minimum_side(
+        width,
+        height,
+        rgb,
+        min_side=MIN_VLM_IMAGE_SIDE_PX,
+    )
     scanlines = b"".join(
         b"\x00" + rgb[row * width * 3 : (row + 1) * width * 3]
         for row in range(height)
@@ -1145,6 +1245,28 @@ def _ppm_to_png(payload: bytes) -> bytes:
         + _png_chunk(b"IDAT", zlib.compress(scanlines))
         + _png_chunk(b"IEND", b"")
     )
+
+
+def _pad_rgb_to_minimum_side(
+    width: int,
+    height: int,
+    rgb: bytes,
+    *,
+    min_side: int,
+) -> tuple[int, int, bytes]:
+    if width >= min_side and height >= min_side:
+        return width, height, rgb
+    padded_width = max(width, min_side)
+    padded_height = max(height, min_side)
+    padded = bytearray(b"\xff" * padded_width * padded_height * 3)
+    x_offset = (padded_width - width) // 2
+    y_offset = (padded_height - height) // 2
+    for row in range(height):
+        source_start = row * width * 3
+        source_end = source_start + width * 3
+        dest_start = ((row + y_offset) * padded_width + x_offset) * 3
+        padded[dest_start : dest_start + width * 3] = rgb[source_start:source_end]
+    return padded_width, padded_height, bytes(padded)
 
 
 def _ppm_header_tokens(payload: bytes) -> tuple[list[bytes], int]:
@@ -1252,6 +1374,17 @@ def _normalize_structured_response(
         "frame_index_used": bool(frame_index),
         "warnings": [],
     }
+    case_id = _required_str(case, "case_id")
+    prompt_case_id = _prompt_case_id(case_id)
+    response_case_id = _optional_string(result.get("case_id"))
+    if response_case_id is None:
+        result["case_id"] = prompt_case_id
+        _normalization_change(normalization, "filled_case_id_from_prompt")
+        normalization["warnings"].append("missing_case_id")
+    elif response_case_id not in {case_id, prompt_case_id}:
+        result["case_id"] = prompt_case_id
+        _normalization_change(normalization, "corrected_case_id_from_prompt")
+        normalization["warnings"].append("case_id_mismatch")
     if case.get("question_type") != "object_location":
         result["normalization"] = normalization
         return result
@@ -1381,7 +1514,7 @@ def _normalize_structured_response(
 def _selected_answer_option(
     case: Mapping[str, Any],
     response: Mapping[str, Any],
-    answer: Mapping[str, Any],
+    answer: MutableMapping[str, Any],
     location: Mapping[str, Any],
 ) -> dict[str, Any] | None:
     option_id = _explicit_answer_option_id(response, answer, location)
@@ -1410,7 +1543,7 @@ def _explicit_answer_option_id(
 
 def _answer_option_id_from_text(
     response: Mapping[str, Any],
-    answer: Mapping[str, Any],
+    answer: MutableMapping[str, Any],
     case: Mapping[str, Any],
 ) -> str | None:
     text = _answer_text(response, answer)

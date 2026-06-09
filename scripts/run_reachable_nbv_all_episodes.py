@@ -16,7 +16,10 @@ if str(SCRIPTS_ROOT) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_ROOT))
 
 import audit_trajectory_coverage  # noqa: E402
+import build_active_exploration_qa_v2  # noqa: E402
 import run_reachable_nbv_trajectory  # noqa: E402
+from dsg_spatialqa_lab.episodes import load_episode_sequence  # noqa: E402
+from dsg_spatialqa_lab.observations import load_scene_observation_sequence  # noqa: E402
 
 
 DEFAULT_EPISODES: tuple[tuple[str, str, str], ...] = (
@@ -45,6 +48,11 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Only materialize the planned paths/report; do not launch AI2-THOR.",
     )
+    parser.add_argument(
+        "--build-active-qa-v2",
+        action="store_true",
+        help="After a real run, build active QA v2 and audit with its observation-aware split.",
+    )
     parser.add_argument("--max-iterations", type=int, default=12)
     parser.add_argument("--yaw-sweep-degrees", default="0,90,180,270")
     parser.add_argument("--pitch-sweep-degrees", default="-30,0,30")
@@ -68,6 +76,16 @@ def main(argv: list[str] | None = None) -> int:
         "--qa",
         type=Path,
         default=Path("handoffs/ai2thor-real-small/inputs/qa.jsonl"),
+    )
+    parser.add_argument(
+        "--active-qa-root",
+        type=Path,
+        default=Path("handoffs/ai2thor-real-small/inputs/qa-v2-active-p54"),
+    )
+    parser.add_argument(
+        "--quality-report-root",
+        type=Path,
+        default=Path("handoffs/ai2thor-real-small/outputs/diagnostics"),
     )
     parser.add_argument("--width", type=int, default=320)
     parser.add_argument("--height", type=int, default=240)
@@ -178,6 +196,7 @@ def _dry_run_episode(
 
 def _episode_paths(args: argparse.Namespace, short_id: str, full_id: str) -> dict[str, Path]:
     episodes_root = args.input_root / "episodes"
+    active_qa_dir = args.active_qa_root / full_id
     return {
         "episode": episodes_root / f"{full_id}.jsonl",
         "trajectory": args.output_root / f"reachable-nbv-real-ai2thor-trajectory-{short_id}.json",
@@ -189,6 +208,12 @@ def _episode_paths(args: argparse.Namespace, short_id: str, full_id: str) -> dic
         "fixed_vs_overlay_json": episodes_root / f"{full_id}-fixed-vs-real-ai2thor-reachable-nbv-overlay.json",
         "fixed_episode_topdown": episodes_root / f"{full_id}-topdown-path.png",
         "audit": args.output_root / f"trajectory-audit-real-ai2thor-reachable-nbv-{short_id}.json",
+        "active_qa_dir": active_qa_dir,
+        "active_qa_observation_aware": active_qa_dir / "qa-observation-aware.jsonl",
+        "active_qa_quality_report": (
+            args.quality_report_root / f"qa-v2-active-p54-quality-report-{full_id}.json"
+        ),
+        "active_qa_vlm_request_bundle": active_qa_dir / "vlm-request-bundle.json",
     }
 
 
@@ -253,6 +278,20 @@ def _run_episode(
             "blockers": ["reachable_nbv_run_failed"],
             "paths": {key: str(value) for key, value in paths.items()},
         }
+    audit_qa_path = args.qa
+    if args.build_active_qa_v2:
+        active_result = _build_active_qa_v2_after_run(paths, full_id, scene_id)
+        if active_result["valid"] is not True:
+            return {
+                "episode_id": full_id,
+                "short_id": short_id,
+                "scene_id": scene_id,
+                "valid": False,
+                "blockers": list(active_result["blockers"]),
+                "paths": {key: str(value) for key, value in paths.items()},
+            }
+        audit_qa_path = paths["active_qa_observation_aware"]
+        _rewrite_baseline_audits_with_qa(paths, args.output_root, audit_qa_path)
     audit_code = audit_trajectory_coverage.main(
         [
             "--trajectory",
@@ -262,7 +301,7 @@ def _run_episode(
             "--predicted-graph",
             str(paths["graph"]),
             "--qa",
-            str(args.qa),
+            str(audit_qa_path),
             "--output",
             str(paths["audit"]),
         ]
@@ -287,6 +326,63 @@ def _run_episode(
     }
 
 
+def _build_active_qa_v2_after_run(
+    paths: Mapping[str, Path],
+    episode_id: str,
+    scene_id: str,
+) -> dict[str, Any]:
+    code = build_active_exploration_qa_v2.main(
+        [
+            "--episode-id",
+            episode_id,
+            "--scene-id",
+            scene_id,
+            "--trajectory",
+            str(paths["trajectory"]),
+            "--observation-sequence",
+            str(paths["observation"]),
+            "--predicted-graph",
+            str(paths["graph"]),
+            "--output-dir",
+            str(paths["active_qa_dir"]),
+            "--quality-report",
+            str(paths["active_qa_quality_report"]),
+            "--vlm-request-bundle",
+            str(paths["active_qa_vlm_request_bundle"]),
+        ]
+    )
+    missing = [
+        name
+        for name in (
+            "active_qa_observation_aware",
+            "active_qa_quality_report",
+            "active_qa_vlm_request_bundle",
+        )
+        if not paths[name].exists()
+    ]
+    return {
+        "valid": code == 0 and not missing,
+        "blockers": [] if code == 0 and not missing else ["active_qa_v2_build_failed", *missing],
+    }
+
+
+def _rewrite_baseline_audits_with_qa(
+    paths: Mapping[str, Path],
+    output_root: Path,
+    qa_path: Path,
+) -> None:
+    frames = load_episode_sequence(paths["episode"])
+    trajectory = _load_json(paths["trajectory"])
+    observations = load_scene_observation_sequence(paths["observation"])
+    run_reachable_nbv_trajectory._write_baseline_audits(  # noqa: SLF001
+        output_root=output_root,
+        frames=frames,
+        qa_path=qa_path,
+        nbv_trajectory=trajectory,
+        observations=observations,
+    )
+
+
 def _write_fixed_vs_nbv_overlay(
     paths: Mapping[str, Path],
     episode_id: str,
@@ -297,9 +393,18 @@ def _write_fixed_vs_nbv_overlay(
         from PIL import Image, ImageDraw
     except ImportError:
         return False
-    if not paths["fixed_episode_topdown"].exists():
-        return False
     fixed_points = _fixed_points(paths["episode"])
+    fixed_topdown_generated = False
+    if not paths["fixed_episode_topdown"].exists():
+        if not fixed_points:
+            return False
+        _write_fixed_episode_topdown_png(
+            paths["fixed_episode_topdown"],
+            fixed_points,
+            episode_id=episode_id,
+            scene_id=scene_id,
+        )
+        fixed_topdown_generated = True
     trajectory = _load_json(paths["trajectory"])
     nbv_points = [
         (
@@ -355,10 +460,63 @@ def _write_fixed_vs_nbv_overlay(
         "overlay_png_path": str(paths["fixed_vs_overlay_png"]),
         "trajectory_path": str(paths["trajectory"]),
         "base_topdown_path": str(paths["fixed_episode_topdown"]),
+        "fixed_topdown_generated": fixed_topdown_generated,
         "mapping_source": "local_bounds_from_fixed_and_nbv_points",
     }
     paths["fixed_vs_overlay_json"].write_text(json.dumps(meta, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     return True
+
+
+def _write_fixed_episode_topdown_png(
+    output_path: Path,
+    fixed_points: list[tuple[float, float]],
+    *,
+    episode_id: str,
+    scene_id: str,
+) -> None:
+    from PIL import Image, ImageDraw
+
+    width = 1000
+    height = 850
+    image = Image.new("RGB", (width, height), "white")
+    draw = ImageDraw.Draw(image)
+    min_x, max_x, min_z, max_z = _bounds(fixed_points)
+
+    def pixel(point: tuple[float, float]) -> tuple[int, int]:
+        x, z = point
+        left, right, top, bottom = 70, width - 260, 90, height - 80
+        px = left + (x - min_x) / max(0.001, max_x - min_x) * (right - left)
+        py = bottom - (z - min_z) / max(0.001, max_z - min_z) * (bottom - top)
+        return int(round(px)), int(round(py))
+
+    if len(fixed_points) > 1:
+        draw.line([pixel(point) for point in fixed_points], fill=(220, 60, 60), width=5)
+    for index, point in enumerate(fixed_points):
+        x, y = pixel(point)
+        color = (48, 160, 88) if index == 0 else (150, 43, 43) if index == len(fixed_points) - 1 else (220, 60, 60)
+        draw.rectangle((x - 6, y - 6, x + 6, y + 6), fill=color, outline=(255, 255, 255), width=2)
+        draw.text((x + 8, y - 8), str(index), fill=(80, 30, 30), font=_font(14))
+    draw.rounded_rectangle(
+        (28, 28, 600, 118),
+        radius=8,
+        fill=(255, 255, 255),
+        outline=(40, 40, 40),
+        width=2,
+    )
+    draw.text(
+        (44, 44),
+        f"{scene_id} fixed trajectory",
+        fill=(30, 36, 45),
+        font=_font(22),
+    )
+    draw.text(
+        (44, 78),
+        f"{episode_id}: red=fixed path generated from EpisodeFrame poses",
+        fill=(30, 36, 45),
+        font=_font(16),
+    )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    image.save(output_path)
 
 
 def _fixed_points(path: Path) -> list[tuple[float, float]]:

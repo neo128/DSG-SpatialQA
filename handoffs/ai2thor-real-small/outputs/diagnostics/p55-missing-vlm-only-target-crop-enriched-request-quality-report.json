@@ -1,0 +1,34 @@
+{
+  "blockers": [],
+  "leak_paths": [],
+  "missing_primary_frame_case_ids": [],
+  "missing_question_task_hint_case_ids": [],
+  "ready": true,
+  "report_digest": "e65074a1b487b8f3e3329d59745dba70a9c2d092ad176712667a7dcc65cfa810",
+  "request_bundle": "handoffs/ai2thor-real-small/inputs/offline-controls/p55-missing-vlm-only-active-qa-v2-20-episode-request-bundle-target-crop-enriched.json",
+  "schema_version": "dsg-spatialqa-lab.active-qa-v2-request-quality-report.v1",
+  "summary": {
+    "missing_primary_frame_count": 0,
+    "missing_question_task_hint_count": 0,
+    "primary_frame_exists_count": 2670,
+    "question_task_hint_count": 2670,
+    "question_type_counts": {
+      "multi_hop": 20,
+      "nearest_object": 268,
+      "object_location": 346,
+      "relative_relation": 236,
+      "situated_egocentric": 562,
+      "state_change": 766,
+      "support_relation": 207,
+      "temporal_last_seen": 265
+    },
+    "request_count": 2670,
+    "support_candidates_by_question_type": {
+      "multi_hop": 20,
+      "support_relation": 207
+    },
+    "support_candidates_case_count": 227,
+    "target_crop_case_count": 2280,
+    "target_visual_context_case_count": 390
+  }
+}
